@@ -1,0 +1,148 @@
+---
+title: "搭建工坊：配置你的现代化开发环境"
+---
+
+> "千里之行，始于足下。" —— 《道德经》
+
+## 本节危机：空有理论，却无利器
+
+我们已经从理论上理解了Java、IDE和Gradle这“三位一体”的重要性。但理论无法直接变成代码。我们就像一个装备精良的铁匠，脑海中构思好了绝世神兵的图纸，却发现自己身处一间空空如也的铁匠铺——没有熔炉，没有铁砧，没有锤子。
+
+我们的危机是：**如何搭建一个稳定、高效、现代化的开发环境，让思想能够在这里顺利地转化为现实？** 如果环境配置出错，后续的所有工作都将举步维艰，甚至在开始之前就宣告失败。这会极大地挫败我们作为创造者的“Vibe”。
+
+## 本节顿悟：为思想校准工具
+
+搭建环境的过程，不仅仅是安装软件。它更像是在进行一场重要的仪式：**为我们即将开始的宏大创造，校准我们的思想表达工具。** 
+
+一个精确配置的环境，是保证我们能够心无旁骛、专注于代码本身的基石。每一步命令的精确输入，每一次成功验证的绿色回显，都是在为我们未来的创造大厦打下坚实的地基。
+
+本节将提供一份详尽的、一步步的图文指南，指导你在你的操作系统（Windows 或 macOS）上，精确地安装和配置好我们的“思想工坊”。
+
+---
+
+## 1. 安装Java开发工具包 (JDK)
+
+JDK是Java开发的核心，它包含了Java编译器（`javac`）和Java运行时环境（JRE）。我们将使用**Java 21 (LTS)**版本，这是一个长期支持（Long-Term Support）版本，意味着它更稳定，能获得更长时间的官方支持。
+
+### 安装步骤 (macOS)
+
+对于macOS用户，我们强烈推荐使用[Homebrew](https://brew.sh/)，这是一个非常出色的包管理器。
+
+1.  **安装Homebrew** (如果尚未安装):
+    打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+
+2.  **安装JDK**:
+    使用Homebrew安装OpenJDK 21。
+    ```bash
+    brew install openjdk@21
+    ```
+
+3.  **配置环境变量**:
+    为了让系统能够找到JDK，我们需要设置`JAVA_HOME`环境变量，并将其添加到`PATH`中。
+    ```bash
+    echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
+    echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
+    source ~/.zshrc
+    ```
+
+### 安装步骤 (Windows)
+
+对于Windows用户，我们推荐使用[Chocolatey](https://chocolatey.org/)包管理器。
+
+1.  **安装Chocolatey** (如果尚未安装):
+    以管理员身份打开PowerShell，然后执行以下命令：
+    ```powershell
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    ```
+
+2.  **安装JDK**:
+    在管理员PowerShell中执行：
+    ```powershell
+    choco install openjdk --version=21
+    ```
+    Chocolatey会自动为你配置好环境变量。
+
+### **验证安装 (仪式感!)**
+
+无论你使用哪个操作系统，完成安装后，请**重新打开一个新的终端或PowerShell窗口**，然后依次执行以下三个命令，并确保输出与示例类似。
+
+1.  **检查Java运行时版本**:
+    ```bash
+    java --version
+    ```
+    你应该看到类似 `openjdk 21.x.x ...` 的输出。
+
+2.  **检查Java编译器版本**:
+    ```bash
+    javac --version
+    ```
+    你应该看到类似 `javac 21.x.x` 的输出。
+
+3.  **检查JAVA_HOME变量**:
+    *   macOS: `echo $JAVA_HOME`
+    *   Windows: `echo %JAVA_HOME%`
+    你应该看到指向JDK 21安装路径的输出。
+
+**如果三个命令都得到了正确的输出，恭喜你！你已经成功点燃了工坊的熔炉。请务必将这三个成功验证的截图保存下来，这是你作为VibeVault创造者的第一个里程碑！**
+
+## 2. 安装Visual Studio Code (VS Code)
+
+VS Code是我们的现代化智能工坊。
+
+1.  **下载并安装**:
+    访问[VS Code官方网站](https://code.visualstudio.com/)，下载对应你的操作系统的稳定版并安装。
+
+2.  **安装必备扩展**:
+    打开VS Code，点击左侧边栏的“扩展”图标（四个方块的形状）。在搜索框中，搜索并安装以下扩展包：
+    *   **Extension Pack for Java**: 这是来自微软的官方Java扩展包，它包含了语言支持、调试器、测试运行器、Maven/Gradle支持等一系列必备工具。
+    *   **GitHub Copilot**: 这就是我们的AI副驾驶。你需要一个GitHub账号来激活它。（新用户通常有免费试用期）
+
+## 3. 安装Gradle
+
+Gradle是保障我们项目秩序的法律体系。
+
+### 安装步骤 (macOS)
+
+使用Homebrew安装：
+```bash
+brew install gradle
+```
+
+### 安装步骤 (Windows)
+
+使用Chocolatey安装：
+```bash
+choco install gradle
+```
+
+### **验证安装 (再次的仪式感!)**
+
+**重新打开一个新的终端或PowerShell窗口**，执行以下命令：
+
+```bash
+gradle --version
+```
+
+你应该能看到Gradle的版本信息，以及你刚刚安装的Java 21 (JVM) 的信息。
+
+---
+
+## Vibe Check (思考与练习)
+
+1.  **核心练习**:
+    **[里程碑]** 严格按照本节教程，完成JDK、VS Code、Gradle的安装和配置。确保`java --version`, `javac --version`, `gradle --version`三个命令的输出完全正确。将这三个命令成功执行的终端截图拼接成一张图片，命名为`milestone-01-env-setup.png`并保存在一个你记得住的地方。这是你的第一个重要成就！
+
+2.  **破坏性实验**:
+    这个实验旨在让你理解环境变量的核心作用。
+    *   **macOS**: 编辑`~/.zshrc`文件，暂时将`JAVA_HOME`的路径改错（例如，在路径末尾加一个`_INVALID`）。保存文件后，执行`source ~/.zshrc`使其生效。
+    *   **Windows**: 在“编辑系统环境变量”中，找到`JAVA_HOME`并将其值改错。
+    *   **实验操作**: **重新打开一个终端窗口**，再次运行`java --version`和`gradle --version`。观察并仔细阅读出现的错误信息。这个错误信息告诉你了什么？它如何证明`JAVA_HOME`的不可或缺性？完成后，记得将环境变量改回正确的路径。
+
+3.  **深入探索**:
+    我们在系统的`PATH`环境变量中加入了Java和Gradle的`bin`目录。`bin`是“binary”（二进制可执行文件）的缩写。
+    *   找到你的JDK安装路径（可以根据`JAVA_HOME`的输出来找）。
+    *   使用文件浏览器打开这个路径下的`bin`目录。
+    *   看看里面除了`java`和`javac`，还有哪些可执行文件？尝试在终端中运行一下其他命令（例如`jar --version`），结合网络搜索，了解`jar`命令是用来做什么的？这个探索能让你对JDK这个“工具包”有更具体的认识。 

@@ -1,0 +1,129 @@
+---
+title: "设计播放列表“分子”"
+---
+
+> "形式追随功能。" —— 路易斯·沙利文 (Louis Sullivan)
+
+## 本节危机：知其然，不知其所以然
+
+在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。
+
+我们知道需要一个`Playlist`类，但它具体应该长什么样？
+*   如何在Java代码中表达“一个播放列表拥有一个名字和一组歌曲”这个概念？
+*   如何确保每个`Playlist`对象在被创建出来的那一刻，就处于一个有效的、初始化的状态？
+*   代码中那个神秘的`this`关键字，到底指向什么？
+
+**我们面临的危机是：如何将“封装”这个抽象的设计原则，转化为具体的、精确的、符合Java语法的代码实现？**
+
+## 本节顿悟：`class`是业务蓝图，`new`是施工建造
+
+Java用`class`关键字，为我们提供了绘制“业务蓝图”的能力。一个`class`，就是对一类事物（比如“播放列表”）的共同特征（属性）和行为（方法）的详细描述。
+
+而当我们使用`new`关键字时，Java虚拟机就会按照这份蓝图，在内存中“施工建造”，创造出一个个具体、独立的实例（instance），也叫作对象（object）。每个对象都拥有蓝图上定义的全部属性和方法。
+
+**顿悟在于：`class`定义了“是什么”，而对象则是那个活生生的“存在”。通过`private`关键字守护内部状态，通过`public`构造函数和方法提供服务，我们就构建出了一个职责分明的、封装良好的“分子结构”。**
+
+---
+
+## 1. 绘制Playlist蓝图
+
+让我们回到VS Code，开始绘制`Playlist`的蓝图。
+
+1.  在`src/main/java/com/vibevault`目录下，创建一个新文件，命名为`Playlist.java`。
+2.  输入以下代码：
+
+```java
+package com.vibevault;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Playlist {
+
+    // 1. 成员变量 (Member Variables / Fields)
+    //    它们定义了Playlist的“属性”或“状态”
+    //    使用private，将实现细节“锁”在黑盒子里
+    private final String name;
+    private final List<Song> songs;
+
+    // 2. 构造函数 (Constructor)
+    //    它的名字必须与类名完全相同，且没有返回类型
+    //    负责在对象创建时，进行初始化工作
+    public Playlist(String name) {
+        // 3. 'this' 关键字
+        //    它指向“当前正在被创建的这个对象实例”
+        //    用来明确区分“成员变量name”和“参数name”
+        this.name = name;
+        this.songs = new ArrayList<>(); // 初始化为空的歌曲列表
+    }
+
+    // --- 后续我们会在这里添加更多方法 ---
+}
+```
+
+**代码剖析:**
+
+*   **`import`语句**: 我们需要用到`List`和`ArrayList`，它们位于`java.util`包中，所以必须先`import`进来。
+*   **`public class Playlist`**: 声明一个名为`Playlist`的公共类。
+*   **成员变量 (Fields)**:
+    *   `private final String name;`: 我们声明了一个私有的(`private`)、最终的(`final`)字符串变量`name`。`private`意味着只有`Playlist`类内部的代码才能直接访问它，这是封装的核心。`final`意味着这个`name`在对象被构造函数初始化之后，就不能再被改变了。这种设计，使得`name`这个属性是**不可变的 (Immutable)**。不可变对象是构建健壮、可预测、尤其是在并发环境中更安全的软件的基石。
+    *   `private final List<Song> songs;`: 同理，我们声明了一个私有的、最终的`Song`列表。这就像汽车的引擎被锁在引擎盖（`private`）下一样，我们向外界隐藏了播放列表内部是如何存储歌曲的。调用者不需要知道，也不应该知道我们用的是`ArrayList`还是别的什么东西。此外，我们声明的类型是接口`List`，而不是具体的实现`ArrayList`。这是一种良好的编程实践，叫做“面向接口编程”，它为我们未来更换具体实现提供了灵活性。
+*   **构造函数 (Constructor)**:
+    *   `public Playlist(String name)`: 这是`Playlist`类的构造函数。当外部代码写`new Playlist("我的最爱")`时，这个方法就会被调用。
+    *   `this.name = name;`: **这是理解`this`的关键。** 左边的`this.name`指的是当前这个`Playlist`对象的**成员变量**`name`。右边的`name`指的是从构造函数**参数**传递进来的`name`值。这行代码的作用就是，将外部传入的名字，赋值给我们内部的成员变量。
+    *   `this.songs = new ArrayList<>();`: 我们创建了一个全新的、空的`ArrayList`实例，并将其引用赋值给了成员变量`songs`。这确保了每个`Playlist`对象都拥有自己独立的一份歌曲列表。
+
+## 2. 让“分子”存在
+
+现在我们有了蓝图，就可以在`VibeVaultApp.java`中建造出具体的`Playlist`对象了。
+
+修改`VibeVaultApp.java`，用`Playlist`来组织我们的`Song`：
+
+```java
+package com.vibevault;
+
+public class VibeVaultApp {
+    public static void main(String[] args) {
+        // 创建两个Song原子
+        Song song1 = new Song("Bohemian Rhapsody", "Queen", 355);
+        Song song2 = new Song("Stairway to Heaven", "Led Zeppelin", 482);
+
+        // 使用Playlist蓝图，建造一个名为"Rock Classics"的播放列表分子
+        Playlist rockClassics = new Playlist("Rock Classics");
+
+        // （我们很快就会为Playlist添加addSong方法）
+
+        System.out.println("Successfully created playlist: " + rockClassics); // 这里会调用默认的toString方法
+    }
+}
+```
+
+现在运行程序，虽然我们还不能添加歌曲，但程序可以成功创建一个`Playlist`对象。输出可能是一串类似`com.vibevault.Playlist@1f32e575`的字符，这是Java对象默认的`toString()`行为。别担心，我们稍后会改进它。
+
+---
+
+## Vibe Check (思考与练习)
+
+1.  **核心练习**:
+    严格按照本节的指导，在你的项目中创建`Playlist.java`文件，并完整地编写出`Playlist`类的基本骨架。确保它包含一个私有的`name`（字符串）和一个私有的`songs`（`List<Song>`）成员变量，并提供一个接收`name`的构造函数来初始化这两个变量。
+
+2.  **编码练习**:
+    在`Playlist.java`类中，添加两个新的**公共方法 (public methods)**：
+    *   `public String getName()`: 这个方法不需要参数，它直接返回成员变量`name`的值。
+    *   `public int getSongCount()`: 这个方法不需要参数，它返回内部`songs`列表的大小（可以使用`songs.size()`方法）。
+    在`VibeVaultApp.java`的`main`方法中，创建`Playlist`对象后，调用这两个新方法并打印出结果，以验证它们是否工作正常。
+
+3.  **破坏性实验**:
+    在`Playlist`的构造函数中，进行一个修改。**删除`this`关键字**，将代码改成这样：
+    ```java
+    public Playlist(String name) {
+        name = name; // 没有 'this'
+        this.songs = new ArrayList<>();
+    }
+    ```
+    现在，在`main`方法中调用你刚刚编写的`getName()`方法并打印结果。你会发现`Playlist`的名字是`null`（或者空），而不是你传入的"Rock Classics"。为什么？这个实验如何从实践上证明了`this`在区分同名成员变量和参数时的必要性？（提示：`name = name;`这行代码实际上是把参数`name`赋值给了它自己，成员变量`name`从未被触及。）
+
+4.  **思考与设计**:
+    我们当前的构造函数只能创建一个空的播放列表。如果我们想在创建`Playlist`时，就能立即包含一组**初始歌曲**，我们应该如何设计一个新的构造函数？
+    *   这个新构造函数的参数应该是什么样的？（提示：可能需要两个参数，一个`name`，一个`List<Song>`）
+    *   在Java中，一个类可以有多个同名但参数列表不同的构造函数，这个特性叫做**构造函数重载 (Constructor Overloading)**。请尝试写出这个新的构造函数。 

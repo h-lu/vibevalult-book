@@ -1,0 +1,90 @@
+---
+title: "验证行为：Mockito的verify"
+---
+
+> "不要只相信他们说的，要看他们做的。"
+
+## 本节危机：只看结果，不问过程？
+
+在上一节，我们学会了如何“伪造”一个外部依赖的返回值，来测试我们的方法是否能正确地**处理输入**并改变自身状态。这是“状态验证”。
+
+但有时，我们关心的是另一个问题：我们的方法是否正确地**调用**了它的依赖？
+
+例如，对于`saveToFile`方法，它的核心职责并不是返回什么值，而是用正确的参数去调用`Files.write`。如果我们只测试最终文件是否生成，那又回到了缓慢、脆弱的集成测试。如果我们不测试，我们怎么能信任`saveToFile`这个“指挥官”正确地下达了“开火”（写入文件）的指令呢？
+
+**我们面临的危机是：缺乏一种方法来验证一个“没有返回值”或“核心职责是调用其他方法”的方法，其内部的“行为”是否如我们预期地发生了。**
+
+## 本节顿悟：用`verify`来当“监工”
+
+Mockito提供了另一件强大的武器：`verify`。它允许我们在测试结束后，像一个监工一样，去检查某个模拟对象（Mock Object）的某个方法，是否被以我们期望的参数、期望的次数调用过。
+
+我们将用`verify`来为`saveToFile`方法编写一个纯粹的、闪电般快速的单元测试。
+
+### 测试`saveToFile`的行为
+
+我们将这个测试放在专门的`PlaylistPersistenceTest.java`中。
+
+```java
+// In: src/test/java/com/vibevault/model/PlaylistPersistenceTest.java
+package com.vibevault.model;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
+
+class PlaylistPersistenceTest {
+
+    @Test
+    @DisplayName("saveToFile应该用正确的内容调用Files.write")
+    void saveToFileShouldCallFilesWriteWithCorrectContent() {
+        // Arrange
+        Playlist playlist = new Playlist("My Test Playlist");
+        playlist.addSong(new Song("Hey Jude", "The Beatles", 431));
+        
+        // 这就是魔法：我们为Files类创建了一个“模拟作用域”
+        try (var mockedFiles = mockStatic(Files.class)) {
+            // Act
+            playlist.saveToFile("test.csv");
+
+            // Assert
+            // 验证静态方法调用
+            ArgumentCaptor<Path> pathCaptor = ArgumentCaptor.forClass(Path.class);
+            ArgumentCaptor<Iterable<String>> contentCaptor = ArgumentCaptor.forClass(Iterable.class);
+            
+            mockedFiles.verify(() -> Files.write(pathCaptor.capture(), contentCaptor.capture()));
+
+            // 对捕获的参数进行断言
+            assertThat(pathCaptor.getValue()).hasToString("test.csv");
+            assertThat(contentCaptor.getValue()).containsExactly("Hey Jude,The Beatles,431");
+        }
+    }
+    
+    // ... 其他测试，比如 loadFromFile的测试 ...
+}
+```
+
+### 代码深度剖析：
+*   **`mockedFiles.verify(...)`**: 它的作用是声明：“在`Act`阶段之后，我断言`Files.write`这个静态方法**一定被调用过**。”
+*   **`ArgumentCaptor`**: `verify`本身只检查调用是否发生，但我们还关心**用什么参数**调用的。`ArgumentCaptor`（参数捕获器）就是解决这个问题的利器。
+    1.  `ArgumentCaptor.forClass(...)`: 我们为需要捕获的参数类型创建一个捕获器。
+    2.  `captor.capture()`: 在`verify`方法内部，我们用`capture()`来代替具体的参数值。这告诉Mockito：“当`Files.write`被调用时，请把传给它的第一个参数（Path）抓起来，放进`pathCaptor`里；把第二个参数（Iterable<String>）抓起来，放进`contentCaptor`里。”
+    3.  `captor.getValue()`: 在`verify`之后，我们就可以通过`getValue()`来获取被捕获的实际参数值，然后用AssertJ对它进行精确的断言。
+
+**顿悟在于：通过`verify`和`ArgumentCaptor`的组合，我们可以将测试的焦点从“结果”转移到“过程”。这使得我们能够为那些主要职责是与其他服务协作的方法编写出高价值的单元测试，确保我们代码的“契约”和“指令”是正确的。**
+
+---
+
+### Vibe Check (思考与练习)
+
+1.  **核心练习**: 创建`PlaylistPersistenceTest.java`（如果还未创建），并将`saveToFileShouldCallFilesWriteWithCorrectContent`测试用例完整地实现并成功运行。
+2.  **编码练习**: 假设`Playlist.java`中有一个`clear()`方法，它会清空内部的`songs`列表。现在，`saveToFile`方法在写入之前，**不应该**调用`clear()`方法。请思考如何编写一个新的测试，来**验证`clear()`方法从未被调用过**。
+    *   **提示**: 这个测试比看起来要复杂。如果你尝试`Playlist mockPlaylist = mock(Playlist.class);`，然后调用`mockPlaylist.saveToFile(...)`，你会发现`saveToFile`方法因为是`final`的（Java中普通类的public方法默认不是final，但我们这里假设），可能无法被Mockito拦截。更进一步，即使可以，`mock`对象的所有方法默认都是“空实现”，所以`saveToFile`内部的逻辑也不会真正执行。
+    *   **深入思考**: 解决这个问题的一种方法是使用Mockito的`spy()`功能，它能“监视”一个真实的对象而不是完全替换它。另一种更简单的方法，是重构我们的代码，将文件操作的逻辑提取到一个单独的、非`final`的类（比如`FileSystemManager`）中，然后将这个类的实例注入到`Playlist`里。这样我们就可以轻易地`mock`这个`FileSystemManager`了。这个思考过程能让你深刻体会到“**依赖注入**”和“**为可测试性设计**”的重要性。
+3.  **AI协同**: `verify`方法还有很多强大的用法，比如验证调用次数。请向你的AI助手提问：“在Mockito中，`verify`方法除了验证方法被调用一次（默认行为）和从不调用（`never()`），还有哪些验证调用次数的API？请给我一些例子，比如`times(n)`, `atLeast(n)`, `atMost(n)`。” 

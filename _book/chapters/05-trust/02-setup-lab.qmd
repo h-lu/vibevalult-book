@@ -1,0 +1,141 @@
+---
+title: "搭建测试实验室：JUnit 5初体验"
+---
+
+> "千里之行，始于足下。" - 老子
+
+## 本节危机：空有理论，何处下手？
+
+在上一节，我们理解了自动化测试的重要性。但理论终归是理论。现在我们面临最直接的实践问题：
+
+*   我们的“验证代码”（测试代码）应该放在项目的哪个位置？
+*   我们需要添加什么工具才能让计算机理解并运行这些代码？
+*   如何编写最基础的、有实际价值的测试代码，并亲眼看到它运行成功？
+
+**我们面临的危机是：缺乏一个能够实际动手操作的“测试实验室”，让我们迈出从理论到实践的第一步。**
+
+## 本节顿悟：最小化环境，驱动可测试性
+
+在开始复杂的测试之前，我们的首要目标是成功地运行一个最简单的、但有实际业务价值的测试。这个过程将确保我们的开发环境配置正确，同时，它将反过来“驱动”我们对主代码进行一些微小的、良性的改造，使其变得更易于测试——这就是**为可测试性而设计 (Designing for Testability)** 的开端。
+
+### 1. 测试代码的“家”：`src/test/java`
+
+就像我们的应用主代码有一个标准的家 `src/main/java` 一样，测试代码也有一个约定俗成的存放位置：`src/test/java`。一个至关重要的最佳实践是：**测试代码的包结构，应该与主代码的包结构完全对应。**
+
+*   `Song.java` 位于 `src/main/java/com/vibevault/model`
+*   那么，`SongTest.java` 就应该位于 `src/test/java/com/vibevault/model`
+
+这种镜像结构不仅让查找测试变得直观，还有一个重要的技术优势：它允许测试代码访问同一包内、主代码中那些没有被`private`修饰，但也没有被`public`修饰的**包级私有 (package-private)** 成员，这在需要测试一些内部协作细节时非常有用。现在，请在你的项目中，创建出这个镜像目录结构。
+
+### 2. 引入测试框架：配置`build.gradle.kts`
+
+为了让我们的项目具备运行测试的能力，我们需要引入JUnit 5框架。对于现代的Gradle版本（7.3+），官方推荐使用`testing`扩展中的`suites`块来统一管理测试配置。
+
+打开位于 `app` 模块下的构建文件 **`app/build.gradle.kts`**，然后在文件的**末尾**添加以下`testing`配置块。
+
+```kotlin
+// In: app/build.gradle.kts
+
+plugins {
+    // 你已有的插件...
+    id("com.vibevault.java-application-conventions")
+}
+
+dependencies {
+    // 你已有的依赖...
+}
+
+application {
+    // 你已有的应用配置...
+    mainClass = "com.vibevault.app.VibeVaultApp"
+}
+
+tasks.withType<JavaExec> {
+    // 你已有的任务配置...
+    standardInput = System.`in`
+}
+
+// vvv 在文件末尾添加这个新的配置块 vvv
+testing {
+    suites {
+        // 获取内置的'test'测试套件并进行配置
+        val test by getting(JvmTestSuite::class) {
+            // 声明我们将使用JUnit Jupiter测试平台
+            useJUnitJupiter() 
+        }
+    }
+}
+```
+
+**操作步骤**: 修改完`app/build.gradle.kts`后，Gradle可能需要你“同步项目”。通常IDE会自动提示，点击同步即可。
+
+> **深度解读**: 这段配置的核心是`testing.suites`块。`useJUnitJupiter()`会自动为我们添加对JUnit 5 API和引擎的依赖，这比老式的、手动在`dependencies`块中添加`testImplementation`和`testRuntimeOnly`要简洁和智能得多。
+
+### 3. 第一个有价值的测试：验证`getSongCount`
+
+为了测试，我们首先需要让`Playlist`的状态变得“可见”。一个没有任何`getter`方法的类是很难从外部测试的。因此，我们为了“可测试性”，先给它开一扇小小的“观察窗”。
+
+**第一步：为`Playlist`添加`getSongCount()`方法**
+请打开`src/main/java/com/vibevault/model/Playlist.java`，并添加这个新的公共方法：
+```java
+// In: src/main/java/com/vibevault/model/Playlist.java
+public class Playlist {
+    // ... (existing code)
+
+    public int getSongCount() {
+        return this.songs.size();
+    }
+}
+```
+
+**第二步：编写第一个测试用例**
+现在，我们可以在`src/test/java/com/vibevault/model`目录下创建`PlaylistTest.java`了：
+
+```java
+// In: src/test/java/com/vibevault/model/PlaylistTest.java
+package com.vibevault.model;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class PlaylistTest {
+
+    @Test
+    @DisplayName("播放列表在添加第一首歌后，歌曲数量应为1")
+    void songCountShouldBeOneAfterAddingFirstSong() {
+        // Arrange (准备): 创建一个新对象，准备测试数据
+        Playlist playlist = new Playlist("My Rock Classics");
+        Song newSong = new Song("Stairway to Heaven", "Led Zeppelin", 482);
+
+        // Act (行动): 调用我们想要测试的那个方法
+        playlist.addSong(newSong);
+
+        // Assert (断言): 验证结果是否符合我们的期望
+        assertEquals(1, playlist.getSongCount());
+    }
+}
+```
+
+**代码深度剖析**:
+*   `@Test`: 这是一个JUnit 5注解，它像一个旗帜，告诉JUnit：“嗨，这个方法是一个需要独立运行的测试用例！”
+*   `@DisplayName(...)`: 另一个JUnit 5注解。它允许我们为测试用例提供一个更具描述性、更易读的名称（支持中文和空格！），这在测试报告中看起来会非常清晰。
+*   **Arrange-Act-Assert (3A模式)**: 这是单元测试的经典结构。
+    1.  **准备 (Arrange)**: 设置测试所需的所有前提条件和输入。
+    2.  **行动 (Act)**: 执行我们真正想要测试的那个方法。
+    3.  **断言 (Assert)**: 检查在“行动”之后，系统的状态是否变为了我们所“期望”的样子。
+*   `assertEquals(1, playlist.getSongCount())`: 这是JUnit 5提供的核心**断言方法**之一。它声明：“我**期望**第一个参数（`1`）与第二个参数（`playlist.getSongCount()`的返回值）是**相等**的”。如果它们相等，测试通过。如果不相等，测试失败，并会清晰地报告期望值和实际值分别是多少。这比我们自己写`if-else`来判断要强大和方便得多。
+
+**运行测试**:
+在你的IDE中，点击`songCountShouldBeOneAfterAddingFirstSong`方法旁的绿色“播放”按钮。
+
+**观察结果**:
+你将看到一个**绿色的测试通过标记**。祝贺你！你不仅搭建了现代化的测试环境，还通过编写测试，反向驱动了主代码的设计优化，并验证了核心业务逻辑的正确性。
+
+---
+
+### Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节的步骤，更新你的`app/build.gradle.kts`，为`Playlist.java`添加`getSongCount()`方法，然后创建并成功运行`PlaylistTest.java`。
+2.  **扩展测试**: 在`PlaylistTest.java`中再添加一个测试方法，使用`@DisplayName`为其命名为“一个新建的空播放列表，歌曲数量应为0”，并用`assertEquals`来验证这个断言。
+3.  **AI协同**: 向你的AI助手提问：“JUnit 5的`assertEquals`方法内部是如何工作的？当断言失败时，它为什么能同时告诉我期望值和实际值？它和简单的`if (actual != expected) throw new AssertionError()`相比，为开发者提供了哪些额外的价值？” 

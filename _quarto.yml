@@ -1,0 +1,70 @@
+project:
+  type: book
+
+book:
+  title: "VibeVault: 一场现代Java全栈之旅"
+  author: "陆海波 & AI伙伴"
+  date: "2025"
+  chapters:
+    - index.qmd
+    - part: "第零部分：世界观与方法论"
+      chapters:
+        - chapters/00-welcome/01-the-vibe-shift.qmd
+        - chapters/00-welcome/02-the-70-percent-problem.qmd
+        - chapters/00-welcome/03-how-to-thrive.qmd
+        - chapters/00-welcome/04-the-ultimate-showdown.qmd
+
+    - part: "第一部分：本地应用的崛起 - 对抗熵与脆弱"
+      chapters:
+        - chapters/01-genesis/index.qmd
+        - chapters/01-genesis/01-why-tools.qmd
+        - chapters/01-genesis/02-setup.qmd
+        - chapters/01-genesis/03-project-init.qmd
+        - chapters/01-genesis/04-atomic-design.qmd
+        - chapters/02-aggregation/index.qmd
+        - chapters/02-aggregation/01-why-encapsulation.qmd
+        - chapters/02-aggregation/02-molecular-design.qmd
+        - chapters/02-aggregation/03-collection-choice.qmd
+        - chapters/03-interaction/index.qmd
+        - chapters/03-interaction/01-why-interactive.qmd
+        - chapters/03-interaction/02-dialogue-channel.qmd
+        - chapters/03-interaction/03-command-protocol.qmd
+        - chapters/04-persistence/index.qmd
+        - chapters/04-persistence/01-why-persistence.qmd
+        - chapters/04-persistence/02-serialization.qmd
+        - chapters/04-persistence/03-resilience.qmd
+        - chapters/05-trust/index.qmd
+        - chapters/05-trust/01-why-test.qmd
+        - chapters/05-trust/02-setup-lab.qmd
+        - chapters/05-trust/03-assertion-language.qmd
+        - chapters/05-trust/04-faking-reality.qmd
+        - chapters/05-trust/05-verifying-actions.qmd
+        - chapters/06-order/index.qmd
+        - chapters/06-order/01-why-architecture.qmd
+        - chapters/06-order/02-separation-of-concerns.qmd
+        - chapters/06-order/03-refactoring.qmd
+
+    - part: "第二部分：云端服务的黎明 - 对抗孤立与延迟"
+      chapters:
+        - chapters/07-connection/index.qmd
+        - chapters/07-connection/01-why-api.qmd
+        - chapters/07-connection/02-why-spring-boot.qmd
+        - chapters/07-connection/03-first-api.qmd
+        - chapters/08-concurrency/index.qmd
+        - chapters/08-concurrency/01-why-database.qmd
+        - chapters/08-concurrency/02-why-orm.qmd
+        - chapters/08-concurrency/03-database-migration.qmd
+        - chapters/09-visibility/index.qmd
+        - chapters/09-visibility/01-why-frontend-backend-separation.qmd
+        - chapters/09-visibility/02-why-react.qmd
+        - chapters/09-visibility/02a-js-primer-for-react.qmd
+        - chapters/09-visibility/02b-what-is-a-hook.qmd
+        - chapters/09-visibility/03-first-component.qmd
+
+  appendices:
+    - appendices/first-principles.qmd
+
+format:
+  html:
+    theme: cosmo
+    number-sections: false

@@ -1,0 +1,191 @@
+---
+title: "绘制蓝图：初始化你的Gradle项目"
+---
+
+> "凡事预则立，不预则废。" —— 《礼记·中庸》
+
+## 本节危机：万事俱备，何处下手？
+
+我们的工坊已经搭建完毕，工具（JDK, VS Code, Gradle）也已各就各位。但现在，我们站在一片空地上。我们知道要盖一座名为“VibeVault”的大厦，但第一块砖应该放在哪里？项目的代码应该如何组织？测试代码又该放在何处？我们未来的AI伙伴如何才能快速看懂我们的项目结构，并与我们高效协作？
+
+如果随心所欲地创建文件和目录，项目很快就会变成一个难以理解、无法维护的“代码迷宫”。**我们面临的危机是：如何从一开始就建立一个清晰、标准、可扩展的项目结构？**
+
+## 本节顿悟：让“法律”为我们绘制蓝图
+
+我们无需从零开始发明项目结构。我们已经拥有了项目的“法律系统”——Gradle。它的“约定优于配置”原则，为我们提供了一套行业通用的、经过千锤百炼的标准蓝图。我们只需要执行一个简单的命令，Gradle就会为我们“绘制”出这份蓝图。
+
+**顿悟在于：我们不应抗拒约定，而应拥抱约定。** 使用`gradle init`命令，就像是聘请了一位经验丰富的建筑师，他瞬间就为我们规划好了地基、承重墙和功能分区，让我们可以直接开始添砖加瓦。
+
+---
+
+## 1. 初始化项目：与向导对话
+
+现在，让我们打下第一根桩。选择一个你喜欢的工作目录（例如 `~/projects` 或 `D:\dev`），然后打开终端或PowerShell，执行以下步骤。
+
+1.  **创建并进入项目根目录**:
+    ```bash
+    mkdir VibeVault
+    cd VibeVault
+    ```
+    我们所有的代码都将存放在这个`VibeVault`文件夹中。
+
+2.  **运行Gradle初始化向导**:
+    在 `VibeVault` 目录下，执行以下命令来启动交互式向导：
+    
+    ```bash
+    gradle init
+    ```
+
+3.  **回答Gradle的提问**:
+    Gradle会像一位建筑顾问一样，问你一系列问题来确定项目蓝图。请参照以下指引回答。
+    
+    > **注意**：随着Gradle版本更新，问题的措辞或顺序可能略有不同。关键是理解每个问题的目的。
+
+    *   `Select type of project to generate:`
+        选择 `1: application` (我们的目标是创建一个可独立运行的应用程序)。
+
+    *   `Select implementation language:`
+        选择 `1: Java`。
+
+    *   `Split functionality across multiple subprojects?`
+        选择 `1: no` (我们暂时先做一个单体项目)。新版的Gradle可能会问 `Select application structure:`，此时选择 `1: Single application project`。
+
+    *   `Select build script DSL:`
+        选择 `1: Kotlin` (我们将使用Kotlin作为构建脚本语言，它更现代、类型更安全)。
+
+    *   `Generate build using new APIs and behavior?`
+        选择 `yes` (我们希望使用最新的Gradle功能)。
+
+    *   `Project name [VibeVault]:`
+        直接按回车，使用默认的项目名（与我们的目录名一致）。
+
+    *   `Source package [VibeVault]:`
+        输入 `com.vibevault` 然后回车。这是Java的包名约定，通常是反向的域名。
+
+    *   `Select test framework:`
+        **务必选择 `4: JUnit Jupiter`**。这是JUnit 5的代号，是当前Java社区的测试标准。请不要选择JUnit 4。
+    
+    完成后，Gradle会为你生成一套完整、现代化的项目结构。
+
+## 2. 在VS Code中打开你的“建筑工地”
+
+项目已初始化完毕。现在，让我们用智能工坊来审视它。在`VibeVault`目录下执行：
+
+```bash
+code .
+```
+VS Code会自动打开当前项目。右下角可能会弹窗询问“是否信任此文件夹的作者？”，请选择“是”。VS Code的Java扩展包会自动识别这是一个Gradle项目，并开始同步依赖项。
+
+## 3. 解剖项目蓝图
+
+花点时间在VS Code的“资源管理器”中展开所有文件夹，你会看到一个清晰、模块化的结构：
+
+```
+VibeVault/
+├── .gradle/                  <-- Gradle的缓存和元数据
+├── app/                      <-- 【核心】存放应用程序代码的模块
+│   ├── build.gradle.kts      <-- 【核心】app模块的“宪法”，定义构建逻辑和依赖
+│   └── src/                  <-- 所有源代码的家
+│       ├── main/             <-- 主要应用程序代码 (例如 App.java)
+│       └── test/             <-- 所有测试代码 (例如 AppTest.java)
+├── gradle/                   <-- Gradle Wrapper，确保构建环境的一致性
+│   ├── libs.versions.toml    <-- 【核心】版本目录，集中管理依赖项版本
+│   └── wrapper/
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew                   <-- *nix系统下的Gradle Wrapper可执行脚本
+├── gradlew.bat               <-- Windows系统下的Gradle Wrapper可执行脚本
+└── settings.gradle.kts       <-- 【核心】项目的全局设置，定义包含哪些模块
+```
+
+**从第一性原理理解这个结构：**
+
+*   **`settings.gradle.kts`**: 整个项目的“入口”和“地图”。它定义了项目的名称，并使用 `include("app")` 声明`app`目录是一个参与构建的模块。
+*   **`app` 目录**: 新版Gradle默认会为你的应用创建一个名为`app`的子模块。这是一种最佳实践，让项目从一开始就具备模块化的潜力。
+*   **`app/build.gradle.kts`**: `app`模块的“心脏”。它定义了`app`模块如何被构建，包括它依赖哪些第三方库、应用了哪些插件等。
+*   **`gradle/libs.versions.toml`**: 这是现代Gradle项目管理依赖的推荐方式——版本目录（Version Catalog）。我们不再将版本号硬编码在`build.gradle.kts`中，而是集中定义在这里。这让版本升级和管理变得异常清晰和简单。
+*   **`src/main` vs `src/test`**: 软件工程的基石，将生产代码与测试代码分离。
+*   **`gradlew` 和 `gradlew.bat`**: Gradle Wrapper（包装器）。**未来，我们永远、永远都使用`./gradlew` (macOS/Linux) 或 `gradlew.bat` (Windows) 来执行Gradle命令。** 它能保证任何人在任何机器上都能使用与项目完全匹配的Gradle版本进行构建，从根本上解决“在我机器上是好的”这一经典难题。
+
+## 4. 运行与测试：让项目“活”起来
+
+项目蓝图已经清晰，但它还只是静态的。现在，我们要让它动起来。在VS Code中，打开终端（`Terminal` -> `New Terminal` 或快捷键 ``Ctrl/Cmd+`J`）。
+
+### 运行你的应用
+
+执行以下命令：
+
+```bash
+./gradlew run
+```
+
+你会看到类似这样的输出：
+
+```
+> Task :app:run
+Hello World!
+
+BUILD SUCCESSFUL in 1s
+```
+
+`./gradlew run` 命令会执行`application`插件提供的`run`任务，该任务会找到`app/build.gradle.kts`中配置的主类（`mainClass`），并运行它的`main`方法。Gradle已经为我们生成了一个简单的`App.java`，它会打印出 "Hello World!"。
+
+### 运行单元测试
+
+执行以下命令来构建整个项目并运行所有测试：
+
+```bash
+./gradlew build
+```
+或者，如果你只想运行测试：
+```bash
+./gradlew test
+```
+
+如果一切顺利，你会看到 `BUILD SUCCESSFUL`。这意味着项目中的所有测试（目前只有一个由Gradle生成的`AppTest.java`）都已经通过。这保证了我们代码的基本质量。
+
+---
+
+## Vibe Check (思考与练习)
+
+1.  **核心练习：添加并使用新依赖**
+    现代软件开发就是站在巨人的肩膀上。让我们来引入一个非常流行的JSON处理库——Google Gson。
+    
+    *   **第一步：声明依赖版本**。打开 `gradle/libs.versions.toml` 文件。在 `[versions]` 部分，添加一行 `gson = "2.10.1"`。在 `[libraries]` 部分，添加 `google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }`。
+    *   **第二步：应用依赖**。打开 `app/build.gradle.kts` 文件。在 `dependencies` 代码块中，添加一行 `implementation(libs.google.gson)`。
+    *   **第三步：同步项目**。保存文件后，点击VS Code右下角弹出的“大象”图标或刷新按钮，让Gradle同步新的依赖。
+    *   **第四步：使用依赖**。修改 `app/src/main/java/com/vibevault/App.java` 文件，用Gson来转换一个对象为JSON字符串并打印出来。
+        ```java
+        package com.vibevault;
+
+        import com.google.gson.Gson;
+        import java.util.Map;
+
+        public class App {
+            public String getGreeting() {
+                return "Hello from VibeVault!";
+            }
+
+            public static void main(String[] args) {
+                // 使用Gson
+                Gson gson = new Gson();
+                Map<String, String> data = Map.of("message", new App().getGreeting());
+                String json = gson.toJson(data);
+                
+                System.out.println(json);
+            }
+        }
+        ```
+    *   **第五步：验证结果**。再次运行 `./gradlew run`，你看到的输出是不是变成了 `{"message":"Hello from VibeVault!"}`？恭喜，你已经掌握了现代Java项目管理依赖的核心技能！
+
+2.  **破坏性实验**
+    这个实验旨在证明哪些文件是“产物”，哪些是“源码”。
+    *   在VS Code的终端中，确保你在`VibeVault`项目根目录下。
+    *   执行构建命令: `./gradlew build`
+    *   构建成功后，**手动删除项目根目录下的`.gradle`和`app/build`这两个文件夹**。
+    *   再次运行构建命令: `./gradlew build`
+    *   观察发生了什么。`.gradle`和`app/build`文件夹是不是又被重新生成了？这个实验如何证明了这两个文件夹只是可再生的缓存和产物，不应该被提交到版本控制系统中？（这也是为什么标准的`.gitignore`文件会忽略它们）
+
+3.  **AI协同**
+    将你的`app/build.gradle.kts`和`gradle/libs.versions.toml`文件的全部内容复制给你的AI伙伴，然后向它提问：
+    > "你好，这是一个现代Gradle项目的构建脚本和版本目录。我是一个初学者，请你扮演一位资深的Java构建工程师，向我解释这两个文件是如何协同工作的？特别是`libs.versions.toml`中的`[versions]`, `[libraries]`, `[plugins]`各自的作用是什么，以及它们是如何在`build.gradle.kts`中被引用的？" 

@@ -1,0 +1,167 @@
+---
+title: "精确的断言：AssertJ的流畅表达"
+---
+
+> "清晰的意图会带来清晰的代码。" - Robert C. Martin
+
+## 本节危机：如何精确表达“期望”？
+
+在上一节，我们使用JUnit 5自带的 `assertEquals` 成功验证了`getSongCount()`的行为。这很棒，但它的表达能力有限。如果我们想验证更复杂的期望，比如“播放列表中是否包含某首特定的歌曲”，`assertEquals` 就显得有些笨拙。
+
+此外，当断言失败时，JUnit 5的错误信息虽然有效，但不够直观。
+
+**我们面临的危机是：我们需要一种更好的“语言”来编写我们的断言，一种能让我们的测试代码像在读一篇清晰的英文句子一样自然的语言。**
+
+## 本节顿悟：用AssertJ流畅地断言
+
+为了解决这个问题，Java社区创造了许多优秀的“断言库”，其中最受欢迎和功能最强大的就是 **AssertJ**。AssertJ的核心是一种被称为**流畅接口 (Fluent Interface)** 的设计模式，它让我们可以写出像下面这样的代码：
+
+`assertThat(actualValue).is...EqualTo(expectedValue);`
+
+这读起来几乎就像一句自然语言：“断言实际值...等于期望值。”
+
+### 1. 将AssertJ添加到我们的实验室
+
+首先，我们需要在`app/build.gradle.kts`的`dependencies`块中添加AssertJ的依赖。请注意，它和JUnit一样，是`testImplementation`依赖，因为它只在测试时需要。
+
+```kotlin
+// In: app/build.gradle.kts
+
+dependencies {
+    
+    // Add AssertJ for fluent, readable assertions
+    testImplementation("org.assertj:assertj-core:3.25.3")
+}
+
+// The testing block for JUnit 5 remains the same
+testing { 
+    // ... 
+}
+
+> **深度解读**：我们这里使用了`3.25.3`版本。在真实项目中，你可以通过访问[Maven中央仓库](https://search.maven.org/)搜索`org.assertj:assertj-core`来查找最新的稳定版本。保持依赖更新是良好的工程习惯。
+
+记得再次“加载Gradle变更”来下载这个新的库。
+
+### 2. 验证播放列表内容
+
+与上一节类似，为了测试播放列表的内容，我们首先需要一个“观察窗口”。
+
+**第一步：为`Playlist`添加`getSongs()`方法**
+请打开`src/main/java/com/vibevault/model/Playlist.java`，并添加这个新的方法。为了保护`Playlist`内部的`songs`列表不被外部意外修改（这被称为**封装性 Encapsulation**），我们返回它的一个**副本**。
+```java
+// In: src/main/java/com/vibevault/model/Playlist.java
+import java.util.ArrayList; // Make sure to import ArrayList
+import java.util.List;
+
+public class Playlist {
+    // ... (existing code)
+
+    public List<Song> getSongs() {
+        // Return a copy to prevent external modification of the internal list
+        return new ArrayList<>(this.songs);
+    }
+}
+```
+
+**第二步：用AssertJ编写更丰富的测试**
+现在，让我们回到`PlaylistTest.java`，利用AssertJ和`@BeforeEach`来编写更强大的测试。
+
+```java
+// In: src/test/java/com/vibevault/model/PlaylistTest.java
+package com.vibevault.model;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+// Statically import the assertThat method to use it directly.
+import static org.assertj.core.api.Assertions.assertThat;
+
+
+class PlaylistTest {
+
+    private Playlist playlist;
+
+    @BeforeEach
+    void setUp() {
+        // This method runs before each @Test method in this class.
+        // It ensures that every test starts with a fresh, empty playlist.
+        playlist = new Playlist("My Favorite Songs");
+    }
+
+    @Test
+    @DisplayName("should have song count of 1 after adding the first song")
+    void songCountShouldBeOneAfterAddingFirstSong() {
+        // Arrange
+        Song newSong = new Song("Stairway to Heaven", "Led Zeppelin", 482);
+        
+        // Act
+        playlist.addSong(newSong);
+
+        // Assert (using AssertJ for all assertions for consistency)
+        assertThat(playlist.getSongCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("should contain the added song")
+    void shouldContainAddedSong() {
+        // Arrange
+        Song newSong = new Song("Bohemian Rhapsody", "Queen", 355);
+
+        // Act
+        playlist.addSong(newSong);
+
+        // Assert (using AssertJ for more expressive, fluent assertions)
+        // "Assert that the playlist's songs list contains the new song."
+        assertThat(playlist.getSongs()).contains(newSong);
+    }
+}
+```
+
+### 代码解读：
+*   **`@BeforeEach`**: 这是JUnit 5的一个注解。被它标记的`setUp`方法会在这个测试类中的**每一个**`@Test`方法运行**之前**被执行一次。这保证了每个测试都是在独立、干净的环境下运行的，避免了测试之间的相互干扰。
+*   **`assertThat(...).isEqualTo(...)`**: 这是AssertJ的等价于`assertEquals`的断言，提供了统一的流畅风格。
+*   **`assertThat(...).contains(...)`**: 这是AssertJ为集合（List）提供的众多流畅断言之一，用于验证列表中是否包含某个元素。它的可读性远超`assertTrue(playlist.getSongs().contains(newSong))`。
+
+### 运行测试并见证成果
+
+现在，是时候运行我们的测试了。我们提供两种方式，一种为了快速反馈，另一种是专业开发者的标准实践。
+
+#### 方式一：通过IDE（快速反馈）
+
+在IntelliJ IDEA或VS Code中，最快的方式是直接在 `PlaylistTest.java` 文件里操作：
+*   点击类名 `PlaylistTest` 旁边的绿色“播放”按钮来运行该类的所有测试。
+*   点击单个 `@Test` 方法（如 `shouldContainAddedSong`）旁边的按钮来只运行那一个测试。
+
+IDE的测试运行器会立即启动，并在一个专门的窗口中以可视化的方式显示结果。你应该会看到两个测试都亮起绿灯，表示成功通过！
+
+#### 方式二：通过命令行（专业实践）
+
+虽然IDE很方便，但命令行是保证构建一致性和自动化的基石。所有专业的CI/CD（持续集成/持续部署）流程都依赖于命令行。
+
+1.  **打开终端**。
+2.  **导航到本章的代码目录**。对于第五章，路径是 `chapter-code/ch05/`。
+    ```bash
+    cd chapter-code/ch05
+    ```
+3.  **执行Gradle测试任务**：
+    ```bash
+    ./gradlew test
+    ```
+    *   **`./gradlew`**: 这是Gradle Wrapper的执行脚本。它能确保任何人在任何机器上都使用项目指定的、完全相同的Gradle版本，解决了“在我的机器上没问题”的古老难题。
+    *   **`test`**: 这是Gradle的一个核心任务，它会编译你的主代码和测试代码，然后运行所有找到的测试。
+
+如果所有测试都通过，你会在输出的最后看到 `BUILD SUCCESSFUL` 的字样。如果任何测试失败，构建会中止，并提供一份HTML报告的路径（通常在 `app/build/reports/tests/test/index.html`），里面有详尽的失败细节。
+
+用这两种方法之一运行测试，你已经用更清晰、更流畅的“断言语言”，为你的`Playlist`类的核心功能编写了更全面的“正确性证明”！
+
+---
+
+### Vibe Check (思考与练习)
+
+1.  **核心练习**: 添加AssertJ依赖，为`Playlist`添加`getSongs()`方法，并在`PlaylistTest.java`中添加`shouldContainAddedSong`测试，成功运行它。
+2.  **编码练习**: 为`Playlist`的`removeSong`方法（如果还没有，请先添加它）编写一个测试。先添加两首歌，然后删除第一首。你需要断言：
+    *   播放列表的歌曲数`getSongCount()`应该等于1。
+    *   使用AssertJ断言，播放列表`getSongs()`返回的列表中，**不包含**被删除的歌曲 (`doesNotContain`)。
+    *   使用AssertJ断言，播放列表`getSongs()`返回的列表中，**仍然包含**未被删除的歌曲 (`contains`)。
+3.  **AI协同**: 向你的AI助手提问：“除了`contains`和`doesNotContain`，请再给我列举5个AssertJ中用于测试List集合的常用断言方法，并用一句话解释它们的用途。” 

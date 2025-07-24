@@ -1,0 +1,96 @@
+---
+title: "关注点分离：三层架构"
+---
+
+> "分而治之，是应对复杂性的古老智慧。" - 改编自菲利普二世
+
+## 本节危机：知其要分，不知如何分
+
+在上一节，我们顿悟到需要通过“架构约束”来对抗熵增。我们通过案例分析，已经能模糊地感觉到现有的代码“职责不清”。`Playlist`类像一个“老好人”，什么活都干；`VibeVaultApp`类像一个“控制狂”，什么事都想管。
+
+但问题来了：**我们应该如何“拆分”它们？**
+*   拆分的“标准”是什么？
+*   拆分出的新模块，它们各自的“领地边界”又在哪里？
+*   它们之间又该如何“对话”？
+
+**我们面临的危机是：我们缺乏一个清晰、成熟、行之有效的“拆分模型”，来指导我们如何对现有的混乱代码进行“关注点分离”。**
+
+## 本节顿悟：经典三层架构——职责的黄金分割
+
+幸运的是，前人已经为我们总结出了一套最经典、最实用、也是所有更复杂架构基础的架构模式——**分层架构 (Layered Architecture)**。对于像VibeVault这样的应用，我们可以将其清晰地划分为三个层次：
+
+```{mermaid}
+graph TD;
+    subgraph 用户
+        A[用户输入/操作];
+    end
+
+    subgraph 应用系统
+        subgraph "表现层 (Presentation Layer)"
+            B(PlaylistController);
+        end
+
+        subgraph "业务逻辑层 (Business Logic Layer)"
+            C(PlaylistService);
+        end
+
+        subgraph "数据访问层 (Data Access Layer)"
+            D(PlaylistRepository);
+        end
+        
+        subgraph "数据存储"
+            E[文件/数据库];
+        end
+    end
+
+    A --> B;
+    B -->|调用接口| C;
+    C -->|调用接口| D;
+    D -->|读/写| E;
+
+    style B fill:#cde4ff,stroke:#6a8ebf,stroke-width:2px;
+    style C fill:#d5e8d4,stroke:#82b366,stroke-width:2px;
+    style D fill:#ffe6cc,stroke:#d79b00,stroke-width:2px;
+```
+
+1.  **表现层 (Presentation Layer)**
+    *   **别名**: UI层, Controller层。
+    *   **唯一职责**: **与用户交互**。它负责向用户显示信息（比如菜单），并接收用户的输入指令。它本身不包含任何业务逻辑。
+    *   **在我们项目中**: 主要是`VibeVaultApp`类中负责打印菜单、`while`循环和`Scanner`读取的部分。
+
+2.  **业务逻辑层 (Business Logic Layer)**
+    *   **别名**: Service层。
+    *   **唯一职责**: **执行核心业务规则**。它封装了应用的所有业务逻辑（比如“一个播放列表不能添加重复歌曲”、“计算播放列表总时长”等）。它不关心数据从哪里来（是文件还是数据库？），也不关心结果给谁看（是命令行还是网页？）。它是整个系统最核心、最稳定的部分。
+    *   **在我们项目中**: 主要是`Playlist`类中管理`songs`列表的行为，如`addSong`, `removeSong`。
+
+3.  **数据访问层 (Data Access Layer)**
+    *   **别名**: 持久化层, Repository层。
+    *   **唯一职责**: **数据的读取和存储**。它负责将业务对象（如`Playlist`）与具体的存储介质（如CSV文件、数据库）进行相互转换。它只关心“存”和“取”，不关心业务规则。
+    *   **在我们项目中**: 主要是`Playlist`类中的`saveToFile`和`loadFromFile`方法。
+
+### 层与层之间的“契约”：接口 (Interface)
+
+这三层不是孤立的，它们需要互相协作。但为了维持“低耦合”，它们之间不能随意地“串门”，而是要通过一个正式的“外交渠道”来沟通。这个外交渠道，就是**接口 (Interface)**。
+
+*   表现层**持有**业务逻辑层的一个**接口引用**。
+*   业务逻辑层**持有**数据访问层的一个**接口引用**。
+
+这种“依赖于抽象（接口），而非依赖于具体实现（类）”的原则，被称为**依赖倒置原则 (Dependency Inversion Principle)**，它是“面向对象设计”（SOLID）五大原则中的“D”。
+
+在实践中，这种“持有接口引用”的行为，通常不是由我们手动`new`一个实现类来完成的。而是由像Spring这样的“控制反转”（IoC）容器，通过一种名为**依赖注入 (Dependency Injection, DI)** 的技术，自动地将正确的实现类实例，“注入”到需要它的地方。我们后续章节会深入体验这一点。
+
+**顿悟在于：三层架构为我们提供了一个清晰的“代码地图”。通过将代码的职责精确地划分到表现层、业务逻辑层和数据访问层，并让它们通过接口进行通信，我们可以从根本上实现“高内-聚、低耦合”，为未来的功能扩展和技术更换（例如，从文件存储换到数据库存储）打下坚实的基础。**
+
+---
+
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 在一张纸、一个白板或一个文本编辑器中，画出三层架构的示意图（三个矩形堆叠）。然后，将我们现有`Playlist`类中的方法（如`addSong`, `removeSong`, `saveToStrings`, `loadFromStrings`, `saveToFile`, `loadFromFile`）和`VibeVaultApp`类中的逻辑（如打印菜单、`while`循环、读取用户输入、`switch`语句），像贴标签一样，分别归类到这三层中去。
+
+2.  **接口设计**: 让我们来为即将创建的`Service`和`Repository`层设计它们的“契约”。
+    *   **数据访问层接口**: 创建一个名为`PlaylistRepository`的`interface`。它应该包含哪些方法？（提示：可能需要一个`save(Playlist playlist)`方法和一个返回`Playlist`的`load()`方法）。
+    *   **业务逻辑层接口**: 创建一个名为`PlaylistService`的`interface`。它应该包含哪些方法？（提示：`Service`层是给UI层用的，所以它的方法应该对应着用户的“意图”，比如`addSongToPlaylist`, `listAllSongsInPlaylist`等）。
+
+3.  **深入思考**: 我们强调层与层之间要通过“接口”来通信，而不是直接通过“类”的实例。
+    *   这如何实现了“解耦”？如果业务层只知道`PlaylistRepository`这个接口，而不知道具体的`FilePlaylistRepository`这个实现类，那么当我们想把文件存储换成数据库存储（`DatabasePlaylistRepository`）时，业务层的代码需要修改吗？
+    *   这个特性对我们上一章学的“Mock测试”有什么巨大的好处？我们是不是可以更容易地在测试业务逻辑层时，给它一个“假的”Repository实现，而不需要使用`mockStatic`这种“黑魔法”了？（答案是：是的！这就是依赖注入和接口在可测试性方面的巨大威力。） 
