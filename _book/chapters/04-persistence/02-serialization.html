@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>21&nbsp; 序列化：将对象翻译成文字 – VibeVault: 一场现代Java全栈之旅</title>
+<title>序列化：将对象翻译成文字 – VibeVault: 一场现代Java全栈之旅</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,7 +118,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/01-genesis/index.html">第一部分：本地应用的崛起 - 对抗熵与脆弱</a></li><li class="breadcrumb-item"><a href="../../chapters/04-persistence/02-serialization.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">序列化：将对象翻译成文字</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/01-genesis/index.html">第一部分：本地应用的崛起 - 对抗熵与脆弱</a></li><li class="breadcrumb-item"><a href="../../chapters/04-persistence/02-serialization.html"><span class="chapter-title">序列化：将对象翻译成文字</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -145,8 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">VibeVault: 一场现代Java全栈之旅</span></span></a>
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">VibeVault: 一场现代Java全栈之旅</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -160,26 +159,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/00-welcome/01-the-vibe-shift.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Vibe的转变：什么是Vibe Coding？</span></span></a>
+  <a href="../../chapters/00-welcome/01-the-vibe-shift.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vibe的转变：什么是Vibe Coding？</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/00-welcome/02-the-70-percent-problem.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">70%难题：AI的机遇与陷阱</span></span></a>
+  <a href="../../chapters/00-welcome/02-the-70-percent-problem.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">70%难题：AI的机遇与陷阱</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/00-welcome/03-how-to-thrive.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">初学者如何在AI时代茁壮成长：黄金法则</span></span></a>
+  <a href="../../chapters/00-welcome/03-how-to-thrive.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">初学者如何在AI时代茁壮成长：黄金法则</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/00-welcome/04-the-ultimate-showdown.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">附录：终极对决——为什么是Java？</span></span></a>
+  <a href="../../chapters/00-welcome/04-the-ultimate-showdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">附录：终极对决——为什么是Java？</span></a>
   </div>
 </li>
       </ul>
@@ -195,164 +190,137 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/01-genesis/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">第一章：从“无”到“有”：创造你的第一个“数字原子”</span></span></a>
+  <a href="../../chapters/01-genesis/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第一章：从“无”到“有”：创造你的第一个“数字原子”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/01-genesis/01-why-tools.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">思想的铸币厂：为何需要语言、IDE与构建工具？</span></span></a>
+  <a href="../../chapters/01-genesis/01-why-tools.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">思想的铸币厂：为何需要语言、IDE与构建工具？</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/01-genesis/02-setup.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">搭建工坊：配置你的现代化开发环境</span></span></a>
+  <a href="../../chapters/01-genesis/02-setup.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">搭建工坊：配置你的现代化开发环境</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/01-genesis/03-project-init.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">绘制蓝图：初始化你的Gradle项目</span></span></a>
+  <a href="../../chapters/01-genesis/03-project-init.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">绘制蓝图：初始化你的Gradle项目</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/01-genesis/04-atomic-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">铸造第一个原子：定义Song Record</span></span></a>
+  <a href="../../chapters/01-genesis/04-atomic-design.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">铸造第一个原子：定义Song Record</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/02-aggregation/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">第二章：从“一”到“多”：构建第一个“分子结构”</span></span></a>
+  <a href="../../chapters/02-aggregation/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第二章：从“一”到“多”：构建第一个“分子结构”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/02-aggregation/01-why-encapsulation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">为何要封装？从数据集合到业务对象</span></span></a>
+  <a href="../../chapters/02-aggregation/01-why-encapsulation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何要封装？从数据集合到业务对象</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/02-aggregation/02-molecular-design.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">设计播放列表“分子”</span></span></a>
+  <a href="../../chapters/02-aggregation/02-molecular-design.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">设计播放列表“分子”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/02-aggregation/03-collection-choice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">选择容器：为何是ArrayList？</span></span></a>
+  <a href="../../chapters/02-aggregation/03-collection-choice.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">选择容器：为何是ArrayList？</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/03-interaction/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">第三章：从“静”到“动”：赋予创造物与世界对话的能力</span></span></a>
+  <a href="../../chapters/03-interaction/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第三章：从“静”到“动”：赋予创造物与世界对话的能力</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/03-interaction/01-why-interactive.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">为何需要交互？批处理 vs.&nbsp;事件循环</span></span></a>
+  <a href="../../chapters/03-interaction/01-why-interactive.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要交互？批处理 vs.&nbsp;事件循环</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/03-interaction/02-dialogue-channel.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">建立对话通道：主循环与用户输入</span></span></a>
+  <a href="../../chapters/03-interaction/02-dialogue-channel.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">建立对话通道：主循环与用户输入</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/03-interaction/03-command-protocol.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">定义沟通协议：Switch与方法调用</span></span></a>
+  <a href="../../chapters/03-interaction/03-command-protocol.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">定义沟通协议：Switch与方法调用</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/04-persistence/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">第四章：从“瞬间”到“永恒”：赋予创造物记忆</span></span></a>
+  <a href="../../chapters/04-persistence/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第四章：从“瞬间”到“永恒”：赋予创造物记忆</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/04-persistence/01-why-persistence.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">为何需要持久化？RAM vs.&nbsp;Disk</span></span></a>
+  <a href="../../chapters/04-persistence/01-why-persistence.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要持久化？RAM vs.&nbsp;Disk</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/04-persistence/02-serialization.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">序列化：将对象翻译成文字</span></span></a>
+  <a href="../../chapters/04-persistence/02-serialization.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">序列化：将对象翻译成文字</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/04-persistence/03-resilience.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">代码的韧性：文件IO与异常处理</span></span></a>
+  <a href="../../chapters/04-persistence/03-resilience.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">代码的韧性：文件IO与异常处理</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">第五章：从“能跑”到“可靠”：为代码建立信任</span></span></a>
+  <a href="../../chapters/05-trust/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第五章：从“能跑”到“可靠”：为代码建立信任</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/01-why-test.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">信任危机与安全网</span></span></a>
+  <a href="../../chapters/05-trust/01-why-test.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">信任危机与安全网</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/02-setup-lab.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">搭建测试实验室：JUnit 5初体验</span></span></a>
+  <a href="../../chapters/05-trust/02-setup-lab.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">搭建测试实验室：JUnit 5初体验</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/03-assertion-language.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">精确的断言：AssertJ的流畅表达</span></span></a>
+  <a href="../../chapters/05-trust/03-assertion-language.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">精确的断言：AssertJ的流畅表达</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/04-faking-reality.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">伪造现实：Mockito的when-thenReturn</span></span></a>
+  <a href="../../chapters/05-trust/04-faking-reality.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">伪造现实：Mockito的when-thenReturn</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/05-trust/05-verifying-actions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">28</span>&nbsp; <span class="chapter-title">验证行为：Mockito的verify</span></span></a>
+  <a href="../../chapters/05-trust/05-verifying-actions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">验证行为：Mockito的verify</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/06-order/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">29</span>&nbsp; <span class="chapter-title">第六章：对抗“混沌”：为代码建立秩序</span></span></a>
+  <a href="../../chapters/06-order/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第六章：对抗“混沌”：为代码建立秩序</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/06-order/01-why-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">30</span>&nbsp; <span class="chapter-title">为何需要架构？对抗软件的熵增</span></span></a>
+  <a href="../../chapters/06-order/01-why-architecture.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要架构？对抗软件的熵增</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/06-order/02-separation-of-concerns.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">31</span>&nbsp; <span class="chapter-title">关注点分离：三层架构</span></span></a>
+  <a href="../../chapters/06-order/02-separation-of-concerns.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">关注点分离：三层架构</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/06-order/03-refactoring.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">32</span>&nbsp; <span class="chapter-title">重构！建立新秩序</span></span></a>
+  <a href="../../chapters/06-order/03-refactoring.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">重构！建立新秩序</span></a>
   </div>
 </li>
       </ul>
@@ -368,26 +336,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/07-connection/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">33</span>&nbsp; <span class="chapter-title">第七章：对抗“孤立”：打开通往世界的大门</span></span></a>
+  <a href="../../chapters/07-connection/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第七章：对抗“孤立”：打开通往世界的大门</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/07-connection/01-why-api.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">34</span>&nbsp; <span class="chapter-title">为何需要API？应用程序的“外交协议”</span></span></a>
+  <a href="../../chapters/07-connection/01-why-api.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要API？应用程序的“外交协议”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/07-connection/02-why-spring-boot.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">35</span>&nbsp; <span class="chapter-title">为何选择Spring Boot？站在巨人的肩膀上</span></span></a>
+  <a href="../../chapters/07-connection/02-why-spring-boot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何选择Spring Boot？站在巨人的肩膀上</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/07-connection/03-first-api.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">36</span>&nbsp; <span class="chapter-title">构建你的第一个API</span></span></a>
+  <a href="../../chapters/07-connection/03-first-api.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">构建你的第一个API</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第八章：对抗“无序”：驯服并发访问的猛兽</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/01-why-database.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要数据库？ACID的四大守护</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/02-why-orm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要ORM？跨越对象与关系的鸿沟</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/03-database-migration.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">迁移到PostgreSQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第九章：对抗“隐形”：为你的API穿上华丽的外衣</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/01-why-frontend-backend-separation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何需要前后端分离？</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/02-why-react.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">为何选择React？声明式的UI革命</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/02a-js-primer-for-react.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">React前的必修课：现代JavaScript语法速成</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/02b-what-is-a-hook.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">React的核心魔法：到底什么是Hook？</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/03-first-component.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">实战：构建你的第一个React组件</span></a>
   </div>
 </li>
       </ul>
@@ -403,8 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../appendices/first-principles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">附录：第一性原理——驾驭AI的思考引擎</span></span></a>
+  <a href="../../appendices/first-principles.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">附录：第一性原理——驾驭AI的思考引擎</span></a>
   </div>
 </li>
       </ul>
@@ -419,22 +432,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#本节危机对象与文本之间的鸿沟" id="toc-本节危机对象与文本之间的鸿沟" class="nav-link active" data-scroll-target="#本节危机对象与文本之间的鸿沟"><span class="header-section-number">21.1</span> 本节危机：对象与文本之间的鸿沟</a></li>
-  <li><a href="#本节顿悟为每个对象赋予自我描述的能力" id="toc-本节顿悟为每个对象赋予自我描述的能力" class="nav-link" data-scroll-target="#本节顿悟为每个对象赋予自我描述的能力"><span class="header-section-number">21.2</span> 本节顿悟：为每个对象赋予“自我描述”的能力</a>
+  <li><a href="#本节危机对象与文本之间的鸿沟" id="toc-本节危机对象与文本之间的鸿沟" class="nav-link active" data-scroll-target="#本节危机对象与文本之间的鸿沟">本节危机：对象与文本之间的鸿沟</a></li>
+  <li><a href="#本节顿悟为每个对象赋予自我描述的能力" id="toc-本节顿悟为每个对象赋予自我描述的能力" class="nav-link" data-scroll-target="#本节顿悟为每个对象赋予自我描述的能力">本节顿悟：为每个对象赋予“自我描述”的能力</a>
   <ul class="collapse">
-  <li><a href="#song的序列化与反序列化" id="toc-song的序列化与反序列化" class="nav-link" data-scroll-target="#song的序列化与反序列化"><span class="header-section-number">21.2.1</span> 1. <code>Song</code>的序列化与反序列化</a></li>
-  <li><a href="#playlist的序列化与反序列化" id="toc-playlist的序列化与反序列化" class="nav-link" data-scroll-target="#playlist的序列化与反序列化"><span class="header-section-number">21.2.2</span> 2. <code>Playlist</code>的序列化与反序列化</a></li>
+  <li><a href="#song的序列化与反序列化" id="toc-song的序列化与反序列化" class="nav-link" data-scroll-target="#song的序列化与反序列化">1. <code>Song</code>的序列化与反序列化</a></li>
+  <li><a href="#playlist的序列化与反序列化" id="toc-playlist的序列化与反序列化" class="nav-link" data-scroll-target="#playlist的序列化与反序列化">2. <code>Playlist</code>的序列化与反序列化</a></li>
   </ul></li>
-  <li><a href="#vibe-check-思考与练习" id="toc-vibe-check-思考与练习" class="nav-link" data-scroll-target="#vibe-check-思考与练习"><span class="header-section-number">21.3</span> Vibe Check (思考与练习)</a></li>
+  <li><a href="#vibe-check-思考与练习" id="toc-vibe-check-思考与练习" class="nav-link" data-scroll-target="#vibe-check-思考与练习">Vibe Check (思考与练习)</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/01-genesis/index.html">第一部分：本地应用的崛起 - 对抗熵与脆弱</a></li><li class="breadcrumb-item"><a href="../../chapters/04-persistence/02-serialization.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">序列化：将对象翻译成文字</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/01-genesis/index.html">第一部分：本地应用的崛起 - 对抗熵与脆弱</a></li><li class="breadcrumb-item"><a href="../../chapters/04-persistence/02-serialization.html"><span class="chapter-title">序列化：将对象翻译成文字</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">序列化：将对象翻译成文字</span></h1>
+<h1 class="title"><span class="chapter-title">序列化：将对象翻译成文字</span></h1>
 </div>
 
 
@@ -454,8 +467,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“文字是思想的符号。” - 亚里士多德</p>
 </blockquote>
-<section id="本节危机对象与文本之间的鸿沟" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="本节危机对象与文本之间的鸿沟"><span class="header-section-number">21.1</span> 本节危机：对象与文本之间的鸿沟</h2>
+<section id="本节危机对象与文本之间的鸿沟" class="level2">
+<h2 class="anchored" data-anchor-id="本节危机对象与文本之间的鸿沟">本节危机：对象与文本之间的鸿沟</h2>
 <p>我们已经顿悟，需要将内存中的<code>Song</code>对象“翻译”成文本（字符串），才能将其写入磁盘。但是，这个“翻译”过程具体如何操作？</p>
 <p>一个<code>Song</code>对象在内存中是一个结构化的实体，有明确的字段（<code>title</code>, <code>artist</code>, <code>durationInSeconds</code>）。而一个CSV文件里的一行，只是一串无结构的普通文本。</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 内存中的对象 (结构化)</span></span>
@@ -466,14 +479,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>我们如何跨越对象与文本之间的鸿沟？如何定义一套精确的规则，来保证这个“翻译”和“逆翻译”的过程是无损的、可逆的？</p>
 <p><strong>我们面临的危机是：缺乏一套将结构化的Java对象与扁平化的CSV文本进行相互转换的具体算法。</strong></p>
 </section>
-<section id="本节顿悟为每个对象赋予自我描述的能力" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="本节顿悟为每个对象赋予自我描述的能力"><span class="header-section-number">21.2</span> 本节顿悟：为每个对象赋予“自我描述”的能力</h2>
+<section id="本节顿悟为每个对象赋予自我描述的能力" class="level2">
+<h2 class="anchored" data-anchor-id="本节顿悟为每个对象赋予自我描述的能力">本节顿悟：为每个对象赋予“自我描述”的能力</h2>
 <p>解决方案是，让我们自己的数据类型（<code>Song</code>和<code>Playlist</code>）学会如何“描述自己”和“解析描述”。我们将为它们编写专门的序列化和反序列化方法。</p>
 <p>在动手之前，让我们先做一次小小的重构，以体现“关注点分离”这一重要的软件设计原则。我们项目中的类，可以按其职责分为不同的类别： * <strong>Model</strong>: 负责承载数据和核心业务逻辑的类，如<code>Song</code>和<code>Playlist</code>。 * <strong>App</strong>: 负责程序入口和用户交互的类，如<code>VibeVaultApp</code>。</p>
 <p>因此，我们将在<code>src/main/java/com/vibevault/</code>下创建两个新的子包（也就是子目录）：<code>model</code>和<code>app</code>。 1. 将<code>Song.java</code>和<code>Playlist.java</code>文件<strong>移动</strong>到<code>model</code>目录中。 2. 将<code>VibeVaultApp.java</code>文件<strong>移动</strong>到<code>app</code>目录中。 3. 修改每个文件头部的<code>package</code>声明，以及<code>VibeVaultApp.java</code>中对<code>model</code>类的<code>import</code>语句。</p>
 <p>完成重构后，我们开始为模型添加序列化能力。</p>
-<section id="song的序列化与反序列化" class="level3" data-number="21.2.1">
-<h3 data-number="21.2.1" class="anchored" data-anchor-id="song的序列化与反序列化"><span class="header-section-number">21.2.1</span> 1. <code>Song</code>的序列化与反序列化</h3>
+<section id="song的序列化与反序列化" class="level3">
+<h3 class="anchored" data-anchor-id="song的序列化与反序列化">1. <code>Song</code>的序列化与反序列化</h3>
 <p>我们将在<code>Song.java</code>这个<code>record</code>中，实现两个核心方法： * <code>public String toCsvString()</code>: 将一个<code>Song</code>实例对象，转换成一个CSV格式的字符串。 * <code>public static Song fromCsvString(String csv)</code>: 这是一个静态方法，它接收一个CSV格式的字符串，并从中“重建”出一个新的<code>Song</code>实例。</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/model/Song.java</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">;</span></span>
@@ -506,8 +519,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><strong>深度解读</strong>：<code>fromCsvString</code>方法前的<code>static</code>关键字意味着它是一个<strong>静态方法</strong>。它不属于任何一个具体的<code>Song</code>对象实例，而是直接属于<code>Song</code>这个类本身。这种通过一个描述性名称的静态方法（而不是构造函数）来创建对象的方式，是一种非常有用的设计模式，称为<strong>静态工厂方法 (Static Factory Method)</strong>。</p>
 </section>
-<section id="playlist的序列化与反序列化" class="level3" data-number="21.2.2">
-<h3 data-number="21.2.2" class="anchored" data-anchor-id="playlist的序列化与反序列化"><span class="header-section-number">21.2.2</span> 2. <code>Playlist</code>的序列化与反序列化</h3>
+<section id="playlist的序列化与反序列化" class="level3">
+<h3 class="anchored" data-anchor-id="playlist的序列化与反序列化">2. <code>Playlist</code>的序列化与反序列化</h3>
 <p><code>Playlist</code>的职责是管理一个<code>Song</code>的集合。因此，它的序列化方法就是将内部的<code>songs</code>列表，逐个转换成CSV字符串行；反之，反序列化就是读取一个字符串行列表，逐个重建<code>Song</code>对象。</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/model/Playlist.java</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">;</span></span>
@@ -562,8 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="vibe-check-思考与练习" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="vibe-check-思考与练习"><span class="header-section-number">21.3</span> Vibe Check (思考与练习)</h2>
+<section id="vibe-check-思考与练习" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-check-思考与练习">Vibe Check (思考与练习)</h2>
 <ol type="1">
 <li><strong>核心练习</strong>:
 <ul>
@@ -991,12 +1004,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../../chapters/04-persistence/01-why-persistence.html" class="pagination-link" aria-label="为何需要持久化？RAM vs. Disk">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">为何需要持久化？RAM vs.&nbsp;Disk</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">为何需要持久化？RAM vs.&nbsp;Disk</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../../chapters/04-persistence/03-resilience.html" class="pagination-link" aria-label="代码的韧性：文件IO与异常处理">
-        <span class="nav-page-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">代码的韧性：文件IO与异常处理</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-title">代码的韧性：文件IO与异常处理</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
