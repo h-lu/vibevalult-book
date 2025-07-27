@@ -44,23 +44,28 @@ book:
         - chapters/06-order/02-separation-of-concerns.qmd
         - chapters/06-order/03-refactoring.qmd
 
-    - part: "第二部分：云端服务的黎明 - 对抗孤立与延迟"
+    - part: "第二部分：全栈应用的进化 - 对抗隐形与混乱"
       chapters:
         - chapters/07-connection/index.qmd
-        - chapters/07-connection/01-why-api.qmd
-        - chapters/07-connection/02-why-spring-boot.qmd
-        - chapters/07-connection/03-first-api.qmd
         - chapters/08-concurrency/index.qmd
-        - chapters/08-concurrency/01-why-database.qmd
-        - chapters/08-concurrency/02-why-orm.qmd
-        - chapters/08-concurrency/03-database-migration.qmd
         - chapters/09-visibility/index.qmd
         - chapters/09-visibility/01-why-frontend-backend-separation.qmd
         - chapters/09-visibility/02-why-react.qmd
         - chapters/09-visibility/02a-js-primer-for-react.qmd
         - chapters/09-visibility/02b-what-is-a-hook.qmd
         - chapters/09-visibility/03-first-component.qmd
-
+        - chapters/10-identity/index.qmd
+        - chapters/10-identity/01-why-security.qmd
+        - chapters/10-identity/02-why-jwt.qmd
+        - chapters/10-identity/03-first-defense.qmd
+        - chapters/10-identity/04-opening-gates.qmd
+        - chapters/10-identity/05-digital-passport.qmd
+        - chapters/10-identity/06-gatekeeper.qmd
+        - chapters/10-identity/07-cors.qmd
+        - chapters/10-identity/08-refactoring.qmd
+        - chapters/10-identity/09-authorization.qmd
+        - chapters/10-identity/10-summary.qmd
+  
   appendices:
     - appendices/first-principles.qmd
 

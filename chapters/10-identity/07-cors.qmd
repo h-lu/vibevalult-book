@@ -1,0 +1,127 @@
+---
+title: "10.7 外交豁免通道：处理CORS"
+---
+
+# 10.7 外交豁免通道：处理跨域CORS
+
+> "规则很重要，但知道何时打破规则，更重要。"
+
+到目前为止，我们已经构建了一个相当完善的后端安全系统。我们用Postman或集成测试调用API，一切都完美运行。但当你兴致勃勃地开始编写前端应用（例如使用React, Vue, Svelte），并尝试从浏览器中调用后端API时，一个巨大的“拦路虎”出现了。
+
+## 本节危机：神秘的CORS错误
+
+你的前端应用运行在 `http://localhost:5173`，而后端API运行在 `http://localhost:8080`。当你尝试从前端登录时，浏览器控制台很可能会喷出一堆红色的错误信息，内容通常包含：
+
+`Access to fetch at 'http://localhost:8080/api/auth/signin' from origin 'http://localhost:5173' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.`
+
+这是新手最常遇到的、也最令人困惑的问题之一。后端明明工作正常，为什么浏览器就是不让访问？我们被一个看不见的墙挡住了。
+
+## 本节顿悟：这不是Bug，这是浏览器的安全特性
+
+这个问题的根源，不是你的代码有Bug，而是浏览器一个核心的安全机制——**同源策略 (Same-Origin Policy)**。
+
+*   **同源策略**: 浏览器规定，一个源（Origin，由协议、域名、端口号三者共同定义）的网页脚本，默认情况下不能访问另一个源的资源。`http://localhost:5173` 和 `http://localhost:8080` 因为端口号不同，所以是**不同源**的。
+
+*   **为何需要这个策略？**: 想象一下，如果你在浏览器的一个标签页中登录了你的网上银行，然后在另一个标签页中不小心打开了一个恶意网站。如果没有同源策略，那个恶意网站的脚本就可以随意向你的网上银行API发送请求，窃取你的数据，后果不堪设想。
+
+*   **CORS是什么？**: **跨域资源共享 (Cross-Origin Resource Sharing, CORS)** 是一套W3C标准，它允许服务器“开一个口子”，明确告诉浏览器：“虽然这个请求来自不同的源，但我信任它，请允许它访问我的资源。”
+
+*   **预检请求 (Preflight Request)**: 对于可能对服务器数据产生副作用的HTTP请求方法（如 `POST`, `PUT`, `DELETE`），浏览器会更加谨慎。在发送真正的请求之前，它会先发送一个`OPTIONS`方法的“预**检请求**”去问服务器：“嘿，我待会儿想用`POST`方法从`http://localhost:5173`这个源发一个请求过来，你允许吗？” 如果服务器没有正确地响应这个`OPTIONS`请求，那么真正的`POST`请求就根本不会被发送出去。这正是我们看到错误的原因——Spring Security默认把这个`OPTIONS`预检请求给拒绝了。
+
+我们的顿悟在于：**我们必须在Spring Security中，为来自前端的请求，建立一个“外交豁免通道”，正确地配置CORS规则，并明确地放行预检请求。**
+
+### 编码实践：在`SecurityConfig`中集中配置CORS
+
+在Spring Security中配置CORS的最佳实践，是将其作为安全过滤器链的一部分进行集中管理。
+
+**第一步：创建`CorsConfigurationSource` Bean**
+我们在`SecurityConfig`中定义一个Bean，它将成为我们所有CORS规则的唯一来源。
+
+```java
+// In: src/main/java/com/vibevault/config/SecurityConfig.java
+// ... imports ...
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
+
+@Configuration
+// ... other annotations ...
+public class SecurityConfig {
+    // ...
+    
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        // 允许的前端源。在生产环境中，这里应该是你的前端应用的真实域名。
+        configuration.setAllowedOrigins(List.of("http://localhost:5173")); 
+        // 允许的HTTP方法
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        // 允许所有请求头
+        configuration.setAllowedHeaders(List.of("*"));
+        // 允许浏览器发送凭证（如Cookies）
+        configuration.setAllowCredentials(true); 
+        
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // 为所有/api/路径下的请求应用此配置
+        source.registerCorsConfiguration("/api/**", configuration); 
+        return source;
+    }
+
+    // ... other beans ...
+}
+```
+
+**第二步：在`securityFilterChain`中启用CORS并放行预检请求**
+现在，我们更新`securityFilterChain`，告诉它使用我们刚刚定义的CORS配置，并明确允许所有`OPTIONS`方法的预检请求。
+
+```java
+// In: src/main/java/com/vibevault/config/SecurityConfig.java
+// ... imports ...
+import org.springframework.http.HttpMethod;
+
+@Configuration
+// ... other annotations ...
+public class SecurityConfig {
+    // ...
+    
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 1. 明确指定CORS配置源
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .authorizeHttpRequests(authorize -> authorize
+                // 2. 明确允许所有OPTIONS预检请求
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+            .authenticationProvider(authenticationProvider)
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+
+    // ... corsConfigurationSource() bean and other beans ...
+}
+```
+**配置关键点**:
+1.  **`.cors(cors -> cors.configurationSource(corsConfigurationSource()))`**: 明确告诉Spring Security使用我们定义的Bean作为CORS规则的来源。
+2.  **`.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()`**: 这是解决预检请求被拦截的关键。我们显式地允许所有路径的`OPTIONS`请求通过，不进行认证。
+
+> **最后一步清理**：如果你之前在其他地方（如主应用类中的`WebMvcConfigurer`）定义过CORS配置，请务必将其**删除**，以避免任何配置冲突。现在，`SecurityConfig`是我们管理CORS的唯一地方。
+
+现在，重启应用。你的后端API已经准备好迎接来自前端应用的跨域请求了。
+
+---
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节步骤，在`SecurityConfig`中添加`CorsConfigurationSource` Bean，并更新`securityFilterChain`以启用CORS和放行`OPTIONS`请求。
+2.  **AI协同**: 询问你的AI伙伴：“请用一个生动的比喻，解释一下浏览器的同源策略(Same-Origin Policy)，以及CORS是如何作为一种‘例外许可’来工作的？”
+3.  **实验与思考**:
+    *   暂时将`SecurityConfig`中关于CORS和`OPTIONS`请求的配置**注释掉**。如果你有一个前端项目，尝试从前端调用登录API，并在浏览器开发者工具的“网络(Network)”面板中观察失败的`OPTIONS`预检请求。
+    *   恢复配置，再次尝试。观察请求是如何成功的。
+    *   思考：在`corsConfigurationSource`中，`setAllowedOrigins`如果设置为`"*"`（允许任何源）会有什么安全风险？为什么在生产环境中，我们应该指定具体的前端域名？

@@ -1,0 +1,189 @@
+---
+title: "10.8 所有权的“地基危机”：一次必要的模型重构"
+---
+
+# 10.8 所有权的“地基危机”：一次必要的模型重构
+
+> "地基不牢，地动山摇。"
+
+我们已经克服了认证、JWT、CORS等重重难关，即将到达本次旅程的终点——实现授权，确保用户只能操作自己的资源。
+
+要做到这一点，逻辑上的第一步，就是在`Playlist`实体和`User`实体之间，建立一个明确的“所有权”关联。听起来很简单，我们只需要在`Playlist.java`中加上一行 `@ManyToOne private User user;` 就行了，对吗？
+
+不。在我们迈出这一步之前，一个更深层次的、隐藏在代码深处的“地基危机”暴露了出来。
+
+## 本节危机：摇摇欲坠的业务主键
+
+让我们审视一下`Playlist`实体的现状：
+```java
+// 旧的 Playlist.java 结构
+@Id
+private String name; // <-- 问题所在！
+```
+它的主键 (`@Id`) 是播放列表的名字 (`name`)。这是一个**业务主键**——即，主键本身是具有业务含义的数据。
+
+这在系统初期似乎很方便，但现在，它成了我们实现授权的**致命障碍**。
+
+**为什么？**
+主键是数据库中一条记录的**唯一、永恒的身份标识**。它就像一个人的身份证号，一旦设定，就不应该改变。如果一个用户想给他的播放列表改个名字（这是一个非常合理的需求），会发生什么？
+
+**主键会变！**
+
+这是一个设计上的灾难。所有与这个播放列表关联的`Song`记录，都是通过`playlist_name`这个外键关联的。一旦主键`name`改变，这些歌曲就会瞬间失去与播放列表的联系，变成数据库中的“孤儿数据”。
+
+我们绝不能在这样一个摇摇欲坠、随时可能崩塌的地基上，去构建我们宝贵的“所有权”大厦。
+
+## 本节顿悟：将“身份”与“属性”分离
+
+**第一性原理顿悟：我们必须将一条记录的“身份 (Identity)”与它的“属性 (Attributes)”彻底分离开。**
+
+*   **身份 (Identity)**: 应该是稳定、永恒、与业务逻辑完全无关的。它只负责唯一地标识一条记录。
+*   **属性 (Attributes)**: 是描述这条记录业务特征的数据，比如名字、描述等。它们是可变的。
+
+解决方案就是引入一个**技术主键**——一个没有任何业务含义、其唯一目的就是充当身份标识的字段。在JPA中，最常见的就是一个自增的`Long`类型ID。
+
+因此，在本节能安全地建立`User`和`Playlist`的关联之前，我们必须先完成一次至关重要的技术升级：**为`Playlist`引入技术主键，完成数据库模型的重构。**
+
+### 编码实践：地基加固工程
+
+本节的编码任务**只专注于重构**，不涉及任何新的授权逻辑。我们的目标是，在本节结束时，应用的功能和之前完全一样，但内部的数据模型已经变得无比健壮。
+
+**第一步：修改 `Playlist.java`**
+我们将`name`字段变成一个普通字段，并引入一个自增的`Long id`作为主键。
+
+```java
+// In: src/main/java/com/vibevault/model/Playlist.java
+package com.vibevault.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor; // 添加无参构造函数
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "playlists")
+@NoArgsConstructor // JPA实体需要一个无参构造函数
+public class Playlist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // <-- 改为主键自增
+    private Long id;
+
+    @Column(nullable = false) // <-- name变为普通字段
+    private String name;
+
+    @OneToMany(
+        mappedBy = "playlist",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Song> songs = new ArrayList<>();
+
+    // 为方便使用，保留一个带name的构造函数
+    public Playlist(String name) {
+        this.name = name;
+    }
+
+    public void addSong(Song song) {
+        songs.add(song);
+        song.setPlaylist(this);
+    }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
+        song.setPlaylist(null);
+    }
+}
+```
+
+**第二步：修改 `Song.java`**
+`Song`实体现在需要通过`playlist_id`这个外键列来关联`Playlist`的新主键。
+
+```java
+// In: src/main/java/com/vibevault/model/Song.java
+// ...
+@ManyToOne(fetch = FetchType.LAZY)
+@JoinColumn(name = "playlist_id") // <-- 外键列改为 playlist_id
+private Playlist playlist;
+// ...
+```
+
+**第三步：更新数据访问层 `PlaylistRepository.java`**
+由于主键类型已变为`Long`，我们需要更新Repository的泛型定义。
+
+```java
+// In: src/main/java/com/vibevault/repository/PlaylistRepository.java
+package com.vibevault.repository;
+
+import com.vibevault.model.Playlist;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PlaylistRepository extends JpaRepository<Playlist, Long> { // <-- String 改为 Long
+    // JpaRepository现在会自动处理基于Long类型ID的CRUD操作
+}
+```
+
+**第四步：更新服务层与控制层**
+这是最关键的一步，我们需要将代码中所有使用`String name`作为ID的地方，都改为`Long id`。
+
+1.  **修改 `PlaylistService` 接口和实现**:
+    ```java
+    // In: PlaylistService.java (接口)
+    PlaylistDTO getPlaylistById(Long id); // String -> Long
+    void addSongToPlaylist(Long playlistId, SongDTO songDTO); // String -> Long
+    // ...
+
+    // In: PlaylistServiceImpl.java (实现)
+    @Override
+    public PlaylistDTO getPlaylistById(Long id) { // String -> Long
+        Playlist playlist = playlistRepository.findById(id) // findById现在接收Long
+            .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + id));
+        // ... DTO转换逻辑不变 ...
+    }
+
+    @Override
+    @Transactional
+    public void addSongToPlaylist(Long playlistId, SongDTO songDTO) { // String -> Long
+        Playlist playlist = playlistRepository.findById(playlistId) // findById现在接收Long
+            .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + playlistId));
+        // ... 业务逻辑不变 ...
+    }
+    ```
+
+2.  **修改 `PlaylistController.java`**:
+    ```java
+    // In: PlaylistController.java
+    @RestController
+    @RequestMapping("/api/playlists")
+    public class PlaylistController {
+        // ...
+
+        @GetMapping("/{id}")
+        public PlaylistDTO getPlaylist(@PathVariable Long id) { // String -> Long
+            return playlistService.getPlaylistById(id);
+        }
+
+        @PostMapping("/{id}/songs")
+        @ResponseStatus(HttpStatus.CREATED)
+        public void addSongToPlaylist(@PathVariable Long id, @RequestBody SongDTO songDTO) { // String -> Long
+            playlistService.addSongToPlaylist(id, songDTO);
+        }
+        // ... 其他端点也需要类似修改 ...
+    }
+    ```
+
+> **注意**: 这次重构是侵入性的，你需要仔细检查所有与`Playlist` ID相关的代码，确保类型都已从`String`改为`Long`。
+
+地基加固完成！我们的数据模型现在已经准备好，可以安全地承载所有权关联了。
+
+---
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节步骤，完成对数据模型、Repository、Service和Controller的重构。
+2.  **回归测试 (Regression Testing)**: **这是本节最重要的练习。** 重新运行你之前编写的所有集成测试（如`AuthenticationControllerTest`以及其他你可能已经编写的测试）。它们应该**全部通过**。这证明了你的重构是成功的——在改善内部设计的同时，没有破坏任何对外的功能。这就是回归测试的威力。
+3.  **AI协同**: 询问你的AI伙伴：“请解释一下在数据库设计中，‘业务主键’和‘技术主键’的定义、优缺点以及各自的适用场景。”
+4.  **深入思考**: 我们这次重构修改了数据库的表结构。在真实的项目中，如果数据库里已经存在大量旧数据（以`String`为ID），你会如何设计一个安全的数据迁移方案，将旧数据平滑地迁移到新的表结构中？（提示：这通常涉及到编写一次性的迁移脚本）

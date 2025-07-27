@@ -20,6 +20,14 @@ dependencies {
     runtimeOnly(libs.postgresql)
     
     testImplementation(libs.spring.boot.starter.test)
+
+    implementation(libs.spring.boot.starter.security)
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
+
+    implementation(libs.jjwt.api)
+    runtimeOnly(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
 }
 
 application {

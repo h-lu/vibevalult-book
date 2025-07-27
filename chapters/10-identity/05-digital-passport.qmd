@@ -1,0 +1,229 @@
+---
+title: "10.5 数字护照办公室：签发JWT"
+---
+
+# 10.5 数字护照办公室：签发JWT
+
+> "记忆不是记录，而是对过去的重建。"
+
+在上一节，我们成功地为VibeVault建造了宏伟的“大门”，并通过了集成测试的验证。用户可以通过`/signin`接口证明自己的身份。但一旦他们转身，服务器就立刻患上了“健忘症”。HTTP协议的无状态性，使得每一次API请求都像是一次全新的、陌生的拜访。
+
+我们需要一种方法，让用户在通过大门后，能获得一张“通行证”或“数字护照”。
+
+## 本节危机：如何制造一张安全、可信的“数字护照”？
+
+这张“护照”必须满足几个苛刻的条件：
+1.  **自包含 (Self-contained)**: 护照本身必须包含足够的信息来证明持有者的身份（例如用户ID或用户名），这样服务器哨兵就无需再去查询数据库。
+2.  **防伪造 (Tamper-proof)**: 必须有一种机制，能让哨兵一眼就识别出护照是否被伪造或篡改过。
+3.  **无状态 (Stateless)**: 哨兵验证护照的有效性，不应该依赖于任何存储在服务器端的“存根”或“记录”。
+
+传统的Session ID方案，不满足第一点和第三点。
+
+## 本节顿悟：JWT——自带防伪芯片的数字护照
+
+**JSON Web Token (JWT)**，就是为解决上述危机而生的完美方案。它是一个由`Header.Payload.Signature`三部分组成的、自带防伪信息的身份凭证。
+
+在本节，我们的任务就是建立一个“数字护照办公室” (`JwtService`)，专门负责在用户认证成功后，为他们签发这张护照。
+
+### 第一步：引入JWT库
+
+我们需要一个专门的库来处理JWT的创建和解析。`jjwt`是Java生态中最流行的选择。
+
+1.  **在 `gradle/libs.versions.toml` 中定义版本和库**:
+    ```toml
+    [versions]
+    # ...
+    jjwt = "0.11.5"
+
+    [libraries]
+    # ...
+    jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+    jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+    jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+    ```
+
+2.  **在 `app/build.gradle.kts` 中使用依赖**:
+    ```kotlin
+    dependencies {
+        // ...
+        implementation(libs.jjwt.api)
+        runtimeOnly(libs.jjwt.impl)
+        runtimeOnly(libs.jjwt.jackson)
+    }
+    ```
+
+### 第二步：配置JWT密钥和过期时间
+
+JWT的安全性依赖于一个只有服务器知道的**秘密密钥 (Secret Key)**。我们将通过Spring Boot的类型安全配置来管理它。
+
+1.  **创建配置属性类 `JwtProperties.java`**:
+    ```java
+    package com.vibevault.config;
+
+    import org.springframework.boot.context.properties.ConfigurationProperties;
+
+    @ConfigurationProperties("jwt")
+    public record JwtProperties(String secretKey, long expiration) {}
+    ```
+
+2.  **在 `SecurityConfig.java` 中启用配置**:
+    ```java
+    import org.springframework.boot.context.properties.EnableConfigurationProperties;
+    
+    @Configuration
+    @EnableWebSecurity
+    @EnableConfigurationProperties(JwtProperties.class) // <-- 启用类型安全配置
+    @RequiredArgsConstructor
+    public class SecurityConfig {
+        // ...
+    }
+    ```
+
+3.  **在 `application.properties` 中设置值**:
+    > ⚠️ **重要安全警告：** 下方的 `jwt.secret-key` 值是一个**必须被替换**的占位符。你需要生成一个真实的、符合HS256算法要求的Base64编码密钥（至少256位，即32字节）。在终端中运行以下命令即可生成：
+    > ```bash
+    > openssl rand -base64 32
+    > ```
+    > 将命令生成的**输出结果**替换掉下面的占位符。在真实项目中，此密钥绝不能硬编码，应通过环境变量注入。
+
+    ```properties
+    # In: application.properties
+    jwt.secret-key=your-super-secret-and-long-enough-key-for-hs256-in-base64-goes-here
+    # Token过期时间（毫秒）。86400000ms = 24小时。
+    jwt.expiration=86400000
+    ```
+
+### 第三步：创建JWT签发服务 (`JwtService`)
+
+现在，我们来创建“数字护照办公室”。注意，在本节中，`JwtService`只关心如何**生成**Token。
+
+```java
+// In: src/main/java/com/vibevault/service/JwtService.java
+package com.vibevault.service;
+
+import com.vibevault.config.JwtProperties;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class JwtService {
+
+    private final JwtProperties jwtProperties;
+
+    public String generateToken(UserDetails userDetails) {
+        return generateToken(new HashMap<>(), userDetails);
+    }
+
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.expiration()))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey());
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+}
+```
+
+### 第四步：升级认证服务，签发真实护照
+
+现在，我们的`AuthenticationService`在用户登录或注册成功后，不再是返回一个假的字符串，而是调用`JwtService`来签发一张真正的“数字护照”。
+
+```java
+// In: src/main/java/com/vibevault/service/AuthenticationService.java
+package com.vibevault.service;
+
+import com.vibevault.dto.JwtAuthenticationResponse;
+import com.vibevault.dto.SignUpRequest;
+import com.vibevault.model.User;
+import com.vibevault.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService; // 注入JwtService
+
+    /**
+     * 注册新用户，并直接返回JWT，实现注册后自动登录
+     */
+    public JwtAuthenticationResponse signup(SignUpRequest request) {
+        User user = new User();
+        user.setUsername(request.username());
+        user.setPassword(passwordEncoder.encode(request.password()));
+        userRepository.save(user);
+        
+        String jwt = jwtService.generateToken(user);
+        return new JwtAuthenticationResponse(jwt);
+    }
+
+    /**
+     * 用户登录认证，成功后返回JWT
+     */
+    public JwtAuthenticationResponse signin(SignUpRequest request) {
+        // 触发Spring Security的标准认证流程
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.username(), request.password())
+        );
+        
+        // 认证成功后，直接从Authentication对象中获取UserDetails，无需再次查询数据库
+        User user = (User) authentication.getPrincipal();
+        String jwt = jwtService.generateToken(user);
+        return new JwtAuthenticationResponse(jwt);
+    }
+}
+```
+**最佳实践更新**:
+*   **注入`JwtService`**: 我们将`JwtService`注入到`AuthenticationService`中。
+*   **优化`signin`**: `authenticationManager.authenticate()`成功后会返回一个包含`UserDetails`的`Authentication`对象。我们直接从这个对象中获取用户信息来生成JWT，避免了额外的一次数据库查询，代码更简洁高效。
+*   **优化`signup`**: `signup`方法现在也返回`JwtAuthenticationResponse`。这意味着用户注册成功后，会立即获得一个JWT，直接处于登录状态，这提供了更好的用户体验。
+
+### 第五步：同步更新控制器
+
+由于`AuthenticationService`的`signup`方法签名已更改，我们必须立即更新`AuthenticationController`来匹配它。
+
+```java
+// In: src/main/java/com/vibevault/controller/AuthenticationController.java
+// ...
+    @PostMapping("/signup")
+    public ResponseEntity<JwtAuthenticationResponse> signup(@RequestBody SignUpRequest request) {
+        return ResponseEntity.ok(authenticationService.signup(request));
+    }
+// ...
+```
+
+现在，我们的认证API已经能够签发真实的JWT了！在下一节，我们将设立“哨兵”来验证这些JWT。
+
+---
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节步骤，实现`JwtService`并更新`AuthenticationService`。
+2.  **编码与验证**: 重新运行你在上一节编写的集成测试。你可能需要更新`whenSignInWithValidUser_thenReturns200AndToken`测试，以验证返回的`token`字段不仅存在，而且是一个不为空的字符串。
+3.  **AI协同**: 访问`jwt.io`网站。使用Postman或你的集成测试，获取一个真实的JWT字符串，然后将其粘贴到`jwt.io`的输入框中。观察它是如何被解码成Header和Payload的。这如何证明了“不要在JWT的Payload中存放敏感信息”这一原则？
+4.  **深入思考**: 在`JwtService`的`generateToken`方法中，我们设置了`subject`, `issuedAt`, `expiration`等标准声明（Standard Claims）。JWT还支持自定义声明（Private Claims）。我们可以在这里添加哪些对我们应用有用的自定义信息？（例如：用户角色、用户ID等）这样做有什么好处和潜在风险？

@@ -1,0 +1,357 @@
+---
+title: "10.6 谁动了我的播放列表？"
+---
+
+# 10.6 谁动了我的播放列表？(授权)
+
+> "你的，才是你的。不是你的，你不能碰。"
+
+我们已经到达了安全之旅的最后一站，也是最关键的一站。到目前为止，我们已经成功地回答了“你是谁？”这个问题。用户可以注册、登录，并凭借JWT证明自己的身份。
+
+但是，一个新的、更危险的危机浮现了：**任何一个登录的用户，可以查看、修改、甚至删除任何一个播放列表，无论这个播放列表是不是他创建的。**
+
+我们的系统现在就像一个高档俱乐部，进入需要会员卡（认证），但一旦进入，你可以随意闯入任何人的私人包厢，拿走他们的东西。我们解决了“准入”问题，但没有解决“权限”问题。
+
+这就是**授权 (Authorization)** 要解决的核心危机：**在确认了你的身份之后，如何确保你只能在你被允许的范围内行事？**
+
+## 本节顿悟：一场必要的重构，将“所有权”刻入代码DNA
+
+要实现“用户只能操作自己的播放列表”这个规则，我们必须首先在系统的“法律”（数据模型）层面，建立起清晰的**所有权 (Ownership)** 关系。
+
+然而，回顾第九章的代码，我们面临一个根本性的障碍：`Playlist` 实体的主键是它的名字 (`String name`)。这是一个**业务主键**。如果用户想给播放列表改名怎么办？主键一旦改变，所有与之关联的 `Song` 记录都会失效。这在数据库设计中是极其脆弱的。
+
+因此，在建立所有权之前，我们必须进行一次重要的重构：**为`Playlist`引入一个与业务无关的技术主键（`Long id`）**。
+
+### 第零步：开启方法级安全
+
+在进行任何代码修改之前，我们先为Spring Security开启方法级安全的支持。这是使用`@PreAuthorize`注解的前提。
+
+```java
+// In: src/main/java/com/vibevault/config/SecurityConfig.java
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+
+@Configuration
+@EnableWebSecurity
+@EnableMethodSecurity // <-- 开启方法级安全
+@EnableConfigurationProperties(JwtProperties.class)
+@RequiredArgsConstructor
+public class SecurityConfig {
+    // ...
+}
+```
+
+### 第一步：重构数据模型
+
+**1. 修改 `Playlist.java`**
+我们将`name`字段变成一个普通字段，并引入一个自增的`Long id`作为主键。
+
+```java
+// In: src/main/java/com/vibevault/model/Playlist.java
+package com.vibevault.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "playlists")
+public class Playlist {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // <-- 改为主键自增
+    private Long id;
+
+    @Column(nullable = false) // <-- name变为普通字段
+    private String name;
+
+    @OneToMany(
+        mappedBy = "playlist",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private List<Song> songs = new ArrayList<>();
+
+    // 为方便使用，保留一个带name的构造函数
+    public Playlist(String name) {
+        this.name = name;
+    }
+
+    protected Playlist() {}
+
+    public void addSong(Song song) {
+        songs.add(song);
+        song.setPlaylist(this);
+    }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
+        song.setPlaylist(null);
+    }
+}
+```
+
+**2. 修改 `Song.java`**
+`Song`实体现在需要通过`playlist_id`这个外键列来关联`Playlist`的新主键。
+
+```java
+// In: src/main/java/com/vibevault/model/Song.java
+package com.vibevault.model;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@Entity
+@Table(name = "songs")
+public class Song {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+    private String artist;
+    private int durationInSeconds;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "playlist_id") // <-- 外键列改为 playlist_id
+    private Playlist playlist;
+    
+    public Song(String title, String artist, int durationInSeconds) {
+        this.title = title;
+        this.artist = artist;
+        this.durationInSeconds = durationInSeconds;
+    }
+}
+```
+
+### 第二步：更新数据访问层
+
+**修改 `PlaylistRepository.java`**
+由于主键类型已变为`Long`，我们需要更新Repository的泛型定义。
+
+```java
+// In: src/main/java/com/vibevault/repository/PlaylistRepository.java
+package com.vibevault.repository;
+
+import com.vibevault.model.Playlist;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PlaylistRepository extends JpaRepository<Playlist, Long> { // <-- String 改为 Long
+    // JpaRepository现在会自动处理基于Long类型ID的CRUD操作
+}
+```
+
+### 第三步：建立`User`与`Playlist`的所有权关联
+
+现在，我们可以在重构后的模型上，安全地建立所有权关系。
+
+**1. 更新 `User.java`**
+一个用户可以拥有多个播放列表（一对多）。
+
+```java
+// In: src/main/java/com/vibevault/model/User.java
+// ... imports ...
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "users")
+public class User implements UserDetails {
+    // ... id, username, password 字段 ...
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Playlist> playlists = new ArrayList<>();
+
+    // ... UserDetails methods ...
+}
+```
+
+**2. 更新 `Playlist.java`**
+每个播放列表必须属于一个用户（多对一）。
+
+```java
+// In: src/main/java/com/vibevault/model/Playlist.java
+// ... imports ...
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Data
+@Entity
+@Table(name = "playlists")
+public class Playlist {
+    // ... id, name, songs 字段 ...
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore // 关键！防止序列化死循环
+    private User user;
+    
+    // ... 其他代码 ...
+}
+```
+*   `@JsonIgnore`: **至关重要！** 防止在将`Playlist`序列化为JSON时，因`User`中又包含`Playlist`列表而导致的无限循环。
+
+### 第四步：更新服务层与控制层
+
+由于主键类型和业务逻辑都已改变，我们需要同步更新`Service`和`Controller`。
+
+**1. 修改 `PlaylistService` 接口和实现**
+所有方法的ID参数都从`String`改为`Long`，并增加创建播放列表时关联用户的逻辑。
+
+```java
+// In: PlaylistService.java (接口)
+public interface PlaylistService {
+    PlaylistDTO getPlaylistById(Long id); // String -> Long
+    void addSongToPlaylist(Long playlistId, SongDTO songDTO); // String -> Long
+    List<PlaylistDTO> getAllPlaylists();
+    Playlist createPlaylist(PlaylistDTO playlistDTO, UserDetails userDetails); // 新增方法
+}
+
+// In: PlaylistServiceImpl.java (实现)
+@Service
+public class PlaylistServiceImpl implements PlaylistService {
+    private final PlaylistRepository playlistRepository;
+    private final UserRepository userRepository; // 注入UserRepository
+
+    // ... 构造函数 ...
+
+    @Override
+    public Playlist createPlaylist(PlaylistDTO playlistDTO, UserDetails userDetails) {
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Playlist playlist = new Playlist(playlistDTO.name());
+        playlist.setUser(user); // 建立所有权关联
+        return playlistRepository.save(playlist);
+    }
+    
+    @Override
+    public PlaylistDTO getPlaylistById(Long id) { // String -> Long
+        Playlist playlist = playlistRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + id));
+        // ... DTO转换逻辑不变 ...
+    }
+
+    @Override
+    @Transactional
+    public void addSongToPlaylist(Long playlistId, SongDTO songDTO) { // String -> Long
+        Playlist playlist = playlistRepository.findById(playlistId)
+            .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + playlistId));
+        // ... 业务逻辑不变 ...
+    }
+    // ... getAllPlaylists 不变 ...
+}
+```
+
+**2. 修改 `PlaylistController.java`**
+更新所有端点的路径变量类型，并实现新的创建接口。
+
+```java
+// In: PlaylistController.java
+// ... imports ...
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@RestController
+@RequestMapping("/api/playlists")
+public class PlaylistController {
+    // ... 构造函数注入 ...
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public PlaylistDTO createPlaylist(@RequestBody PlaylistDTO playlistDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        Playlist createdPlaylist = playlistService.createPlaylist(playlistDTO, userDetails);
+        // 将新创建的实体转回DTO再返回
+        return new PlaylistDTO(createdPlaylist.getName(), List.of());
+    }
+
+    @GetMapping("/{id}")
+    public PlaylistDTO getPlaylist(@PathVariable Long id) { // String -> Long
+        return playlistService.getPlaylistById(id);
+    }
+
+    @PostMapping("/{id}/songs")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addSongToPlaylist(@PathVariable Long id, @RequestBody SongDTO songDTO) { // String -> Long
+        playlistService.addSongToPlaylist(id, songDTO);
+    }
+    // ... getAllPlaylists 不变 ...
+}
+```
+*   `@AuthenticationPrincipal`: 这是一个极其强大的Spring Security注解。它能直接将当前认证成功的用户对象注入到控制器方法中，让我们能方便地获取到“当前是谁在操作”。
+
+### 第五步：使用`@PreAuthorize`实施访问控制
+
+经过一系列重构，我们终于铺平了道路。现在是时候亮出Spring Security最锋利的武器了——**方法级安全**。
+
+**1. 创建授权检查逻辑**
+为了让授权逻辑可复用且清晰，我们在`PlaylistService`中创建一个专门用于检查所有权的方法。
+
+```java
+// In: PlaylistServiceImpl.java
+public boolean isOwner(Long playlistId, String username) {
+    return playlistRepository.findById(playlistId)
+            .map(playlist -> playlist.getUser().getUsername().equals(username))
+            .orElse(false);
+}
+```
+*注意：这个方法需要被公开（public），以便SpEL表达式可以调用它。你可能需要将它添加到`PlaylistService`接口中。*
+
+**2. 在Controller中应用规则**
+现在，我们可以像贴标签一样，将授权规则应用到需要保护的API端点上。
+
+```java
+// In: PlaylistController.java
+// ... imports ...
+import org.springframework.security.access.prepost.PreAuthorize;
+
+@RestController
+@RequestMapping("/api/playlists")
+public class PlaylistController {
+    // ... createPlaylist, getAllPlaylists ...
+
+    @GetMapping("/{id}")
+    @PreAuthorize("@playlistServiceImpl.isOwner(#id, principal.username)")
+    public PlaylistDTO getPlaylist(@PathVariable Long id) {
+        return playlistService.getPlaylistById(id);
+    }
+
+    @PostMapping("/{id}/songs")
+    @PreAuthorize("@playlistServiceImpl.isOwner(#id, principal.username)")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addSongToPlaylist(@PathVariable Long id, @RequestBody SongDTO songDTO) {
+        playlistService.addSongToPlaylist(id, songDTO);
+    }
+
+    // 同样可以保护更新和删除操作（如果已实现）
+    // @PutMapping("/{id}")
+    // @PreAuthorize("@playlistServiceImpl.isOwner(#id, principal.username)")
+    // ...
+
+    // @DeleteMapping("/{id}")
+    // @PreAuthorize("@playlistServiceImpl.isOwner(#id, principal.username)")
+    // ...
+}
+```
+
+**顿悟在于：`@PreAuthorize`注解和Spring Expression Language (SpEL)的结合，是声明式安全的巅峰。**
+*   `@PreAuthorize(...)`: 告诉Spring Security，在**执行**这个方法**之前**，必须先评估括号内的表达式。如果为`true`，则放行；如果为`false`，则立即抛出`AccessDeniedException`（客户端会收到403 Forbidden错误）。
+*   `"@playlistServiceImpl.isOwner(...)"`: 这里的SpEL表达式非常强大。
+    *   `@playlistServiceImpl`: `@`符号允许我们直接调用Spring容器中名为`playlistServiceImpl`的Bean的方法。
+    *   `#id`: `#`符号允许我们引用当前方法的参数。
+    *   `principal.username`: `principal`是SpEL内置的特殊变量，代表了当前认证主体。
+
+现在，重启应用并进行测试。你会发现，我们的VibeVault，终于从一个混乱的匿名世界，变成了一个尊重个人边界、安全有序的数字家园。
+
+---
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节步骤，完成对数据模型、Repository、Service和Controller的重构，并使用`@PreAuthorize`保护你的API端点。
+2.  **破坏性实验**: 注册两个不同的用户，A和B。用A的JWT创建一个播放列表（比如ID为1）。然后，用B的JWT去尝试`GET /api/playlists/1`。观察并验证你是否收到了`403 Forbidden`错误。
+3.  **深入思考**: `@PreAuthorize`和在Service方法内部手动编写`if/else`进行权限检查相比，在代码的可读性、可维护性和职责分离方面，有哪些巨大的优势？如果未来我们需要增加一个新的“管理员”角色，他可以访问任何人的播放列表，使用`@PreAuthorize`的方案需要如何修改？（提示：`@PreAuthorize("hasRole('ADMIN') or @playlistServiceImpl.isOwner(...)")`）
+4.  **数据迁移思考**: 我们这次重构修改了数据库的主键。在真实的项目中，如果数据库里已经存在大量旧数据（以`String`为ID），你会如何设计一个安全的数据迁移方案？

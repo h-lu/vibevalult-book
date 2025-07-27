@@ -1,0 +1,194 @@
+---
+title: "10.3 第一道防线"
+---
+
+# 10.3 第一道防线：默认安全与密码哈希
+
+> "最坚固的堡垒，也始于第一块基石。"
+
+我们已经下定决心，要为VibeVault构建一个安全的身份系统。现在，是时候放下理论，开始砌上第一块基石了。
+
+我们的第一步，是引入业界标准的Java安全框架——Spring Security。但请做好准备，这第一步可能会让你感到些许“震惊”，因为它会立刻改变我们应用的行为。
+
+## 本节危机：突然被锁在门外
+
+想象一下，你为你的房子买了一套顶级的安保系统。安装工把它装好后，你做的第一件事是什么？你可能会发现，你连自己的家门都进不去了！因为安保系统在激活的那一刻，就默认将所有门窗都上锁了。
+
+我们将对VibeVault做同样的事情。作为本章的第一个编码步骤，我们需要引入Spring Security和Lombok。我们将严格遵循第九章建立的Gradle Version Catalog约定来添加依赖。
+
+**第一步：在 `gradle/libs.versions.toml` 中定义依赖库**
+
+打开位于项目根目录下 `gradle` 文件夹中的 `libs.versions.toml` 文件，在 `[libraries]` 部分添加以下几行：
+
+```toml
+# In: gradle/libs.versions.toml
+
+[libraries]
+# ... 已有的库 ...
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+lombok = { module = "org.projectlombok:lombok" }
+```
+
+**第二步：在 `app/build.gradle.kts` 中使用依赖**
+
+现在，打开 `app` 模块下的 `build.gradle.kts` 文件，在 `dependencies` 代码块中，使用我们刚刚定义的别名来引入依赖：
+
+```kotlin
+// In: app/build.gradle.kts
+dependencies {
+    // ... 其他依赖，如 libs.spring.boot.starter.web ...
+    implementation(libs.spring.boot.starter.security)
+    
+    annotationProcessor(libs.lombok)
+    compileOnly(libs.lombok)
+}
+```
+
+添加这些依赖并重启应用后，奇妙（或者说，令人困惑）的事情发生了。根据你访问API的方式，你会看到两种不同的“上锁”行为：
+
+*   **如果你在浏览器中访问** `http://localhost:8080/api/playlists/my-favorites`，Spring Security会认为这是一个需要人类用户登录的请求，因此它会自动将你重定向到一个默认的登录页面。
+*   **如果你使用API测试工具（如Postman或curl）访问**，这些工具通常会告诉服务器它们期望接收JSON数据。Spring Security会识别出这是一个非浏览器的API调用，并返回 `401 Unauthorized` 错误。
+
+无论是哪种情况，我们都被自己锁在了门外。这就是我们面临的第一个危机：**我们引入了一个强大的安全系统，但却不知道它的“默认规则”，导致整个应用“失能”。**
+
+## 本节顿悟：拥抱“默认安全”原则
+
+这个“不请自来”的401错误，恰恰是Spring Security最优秀、最重要的设计哲学之一的体现：**默认安全 (Secure by Default)**。
+
+Spring Security的理念是，一个未加配置的系统，其最安全的状态就是“拒绝一切”。它绝不会做出任何“想当然”的假设，比如“这个API看起来不那么重要，就先放行吧”。它宁可“错杀一千”，也绝不“放过一个”。
+
+这种设计哲学，从根本上避免了开发者因疏忽而意外暴露敏感接口的风险。它强迫我们——作为系统的设计者——必须**显式地（explicitly）**、**有意识地（consciously）**去声明，哪些门是应该打开的，哪些门是需要上锁的，以及上什么类型的锁。
+
+我们的顿悟在于：**我们不应该抱怨被锁在门外，而应该庆幸拥有一个如此尽职尽责的“安保系统”。** 我们的工作，就是去学习如何配置这个系统，为它制定一套清晰的安保规则。
+
+### 1. 配置第一条规则：`SecurityFilterChain`
+
+我们将通过创建一个`SecurityConfig`类，来定义我们的“安保规则”。在`com.vibevault`下创建一个新的`config`包，并在其中创建`SecurityConfig.java`。
+
+```java
+package com.vibevault.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests(authorize -> authorize
+                .anyRequest().permitAll() // 暂时允许所有请求
+            );
+        return http.build();
+    }
+}
+```
+
+**代码解析**:
+*   `@Configuration`和`@EnableWebSecurity`: 这两个注解共同开启了Spring Security的Web安全功能，并允许我们进行自定义配置。
+*   `SecurityFilterChain`: 这是Spring Security的核心。你可以把它想象成一系列的“安全检查站”（过滤器）。每个进入的HTTP请求，都必须依次通过这个链条上的所有检查站。
+*   `.anyRequest().permitAll()`: 这是我们配置的第一条，也是最“宽松”的一条规则。它明确地告诉Spring Security：“对于任何（`anyRequest`）进入的请求，都直接放行（`permitAll`）。”
+
+现在，再次重启你的应用。你会发现，之前被锁住的API又可以访问了。我们通过显式配置，暂时“解除”了安保系统的默认锁定。
+
+### 2. 定义用户与密码安全
+
+当然，`permitAll()`只是我们为了理解配置流程而采取的临时措施。一个真正的安全系统，核心在于“人”，也就是“用户”。
+
+我们需要创建一个`User`实体来代表我们的用户。但随之而来的是一个更深刻的危机：**我们该如何存储用户的密码？**
+
+如果我们将用户输入的密码（如`"password123"`）直接以明文形式存入数据库，那么一旦数据库被泄露，所有用户的密码将瞬间暴露无遗。这是任何安全系统中都不可饶恕的、最严重的错误。
+
+**第一性原理顿悟：绝不存储明文密码。密码必须经过“哈希加盐”处理后，才能存入数据库。**
+
+*   **哈希 (Hashing)**: 是一个单向的数学过程。它可以将任意长度的输入（你的密码），转换成一个固定长度的、看起来完全随机的字符串（哈希值）。这个过程是**不可逆**的，你无法从哈希值反推出原始密码。
+*   **加盐 (Salting)**: 为了防止“彩虹表攻击”（一种预先计算好常用密码哈希值的攻击方式），我们在对密码进行哈希之前，会先给它“加点盐”——也就是附加一个随机生成的字符串。这样，即使两个用户使用了完全相同的密码，由于“盐”不同，他们最终存入数据库的哈希值也是完全不同的。
+
+幸运的是，Spring Security已经为我们提供了处理这一切的最佳工具：`PasswordEncoder`。
+
+### 3. 实现`PasswordEncoder`
+
+在`SecurityConfig.java`中，我们定义一个`PasswordEncoder`的Bean。Spring Security会自动使用这个Bean来加密和验证密码。
+
+```java
+// In SecurityConfig.java
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+// ...
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    // ... securityFilterChain Bean ...
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
+```
+`BCryptPasswordEncoder`是Spring Security推荐的、一种非常强大的自适应哈希算法的实现。我们只需要将它声明为一个Bean，后续的认证流程就会自动使用它。
+
+### 4. 创建用户模型
+
+现在，我们可以安全地创建我们的用户模型了。
+
+1.  在`com.vibevault`下创建`model`包。
+2.  在`model`包中创建`User.java`。
+
+```java
+package com.vibevault.model;
+
+import jakarta.persistence.*;
+import lombok.Data; // 使用Lombok减少样板代码
+
+@Data
+@Entity
+@Table(name = "users")
+public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password; // 这里将存储BCrypt加密后的哈希值
+}
+```
+*注意：为了代码简洁，我们引入了Lombok的`@Data`注解，它会自动为我们生成`getters`, `setters`, `toString`等样板代码。请确保你已如本节开头所示，在`build.gradle.kts`中添加了Lombok的依赖。*
+
+3.  在`com.vibevault`下创建`repository`包，并创建`UserRepository.java`。
+```java
+package com.vibevault.repository;
+
+import com.vibevault.model.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findByUsername(String username);
+}
+```
+
+至此，我们已经完成了安全系统的第一块、也是最重要的一块基石的搭建。我们理解了“默认安全”的原则，学会了配置`SecurityFilterChain`，并为我们的用户凭证，建立了基于BCrypt的、坚不可摧的密码保护机制。
+
+在下一节，我们将在这块基石之上，建造系统真正的“大门”——注册和登录接口。
+
+---
+## Vibe Check (思考与练习)
+
+1.  **核心练习**: 严格按照本节步骤，添加Spring Security依赖，创建`SecurityConfig`，并暂时使用`permitAll()`让你的API重新可以访问。
+2.  **编码练习**: 创建`User`实体和`UserRepository`。在`SecurityConfig`中创建`PasswordEncoder`的Bean。
+3.  **AI协同**: 询问AI：“为什么我们永远不应该在数据库中存储明文密码？BCrypt这类现代哈希算法与MD5这类旧算法相比，在安全性上有什么根本优势（例如‘加盐’和‘慢哈希’）？”
+4.  **破坏性实验**: 在`SecurityConfig`中，将`.anyRequest().permitAll()`注释掉，然后重启应用。再次确认所有API都返回401错误。这个简单的动作能让你深刻体会到“默认安全”原则的强大。
