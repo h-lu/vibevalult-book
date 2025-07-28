@@ -1,7 +1,3 @@
----
-title: "10.4 敞开大门：构建认证API与测试"
----
-
 # 10.4 敞开大门：构建认证API与测试
 
 > "每一段伟大的旅程，都始于一个敞开的大门。"
@@ -388,7 +384,7 @@ public class AuthenticationControllerTest {
 
     @Test
     void whenSignUpWithNewUser_thenReturns200() throws Exception {
-        SignUpRequest newUser = new SignUpRequest("testuser", "password123");
+        SignUpRequest newUser = new SignUpRequest("testuser1", "password123");
 
         mockMvc.perform(post("/api/auth/signup")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -399,7 +395,7 @@ public class AuthenticationControllerTest {
     @Test
     void whenSignInWithValidUser_thenReturns200AndToken() throws Exception {
         // 步骤1: 先注册一个用户
-        SignUpRequest user = new SignUpRequest("testuser", "password123");
+        SignUpRequest user = new SignUpRequest("testuser2", "password123");
         mockMvc.perform(post("/api/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
@@ -413,19 +409,19 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    void whenSignInWithInvalidPassword_thenReturns401() throws Exception {
+    void whenSignInWithInvalidPassword_thenReturns403() throws Exception {
         // 步骤1: 先注册一个用户
-        SignUpRequest user = new SignUpRequest("testuser", "password123");
+        SignUpRequest user = new SignUpRequest("testuser3", "password123");
         mockMvc.perform(post("/api/auth/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(user)));
 
         // 步骤2: 使用错误的密码登录
-        SignUpRequest wrongCredentials = new SignUpRequest("testuser", "wrongpassword");
+        SignUpRequest wrongCredentials = new SignUpRequest("testuser3", "wrongpassword");
         mockMvc.perform(post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(wrongCredentials)))
-                .andExpect(status().isUnauthorized()); // 或 isForbidden()，取决于具体配置
+                .andExpect(status().isForbidden()); // 或 isUnauthorized()，取决于具体配置
     }
 }
 ```

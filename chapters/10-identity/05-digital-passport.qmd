@@ -1,7 +1,3 @@
----
-title: "10.5 数字护照办公室：签发JWT"
----
-
 # 10.5 数字护照办公室：签发JWT
 
 > "记忆不是记录，而是对过去的重建。"
@@ -69,11 +65,12 @@ JWT的安全性依赖于一个只有服务器知道的**秘密密钥 (Secret Key
 2.  **在 `SecurityConfig.java` 中启用配置**:
     ```java
     import org.springframework.boot.context.properties.EnableConfigurationProperties;
-    
+    import lombok.RequiredArgsConstructor;
+
     @Configuration
     @EnableWebSecurity
     @EnableConfigurationProperties(JwtProperties.class) // <-- 启用类型安全配置
-    @RequiredArgsConstructor
+    @RequiredArgsConstructor // <-- 使用Lombok的@RequiredArgsConstructor注解, 自动生成构造函数
     public class SecurityConfig {
         // ...
     }

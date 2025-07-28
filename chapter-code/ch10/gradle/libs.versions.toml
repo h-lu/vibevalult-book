@@ -1,5 +1,5 @@
 [versions]
-springBoot = "3.4.7"
+springBoot = "3.4.8"
 springDependencyManagement = "1.1.7"
 jjwt = "0.11.5"
 
@@ -12,6 +12,7 @@ spring-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-
 postgresql = { module = "org.postgresql:postgresql" }
 
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
 lombok = { module = "org.projectlombok:lombok" }
 
 jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }

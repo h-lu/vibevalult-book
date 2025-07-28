@@ -19,7 +19,19 @@ public class VibeVaultApplication {
         SpringApplication.run(VibeVaultApplication.class, args);
     }
 
-    
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/api/**")
+                        .allowedOrigins("http://localhost:5173")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
 
     @Bean // <--- 将这个CommandLineRunner注册为一个Bean
     @Profile("!test") // <--- 这个Bean只在非"test"环境下生效，避免影响自动化测试

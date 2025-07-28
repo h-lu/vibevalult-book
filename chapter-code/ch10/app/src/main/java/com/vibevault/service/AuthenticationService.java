@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final UserService userService; // 确保注入UserService
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
+    private final JwtService jwtService; // 注入JwtService
 
     /**
      * 注册新用户，并直接返回JWT，实现注册后自动登录
