@@ -153,6 +153,6 @@ async function fetchPlaylists() {
 
 **第一性原理**: `async/await`将复杂的异步流程，转换成了符合人类直觉的、线性的代码结构，极大地提高了异步代码的可读性。
 
----
+
 
 掌握了`const/let`、箭头函数、解构赋值和`async/await`这四个“神器”，你就已经拥有了阅读和编写绝大部分现代React代码所需的核心JavaScript知识。现在，你可以更有信心地进入下一节，去理解React中一个同样重要的核心概念——Hooks。 

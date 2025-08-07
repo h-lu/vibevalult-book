@@ -433,7 +433,7 @@ public class AuthenticationControllerTest {
 ```
 如果所有测试都显示为绿色通过，那么恭喜你！你已经用工业级的标准，验证了你的认证入口是健壮和可靠的。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，实现`AuthenticationService`和`AuthenticationController`，并正确配置`SecurityConfig`。

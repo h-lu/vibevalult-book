@@ -116,7 +116,7 @@ public class SecurityConfig {
 
 现在，重启应用。你的后端API已经准备好迎接来自前端应用的跨域请求了。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，在`SecurityConfig`中添加`CorsConfigurationSource` Bean，并更新`securityFilterChain`以启用CORS和放行`OPTIONS`请求。

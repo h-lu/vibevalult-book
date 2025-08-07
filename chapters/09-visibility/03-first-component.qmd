@@ -227,7 +227,7 @@ export default App;
 
 恭喜！你已经真正地从零开始，一步步地理解并构建了一个完整的全栈功能。你现在掌握了React中最核心的两个Hook——`useState`和`useEffect`——并用它们解决了真实世界中的问题。
 
----
+
 
 ### Vibe Check (思考与练习)
 

@@ -178,7 +178,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 在下一节，我们将在这块基石之上，建造系统真正的“大门”——注册和登录接口。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，添加Spring Security依赖，创建`SecurityConfig`，并暂时使用`permitAll()`让你的API重新可以访问。

@@ -10,17 +10,30 @@ import com.vibevault.exception.ResourceNotFoundException;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import org.springframework.security.core.userdetails.UserDetails;
+import com.vibevault.repository.UserRepository;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
     private final PlaylistRepository repository;
+    private final UserRepository userRepository; // 注入UserRepository
 
-    public PlaylistServiceImpl(PlaylistRepository repository) {
-        this.repository = repository;
+    public PlaylistServiceImpl(PlaylistRepository repository, UserRepository userRepository) {
+        this.repository = repository; // 注入PlaylistRepository
+        this.userRepository = userRepository; // 注入UserRepository
+    }
+
+    @Override
+    public Playlist createPlaylist(PlaylistDTO playlistDTO, UserDetails userDetails) {
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Playlist playlist = new Playlist(playlistDTO.name());
+        playlist.setUser(user); // 建立所有权关联
+        return playlistRepository.save(playlist);
     }
     
     @Override
-    public PlaylistDTO getPlaylistById(String id) {
+    public PlaylistDTO getPlaylistById(Long id) {
         // 调用repository，如果返回的Optional为空，则立即抛出我们自定义的异常
         Playlist playlist = repository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + id));
@@ -36,7 +49,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional // <--- 关键注解：将整个方法包裹在一个数据库事务中
-    public void addSongToPlaylist(String playlistId, SongDTO songDTO) {
+    public void addSongToPlaylist(Long playlistId, SongDTO songDTO) {
         // 先加载播放列表，如果不存在则同样会抛出404异常，确保操作的有效性
         Playlist playlist = repository.findById(playlistId)
             .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + playlistId));

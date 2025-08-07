@@ -59,7 +59,9 @@ public class AuthenticationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.token").exists()); // 验证返回的JSON中包含 "token" 字段
+                .andExpect(jsonPath("$.token").exists()) // 验证返回的JSON中包含 "token" 字段
+                .andExpect(jsonPath("$.token").isString())
+                .andExpect(jsonPath("$.token").isNotEmpty()); // 验证token字段是非空字符串
     }
 
     @Test

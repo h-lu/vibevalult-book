@@ -70,7 +70,7 @@ JWT的安全性依赖于一个只有服务器知道的**秘密密钥 (Secret Key
     @Configuration
     @EnableWebSecurity
     @EnableConfigurationProperties(JwtProperties.class) // <-- 启用类型安全配置
-    @RequiredArgsConstructor // <-- 使用Lombok的@RequiredArgsConstructor注解, 自动生成构造函数
+    @RequiredArgsConstructor
     public class SecurityConfig {
         // ...
     }
@@ -217,7 +217,7 @@ public class AuthenticationService {
 
 现在，我们的认证API已经能够签发真实的JWT了！在下一节，我们将设立“哨兵”来验证这些JWT。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，实现`JwtService`并更新`AuthenticationService`。

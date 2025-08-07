@@ -1,75 +1,144 @@
 project:
   type: book
+  output-dir: _book
+  resources: 
+    - assets/**
 
 book:
   title: "VibeVault: 一场现代Java全栈之旅"
-  author: "陆海波 & AI伙伴"
-  date: "2025"
+  author: "陆海波 上海应用技术大学 经济与管理学院"
+  date: today
+  language: zh-CN
+  page-navigation: true
   chapters:
     - index.qmd
-    - part: "第零部分：世界观与方法论"
+    - part: "第零章：欢迎来到Vibe Coding的世界"
       chapters:
         - chapters/00-welcome/01-the-vibe-shift.qmd
         - chapters/00-welcome/02-the-70-percent-problem.qmd
         - chapters/00-welcome/03-how-to-thrive.qmd
         - chapters/00-welcome/04-the-ultimate-showdown.qmd
-
-    - part: "第一部分：本地应用的崛起 - 对抗熵与脆弱"
+    - part: chapters/01-genesis/index.qmd
       chapters:
-        - chapters/01-genesis/index.qmd
         - chapters/01-genesis/01-why-tools.qmd
         - chapters/01-genesis/02-setup.qmd
         - chapters/01-genesis/03-project-init.qmd
         - chapters/01-genesis/04-atomic-design.qmd
-        - chapters/02-aggregation/index.qmd
+        
+    - part: chapters/02-aggregation/index.qmd
+      chapters:
         - chapters/02-aggregation/01-why-encapsulation.qmd
         - chapters/02-aggregation/02-molecular-design.qmd
         - chapters/02-aggregation/03-collection-choice.qmd
-        - chapters/03-interaction/index.qmd
+    - part: chapters/03-interaction/index.qmd
+      chapters:
         - chapters/03-interaction/01-why-interactive.qmd
         - chapters/03-interaction/02-dialogue-channel.qmd
         - chapters/03-interaction/03-command-protocol.qmd
-        - chapters/04-persistence/index.qmd
+        
+    - part: chapters/04-persistence/index.qmd
+      chapters:
         - chapters/04-persistence/01-why-persistence.qmd
         - chapters/04-persistence/02-serialization.qmd
         - chapters/04-persistence/03-resilience.qmd
-        - chapters/05-trust/index.qmd
+
+    - part: chapters/05-trust/index.qmd
+      chapters:
         - chapters/05-trust/01-why-test.qmd
         - chapters/05-trust/02-setup-lab.qmd
         - chapters/05-trust/03-assertion-language.qmd
         - chapters/05-trust/04-faking-reality.qmd
         - chapters/05-trust/05-verifying-actions.qmd
-        - chapters/06-order/index.qmd
+
+    - part: chapters/06-order/index.qmd
+      chapters:
         - chapters/06-order/01-why-architecture.qmd
         - chapters/06-order/02-separation-of-concerns.qmd
         - chapters/06-order/03-refactoring.qmd
-
-    - part: "第二部分：全栈应用的进化 - 对抗隐形与混乱"
+        
+    - part: chapters/07-connection/index.qmd
       chapters:
-        - chapters/07-connection/index.qmd
-        - chapters/08-concurrency/index.qmd
-        - chapters/09-visibility/index.qmd
+        - chapters/07-connection/01-why-api.qmd
+        - chapters/07-connection/02-why-spring-boot.qmd
+        - chapters/07-connection/03-first-api.qmd
+
+    - part: chapters/08-concurrency/index.qmd
+      chapters:
+        - chapters/08-concurrency/01-why-database.qmd
+        - chapters/08-concurrency/02-why-orm.qmd
+        - chapters/08-concurrency/03-database-migration.qmd
+        
+    - part: chapters/09-visibility/index.qmd
+      chapters:
         - chapters/09-visibility/01-why-frontend-backend-separation.qmd
         - chapters/09-visibility/02-why-react.qmd
         - chapters/09-visibility/02a-js-primer-for-react.qmd
         - chapters/09-visibility/02b-what-is-a-hook.qmd
         - chapters/09-visibility/03-first-component.qmd
-        - chapters/10-identity/index.qmd
+        
+    - part: chapters/10-identity/index.qmd
+      chapters:
         - chapters/10-identity/01-why-security.qmd
         - chapters/10-identity/02-why-jwt.qmd
         - chapters/10-identity/03-first-defense.qmd
         - chapters/10-identity/04-opening-gates.qmd
         - chapters/10-identity/05-digital-passport.qmd
+        - chapters/10-identity/06-authorization.qmd
         - chapters/10-identity/06-gatekeeper.qmd
         - chapters/10-identity/07-cors.qmd
         - chapters/10-identity/08-refactoring.qmd
         - chapters/10-identity/09-authorization.qmd
         - chapters/10-identity/10-summary.qmd
-  
+        
   appendices:
     - appendices/first-principles.qmd
 
+
 format:
   html:
-    theme: cosmo
+    theme: 
+      - cosmo
+      - assets/chatgpt-style.scss
+    toc: false
     number-sections: false
+    fig-cap-location: bottom
+    code-fold: false
+    code-tools: true
+    # ChatGPT 风格字体配置
+    mainfont: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, Cantarell, 'Noto Sans', sans-serif, 'Helvetica Neue', Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    monofont: "Monaco, 'SF Mono', 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace"
+    fontsize: "16px"
+    linestretch: 1.6
+    # 改进的代码高亮
+    highlight-style: github
+    code-line-numbers: false
+    code-copy: true
+    # 响应式设计
+    max-width: 1200px
+    # 包含自定义样式
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <style>
+        /* ChatGPT 风格变量 */
+        :root {
+          --chatgpt-primary: #000000;
+          --chatgpt-secondary: #6b7280;
+          --chatgpt-background: #ffffff;
+          --chatgpt-surface: #f7f7f8;
+          --chatgpt-border: #e5e5e5;
+          --chatgpt-accent: #10a37f;
+        }
+        </style>
+    mermaid:            # 全局作用于所有 Mermaid 图
+      theme: neutral    # 内置 default / dark / forest / neutral 任选
+      config:           # 直接写入 themeVariables
+        themeVariables:
+          fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+          primaryColor:  "#2F5597"
+          primaryBorderColor: "#1F4E79"
+          secondaryColor: "#A5A5A5"
+          tertiaryColor: "#FAF3E0"
+          lineColor: "#555555"

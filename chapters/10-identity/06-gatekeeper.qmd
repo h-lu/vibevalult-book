@@ -199,7 +199,6 @@ public class SecurityConfig {
 
 现在，我们的VibeVault终于有了一个功能完备的、受JWT保护的API系统。
 
----
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，为`JwtService`补充验证方法，创建`JwtAuthenticationFilter`，并将其正确整合到`SecurityConfig`中。

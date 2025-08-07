@@ -1,7 +1,11 @@
 package com.vibevault.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 @Entity // <--- 1. 声明为实体
 @Table(name = "songs") // <--- 2. 映射到'songs'表
 public class Song {
@@ -14,15 +18,9 @@ public class Song {
     private String artist;
     private int durationInSeconds;
 
-    // --- 5. 定义多对一关系 ---
-    @ManyToOne(fetch = FetchType.LAZY) // LAZY: 懒加载，只有在实际访问playlist时才从数据库加载
-    @JoinColumn(name = "playlist_name") // 定义外键列的列名为'playlist_name'
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "playlist_id") // <-- 外键列改为 playlist_id
     private Playlist playlist;
-    
-    // --- 构造函数和方法 ---
-
-    // JPA需要无参构造函数
-    public Song() {}
     
     public Song(String title, String artist, int durationInSeconds) {
         this.title = title;

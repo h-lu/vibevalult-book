@@ -47,13 +47,6 @@ public class SecurityConfig {
 
 ```java
 // In: src/main/java/com/vibevault/model/Playlist.java
-package com.vibevault.model;
-
-import jakarta.persistence.*;
-import lombok.Data;
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @Entity
 @Table(name = "playlists")
@@ -66,29 +59,7 @@ public class Playlist {
     @Column(nullable = false) // <-- name变为普通字段
     private String name;
 
-    @OneToMany(
-        mappedBy = "playlist",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<Song> songs = new ArrayList<>();
-
-    // 为方便使用，保留一个带name的构造函数
-    public Playlist(String name) {
-        this.name = name;
-    }
-
-    protected Playlist() {}
-
-    public void addSong(Song song) {
-        songs.add(song);
-        song.setPlaylist(this);
-    }
-
-    public void removeSong(Song song) {
-        songs.remove(song);
-        song.setPlaylist(null);
-    }
+    // ... 其他代码 ...
 }
 ```
 
@@ -97,12 +68,6 @@ public class Playlist {
 
 ```java
 // In: src/main/java/com/vibevault/model/Song.java
-package com.vibevault.model;
-
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Data
 @NoArgsConstructor
 @Entity
@@ -348,7 +313,7 @@ public class PlaylistController {
 
 现在，重启应用并进行测试。你会发现，我们的VibeVault，终于从一个混乱的匿名世界，变成了一个尊重个人边界、安全有序的数字家园。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，完成对数据模型、Repository、Service和Controller的重构，并使用`@PreAuthorize`保护你的API端点。

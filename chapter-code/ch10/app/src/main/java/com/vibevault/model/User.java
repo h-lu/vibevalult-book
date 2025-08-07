@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password; // 这里将存储BCrypt加密后的哈希值
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Playlist> playlists = new ArrayList<>();
 
     // --- UserDetails 方法实现 ---
 

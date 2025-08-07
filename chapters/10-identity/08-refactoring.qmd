@@ -180,7 +180,7 @@ public interface PlaylistRepository extends JpaRepository<Playlist, Long> { // <
 
 地基加固完成！我们的数据模型现在已经准备好，可以安全地承载所有权关联了。
 
----
+
 ## Vibe Check (思考与练习)
 
 1.  **核心练习**: 严格按照本节步骤，完成对数据模型、Repository、Service和Controller的重构。
