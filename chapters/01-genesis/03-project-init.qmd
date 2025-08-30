@@ -23,6 +23,7 @@ title: "绘制蓝图：初始化你的Gradle项目"
 现在，让我们打下第一根桩。选择一个你喜欢的工作目录（例如 `~/projects` 或 `D:\dev`），然后打开终端或PowerShell，执行以下步骤。
 
 1.  **创建并进入项目根目录**:
+
     ```bash
     mkdir VibeVault
     cd VibeVault
@@ -138,6 +139,7 @@ BUILD SUCCESSFUL in 1s
 ./gradlew build
 ```
 或者，如果你只想运行测试：
+
 ```bash
 ./gradlew test
 ```
@@ -155,6 +157,7 @@ BUILD SUCCESSFUL in 1s
     *   **第二步：应用依赖**。打开 `app/build.gradle.kts` 文件。在 `dependencies` 代码块中，添加一行 `implementation(libs.google.gson)`。
     *   **第三步：同步项目**。保存文件后，点击VS Code右下角弹出的“大象”图标或刷新按钮，让Gradle同步新的依赖。
     *   **第四步：使用依赖**。修改 `app/src/main/java/com/vibevault/App.java` 文件，用Gson来转换一个对象为JSON字符串并打印出来。
+    
         ```java
         package com.vibevault;
 

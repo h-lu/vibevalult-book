@@ -30,18 +30,21 @@ JDK是Java开发的核心，它包含了Java编译器（`javac`）和Java运行�
 
 1.  **安装Homebrew** (如果尚未安装):
     打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。
+
     ```bash
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
 
 2.  **安装JDK**:
     使用Homebrew安装OpenJDK 21。
+
     ```bash
     brew install openjdk@21
     ```
 
 3.  **配置环境变量**:
     为了让系统能够找到JDK，我们需要设置`JAVA_HOME`环境变量，并将其添加到`PATH`中。
+
     ```bash
     echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' >> ~/.zshrc
     echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
@@ -54,12 +57,14 @@ JDK是Java开发的核心，它包含了Java编译器（`javac`）和Java运行�
 
 1.  **安装Chocolatey** (如果尚未安装):
     以管理员身份打开PowerShell，然后执行以下命令：
+
     ```powershell
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
     ```
 
 2.  **安装JDK**:
     在管理员PowerShell中执行：
+
     ```powershell
     choco install openjdk --version=21
     ```
@@ -70,12 +75,14 @@ JDK是Java开发的核心，它包含了Java编译器（`javac`）和Java运行�
 无论你使用哪个操作系统，完成安装后，请**重新打开一个新的终端或PowerShell窗口**，然后依次执行以下三个命令，并确保输出与示例类似。
 
 1.  **检查Java运行时版本**:
+
     ```bash
     java --version
     ```
     你应该看到类似 `openjdk 21.x.x ...` 的输出。
 
 2.  **检查Java编译器版本**:
+
     ```bash
     javac --version
     ```

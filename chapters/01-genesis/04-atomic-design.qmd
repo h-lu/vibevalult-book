@@ -69,6 +69,7 @@ public record Song(String title, String artist, int durationInSeconds) {
 2.  **创建新的主类 `VibeVaultApp.java`**：同样在`app/src/main/java/com/vibevault`目录下，创建一个新文件，命名为`VibeVaultApp.java`。
 
 3.  **编写代码**:
+
 ```java
 package com.vibevault;
 
@@ -154,6 +155,7 @@ Accessing details -> Title: Bohemian Rhapsody, Duration: 355s
 
 3.  **破坏性实验**:
     在`main`方法中，创建一个`Song`实例后，尝试去修改它的一个属性。例如，在创建了`song1`之后，添加一行代码：
+    
     ```java
     // song1.title = "A new title"; // <-- 尝试这行代码
     ```

@@ -518,25 +518,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="安装步骤-macos">安装步骤 (macOS)</h3>
 <p>对于macOS用户，我们强烈推荐使用<a href="https://brew.sh/">Homebrew</a>，这是一个非常出色的包管理器。</p>
 <ol type="1">
-<li><p><strong>安装Homebrew</strong> (如果尚未安装): 打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。 <code>bash     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code></p></li>
-<li><p><strong>安装JDK</strong>: 使用Homebrew安装OpenJDK 21。 <code>bash     brew install openjdk@21</code></p></li>
-<li><p><strong>配置环境变量</strong>: 为了让系统能够找到JDK，我们需要设置<code>JAVA_HOME</code>环境变量，并将其添加到<code>PATH</code>中。 <code>bash     echo 'export JAVA_HOME=$(/usr/libexec/java_home -v 21)' &gt;&gt; ~/.zshrc     echo 'export PATH=$JAVA_HOME/bin:$PATH' &gt;&gt; ~/.zshrc     source ~/.zshrc</code></p></li>
+<li><p><strong>安装Homebrew</strong> (如果尚未安装): 打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>安装JDK</strong>: 使用Homebrew安装OpenJDK 21。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install openjdk@21</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>配置环境变量</strong>: 为了让系统能够找到JDK，我们需要设置<code>JAVA_HOME</code>环境变量，并将其添加到<code>PATH</code>中。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export JAVA_HOME=$(/usr/libexec/java_home -v 21)'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'export PATH=$JAVA_HOME/bin:$PATH'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.zshrc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
 </ol>
 </section>
 <section id="安装步骤-windows" class="level3">
 <h3 class="anchored" data-anchor-id="安装步骤-windows">安装步骤 (Windows)</h3>
 <p>对于Windows用户，我们推荐使用<a href="https://chocolatey.org/">Chocolatey</a>包管理器。</p>
 <ol type="1">
-<li><p><strong>安装Chocolatey</strong> (如果尚未安装): 以管理员身份打开PowerShell，然后执行以下命令： <code>powershell     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</code></p></li>
-<li><p><strong>安装JDK</strong>: 在管理员PowerShell中执行： <code>powershell     choco install openjdk --version=21</code> Chocolatey会自动为你配置好环境变量。</p></li>
+<li><p><strong>安装Chocolatey</strong> (如果尚未安装): 以管理员身份打开PowerShell，然后执行以下命令：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Set-ExecutionPolicy</span> Bypass <span class="op">-</span>Scope <span class="cf">Process</span> <span class="op">-</span>Force<span class="op">;</span> <span class="op">[</span>System<span class="op">.</span><span class="fu">Net</span><span class="op">.</span><span class="fu">ServicePointManager</span><span class="op">]::</span>SecurityProtocol <span class="op">=</span> <span class="op">[</span>System<span class="op">.</span><span class="fu">Net</span><span class="op">.</span><span class="fu">ServicePointManager</span><span class="op">]::</span>SecurityProtocol <span class="op">-bor</span> <span class="dv">3072</span><span class="op">;</span> <span class="fu">iex</span> <span class="op">((</span><span class="fu">New-Object</span> System<span class="op">.</span><span class="fu">Net</span><span class="op">.</span><span class="fu">WebClient</span><span class="op">).</span><span class="fu">DownloadString</span><span class="op">(</span><span class="st">'https://community.chocolatey.org/install.ps1'</span><span class="op">))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>安装JDK</strong>: 在管理员PowerShell中执行：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>choco install openjdk <span class="op">--</span>version<span class="op">=</span><span class="dv">21</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Chocolatey会自动为你配置好环境变量。</p></li>
 </ol>
 </section>
 <section id="验证安装-仪式感" class="level3">
 <h3 class="anchored" data-anchor-id="验证安装-仪式感"><strong>验证安装 (仪式感!)</strong></h3>
 <p>无论你使用哪个操作系统，完成安装后，请<strong>重新打开一个新的终端或PowerShell窗口</strong>，然后依次执行以下三个命令，并确保输出与示例类似。</p>
 <ol type="1">
-<li><p><strong>检查Java运行时版本</strong>: <code>bash     java --version</code> 你应该看到类似 <code>openjdk 21.x.x ...</code> 的输出。</p></li>
-<li><p><strong>检查Java编译器版本</strong>: <code>bash     javac --version</code> 你应该看到类似 <code>javac 21.x.x</code> 的输出。</p></li>
+<li><p><strong>检查Java运行时版本</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">java</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>你应该看到类似 <code>openjdk 21.x.x ...</code> 的输出。</p></li>
+<li><p><strong>检查Java编译器版本</strong>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">javac</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>你应该看到类似 <code>javac 21.x.x</code> 的输出。</p></li>
 <li><p><strong>检查JAVA_HOME变量</strong>:</p>
 <ul>
 <li>macOS: <code>echo $JAVA_HOME</code></li>
@@ -564,17 +576,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="安装步骤-macos-1" class="level3">
 <h3 class="anchored" data-anchor-id="安装步骤-macos-1">安装步骤 (macOS)</h3>
 <p>使用Homebrew安装：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gradle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gradle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="安装步骤-windows-1" class="level3">
 <h3 class="anchored" data-anchor-id="安装步骤-windows-1">安装步骤 (Windows)</h3>
 <p>使用Chocolatey安装：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install gradle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install gradle</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="验证安装-再次的仪式感" class="level3">
 <h3 class="anchored" data-anchor-id="验证安装-再次的仪式感"><strong>验证安装 (再次的仪式感!)</strong></h3>
 <p><strong>重新打开一个新的终端或PowerShell窗口</strong>，执行以下命令：</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gradle</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gradle</span> <span class="at">--version</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>你应该能看到Gradle的版本信息，以及你刚刚安装的Java 21 (JVM) 的信息。</p>
 <hr>
 </section>
@@ -1065,154 +1077,161 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "搭建工坊：配置你的现代化开发环境"</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "千里之行，始于足下。" —— 《道德经》</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：空有理论，却无利器</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>我们已经从理论上理解了Java、IDE和Gradle这“三位一体”的重要性。但理论无法直接变成代码。我们就像一个装备精良的铁匠，脑海中构思好了绝世神兵的图纸，却发现自己身处一间空空如也的铁匠铺——没有熔炉，没有铁砧，没有锤子。</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>我们的危机是：**如何搭建一个稳定、高效、现代化的开发环境，让思想能够在这里顺利地转化为现实？** 如果环境配置出错，后续的所有工作都将举步维艰，甚至在开始之前就宣告失败。这会极大地挫败我们作为创造者的“Vibe”。</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：为思想校准工具</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>搭建环境的过程，不仅仅是安装软件。它更像是在进行一场重要的仪式：**为我们即将开始的宏大创造，校准我们的思想表达工具。** </span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>一个精确配置的环境，是保证我们能够心无旁骛、专注于代码本身的基石。每一步命令的精确输入，每一次成功验证的绿色回显，都是在为我们未来的创造大厦打下坚实的地基。</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>本节将提供一份详尽的、一步步的图文指南，指导你在你的操作系统（Windows 或 macOS）上，精确地安装和配置好我们的“思想工坊”。</span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 安装Java开发工具包 (JDK)</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>JDK是Java开发的核心，它包含了Java编译器（<span class="in">`javac`</span>）和Java运行时环境（JRE）。我们将使用**Java 21 (LTS)**版本，这是一个长期支持（Long-Term Support）版本，意味着它更稳定，能获得更长时间的官方支持。</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (macOS)</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>对于macOS用户，我们强烈推荐使用<span class="co">[</span><span class="ot">Homebrew</span><span class="co">](https://brew.sh/)</span>，这是一个非常出色的包管理器。</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**安装Homebrew** (如果尚未安装):</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。</span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>    <span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">"</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装JDK**:</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    使用Homebrew安装OpenJDK 21。</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="ex">brew</span> install openjdk@21</span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**配置环境变量**:</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    为了让系统能够找到JDK，我们需要设置<span class="in">`JAVA_HOME`</span>环境变量，并将其添加到<span class="in">`PATH`</span>中。</span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'export JAVA_HOME=$(/usr/libexec/java_home -v 21)'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'export PATH=$JAVA_HOME/bin:$PATH'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">source</span> ~/.zshrc</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (Windows)</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>对于Windows用户，我们推荐使用<span class="co">[</span><span class="ot">Chocolatey</span><span class="co">](https://chocolatey.org/)</span>包管理器。</span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**安装Chocolatey** (如果尚未安装):</span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    以管理员身份打开PowerShell，然后执行以下命令：</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="in">```powershell</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="in">    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="in">    ```</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装JDK**:</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    在管理员PowerShell中执行：</span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="in">```powershell</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a><span class="in">    choco install openjdk --version=21</span></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="in">    ```</span></span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a>    Chocolatey会自动为你配置好环境变量。</span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="fu">### **验证安装 (仪式感!)**</span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a>无论你使用哪个操作系统，完成安装后，请**重新打开一个新的终端或PowerShell窗口**，然后依次执行以下三个命令，并确保输出与示例类似。</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**检查Java运行时版本**:</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="ex">java</span> <span class="at">--version</span></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    你应该看到类似 <span class="in">`openjdk 21.x.x ...`</span> 的输出。</span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**检查Java编译器版本**:</span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a>    <span class="ex">javac</span> <span class="at">--version</span></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>    你应该看到类似 <span class="in">`javac 21.x.x`</span> 的输出。</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**检查JAVA_HOME变量**:</span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>macOS: <span class="in">`echo $JAVA_HOME`</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>Windows: <span class="in">`echo %JAVA_HOME%`</span></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    你应该看到指向JDK 21安装路径的输出。</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>**如果三个命令都得到了正确的输出，恭喜你！你已经成功点燃了工坊的熔炉。请务必将这三个成功验证的截图保存下来，这是你作为VibeVault创造者的第一个里程碑！**</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 安装Visual Studio Code (VS Code)</span></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>VS Code是我们的现代化智能工坊。</span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**下载并安装**:</span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>    访问<span class="co">[</span><span class="ot">VS Code官方网站</span><span class="co">](https://code.visualstudio.com/)</span>，下载对应你的操作系统的稳定版并安装。</span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装必备扩展**:</span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>    打开VS Code，点击左侧边栏的“扩展”图标（四个方块的形状）。在搜索框中，搜索并安装以下扩展包：</span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**Extension Pack for Java**: 这是来自微软的官方Java扩展包，它包含了语言支持、调试器、测试运行器、Maven/Gradle支持等一系列必备工具。</span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**GitHub Copilot**: 这就是我们的AI副驾驶。你需要一个GitHub账号来激活它。（新用户通常有免费试用期）</span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 安装Gradle</span></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a>Gradle是保障我们项目秩序的法律体系。</span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (macOS)</span></span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>使用Homebrew安装：</span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gradle</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (Windows)</span></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>使用Chocolatey安装：</span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install gradle</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="fu">### **验证安装 (再次的仪式感!)**</span></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>**重新打开一个新的终端或PowerShell窗口**，执行以下命令：</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="ex">gradle</span> <span class="at">--version</span></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>你应该能看到Gradle的版本信息，以及你刚刚安装的Java 21 (JVM) 的信息。</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>    **[里程碑]** 严格按照本节教程，完成JDK、VS Code、Gradle的安装和配置。确保<span class="in">`java --version`</span>, <span class="in">`javac --version`</span>, <span class="in">`gradle --version`</span>三个命令的输出完全正确。将这三个命令成功执行的终端截图拼接成一张图片，命名为<span class="in">`milestone-01-env-setup.png`</span>并保存在一个你记得住的地方。这是你的第一个重要成就！</span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验**:</span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>    这个实验旨在让你理解环境变量的核心作用。</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**macOS**: 编辑<span class="in">`~/.zshrc`</span>文件，暂时将<span class="in">`JAVA_HOME`</span>的路径改错（例如，在路径末尾加一个<span class="in">`_INVALID`</span>）。保存文件后，执行<span class="in">`source ~/.zshrc`</span>使其生效。</span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**Windows**: 在“编辑系统环境变量”中，找到<span class="in">`JAVA_HOME`</span>并将其值改错。</span>
-<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**实验操作**: **重新打开一个终端窗口**，再次运行<span class="in">`java --version`</span>和<span class="in">`gradle --version`</span>。观察并仔细阅读出现的错误信息。这个错误信息告诉你了什么？它如何证明<span class="in">`JAVA_HOME`</span>的不可或缺性？完成后，记得将环境变量改回正确的路径。</span>
-<span id="cb4-143"><a href="#cb4-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-144"><a href="#cb4-144" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入探索**:</span>
-<span id="cb4-145"><a href="#cb4-145" aria-hidden="true" tabindex="-1"></a>    我们在系统的<span class="in">`PATH`</span>环境变量中加入了Java和Gradle的<span class="in">`bin`</span>目录。<span class="in">`bin`</span>是“binary”（二进制可执行文件）的缩写。</span>
-<span id="cb4-146"><a href="#cb4-146" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>找到你的JDK安装路径（可以根据<span class="in">`JAVA_HOME`</span>的输出来找）。</span>
-<span id="cb4-147"><a href="#cb4-147" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用文件浏览器打开这个路径下的<span class="in">`bin`</span>目录。</span>
-<span id="cb4-148"><a href="#cb4-148" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>看看里面除了<span class="in">`java`</span>和<span class="in">`javac`</span>，还有哪些可执行文件？尝试在终端中运行一下其他命令（例如<span class="in">`jar --version`</span>），结合网络搜索，了解<span class="in">`jar`</span>命令是用来做什么的？这个探索能让你对JDK这个“工具包”有更具体的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "搭建工坊：配置你的现代化开发环境"</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "千里之行，始于足下。" —— 《道德经》</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：空有理论，却无利器</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>我们已经从理论上理解了Java、IDE和Gradle这“三位一体”的重要性。但理论无法直接变成代码。我们就像一个装备精良的铁匠，脑海中构思好了绝世神兵的图纸，却发现自己身处一间空空如也的铁匠铺——没有熔炉，没有铁砧，没有锤子。</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>我们的危机是：**如何搭建一个稳定、高效、现代化的开发环境，让思想能够在这里顺利地转化为现实？** 如果环境配置出错，后续的所有工作都将举步维艰，甚至在开始之前就宣告失败。这会极大地挫败我们作为创造者的“Vibe”。</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：为思想校准工具</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>搭建环境的过程，不仅仅是安装软件。它更像是在进行一场重要的仪式：**为我们即将开始的宏大创造，校准我们的思想表达工具。** </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>一个精确配置的环境，是保证我们能够心无旁骛、专注于代码本身的基石。每一步命令的精确输入，每一次成功验证的绿色回显，都是在为我们未来的创造大厦打下坚实的地基。</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>本节将提供一份详尽的、一步步的图文指南，指导你在你的操作系统（Windows 或 macOS）上，精确地安装和配置好我们的“思想工坊”。</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 安装Java开发工具包 (JDK)</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>JDK是Java开发的核心，它包含了Java编译器（<span class="in">`javac`</span>）和Java运行时环境（JRE）。我们将使用**Java 21 (LTS)**版本，这是一个长期支持（Long-Term Support）版本，意味着它更稳定，能获得更长时间的官方支持。</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (macOS)</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>对于macOS用户，我们强烈推荐使用<span class="co">[</span><span class="ot">Homebrew</span><span class="co">](https://brew.sh/)</span>，这是一个非常出色的包管理器。</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**安装Homebrew** (如果尚未安装):</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>    打开“终端” (Terminal) 应用，复制并粘贴以下命令，然后按回车执行。</span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a>    <span class="ex">/bin/bash</span> <span class="at">-c</span> <span class="st">"</span><span class="va">$(</span><span class="ex">curl</span> <span class="at">-fsSL</span> https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh<span class="va">)</span><span class="st">"</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装JDK**:</span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a>    使用Homebrew安装OpenJDK 21。</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a>    <span class="ex">brew</span> install openjdk@21</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**配置环境变量**:</span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a>    为了让系统能够找到JDK，我们需要设置<span class="in">`JAVA_HOME`</span>环境变量，并将其添加到<span class="in">`PATH`</span>中。</span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'export JAVA_HOME=$(/usr/libexec/java_home -v 21)'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">'export PATH=$JAVA_HOME/bin:$PATH'</span> <span class="op">&gt;&gt;</span> ~/.zshrc</span>
+<span id="cb11-51"><a href="#cb11-51" aria-hidden="true" tabindex="-1"></a>    <span class="bu">source</span> ~/.zshrc</span>
+<span id="cb11-52"><a href="#cb11-52" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (Windows)</span></span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a>对于Windows用户，我们推荐使用<span class="co">[</span><span class="ot">Chocolatey</span><span class="co">](https://chocolatey.org/)</span>包管理器。</span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**安装Chocolatey** (如果尚未安装):</span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a>    以管理员身份打开PowerShell，然后执行以下命令：</span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a>    <span class="in">```powershell</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a><span class="in">    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))</span></span>
+<span id="cb11-63"><a href="#cb11-63" aria-hidden="true" tabindex="-1"></a><span class="in">    ```</span></span>
+<span id="cb11-64"><a href="#cb11-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装JDK**:</span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>    在管理员PowerShell中执行：</span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a>    <span class="in">```powershell</span></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="in">    choco install openjdk --version=21</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="in">    ```</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a>    Chocolatey会自动为你配置好环境变量。</span>
+<span id="cb11-72"><a href="#cb11-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-73"><a href="#cb11-73" aria-hidden="true" tabindex="-1"></a><span class="fu">### **验证安装 (仪式感!)**</span></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>无论你使用哪个操作系统，完成安装后，请**重新打开一个新的终端或PowerShell窗口**，然后依次执行以下三个命令，并确保输出与示例类似。</span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**检查Java运行时版本**:</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a>    <span class="ex">java</span> <span class="at">--version</span></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a>    你应该看到类似 <span class="in">`openjdk 21.x.x ...`</span> 的输出。</span>
+<span id="cb11-83"><a href="#cb11-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-84"><a href="#cb11-84" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**检查Java编译器版本**:</span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>    <span class="ex">javac</span> <span class="at">--version</span></span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a>    你应该看到类似 <span class="in">`javac 21.x.x`</span> 的输出。</span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**检查JAVA_HOME变量**:</span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>macOS: <span class="in">`echo $JAVA_HOME`</span></span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>Windows: <span class="in">`echo %JAVA_HOME%`</span></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a>    你应该看到指向JDK 21安装路径的输出。</span>
+<span id="cb11-95"><a href="#cb11-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-96"><a href="#cb11-96" aria-hidden="true" tabindex="-1"></a>**如果三个命令都得到了正确的输出，恭喜你！你已经成功点燃了工坊的熔炉。请务必将这三个成功验证的截图保存下来，这是你作为VibeVault创造者的第一个里程碑！**</span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 安装Visual Studio Code (VS Code)</span></span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a>VS Code是我们的现代化智能工坊。</span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**下载并安装**:</span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>    访问<span class="co">[</span><span class="ot">VS Code官方网站</span><span class="co">](https://code.visualstudio.com/)</span>，下载对应你的操作系统的稳定版并安装。</span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装必备扩展**:</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>    打开VS Code，点击左侧边栏的“扩展”图标（四个方块的形状）。在搜索框中，搜索并安装以下扩展包：</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**Extension Pack for Java**: 这是来自微软的官方Java扩展包，它包含了语言支持、调试器、测试运行器、Maven/Gradle支持等一系列必备工具。</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**GitHub Copilot**: 这就是我们的AI副驾驶。你需要一个GitHub账号来激活它。（新用户通常有免费试用期）</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 安装Gradle</span></span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>Gradle是保障我们项目秩序的法律体系。</span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (macOS)</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>使用Homebrew安装：</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install gradle</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安装步骤 (Windows)</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>使用Chocolatey安装：</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a><span class="ex">choco</span> install gradle</span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a><span class="fu">### **验证安装 (再次的仪式感!)**</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>**重新打开一个新的终端或PowerShell窗口**，执行以下命令：</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a><span class="ex">gradle</span> <span class="at">--version</span></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>你应该能看到Gradle的版本信息，以及你刚刚安装的Java 21 (JVM) 的信息。</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a>    **[里程碑]** 严格按照本节教程，完成JDK、VS Code、Gradle的安装和配置。确保<span class="in">`java --version`</span>, <span class="in">`javac --version`</span>, <span class="in">`gradle --version`</span>三个命令的输出完全正确。将这三个命令成功执行的终端截图拼接成一张图片，命名为<span class="in">`milestone-01-env-setup.png`</span>并保存在一个你记得住的地方。这是你的第一个重要成就！</span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验**:</span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a>    这个实验旨在让你理解环境变量的核心作用。</span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**macOS**: 编辑<span class="in">`~/.zshrc`</span>文件，暂时将<span class="in">`JAVA_HOME`</span>的路径改错（例如，在路径末尾加一个<span class="in">`_INVALID`</span>）。保存文件后，执行<span class="in">`source ~/.zshrc`</span>使其生效。</span>
+<span id="cb11-148"><a href="#cb11-148" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**Windows**: 在“编辑系统环境变量”中，找到<span class="in">`JAVA_HOME`</span>并将其值改错。</span>
+<span id="cb11-149"><a href="#cb11-149" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**实验操作**: **重新打开一个终端窗口**，再次运行<span class="in">`java --version`</span>和<span class="in">`gradle --version`</span>。观察并仔细阅读出现的错误信息。这个错误信息告诉你了什么？它如何证明<span class="in">`JAVA_HOME`</span>的不可或缺性？完成后，记得将环境变量改回正确的路径。</span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入探索**:</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a>    我们在系统的<span class="in">`PATH`</span>环境变量中加入了Java和Gradle的<span class="in">`bin`</span>目录。<span class="in">`bin`</span>是“binary”（二进制可执行文件）的缩写。</span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>找到你的JDK安装路径（可以根据<span class="in">`JAVA_HOME`</span>的输出来找）。</span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用文件浏览器打开这个路径下的<span class="in">`bin`</span>目录。</span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>看看里面除了<span class="in">`java`</span>和<span class="in">`javac`</span>，还有哪些可执行文件？尝试在终端中运行一下其他命令（例如<span class="in">`jar --version`</span>），结合网络搜索，了解<span class="in">`jar`</span>命令是用来做什么的？这个探索能让你对JDK这个“工具包”有更具体的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
