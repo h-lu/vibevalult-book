@@ -76,19 +76,7 @@ book:
         - chapters/09-visibility/02b-what-is-a-hook.qmd
         - chapters/09-visibility/03-first-component.qmd
         
-    - part: chapters/10-identity/index.qmd
-      chapters:
-        - chapters/10-identity/01-why-security.qmd
-        - chapters/10-identity/02-why-jwt.qmd
-        - chapters/10-identity/03-first-defense.qmd
-        - chapters/10-identity/04-opening-gates.qmd
-        - chapters/10-identity/05-digital-passport.qmd
-        - chapters/10-identity/06-authorization.qmd
-        - chapters/10-identity/06-gatekeeper.qmd
-        - chapters/10-identity/07-cors.qmd
-        - chapters/10-identity/08-refactoring.qmd
-        - chapters/10-identity/09-authorization.qmd
-        - chapters/10-identity/10-summary.qmd
+
         
   appendices:
     - appendices/first-principles.qmd
