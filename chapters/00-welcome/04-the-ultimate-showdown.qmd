@@ -4,15 +4,15 @@ title: "附录：终极对决——为什么是Java？"
 
 > "战略的本质，是选择不做哪些事。" - 迈克尔·波特
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV11LaGzkExX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 在开启这趟宏大的旅程之前，我们必须回答一个最根本、最无法回避的问题：**在当今众多优秀的全栈技术生态中，我们为什么选择Java和它的Spring框架？**
 
 这是一个关乎本书“智力诚实”的核心问题。如果我们的答案是“因为这是一本Java书”，那么本书就丧失了所有价值。我们的答案必须是，也只能是：**因为我们所规划的这趟独一無二的、从零到云端的完整软件工程之旅，经过第一性原理的严苛筛选后，Java生态是唯一能完美胜任全程的、最负责任、也最具教学价值的选择。**
 
 这不是一个偏好问题，这是一个基于我们宏大教学目标的、理性的工程决策。
-
-::: {.video-container}
-<iframe src="//player.bilibili.com/player.html?bvid=BV11LaGzkExX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
-:::
 
 ### **我们的旅程：不止是“写代码”，而是“做工程”**
 
