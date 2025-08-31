@@ -4,6 +4,10 @@ title: "初学者如何在AI时代茁壮成长：黄金法则"
 
 > "不要成为你工具的奴隶。" - 佚名
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1CHaGzBEHi&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 在AI辅助编程的浪潮中，初学者面临着前所未有的机遇，但也伴随着独特的挑战。AI可以让你在短时间内看到“成果”，但如果缺乏正确的学习方法和思维模式，你可能会陷入“看起来很懂，实则不然”的陷阱。为了在AI时代真正茁壮成长，成为一名具备持久工程技能和卓越问题解决能力的未来软件工程师，你必须遵守以下“黄金法则”：
 
 #### **1. 拥抱第一性原理：建立深刻的“心智模型”**

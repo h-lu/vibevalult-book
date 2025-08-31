@@ -4,9 +4,15 @@ title: "Vibe的转变：什么是Vibe Coding？"
 
 > "我们称之为思想的，是与音乐共舞的情感。" - 弗拉基米尔·纳博科夫
 
+
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV11LaGzkECw&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 欢迎来到一个全新的编程时代。你可能已经感受到了空气中弥漫的“Vibe”正在发生转变——一股由人工智能驱动的强大浪潮，正在重塑我们对软件开发的认知。过去，编程常常被描绘成一种严谨、逻辑至上、甚至有些枯燥的活动，充满了对语法细节和样板代码的重复劳动。但现在，随着AI辅助编码工具的崛起，这种“Vibe”正在被彻底颠覆。
 
 我们称这种新范式为**Vibe Coding**。
+
 
 #### **1. 告别“码农”，拥抱“创造者”与“架构师”**
 

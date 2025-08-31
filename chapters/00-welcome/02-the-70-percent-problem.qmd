@@ -8,6 +8,10 @@ title: "70%难题：AI的机遇与陷阱"
 
 然而，现实很快就会到来，这就是我们所说的“**70%难题**”。
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1K5aGz5EU4&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 #### **1. AI的超能力：偶然复杂性的终结者**
 
 AI在以下方面表现出卓越的能力：

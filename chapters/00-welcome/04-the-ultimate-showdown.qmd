@@ -10,6 +10,10 @@ title: "附录：终极对决——为什么是Java？"
 
 这不是一个偏好问题，这是一个基于我们宏大教学目标的、理性的工程决策。
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV11LaGzkExX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ### **我们的旅程：不止是“写代码”，而是“做工程”**
 
 让我们再次明确我们这趟旅程的路线图：
