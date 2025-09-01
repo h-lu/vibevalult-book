@@ -499,6 +499,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“凡事预则立，不预则废。” —— 《礼记·中庸》</p>
 </blockquote>
+<div class="video-container">
+<iframe src="//player.bilibili.com/player.html?bvid=BV1pEaHzaEQD&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400">
+</iframe>
+</div>
 <section id="本节危机万事俱备何处下手" class="level2">
 <h2 class="anchored" data-anchor-id="本节危机万事俱备何处下手">本节危机：万事俱备，何处下手？</h2>
 <p>我们的工坊已经搭建完毕，工具（JDK, VS Code, Gradle）也已各就各位。但现在，我们站在一片空地上。我们知道要盖一座名为“VibeVault”的大厦，但第一块砖应该放在哪里？项目的代码应该如何组织？测试代码又该放在何处？我们未来的AI伙伴如何才能快速看懂我们的项目结构，并与我们高效协作？</p>
@@ -1110,194 +1114,198 @@ BUILD SUCCESSFUL in 1s</code></pre>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "凡事预则立，不预则废。" —— 《礼记·中庸》</span></span>
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：万事俱备，何处下手？</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>我们的工坊已经搭建完毕，工具（JDK, VS Code, Gradle）也已各就各位。但现在，我们站在一片空地上。我们知道要盖一座名为“VibeVault”的大厦，但第一块砖应该放在哪里？项目的代码应该如何组织？测试代码又该放在何处？我们未来的AI伙伴如何才能快速看懂我们的项目结构，并与我们高效协作？</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>::: {.video-container}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"//player.bilibili.com/player.html?bvid=BV1pEaHzaEQD</span><span class="er">&amp;</span><span class="st">page=1"</span><span class="ot"> scrolling</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> border</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> frameborder</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> framespacing</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> allowfullscreen</span><span class="op">=</span><span class="st">"true"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>如果随心所欲地创建文件和目录，项目很快就会变成一个难以理解、无法维护的“代码迷宫”。**我们面临的危机是：如何从一开始就建立一个清晰、标准、可扩展的项目结构？**</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：万事俱备，何处下手？</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：让“法律”为我们绘制蓝图</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>我们的工坊已经搭建完毕，工具（JDK, VS Code, Gradle）也已各就各位。但现在，我们站在一片空地上。我们知道要盖一座名为“VibeVault”的大厦，但第一块砖应该放在哪里？项目的代码应该如何组织？测试代码又该放在何处？我们未来的AI伙伴如何才能快速看懂我们的项目结构，并与我们高效协作？</span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>我们无需从零开始发明项目结构。我们已经拥有了项目的“法律系统”——Gradle。它的“约定优于配置”原则，为我们提供了一套行业通用的、经过千锤百炼的标准蓝图。我们只需要执行一个简单的命令，Gradle就会为我们“绘制”出这份蓝图。</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>如果随心所欲地创建文件和目录，项目很快就会变成一个难以理解、无法维护的“代码迷宫”。**我们面临的危机是：如何从一开始就建立一个清晰、标准、可扩展的项目结构？**</span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>**顿悟在于：我们不应抗拒约定，而应拥抱约定。** 使用<span class="in">`gradle init`</span>命令，就像是聘请了一位经验丰富的建筑师，他瞬间就为我们规划好了地基、承重墙和功能分区，让我们可以直接开始添砖加瓦。</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：让“法律”为我们绘制蓝图</span></span>
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>我们无需从零开始发明项目结构。我们已经拥有了项目的“法律系统”——Gradle。它的“约定优于配置”原则，为我们提供了一套行业通用的、经过千锤百炼的标准蓝图。我们只需要执行一个简单的命令，Gradle就会为我们“绘制”出这份蓝图。</span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 初始化项目：与向导对话</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>**顿悟在于：我们不应抗拒约定，而应拥抱约定。** 使用<span class="in">`gradle init`</span>命令，就像是聘请了一位经验丰富的建筑师，他瞬间就为我们规划好了地基、承重墙和功能分区，让我们可以直接开始添砖加瓦。</span>
 <span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>现在，让我们打下第一根桩。选择一个你喜欢的工作目录（例如 <span class="in">`~/projects`</span> 或 <span class="in">`D:\dev`</span>），然后打开终端或PowerShell，执行以下步骤。</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建并进入项目根目录**:</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 初始化项目：与向导对话</span></span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> VibeVault</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> VibeVault</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    我们所有的代码都将存放在这个<span class="in">`VibeVault`</span>文件夹中。</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**运行Gradle初始化向导**:</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    在 <span class="in">`VibeVault`</span> 目录下，执行以下命令来启动交互式向导：</span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    <span class="ex">gradle</span> init</span>
-<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**回答Gradle的提问**:</span>
-<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    Gradle会像一位建筑顾问一样，问你一系列问题来确定项目蓝图。请参照以下指引回答。</span>
-<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **注意**：随着Gradle版本更新，问题的措辞或顺序可能略有不同。关键是理解每个问题的目的。</span></span>
-<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select type of project to generate:`</span></span>
-<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: application`</span> (我们的目标是创建一个可独立运行的应用程序)。</span>
-<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select implementation language:`</span></span>
-<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: Java`</span>。</span>
-<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Split functionality across multiple subprojects?`</span></span>
-<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: no`</span> (我们暂时先做一个单体项目)。新版的Gradle可能会问 <span class="in">`Select application structure:`</span>，此时选择 <span class="in">`1: Single application project`</span>。</span>
-<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select build script DSL:`</span></span>
-<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: Kotlin`</span> (我们将使用Kotlin作为构建脚本语言，它更现代、类型更安全)。</span>
-<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Generate build using new APIs and behavior?`</span></span>
-<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`yes`</span> (我们希望使用最新的Gradle功能)。</span>
-<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Project name [VibeVault]:`</span></span>
-<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a>        直接按回车，使用默认的项目名（与我们的目录名一致）。</span>
-<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Source package [VibeVault]:`</span></span>
-<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a>        输入 <span class="in">`com.vibevault`</span> 然后回车。这是Java的包名约定，通常是反向的域名。</span>
-<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select test framework:`</span></span>
-<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a>        **务必选择 `4: JUnit Jupiter`**。这是JUnit 5的代号，是当前Java社区的测试标准。请不要选择JUnit 4。</span>
-<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a>    完成后，Gradle会为你生成一套完整、现代化的项目结构。</span>
-<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 在VS Code中打开你的“建筑工地”</span></span>
-<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>项目已初始化完毕。现在，让我们用智能工坊来审视它。在<span class="in">`VibeVault`</span>目录下执行：</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>现在，让我们打下第一根桩。选择一个你喜欢的工作目录（例如 <span class="in">`~/projects`</span> 或 <span class="in">`D:\dev`</span>），然后打开终端或PowerShell，执行以下步骤。</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建并进入项目根目录**:</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mkdir</span> VibeVault</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> VibeVault</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    我们所有的代码都将存放在这个<span class="in">`VibeVault`</span>文件夹中。</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**运行Gradle初始化向导**:</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>    在 <span class="in">`VibeVault`</span> 目录下，执行以下命令来启动交互式向导：</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    <span class="ex">gradle</span> init</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**回答Gradle的提问**:</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    Gradle会像一位建筑顾问一样，问你一系列问题来确定项目蓝图。请参照以下指引回答。</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; **注意**：随着Gradle版本更新，问题的措辞或顺序可能略有不同。关键是理解每个问题的目的。</span></span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select type of project to generate:`</span></span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: application`</span> (我们的目标是创建一个可独立运行的应用程序)。</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select implementation language:`</span></span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: Java`</span>。</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Split functionality across multiple subprojects?`</span></span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: no`</span> (我们暂时先做一个单体项目)。新版的Gradle可能会问 <span class="in">`Select application structure:`</span>，此时选择 <span class="in">`1: Single application project`</span>。</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select build script DSL:`</span></span>
+<span id="cb10-59"><a href="#cb10-59" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`1: Kotlin`</span> (我们将使用Kotlin作为构建脚本语言，它更现代、类型更安全)。</span>
+<span id="cb10-60"><a href="#cb10-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-61"><a href="#cb10-61" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Generate build using new APIs and behavior?`</span></span>
+<span id="cb10-62"><a href="#cb10-62" aria-hidden="true" tabindex="-1"></a>        选择 <span class="in">`yes`</span> (我们希望使用最新的Gradle功能)。</span>
+<span id="cb10-63"><a href="#cb10-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-64"><a href="#cb10-64" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Project name [VibeVault]:`</span></span>
+<span id="cb10-65"><a href="#cb10-65" aria-hidden="true" tabindex="-1"></a>        直接按回车，使用默认的项目名（与我们的目录名一致）。</span>
+<span id="cb10-66"><a href="#cb10-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-67"><a href="#cb10-67" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Source package [VibeVault]:`</span></span>
+<span id="cb10-68"><a href="#cb10-68" aria-hidden="true" tabindex="-1"></a>        输入 <span class="in">`com.vibevault`</span> 然后回车。这是Java的包名约定，通常是反向的域名。</span>
+<span id="cb10-69"><a href="#cb10-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-70"><a href="#cb10-70" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`Select test framework:`</span></span>
+<span id="cb10-71"><a href="#cb10-71" aria-hidden="true" tabindex="-1"></a>        **务必选择 `4: JUnit Jupiter`**。这是JUnit 5的代号，是当前Java社区的测试标准。请不要选择JUnit 4。</span>
+<span id="cb10-72"><a href="#cb10-72" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-73"><a href="#cb10-73" aria-hidden="true" tabindex="-1"></a>    完成后，Gradle会为你生成一套完整、现代化的项目结构。</span>
 <span id="cb10-74"><a href="#cb10-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span>
-<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a>VS Code会自动打开当前项目。右下角可能会弹窗询问“是否信任此文件夹的作者？”，请选择“是”。VS Code的Java扩展包会自动识别这是一个Gradle项目，并开始同步依赖项。</span>
-<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 解剖项目蓝图</span></span>
-<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>花点时间在VS Code的“资源管理器”中展开所有文件夹，你会看到一个清晰、模块化的结构：</span>
+<span id="cb10-75"><a href="#cb10-75" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 在VS Code中打开你的“建筑工地”</span></span>
+<span id="cb10-76"><a href="#cb10-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-77"><a href="#cb10-77" aria-hidden="true" tabindex="-1"></a>项目已初始化完毕。现在，让我们用智能工坊来审视它。在<span class="in">`VibeVault`</span>目录下执行：</span>
+<span id="cb10-78"><a href="#cb10-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-79"><a href="#cb10-79" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb10-80"><a href="#cb10-80" aria-hidden="true" tabindex="-1"></a><span class="ex">code</span> .</span>
+<span id="cb10-81"><a href="#cb10-81" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-82"><a href="#cb10-82" aria-hidden="true" tabindex="-1"></a>VS Code会自动打开当前项目。右下角可能会弹窗询问“是否信任此文件夹的作者？”，请选择“是”。VS Code的Java扩展包会自动识别这是一个Gradle项目，并开始同步依赖项。</span>
 <span id="cb10-83"><a href="#cb10-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a><span class="in">VibeVault/</span></span>
-<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a><span class="in">├── .gradle/                  &lt;-- Gradle的缓存和元数据</span></span>
-<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a><span class="in">├── app/                      &lt;-- 【核心】存放应用程序代码的模块</span></span>
-<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── build.gradle.kts      &lt;-- 【核心】app模块的“宪法”，定义构建逻辑和依赖</span></span>
-<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── src/                  &lt;-- 所有源代码的家</span></span>
-<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a><span class="in">│       ├── main/             &lt;-- 主要应用程序代码 (例如 App.java)</span></span>
-<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a><span class="in">│       └── test/             &lt;-- 所有测试代码 (例如 AppTest.java)</span></span>
-<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradle/                   &lt;-- Gradle Wrapper，确保构建环境的一致性</span></span>
-<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── libs.versions.toml    &lt;-- 【核心】版本目录，集中管理依赖项版本</span></span>
-<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── wrapper/</span></span>
-<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a><span class="in">│       ├── gradle-wrapper.jar</span></span>
-<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a><span class="in">│       └── gradle-wrapper.properties</span></span>
-<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradlew                   &lt;-- *nix系统下的Gradle Wrapper可执行脚本</span></span>
-<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradlew.bat               &lt;-- Windows系统下的Gradle Wrapper可执行脚本</span></span>
-<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a><span class="in">└── settings.gradle.kts       &lt;-- 【核心】项目的全局设置，定义包含哪些模块</span></span>
-<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>**从第一性原理理解这个结构：**</span>
-<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`settings.gradle.kts`**: 整个项目的“入口”和“地图”。它定义了项目的名称，并使用 <span class="in">`include("app")`</span> 声明<span class="in">`app`</span>目录是一个参与构建的模块。</span>
-<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`app` 目录**: 新版Gradle默认会为你的应用创建一个名为<span class="in">`app`</span>的子模块。这是一种最佳实践，让项目从一开始就具备模块化的潜力。</span>
-<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`app/build.gradle.kts`**: <span class="in">`app`</span>模块的“心脏”。它定义了<span class="in">`app`</span>模块如何被构建，包括它依赖哪些第三方库、应用了哪些插件等。</span>
-<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`gradle/libs.versions.toml`**: 这是现代Gradle项目管理依赖的推荐方式——版本目录（Version Catalog）。我们不再将版本号硬编码在<span class="in">`build.gradle.kts`</span>中，而是集中定义在这里。这让版本升级和管理变得异常清晰和简单。</span>
-<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`src/main` vs `src/test`**: 软件工程的基石，将生产代码与测试代码分离。</span>
-<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`gradlew` 和 `gradlew.bat`**: Gradle Wrapper（包装器）。**未来，我们永远、永远都使用`./gradlew` (macOS/Linux) 或 `gradlew.bat` (Windows) 来执行Gradle命令。** 它能保证任何人在任何机器上都能使用与项目完全匹配的Gradle版本进行构建，从根本上解决“在我机器上是好的”这一经典难题。</span>
-<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. 运行与测试：让项目“活”起来</span></span>
-<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a>项目蓝图已经清晰，但它还只是静态的。现在，我们要让它动起来。在VS Code中，打开终端（<span class="in">`Terminal`</span> -&gt; <span class="in">`New Terminal`</span> 或快捷键 `<span class="in">`Ctrl/Cmd+`</span>J`）。</span>
+<span id="cb10-84"><a href="#cb10-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 解剖项目蓝图</span></span>
+<span id="cb10-85"><a href="#cb10-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-86"><a href="#cb10-86" aria-hidden="true" tabindex="-1"></a>花点时间在VS Code的“资源管理器”中展开所有文件夹，你会看到一个清晰、模块化的结构：</span>
+<span id="cb10-87"><a href="#cb10-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-88"><a href="#cb10-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-89"><a href="#cb10-89" aria-hidden="true" tabindex="-1"></a><span class="in">VibeVault/</span></span>
+<span id="cb10-90"><a href="#cb10-90" aria-hidden="true" tabindex="-1"></a><span class="in">├── .gradle/                  &lt;-- Gradle的缓存和元数据</span></span>
+<span id="cb10-91"><a href="#cb10-91" aria-hidden="true" tabindex="-1"></a><span class="in">├── app/                      &lt;-- 【核心】存放应用程序代码的模块</span></span>
+<span id="cb10-92"><a href="#cb10-92" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── build.gradle.kts      &lt;-- 【核心】app模块的“宪法”，定义构建逻辑和依赖</span></span>
+<span id="cb10-93"><a href="#cb10-93" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── src/                  &lt;-- 所有源代码的家</span></span>
+<span id="cb10-94"><a href="#cb10-94" aria-hidden="true" tabindex="-1"></a><span class="in">│       ├── main/             &lt;-- 主要应用程序代码 (例如 App.java)</span></span>
+<span id="cb10-95"><a href="#cb10-95" aria-hidden="true" tabindex="-1"></a><span class="in">│       └── test/             &lt;-- 所有测试代码 (例如 AppTest.java)</span></span>
+<span id="cb10-96"><a href="#cb10-96" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradle/                   &lt;-- Gradle Wrapper，确保构建环境的一致性</span></span>
+<span id="cb10-97"><a href="#cb10-97" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── libs.versions.toml    &lt;-- 【核心】版本目录，集中管理依赖项版本</span></span>
+<span id="cb10-98"><a href="#cb10-98" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── wrapper/</span></span>
+<span id="cb10-99"><a href="#cb10-99" aria-hidden="true" tabindex="-1"></a><span class="in">│       ├── gradle-wrapper.jar</span></span>
+<span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a><span class="in">│       └── gradle-wrapper.properties</span></span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradlew                   &lt;-- *nix系统下的Gradle Wrapper可执行脚本</span></span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a><span class="in">├── gradlew.bat               &lt;-- Windows系统下的Gradle Wrapper可执行脚本</span></span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a><span class="in">└── settings.gradle.kts       &lt;-- 【核心】项目的全局设置，定义包含哪些模块</span></span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-105"><a href="#cb10-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-106"><a href="#cb10-106" aria-hidden="true" tabindex="-1"></a>**从第一性原理理解这个结构：**</span>
+<span id="cb10-107"><a href="#cb10-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-108"><a href="#cb10-108" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`settings.gradle.kts`**: 整个项目的“入口”和“地图”。它定义了项目的名称，并使用 <span class="in">`include("app")`</span> 声明<span class="in">`app`</span>目录是一个参与构建的模块。</span>
+<span id="cb10-109"><a href="#cb10-109" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`app` 目录**: 新版Gradle默认会为你的应用创建一个名为<span class="in">`app`</span>的子模块。这是一种最佳实践，让项目从一开始就具备模块化的潜力。</span>
+<span id="cb10-110"><a href="#cb10-110" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`app/build.gradle.kts`**: <span class="in">`app`</span>模块的“心脏”。它定义了<span class="in">`app`</span>模块如何被构建，包括它依赖哪些第三方库、应用了哪些插件等。</span>
+<span id="cb10-111"><a href="#cb10-111" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`gradle/libs.versions.toml`**: 这是现代Gradle项目管理依赖的推荐方式——版本目录（Version Catalog）。我们不再将版本号硬编码在<span class="in">`build.gradle.kts`</span>中，而是集中定义在这里。这让版本升级和管理变得异常清晰和简单。</span>
+<span id="cb10-112"><a href="#cb10-112" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`src/main` vs `src/test`**: 软件工程的基石，将生产代码与测试代码分离。</span>
+<span id="cb10-113"><a href="#cb10-113" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`gradlew` 和 `gradlew.bat`**: Gradle Wrapper（包装器）。**未来，我们永远、永远都使用`./gradlew` (macOS/Linux) 或 `gradlew.bat` (Windows) 来执行Gradle命令。** 它能保证任何人在任何机器上都能使用与项目完全匹配的Gradle版本进行构建，从根本上解决“在我机器上是好的”这一经典难题。</span>
 <span id="cb10-114"><a href="#cb10-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### 运行你的应用</span></span>
+<span id="cb10-115"><a href="#cb10-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## 4. 运行与测试：让项目“活”起来</span></span>
 <span id="cb10-116"><a href="#cb10-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>执行以下命令：</span>
+<span id="cb10-117"><a href="#cb10-117" aria-hidden="true" tabindex="-1"></a>项目蓝图已经清晰，但它还只是静态的。现在，我们要让它动起来。在VS Code中，打开终端（<span class="in">`Terminal`</span> -&gt; <span class="in">`New Terminal`</span> 或快捷键 `<span class="in">`Ctrl/Cmd+`</span>J`）。</span>
 <span id="cb10-118"><a href="#cb10-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> run</span>
-<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-119"><a href="#cb10-119" aria-hidden="true" tabindex="-1"></a><span class="fu">### 运行你的应用</span></span>
+<span id="cb10-120"><a href="#cb10-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-121"><a href="#cb10-121" aria-hidden="true" tabindex="-1"></a>执行以下命令：</span>
 <span id="cb10-122"><a href="#cb10-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a>你会看到类似这样的输出：</span>
-<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-123"><a href="#cb10-123" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb10-124"><a href="#cb10-124" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> run</span>
 <span id="cb10-125"><a href="#cb10-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a><span class="in">&gt; Task :app:run</span></span>
-<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a><span class="in">Hello World!</span></span>
+<span id="cb10-126"><a href="#cb10-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-127"><a href="#cb10-127" aria-hidden="true" tabindex="-1"></a>你会看到类似这样的输出：</span>
 <span id="cb10-128"><a href="#cb10-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a><span class="in">BUILD SUCCESSFUL in 1s</span></span>
-<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a><span class="in">`./gradlew run`</span> 命令会执行<span class="in">`application`</span>插件提供的<span class="in">`run`</span>任务，该任务会找到<span class="in">`app/build.gradle.kts`</span>中配置的主类（<span class="in">`mainClass`</span>），并运行它的<span class="in">`main`</span>方法。Gradle已经为我们生成了一个简单的<span class="in">`App.java`</span>，它会打印出 "Hello World!"。</span>
-<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a><span class="fu">### 运行单元测试</span></span>
+<span id="cb10-129"><a href="#cb10-129" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-130"><a href="#cb10-130" aria-hidden="true" tabindex="-1"></a><span class="in">&gt; Task :app:run</span></span>
+<span id="cb10-131"><a href="#cb10-131" aria-hidden="true" tabindex="-1"></a><span class="in">Hello World!</span></span>
+<span id="cb10-132"><a href="#cb10-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-133"><a href="#cb10-133" aria-hidden="true" tabindex="-1"></a><span class="in">BUILD SUCCESSFUL in 1s</span></span>
+<span id="cb10-134"><a href="#cb10-134" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-135"><a href="#cb10-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a>执行以下命令来构建整个项目并运行所有测试：</span>
+<span id="cb10-136"><a href="#cb10-136" aria-hidden="true" tabindex="-1"></a><span class="in">`./gradlew run`</span> 命令会执行<span class="in">`application`</span>插件提供的<span class="in">`run`</span>任务，该任务会找到<span class="in">`app/build.gradle.kts`</span>中配置的主类（<span class="in">`mainClass`</span>），并运行它的<span class="in">`main`</span>方法。Gradle已经为我们生成了一个简单的<span class="in">`App.java`</span>，它会打印出 "Hello World!"。</span>
 <span id="cb10-137"><a href="#cb10-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> build</span>
-<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a>或者，如果你只想运行测试：</span>
-<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> test</span>
-<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-138"><a href="#cb10-138" aria-hidden="true" tabindex="-1"></a><span class="fu">### 运行单元测试</span></span>
+<span id="cb10-139"><a href="#cb10-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-140"><a href="#cb10-140" aria-hidden="true" tabindex="-1"></a>执行以下命令来构建整个项目并运行所有测试：</span>
+<span id="cb10-141"><a href="#cb10-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-142"><a href="#cb10-142" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb10-143"><a href="#cb10-143" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> build</span>
+<span id="cb10-144"><a href="#cb10-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb10-145"><a href="#cb10-145" aria-hidden="true" tabindex="-1"></a>或者，如果你只想运行测试：</span>
 <span id="cb10-146"><a href="#cb10-146" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a>如果一切顺利，你会看到 <span class="in">`BUILD SUCCESSFUL`</span>。这意味着项目中的所有测试（目前只有一个由Gradle生成的<span class="in">`AppTest.java`</span>）都已经通过。这保证了我们代码的基本质量。</span>
-<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-147"><a href="#cb10-147" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb10-148"><a href="#cb10-148" aria-hidden="true" tabindex="-1"></a><span class="ex">./gradlew</span> test</span>
+<span id="cb10-149"><a href="#cb10-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb10-150"><a href="#cb10-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb10-151"><a href="#cb10-151" aria-hidden="true" tabindex="-1"></a>如果一切顺利，你会看到 <span class="in">`BUILD SUCCESSFUL`</span>。这意味着项目中的所有测试（目前只有一个由Gradle生成的<span class="in">`AppTest.java`</span>）都已经通过。这保证了我们代码的基本质量。</span>
 <span id="cb10-152"><a href="#cb10-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习：添加并使用新依赖**</span>
-<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a>    现代软件开发就是站在巨人的肩膀上。让我们来引入一个非常流行的JSON处理库——Google Gson。</span>
-<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第一步：声明依赖版本**。打开 <span class="in">`gradle/libs.versions.toml`</span> 文件。在 <span class="in">`[versions]`</span> 部分，添加一行 <span class="in">`gson = "2.10.1"`</span>。在 <span class="in">`[libraries]`</span> 部分，添加 <span class="in">`google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }`</span>。</span>
-<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第二步：应用依赖**。打开 <span class="in">`app/build.gradle.kts`</span> 文件。在 <span class="in">`dependencies`</span> 代码块中，添加一行 <span class="in">`implementation(libs.google.gson)`</span>。</span>
-<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第三步：同步项目**。保存文件后，点击VS Code右下角弹出的“大象”图标或刷新按钮，让Gradle同步新的依赖。</span>
-<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第四步：使用依赖**。修改 <span class="in">`app/src/main/java/com/vibevault/App.java`</span> 文件，用Gson来转换一个对象为JSON字符串并打印出来。</span>
-<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a>        <span class="in">```java</span></span>
-<span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a>        <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
-<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>        <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">google</span><span class="op">.</span><span class="im">gson</span><span class="op">.</span><span class="im">Gson</span><span class="op">;</span></span>
-<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a>        <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Map</span><span class="op">;</span></span>
-<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="kw">class</span> App <span class="op">{</span></span>
-<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a>            <span class="kw">public</span> <span class="bu">String</span> <span class="fu">getGreeting</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="st">"Hello from VibeVault!"</span><span class="op">;</span></span>
-<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a>            <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 使用Gson</span></span>
-<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a>                Gson gson <span class="op">=</span> <span class="kw">new</span> <span class="fu">Gson</span><span class="op">();</span></span>
-<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a>                <span class="bu">Map</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">,</span> <span class="bu">String</span><span class="op">&gt;</span> data <span class="op">=</span> <span class="bu">Map</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"message"</span><span class="op">,</span> <span class="kw">new</span> <span class="fu">App</span><span class="op">().</span><span class="fu">getGreeting</span><span class="op">());</span></span>
-<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a>                <span class="bu">String</span> json <span class="op">=</span> gson<span class="op">.</span><span class="fu">toJson</span><span class="op">(</span>data<span class="op">);</span></span>
-<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a>                </span>
-<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>json<span class="op">);</span></span>
-<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a>        <span class="in">```</span></span>
-<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第五步：验证结果**。再次运行 <span class="in">`./gradlew run`</span>，你看到的输出是不是变成了 <span class="in">`{"message":"Hello from VibeVault!"}`</span>？恭喜，你已经掌握了现代Java项目管理依赖的核心技能！</span>
-<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验**</span>
-<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a>    这个实验旨在证明哪些文件是“产物”，哪些是“源码”。</span>
-<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在VS Code的终端中，确保你在<span class="in">`VibeVault`</span>项目根目录下。</span>
-<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>执行构建命令: <span class="in">`./gradlew build`</span></span>
-<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>构建成功后，**手动删除项目根目录下的`.gradle`和`app/build`这两个文件夹**。</span>
-<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>再次运行构建命令: <span class="in">`./gradlew build`</span></span>
-<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>观察发生了什么。<span class="in">`.gradle`</span>和<span class="in">`app/build`</span>文件夹是不是又被重新生成了？这个实验如何证明了这两个文件夹只是可再生的缓存和产物，不应该被提交到版本控制系统中？（这也是为什么标准的<span class="in">`.gitignore`</span>文件会忽略它们）</span>
-<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-192"><a href="#cb10-192" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**</span>
-<span id="cb10-193"><a href="#cb10-193" aria-hidden="true" tabindex="-1"></a>    将你的<span class="in">`app/build.gradle.kts`</span>和<span class="in">`gradle/libs.versions.toml`</span>文件的全部内容复制给你的AI伙伴，然后向它提问：</span>
-<span id="cb10-194"><a href="#cb10-194" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "你好，这是一个现代Gradle项目的构建脚本和版本目录。我是一个初学者，请你扮演一位资深的Java构建工程师，向我解释这两个文件是如何协同工作的？特别是</span><span class="in">`libs.versions.toml`</span><span class="at">中的</span><span class="in">`[versions]`</span><span class="at">, </span><span class="in">`[libraries]`</span><span class="at">, </span><span class="in">`[plugins]`</span><span class="at">各自的作用是什么，以及它们是如何在</span><span class="in">`build.gradle.kts`</span><span class="at">中被引用的？" </span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb10-153"><a href="#cb10-153" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb10-154"><a href="#cb10-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-155"><a href="#cb10-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb10-156"><a href="#cb10-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-157"><a href="#cb10-157" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习：添加并使用新依赖**</span>
+<span id="cb10-158"><a href="#cb10-158" aria-hidden="true" tabindex="-1"></a>    现代软件开发就是站在巨人的肩膀上。让我们来引入一个非常流行的JSON处理库——Google Gson。</span>
+<span id="cb10-159"><a href="#cb10-159" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-160"><a href="#cb10-160" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第一步：声明依赖版本**。打开 <span class="in">`gradle/libs.versions.toml`</span> 文件。在 <span class="in">`[versions]`</span> 部分，添加一行 <span class="in">`gson = "2.10.1"`</span>。在 <span class="in">`[libraries]`</span> 部分，添加 <span class="in">`google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }`</span>。</span>
+<span id="cb10-161"><a href="#cb10-161" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第二步：应用依赖**。打开 <span class="in">`app/build.gradle.kts`</span> 文件。在 <span class="in">`dependencies`</span> 代码块中，添加一行 <span class="in">`implementation(libs.google.gson)`</span>。</span>
+<span id="cb10-162"><a href="#cb10-162" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第三步：同步项目**。保存文件后，点击VS Code右下角弹出的“大象”图标或刷新按钮，让Gradle同步新的依赖。</span>
+<span id="cb10-163"><a href="#cb10-163" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第四步：使用依赖**。修改 <span class="in">`app/src/main/java/com/vibevault/App.java`</span> 文件，用Gson来转换一个对象为JSON字符串并打印出来。</span>
+<span id="cb10-164"><a href="#cb10-164" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-165"><a href="#cb10-165" aria-hidden="true" tabindex="-1"></a>        <span class="in">```java</span></span>
+<span id="cb10-166"><a href="#cb10-166" aria-hidden="true" tabindex="-1"></a>        <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
+<span id="cb10-167"><a href="#cb10-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-168"><a href="#cb10-168" aria-hidden="true" tabindex="-1"></a>        <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">google</span><span class="op">.</span><span class="im">gson</span><span class="op">.</span><span class="im">Gson</span><span class="op">;</span></span>
+<span id="cb10-169"><a href="#cb10-169" aria-hidden="true" tabindex="-1"></a>        <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Map</span><span class="op">;</span></span>
+<span id="cb10-170"><a href="#cb10-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-171"><a href="#cb10-171" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="kw">class</span> App <span class="op">{</span></span>
+<span id="cb10-172"><a href="#cb10-172" aria-hidden="true" tabindex="-1"></a>            <span class="kw">public</span> <span class="bu">String</span> <span class="fu">getGreeting</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb10-173"><a href="#cb10-173" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="st">"Hello from VibeVault!"</span><span class="op">;</span></span>
+<span id="cb10-174"><a href="#cb10-174" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb10-175"><a href="#cb10-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-176"><a href="#cb10-176" aria-hidden="true" tabindex="-1"></a>            <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-177"><a href="#cb10-177" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 使用Gson</span></span>
+<span id="cb10-178"><a href="#cb10-178" aria-hidden="true" tabindex="-1"></a>                Gson gson <span class="op">=</span> <span class="kw">new</span> <span class="fu">Gson</span><span class="op">();</span></span>
+<span id="cb10-179"><a href="#cb10-179" aria-hidden="true" tabindex="-1"></a>                <span class="bu">Map</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">,</span> <span class="bu">String</span><span class="op">&gt;</span> data <span class="op">=</span> <span class="bu">Map</span><span class="op">.</span><span class="fu">of</span><span class="op">(</span><span class="st">"message"</span><span class="op">,</span> <span class="kw">new</span> <span class="fu">App</span><span class="op">().</span><span class="fu">getGreeting</span><span class="op">());</span></span>
+<span id="cb10-180"><a href="#cb10-180" aria-hidden="true" tabindex="-1"></a>                <span class="bu">String</span> json <span class="op">=</span> gson<span class="op">.</span><span class="fu">toJson</span><span class="op">(</span>data<span class="op">);</span></span>
+<span id="cb10-181"><a href="#cb10-181" aria-hidden="true" tabindex="-1"></a>                </span>
+<span id="cb10-182"><a href="#cb10-182" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>json<span class="op">);</span></span>
+<span id="cb10-183"><a href="#cb10-183" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb10-184"><a href="#cb10-184" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb10-185"><a href="#cb10-185" aria-hidden="true" tabindex="-1"></a>        <span class="in">```</span></span>
+<span id="cb10-186"><a href="#cb10-186" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**第五步：验证结果**。再次运行 <span class="in">`./gradlew run`</span>，你看到的输出是不是变成了 <span class="in">`{"message":"Hello from VibeVault!"}`</span>？恭喜，你已经掌握了现代Java项目管理依赖的核心技能！</span>
+<span id="cb10-187"><a href="#cb10-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-188"><a href="#cb10-188" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验**</span>
+<span id="cb10-189"><a href="#cb10-189" aria-hidden="true" tabindex="-1"></a>    这个实验旨在证明哪些文件是“产物”，哪些是“源码”。</span>
+<span id="cb10-190"><a href="#cb10-190" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在VS Code的终端中，确保你在<span class="in">`VibeVault`</span>项目根目录下。</span>
+<span id="cb10-191"><a href="#cb10-191" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>执行构建命令: <span class="in">`./gradlew build`</span></span>
+<span id="cb10-192"><a href="#cb10-192" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>构建成功后，**手动删除项目根目录下的`.gradle`和`app/build`这两个文件夹**。</span>
+<span id="cb10-193"><a href="#cb10-193" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>再次运行构建命令: <span class="in">`./gradlew build`</span></span>
+<span id="cb10-194"><a href="#cb10-194" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>观察发生了什么。<span class="in">`.gradle`</span>和<span class="in">`app/build`</span>文件夹是不是又被重新生成了？这个实验如何证明了这两个文件夹只是可再生的缓存和产物，不应该被提交到版本控制系统中？（这也是为什么标准的<span class="in">`.gitignore`</span>文件会忽略它们）</span>
+<span id="cb10-195"><a href="#cb10-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-196"><a href="#cb10-196" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**</span>
+<span id="cb10-197"><a href="#cb10-197" aria-hidden="true" tabindex="-1"></a>    将你的<span class="in">`app/build.gradle.kts`</span>和<span class="in">`gradle/libs.versions.toml`</span>文件的全部内容复制给你的AI伙伴，然后向它提问：</span>
+<span id="cb10-198"><a href="#cb10-198" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "你好，这是一个现代Gradle项目的构建脚本和版本目录。我是一个初学者，请你扮演一位资深的Java构建工程师，向我解释这两个文件是如何协同工作的？特别是</span><span class="in">`libs.versions.toml`</span><span class="at">中的</span><span class="in">`[versions]`</span><span class="at">, </span><span class="in">`[libraries]`</span><span class="at">, </span><span class="in">`[plugins]`</span><span class="at">各自的作用是什么，以及它们是如何在</span><span class="in">`build.gradle.kts`</span><span class="at">中被引用的？" </span></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

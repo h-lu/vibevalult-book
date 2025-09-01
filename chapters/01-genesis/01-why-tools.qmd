@@ -4,6 +4,10 @@ title: "思想的铸币厂：为何需要语言、IDE与构建工具？"
 
 > "我们塑造了工具，此后工具又塑造了我们。" —— 约翰·卡尔金（John Culkin），引用马歇尔·麦克卢汉
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV16paHzfEDk&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：从混沌到秩序
 
 我们的大脑是一个充满奇思妙想的地方。此刻，一个关于“音乐氛围”的模糊想法正在其中酝酿——也许是一个可以根据心情推荐歌曲的应用，一个能发现小众乐队的平台，或者仅仅是一个属于你自己的、私密的音乐收藏馆。这个想法，我们称之为“Vibe”。

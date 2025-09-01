@@ -4,6 +4,10 @@ title: "绘制蓝图：初始化你的Gradle项目"
 
 > "凡事预则立，不预则废。" —— 《礼记·中庸》
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1pEaHzaEQD&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：万事俱备，何处下手？
 
 我们的工坊已经搭建完毕，工具（JDK, VS Code, Gradle）也已各就各位。但现在，我们站在一片空地上。我们知道要盖一座名为“VibeVault”的大厦，但第一块砖应该放在哪里？项目的代码应该如何组织？测试代码又该放在何处？我们未来的AI伙伴如何才能快速看懂我们的项目结构，并与我们高效协作？

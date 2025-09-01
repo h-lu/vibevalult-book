@@ -4,14 +4,13 @@ title: "第一章：从“无”到“有”：创造你的第一个“数字原
 
 > "道生一。" - 《道德经》
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1CEaHzaEbW&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
 
 ## 本章危机
 
 我们的脑海中有一个关于“音乐”的模糊想法。但在数字世界里，一切皆是数据。我们如何将这个抽象的想法，赋予一个精确、具体、可被机器理解的数字形态？这是从“0”到“1”的鸿沟。
-
-::: {.video-container}
-<iframe src="//player.bilibili.com/player.html?bvid=BV1WUhCztEsY&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
-:::
 
 ## 本章顿悟
 

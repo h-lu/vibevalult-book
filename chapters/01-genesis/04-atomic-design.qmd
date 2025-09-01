@@ -4,6 +4,10 @@ title: "铸造第一个原子：定义Song Record"
 
 > "道生一，一生二，二生三，三生万物。" —— 《道德经》
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV115aHzNEbX&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本章危机：概念的“最后一公里”
 
 我们已经有了坚实的理论基础、全套的开发工具和标准的项目结构。我们已经为“VibeVault”大厦绘制好了蓝图。但是，整座大厦最核心、最基本的建筑材料——那块定义“什么是歌曲”的基石——还未被创造出来。
