@@ -351,7 +351,7 @@
     "href": "chapters/02-aggregation/01-why-encapsulation.html",
     "title": "为何要封装？从数据集合到业务对象",
     "section": "",
-    "text": "本节危机：失控的“原子”集合\n在第一章，我们成功铸造了“歌曲”(Song)这个数字原子。现在，我们自然而然地想将它们组织起来。一个最直接的想法，可能就是在我们的VibeVaultApp的main方法里，创建一个列表来存放它们：\n这看起来简单直接，不是吗？但随着我们想象中的VibeVault应用逐渐变大，这种做法将引发一场灾难。\n想象一下，几个月后，我们的项目有了成千上万行代码。 * 另一个程序员（或者几个月后忘了细节的你自己）在代码的某个遥远角落，需要向播放列表里添加歌曲。他会直接操作这个mySongs列表吗？ * 如果这时我们引入一个新规则：“一个播放列表最多只能有100首歌”，我们该如何保证这个规则被遵守？是在每一个调用.add()方法的地方都写一段检查代码吗？ * 如果未来我们发现ArrayList性能不佳，想换成LinkedList，我们需要修改多少个文件？ * 当我们的AI伙伴试图理解“播放列表”这个概念时，它看到的是一个平平无奇的List&lt;Song&gt;，还是一个权责分明、意图清晰的业务对象？\n我们面临的危机是：当数据和操作它的逻辑相分离时，系统将不可避免地走向混乱。 简单的List&lt;Song&gt;只是一个“数据集合”，它没有任何业务含义，也没有能力保护自己的状态。它就像一堆散落的原子，而非一个稳定的分子。",
+    "text": "本节危机：失控的“原子”集合\n在第一章，我们成功铸造了“歌曲”(Song)这个数字原子。现在，我们自然而然地想将它们组织起来。一个最直接的想法，可能就是在我们的VibeVaultApp的main方法里，创建一个列表来存放它们：\n这看起来简单直接，不是吗？但随着我们想象中的VibeVault应用逐渐变大，这种做法将引发一场灾难。\n想象一下，几个月后，我们的项目有了成千上万行代码。\n我们面临的危机是：当数据和操作它的逻辑相分离时，系统将不可避免地走向混乱。 简单的List&lt;Song&gt;只是一个“数据集合”，它没有任何业务含义，也没有能力保护自己的状态。它就像一堆散落的原子，而非一个稳定的分子。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>为何要封装？从数据集合到业务对象</span>"
@@ -362,7 +362,7 @@
     "href": "chapters/02-aggregation/01-why-encapsulation.html#本节危机失控的原子集合",
     "title": "为何要封装？从数据集合到业务对象",
     "section": "",
-    "text": "// 在 main 方法中...\nList&lt;Song&gt; mySongs = new ArrayList&lt;&gt;();\nmySongs.add(new Song(\"Bohemian Rhapsody\", \"Queen\", 355));\nmySongs.add(new Song(\"Like a Rolling Stone\", \"Bob Dylan\", 360));\n\n// 我们可以随意地操作这个列表\nmySongs.remove(0);\nmySongs.clear();",
+    "text": "// 在 main 方法中...\nList&lt;Song&gt; mySongs = new ArrayList&lt;&gt;();\nmySongs.add(new Song(\"Bohemian Rhapsody\", \"Queen\", 355));\nmySongs.add(new Song(\"Like a Rolling Stone\", \"Bob Dylan\", 360));\n\n// 我们可以随意地操作这个列表\nmySongs.remove(0);\nmySongs.clear();\n\n\n\n另一个程序员（或者几个月后忘了细节的你自己）在代码的某个遥远角落，需要向播放列表里添加歌曲。他会直接操作这个mySongs列表吗？\n如果这时我们引入一个新规则：“一个播放列表最多只能有100首歌”，我们该如何保证这个规则被遵守？是在每一个调用.add()方法的地方都写一段检查代码吗？\n如果未来我们发现ArrayList性能不佳，想换成LinkedList，我们需要修改多少个文件？\n当我们的AI伙伴试图理解“播放列表”这个概念时，它看到的是一个平平无奇的List&lt;Song&gt;，还是一个权责分明、意图清晰的业务对象？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>为何要封装？从数据集合到业务对象</span>"
@@ -384,7 +384,7 @@
     "href": "chapters/02-aggregation/01-why-encapsulation.html#vibe-check-思考与练习",
     "title": "为何要封装？从数据集合到业务对象",
     "section": "Vibe Check (思考与练习)",
-    "text": "Vibe Check (思考与练习)\n\n思考: 想象一下，如果我们设计的Playlist类是这样写的： java     public class Playlist {         public String name;         public List&lt;Song&gt; songs; // 注意，这里是 public         // ...     } 调用者可以写出myPlaylist.songs.clear()这样的代码，在Playlist类完全不知情的情况下，直接清空了所有歌曲。这会带来什么潜在的风险？（提示：如果Playlist类需要记录每次添加或删除操作的日志，或者在歌曲数量变化时通知其他模块，public字段会让这一切变得不可能。）\nAI协同: 打开你的AI聊天工具，向它提问： &gt; “你好，我正在学习面向对象编程。老师讲了三大特性：封装、继承和多态。请你用一个通俗易懂的现实世界例子（比如“汽车的驾驶界面与内部引擎”），来解释为什么‘封装’被普遍认为是这三者中，对于构建可维护、可扩展的软件系统来说，最重要和最基础的一个特性？”\n设计思考: 让我们来深化“封装确保业务规则”这个想法。我们的Playlist有一个业务规则：一个播放列表最多只能有100首歌。\n\n如果songs列表是public的，这个规则能被强制执行吗？为什么？\n如果songs列表是private的，我们应该在哪个方法中（例如addSong(Song song)）加入这个检查逻辑？请尝试用伪代码写出这个addSong方法。",
+    "text": "Vibe Check (思考与练习)\n\n思考: 想象一下，如果我们设计的Playlist类是这样写的：\npublic class Playlist {\n    public String name;\n    public List&lt;Song&gt; songs; // 注意，这里是 public\n    // ...\n}\n调用者可以写出myPlaylist.songs.clear()这样的代码，在Playlist类完全不知情的情况下，直接清空了所有歌曲。这会带来什么潜在的风险？（提示：如果Playlist类需要记录每次添加或删除操作的日志，或者在歌曲数量变化时通知其他模块，public字段会让这一切变得不可能。）\nAI协同: 打开你的AI聊天工具，向它提问：\n\n“你好，我正在学习面向对象编程。老师讲了三大特性：封装、继承和多态。请你用一个通俗易懂的现实世界例子（比如“汽车的驾驶界面与内部引擎”），来解释为什么‘封装’被普遍认为是这三者中，对于构建可维护、可扩展的软件系统来说，最重要和最基础的一个特性？”\n\n设计思考: 让我们来深化“封装确保业务规则”这个想法。我们的Playlist有一个业务规则：一个播放列表最多只能有100首歌。\n\n如果songs列表是public的，这个规则能被强制执行吗？为什么？\n如果songs列表是private的，我们应该在哪个方法中（例如addSong(Song song)）加入这个检查逻辑？请尝试用伪代码写出这个addSong方法。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>为何要封装？从数据集合到业务对象</span>"
