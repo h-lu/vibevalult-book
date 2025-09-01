@@ -9,6 +9,7 @@ title: "选择容器：为何是ArrayList？"
 我们已经为`Playlist`分子设计好了蓝图，并确定它需要一个内部“容器”来存放`Song`原子。在Java强大的标准库 `java.util` 中，有许多现成的容器可供选择，它们都被统称为**集合 (Collections)**。
 
 但问题来了，我们应该用哪一个？
+
 *   `ArrayList<Song>`?
 *   `LinkedList<Song>`?
 *   `HashSet<Song>`?
@@ -52,6 +53,7 @@ title: "选择容器：为何是ArrayList？"
 **做出我们的选择**
 
 现在，回到我们`Playlist`的需求：
+
 *   我们需要按顺序播放歌曲吗？**需要**。所以`HashSet`的无序性不满足要求，淘汰。
 *   我们最常见的操作是“在列表末尾添加一首歌”和“从头到尾遍历播放”。`ArrayList`的尾部添加和遍历查询都非常快。
 *   我们会频繁地在播放列表的“中间”插入歌曲吗？很少。
@@ -106,7 +108,9 @@ public String toString() {
     return "Playlist{name='" + name + "', song_count=" + songs.size() + "}";
 }
 ```
+
 **代码剖析:**
+
 *   `addSong(Song song)`: 我们定义了一个公开的(`public`)方法来添加歌曲。注意，我们对传入的`song`做了非空检查，这是良好编程习惯的一部分，可以增加代码的健壮性。我们将歌曲添加到了内部`songs`列表的末尾。
 *   `listSongs()`: 这个方法遍历内部的`songs`列表，并格式化输出到控制台。我们使用了经典的`for`循环和`songs.get(i)`，这在`ArrayList`上效率很高。
 *   `@Override public String toString()`: 这是一个特殊的方法。`@Override`注解告诉编译器，我们想要“覆盖”从`Object`类继承来的默认`toString`方法。现在，当我们打印一个`Playlist`对象时，它会输出我们自定义的、更有意义的字符串，而不是`com.vibevault.Playlist@1f32e575`。
@@ -114,6 +118,7 @@ public String toString() {
 ## 3. 在App中验证我们的分子
 
 最后，回到`VibeVaultApp.java`，让我们完整地使用一下`Playlist`对象：
+
 ```java
 package com.vibevault;
 
@@ -156,6 +161,7 @@ public class VibeVaultApp {
 
 3.  **AI协同与性能实验**:
     这个实验将让你亲眼看到数据结构底层实现的巨大差异。向你的AI伙伴发出以下指令：
+    
     > "请帮我写一段Java代码。这段代码需要做两件事：
     > 1. 创建一个`ArrayList<Integer>`和一个`LinkedList<Integer>`。
     > 2. 分别测量并打印出：向这两个list的**开头**（索引为0的位置）连续插入10万个整数，各需要多少毫秒。

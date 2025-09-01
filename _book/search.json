@@ -395,7 +395,7 @@
     "href": "chapters/02-aggregation/02-molecular-design.html",
     "title": "设计播放列表“分子”",
     "section": "",
-    "text": "本节危机：知其然，不知其所以然\n在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。\n我们知道需要一个Playlist类，但它具体应该长什么样？ * 如何在Java代码中表达“一个播放列表拥有一个名字和一组歌曲”这个概念？ * 如何确保每个Playlist对象在被创建出来的那一刻，就处于一个有效的、初始化的状态？ * 代码中那个神秘的this关键字，到底指向什么？\n我们面临的危机是：如何将“封装”这个抽象的设计原则，转化为具体的、精确的、符合Java语法的代码实现？",
+    "text": "本节危机：知其然，不知其所以然\n在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。\n我们知道需要一个Playlist类，但它具体应该长什么样？\n我们面临的危机是：如何将“封装”这个抽象的设计原则，转化为具体的、精确的、符合Java语法的代码实现？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>设计播放列表“分子”</span>"
@@ -439,7 +439,7 @@
     "href": "chapters/02-aggregation/02-molecular-design.html#vibe-check-思考与练习",
     "title": "设计播放列表“分子”",
     "section": "Vibe Check (思考与练习)",
-    "text": "Vibe Check (思考与练习)\n\n核心练习: 严格按照本节的指导，在你的项目中创建Playlist.java文件，并完整地编写出Playlist类的基本骨架。确保它包含一个私有的name（字符串）和一个私有的songs（List&lt;Song&gt;）成员变量，并提供一个接收name的构造函数来初始化这两个变量。\n编码练习: 在Playlist.java类中，添加两个新的公共方法 (public methods)：\n\npublic String getName(): 这个方法不需要参数，它直接返回成员变量name的值。\npublic int getSongCount(): 这个方法不需要参数，它返回内部songs列表的大小（可以使用songs.size()方法）。 在VibeVaultApp.java的main方法中，创建Playlist对象后，调用这两个新方法并打印出结果，以验证它们是否工作正常。\n\n破坏性实验: 在Playlist的构造函数中，进行一个修改。删除this关键字，将代码改成这样： java     public Playlist(String name) {         name = name; // 没有 'this'         this.songs = new ArrayList&lt;&gt;();     } 现在，在main方法中调用你刚刚编写的getName()方法并打印结果。你会发现Playlist的名字是null（或者空），而不是你传入的”Rock Classics”。为什么？这个实验如何从实践上证明了this在区分同名成员变量和参数时的必要性？（提示：name = name;这行代码实际上是把参数name赋值给了它自己，成员变量name从未被触及。）\n思考与设计: 我们当前的构造函数只能创建一个空的播放列表。如果我们想在创建Playlist时，就能立即包含一组初始歌曲，我们应该如何设计一个新的构造函数？\n\n这个新构造函数的参数应该是什么样的？（提示：可能需要两个参数，一个name，一个List&lt;Song&gt;）\n在Java中，一个类可以有多个同名但参数列表不同的构造函数，这个特性叫做构造函数重载 (Constructor Overloading)。请尝试写出这个新的构造函数。",
+    "text": "Vibe Check (思考与练习)\n\n核心练习: 严格按照本节的指导，在你的项目中创建Playlist.java文件，并完整地编写出Playlist类的基本骨架。确保它包含一个私有的name（字符串）和一个私有的songs（List&lt;Song&gt;）成员变量，并提供一个接收name的构造函数来初始化这两个变量。\n编码练习: 在Playlist.java类中，添加两个新的公共方法 (public methods)：\n\npublic String getName(): 这个方法不需要参数，它直接返回成员变量name的值。\npublic int getSongCount(): 这个方法不需要参数，它返回内部songs列表的大小（可以使用songs.size()方法）。 在VibeVaultApp.java的main方法中，创建Playlist对象后，调用这两个新方法并打印出结果，以验证它们是否工作正常。\n\n破坏性实验: 在Playlist的构造函数中，进行一个修改。删除this关键字，将代码改成这样：\npublic Playlist(String name) {\n    name = name; // 没有 'this'\n    this.songs = new ArrayList&lt;&gt;();\n}\n现在，在main方法中调用你刚刚编写的getName()方法并打印结果。你会发现Playlist的名字是null（或者空），而不是你传入的”Rock Classics”。为什么？这个实验如何从实践上证明了this在区分同名成员变量和参数时的必要性？（提示：name = name;这行代码实际上是把参数name赋值给了它自己，成员变量name从未被触及。）\n思考与设计: 我们当前的构造函数只能创建一个空的播放列表。如果我们想在创建Playlist时，就能立即包含一组初始歌曲，我们应该如何设计一个新的构造函数？\n\n这个新构造函数的参数应该是什么样的？（提示：可能需要两个参数，一个name，一个List&lt;Song&gt;）\n在Java中，一个类可以有多个同名但参数列表不同的构造函数，这个特性叫做构造函数重载 (Constructor Overloading)。请尝试写出这个新的构造函数。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>11</span>  <span class='chapter-title'>设计播放列表“分子”</span>"
@@ -450,7 +450,7 @@
     "href": "chapters/02-aggregation/03-collection-choice.html",
     "title": "选择容器：为何是ArrayList？",
     "section": "",
-    "text": "本节危机：选择的困境\n我们已经为Playlist分子设计好了蓝图，并确定它需要一个内部“容器”来存放Song原子。在Java强大的标准库 java.util 中，有许多现成的容器可供选择，它们都被统称为集合 (Collections)。\n但问题来了，我们应该用哪一个？ * ArrayList&lt;Song&gt;? * LinkedList&lt;Song&gt;? * HashSet&lt;Song&gt;? * 还是别的什么？\n这是一个典型的工程决策。如果仅仅凭“感觉”或者“之前用过这个”来选择，很可能会为项目的未来埋下性能隐患。例如，一个在10个元素时工作良好的选择，在10万个元素时可能会慢如蜗牛。\n我们面临的危机是：在众多看似相似的选项面前，如何基于第一性原理，为当前的需求做出最明智、最无可辩驳的技术选型？",
+    "text": "本节危机：选择的困境\n我们已经为Playlist分子设计好了蓝图，并确定它需要一个内部“容器”来存放Song原子。在Java强大的标准库 java.util 中，有许多现成的容器可供选择，它们都被统称为集合 (Collections)。\n但问题来了，我们应该用哪一个？\n这是一个典型的工程决策。如果仅仅凭“感觉”或者“之前用过这个”来选择，很可能会为项目的未来埋下性能隐患。例如，一个在10个元素时工作良好的选择，在10万个元素时可能会慢如蜗牛。\n我们面临的危机是：在众多看似相似的选项面前，如何基于第一性原理，为当前的需求做出最明智、最无可辩驳的技术选型？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
@@ -461,7 +461,7 @@
     "href": "chapters/02-aggregation/03-collection-choice.html#本节顿悟数据结构决定性能宿命",
     "title": "选择容器：为何是ArrayList？",
     "section": "本节顿悟：数据结构决定性能宿命",
-    "text": "本节顿悟：数据结构决定性能宿命\n每一种集合类型，其性能特征都由它底层的数据结构 (Data Structure) 所决定。这就像汽车的发动机类型（V8、涡轮增压、电动）决定了它的加速、油耗和维护成本一样，是其内在的、无法改变的“物理定律”。\n让我们像侦探一样，剖析三种最常见的集合类型，看看它们的“内心”到底是什么：\n\n1. ArrayList：肚子里是“数组”\n\n底层结构：一个动态数组。你可以把它想象成一个有序号的储物柜排，内存地址是连续的。\n性能宿命:\n\n查询 (get(index))：极快 (O(1))。因为内存地址连续，计算机可以像计算数学公式一样，瞬间定位到第i个储物柜。\n尾部添加 (add(song))：通常很快 (O(1))。只要储物柜排末尾还有空位，放个东西进去就行。只有当储物柜满了，才需要一次“大动干戈”的扩容（建一排更大的新柜子，把旧东西全搬过去），这偶尔会慢一下。\n中间/头部插入/删除 (add(index, song)/remove(index))：极慢 (O(n))。想象一下，要在储物柜排的中间插入一个新柜子，你必须把它后面的所有柜子都向后挪动一格。删除同理。元素越多，成本越高。\n\n\n\n\n2. LinkedList：肚子里是“锁链”\n\n底层结构：一个双向链表。你可以把它想象成一串用锁链连起来的珠子。每个珠子（节点）只知道自己的上一个和下一个珠子是谁，它们在内存中的位置是分散的。\n性能宿命:\n\n查询 (get(index))：极慢 (O(n))。因为内存地址不连续，要找第i个珠子，你必须从第一颗珠子开始，一个一个数过去。\n头部/尾部添加/删除 (addFirst/removeLast)：极快 (O(1))。因为LinkedList始终抓住链子的头和尾，断开或接上一个新珠子，只需要改动几个“链条”的指向即可。\n中间插入/删除：慢 (O(n))。虽然操作本身（改链条）很快，但你还是得先花时间找到那个要操作的珠子，这个查找过程是O(n)的。\n\n\n\n\n3. HashSet：肚子里是“字典”\n\n底层结构：一个哈希表（内部实际使用HashMap）。你可以把它想象成一本根据拼音首字母（hashCode()）索引的字典。\n性能宿命:\n\n添加/删除/查询 (add/remove/contains)：平均极快 (O(1))。无论字典有多厚，只要你知道一个词的拼音首字母，就能立刻翻到那一页附近。这就是哈希的魔力。\n两大“天条”:\n\n元素唯一：字典里不会有两个完全一样的词条。\n顺序不保：字典是按拼音首字母组织的，不是按你添加的顺序。\n\n\n\n做出我们的选择\n现在，回到我们Playlist的需求： * 我们需要按顺序播放歌曲吗？需要。所以HashSet的无序性不满足要求，淘汰。 * 我们最常见的操作是“在列表末尾添加一首歌”和“从头到尾遍历播放”。ArrayList的尾部添加和遍历查询都非常快。 * 我们会频繁地在播放列表的“中间”插入歌曲吗？很少。\n结论不言而喻：对于当前Playlist的需求，ArrayList是性能和功能的最佳选择。",
+    "text": "本节顿悟：数据结构决定性能宿命\n每一种集合类型，其性能特征都由它底层的数据结构 (Data Structure) 所决定。这就像汽车的发动机类型（V8、涡轮增压、电动）决定了它的加速、油耗和维护成本一样，是其内在的、无法改变的“物理定律”。\n让我们像侦探一样，剖析三种最常见的集合类型，看看它们的“内心”到底是什么：\n\n1. ArrayList：肚子里是“数组”\n\n底层结构：一个动态数组。你可以把它想象成一个有序号的储物柜排，内存地址是连续的。\n性能宿命:\n\n查询 (get(index))：极快 (O(1))。因为内存地址连续，计算机可以像计算数学公式一样，瞬间定位到第i个储物柜。\n尾部添加 (add(song))：通常很快 (O(1))。只要储物柜排末尾还有空位，放个东西进去就行。只有当储物柜满了，才需要一次“大动干戈”的扩容（建一排更大的新柜子，把旧东西全搬过去），这偶尔会慢一下。\n中间/头部插入/删除 (add(index, song)/remove(index))：极慢 (O(n))。想象一下，要在储物柜排的中间插入一个新柜子，你必须把它后面的所有柜子都向后挪动一格。删除同理。元素越多，成本越高。\n\n\n\n\n2. LinkedList：肚子里是“锁链”\n\n底层结构：一个双向链表。你可以把它想象成一串用锁链连起来的珠子。每个珠子（节点）只知道自己的上一个和下一个珠子是谁，它们在内存中的位置是分散的。\n性能宿命:\n\n查询 (get(index))：极慢 (O(n))。因为内存地址不连续，要找第i个珠子，你必须从第一颗珠子开始，一个一个数过去。\n头部/尾部添加/删除 (addFirst/removeLast)：极快 (O(1))。因为LinkedList始终抓住链子的头和尾，断开或接上一个新珠子，只需要改动几个“链条”的指向即可。\n中间插入/删除：慢 (O(n))。虽然操作本身（改链条）很快，但你还是得先花时间找到那个要操作的珠子，这个查找过程是O(n)的。\n\n\n\n\n3. HashSet：肚子里是“字典”\n\n底层结构：一个哈希表（内部实际使用HashMap）。你可以把它想象成一本根据拼音首字母（hashCode()）索引的字典。\n性能宿命:\n\n添加/删除/查询 (add/remove/contains)：平均极快 (O(1))。无论字典有多厚，只要你知道一个词的拼音首字母，就能立刻翻到那一页附近。这就是哈希的魔力。\n两大“天条”:\n\n元素唯一：字典里不会有两个完全一样的词条。\n顺序不保：字典是按拼音首字母组织的，不是按你添加的顺序。\n\n\n\n做出我们的选择\n现在，回到我们Playlist的需求：\n\n我们需要按顺序播放歌曲吗？需要。所以HashSet的无序性不满足要求，淘汰。\n我们最常见的操作是“在列表末尾添加一首歌”和“从头到尾遍历播放”。ArrayList的尾部添加和遍历查询都非常快。\n我们会频繁地在播放列表的“中间”插入歌曲吗？很少。\n\n结论不言而喻：对于当前Playlist的需求，ArrayList是性能和功能的最佳选择。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
@@ -472,7 +472,7 @@
     "href": "chapters/02-aggregation/03-collection-choice.html#为playlist分子赋予行为",
     "title": "选择容器：为何是ArrayList？",
     "section": "2. 为Playlist分子赋予行为",
-    "text": "2. 为Playlist分子赋予行为\n理论分析完毕，现在让我们动手，为Playlist.java添加核心的业务方法。\n请打开Playlist.java，在构造函数下方添加以下方法：\n// 在 Playlist.java 中 ...\n\n// ... (成员变量和构造函数保持不变) ...\n\n// --- 方法 (Methods) ---\n// 它们定义了Playlist的“行为”\n\n/**\n * 向播放列表末尾添加一首歌。\n * @param song 要添加的歌曲，不能为null。\n */\npublic void addSong(Song song) {\n    if (song != null) {\n        this.songs.add(song);\n    }\n}\n\n/**\n * 列出播放列表中的所有歌曲到控制台。\n */\npublic void listSongs() {\n    System.out.println(\"--- Playlist: \" + this.name + \" ---\");\n    if (this.songs.isEmpty()) {\n        System.out.println(\"This playlist is empty.\");\n    } else {\n        for (int i = 0; i &lt; this.songs.size(); i++) {\n            Song currentSong = this.songs.get(i);\n            System.out.println((i + 1) + \". \" + currentSong.title() + \" - \" + currentSong.artist());\n        }\n    }\n    System.out.println(\"---------------------------------\");\n}\n\n// 这是为了让 System.out.println(playlistObject) 时能有更友好的输出\n@Override\npublic String toString() {\n    return \"Playlist{name='\" + name + \"', song_count=\" + songs.size() + \"}\";\n}\n代码剖析: * addSong(Song song): 我们定义了一个公开的(public)方法来添加歌曲。注意，我们对传入的song做了非空检查，这是良好编程习惯的一部分，可以增加代码的健壮性。我们将歌曲添加到了内部songs列表的末尾。 * listSongs(): 这个方法遍历内部的songs列表，并格式化输出到控制台。我们使用了经典的for循环和songs.get(i)，这在ArrayList上效率很高。 * @Override public String toString(): 这是一个特殊的方法。@Override注解告诉编译器，我们想要“覆盖”从Object类继承来的默认toString方法。现在，当我们打印一个Playlist对象时，它会输出我们自定义的、更有意义的字符串，而不是com.vibevault.Playlist@1f32e575。",
+    "text": "2. 为Playlist分子赋予行为\n理论分析完毕，现在让我们动手，为Playlist.java添加核心的业务方法。\n请打开Playlist.java，在构造函数下方添加以下方法：\n// 在 Playlist.java 中 ...\n\n// ... (成员变量和构造函数保持不变) ...\n\n// --- 方法 (Methods) ---\n// 它们定义了Playlist的“行为”\n\n/**\n * 向播放列表末尾添加一首歌。\n * @param song 要添加的歌曲，不能为null。\n */\npublic void addSong(Song song) {\n    if (song != null) {\n        this.songs.add(song);\n    }\n}\n\n/**\n * 列出播放列表中的所有歌曲到控制台。\n */\npublic void listSongs() {\n    System.out.println(\"--- Playlist: \" + this.name + \" ---\");\n    if (this.songs.isEmpty()) {\n        System.out.println(\"This playlist is empty.\");\n    } else {\n        for (int i = 0; i &lt; this.songs.size(); i++) {\n            Song currentSong = this.songs.get(i);\n            System.out.println((i + 1) + \". \" + currentSong.title() + \" - \" + currentSong.artist());\n        }\n    }\n    System.out.println(\"---------------------------------\");\n}\n\n// 这是为了让 System.out.println(playlistObject) 时能有更友好的输出\n@Override\npublic String toString() {\n    return \"Playlist{name='\" + name + \"', song_count=\" + songs.size() + \"}\";\n}\n代码剖析:\n\naddSong(Song song): 我们定义了一个公开的(public)方法来添加歌曲。注意，我们对传入的song做了非空检查，这是良好编程习惯的一部分，可以增加代码的健壮性。我们将歌曲添加到了内部songs列表的末尾。\nlistSongs(): 这个方法遍历内部的songs列表，并格式化输出到控制台。我们使用了经典的for循环和songs.get(i)，这在ArrayList上效率很高。\n@Override public String toString(): 这是一个特殊的方法。@Override注解告诉编译器，我们想要“覆盖”从Object类继承来的默认toString方法。现在，当我们打印一个Playlist对象时，它会输出我们自定义的、更有意义的字符串，而不是com.vibevault.Playlist@1f32e575。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
@@ -494,7 +494,7 @@
     "href": "chapters/02-aggregation/03-collection-choice.html#vibe-check-思考与练习",
     "title": "选择容器：为何是ArrayList？",
     "section": "Vibe Check (思考与练习)",
-    "text": "Vibe Check (思考与练习)\n\n核心练习: 将addSong和listSongs方法完整地实现到你的Playlist.java中。然后在main方法中创建一个Playlist实例，添加几首你喜欢的Song，并调用listSongs来验证结果是否如预期一样。\n编码练习与深入思考: 在Playlist类中创建一个名为findSongByTitle(String title)的方法。它应该遍历歌曲列表，如果找到了一个Song的标题与传入的title完全匹配，就返回这个Song对象。\n\n关键问题：如果遍历完整个列表都没找到，这个方法应该返回什么？\n一个常见的选择是返回null。但这有什么潜在的风险？请向你的AI伙伴提问：“Java中的NullPointerException是什么？为什么它被称为‘十亿美元的错误’？请给我一个会导致它发生的小代码例子。”\n有没有比返回null更安全的方式？（提示：可以了解一下Java 8引入的Optional&lt;T&gt;类）。\n\nAI协同与性能实验: 这个实验将让你亲眼看到数据结构底层实现的巨大差异。向你的AI伙伴发出以下指令： &gt; “请帮我写一段Java代码。这段代码需要做两件事： &gt; 1. 创建一个ArrayList&lt;Integer&gt;和一个LinkedList&lt;Integer&gt;。 &gt; 2. 分别测量并打印出：向这两个list的开头（索引为0的位置）连续插入10万个整数，各需要多少毫秒。 &gt; 请在代码中添加清晰的计时逻辑和输出。” &gt; 运行AI生成的代码。你观察到的时间差异有多大？这个结果如何从实践上印证了我们在本节中关于ArrayList和LinkedList性能宿命的理论分析？\n设计思考 (回顾与升华): 现在，让我们考虑一个新的业务需求：VibeVault需要一个“我最喜爱的歌曲”列表，这个列表有一个非常重要的特性——不允许包含重复的歌曲。\n\n在这种情况下，ArrayList还是Playlist内部容器的最佳选择吗？为什么？\n根据我们对HashSet的分析，它是否是更好的选择？为什么？\n如果我们将private final List&lt;Song&gt; songs;修改为private final Set&lt;Song&gt; songs;，并且在构造函数中改为this.songs = new HashSet&lt;&gt;();，那么我们之前写的public void addSong(Song song)和public void listSongs()这两个公开方法的方法签名（即方法名和参数）需要改变吗？\n如果公开方法无需改变，这是否再次、并且强有力地证明了“封装”的巨大价值？",
+    "text": "Vibe Check (思考与练习)\n\n核心练习: 将addSong和listSongs方法完整地实现到你的Playlist.java中。然后在main方法中创建一个Playlist实例，添加几首你喜欢的Song，并调用listSongs来验证结果是否如预期一样。\n编码练习与深入思考: 在Playlist类中创建一个名为findSongByTitle(String title)的方法。它应该遍历歌曲列表，如果找到了一个Song的标题与传入的title完全匹配，就返回这个Song对象。\n\n关键问题：如果遍历完整个列表都没找到，这个方法应该返回什么？\n一个常见的选择是返回null。但这有什么潜在的风险？请向你的AI伙伴提问：“Java中的NullPointerException是什么？为什么它被称为‘十亿美元的错误’？请给我一个会导致它发生的小代码例子。”\n有没有比返回null更安全的方式？（提示：可以了解一下Java 8引入的Optional&lt;T&gt;类）。\n\nAI协同与性能实验: 这个实验将让你亲眼看到数据结构底层实现的巨大差异。向你的AI伙伴发出以下指令：\n\n“请帮我写一段Java代码。这段代码需要做两件事：\n\n创建一个ArrayList&lt;Integer&gt;和一个LinkedList&lt;Integer&gt;。\n分别测量并打印出：向这两个list的开头（索引为0的位置）连续插入10万个整数，各需要多少毫秒。 请在代码中添加清晰的计时逻辑和输出。”\n\n运行AI生成的代码。你观察到的时间差异有多大？这个结果如何从实践上印证了我们在本节中关于ArrayList和LinkedList性能宿命的理论分析？\n\n设计思考 (回顾与升华): 现在，让我们考虑一个新的业务需求：VibeVault需要一个“我最喜爱的歌曲”列表，这个列表有一个非常重要的特性——不允许包含重复的歌曲。\n\n在这种情况下，ArrayList还是Playlist内部容器的最佳选择吗？为什么？\n根据我们对HashSet的分析，它是否是更好的选择？为什么？\n如果我们将private final List&lt;Song&gt; songs;修改为private final Set&lt;Song&gt; songs;，并且在构造函数中改为this.songs = new HashSet&lt;&gt;();，那么我们之前写的public void addSong(Song song)和public void listSongs()这两个公开方法的方法签名（即方法名和参数）需要改变吗？\n如果公开方法无需改变，这是否再次、并且强有力地证明了“封装”的巨大价值？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
@@ -1462,6 +1462,28 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>附录：第一性原理——驾驭AI的思考引擎</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/02-molecular-design.html#本节危机知其然不知其所以然",
+    "href": "chapters/02-aggregation/02-molecular-design.html#本节危机知其然不知其所以然",
+    "title": "设计播放列表“分子”",
+    "section": "",
+    "text": "如何在Java代码中表达“一个播放列表拥有一个名字和一组歌曲”这个概念？\n如何确保每个Playlist对象在被创建出来的那一刻，就处于一个有效的、初始化的状态？\n代码中那个神秘的this关键字，到底指向什么？",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>设计播放列表“分子”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/03-collection-choice.html#本节危机选择的困境",
+    "href": "chapters/02-aggregation/03-collection-choice.html#本节危机选择的困境",
+    "title": "选择容器：为何是ArrayList？",
+    "section": "",
+    "text": "ArrayList&lt;Song&gt;?\nLinkedList&lt;Song&gt;?\nHashSet&lt;Song&gt;?\n还是别的什么？",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
     ]
   }
 ]
