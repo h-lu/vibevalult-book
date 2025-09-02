@@ -521,30 +521,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>要让我们的创造物“活”过来，我们需要转变程序的运行模式。让我们从第一性原理出发，理解两种根本不同的程序模型：</p>
 <section id="批处理-batch-processing" class="level3">
 <h3 class="anchored" data-anchor-id="批处理-batch-processing">1. 批处理 (Batch Processing)</h3>
-<p>这是我们目前程序的模式。它像一个工厂的流水线，被设计用来执行一个定义明确、有始有终的任务。 * <strong>输入</strong>：在程序启动前一次性提供（例如，代码里写死的歌曲，或者需要转码的视频文件）。 * <strong>处理</strong>：按照固定的逻辑，一步步执行，直到任务完成。 * <strong>输出</strong>：任务完成后，产出最终结果（例如，控制台的打印信息，或者转码后的新视频文件）。</p>
+<p>这是我们目前程序的模式。它像一个工厂的流水线，被设计用来执行一个定义明确、有始有终的任务。</p>
+<ul>
+<li><strong>输入</strong>：在程序启动前一次性提供（例如，代码里写死的歌曲，或者需要转码的视频文件）。</li>
+<li><strong>处理</strong>：按照固定的逻辑，一步步执行，直到任务完成。</li>
+<li><strong>输出</strong>：任务完成后，产出最终结果（例如，控制台的打印信息，或者转码后的新视频文件）。</li>
+</ul>
 <p>批处理程序是“一次性”的，它没有“然后”。你无法在它运行时和它“商量”：“嘿，等一下，我想再加一首歌”。</p>
 </section>
 <section id="交互式-interactive-processing" class="level3">
 <h3 class="anchored" data-anchor-id="交互式-interactive-processing">2. 交互式 (Interactive Processing)</h3>
-<p>这是我们日常使用的大部分软件的模式，比如文本编辑器、网页浏览器、游戏，甚至操作系统本身。它们的核心特征是“持续性”。 * <strong>输入</strong>：程序启动后，<strong>持续等待</strong>外部世界的输入（事件）。这些事件可以是用的按键、鼠标点击、网络数据的到达等等。 * <strong>处理</strong>：每当一个事件发生，程序就对其进行响应和处理。 * <strong>输出</strong>：处理完事件后，程序更新自己的状态，并可能产生输出（例如，在屏幕上显示一个新字符，或者向服务器发送一个请求）。处理完后，它并<strong>不会结束</strong>，而是回到“等待”状态。</p>
+<p>这是我们日常使用的大部分软件的模式，比如文本编辑器、网页浏览器、游戏，甚至操作系统本身。它们的核心特征是“持续性”。</p>
+<ul>
+<li><strong>输入</strong>：程序启动后，<strong>持续等待</strong>外部世界的输入（事件）。这些事件可以是用的按键、鼠标点击、网络数据的到达等等。</li>
+<li><strong>处理</strong>：每当一个事件发生，程序就对其进行响应和处理。</li>
+<li><strong>输出</strong>：处理完事件后，程序更新自己的状态，并可能产生输出（例如，在屏幕上显示一个新字符，或者向服务器发送一个请求）。处理完后，它并<strong>不会结束</strong>，而是回到“等待”状态。</li>
+</ul>
 <p>这种“等待 -&gt; 处理 -&gt; 输出 -&gt; 继续等待”的模式，就是<strong>事件循环 (Event Loop)</strong>。</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">graph TD
-    subgraph "程序生命周期"
-        A(开始) --&gt; B{等待外部事件};
-        B -- "事件发生&lt;br/&gt;(e.g. 用户输入)" --&gt; C[处理事件&lt;br/&gt;(e.g. 调用addSong)];
-        C --&gt; D[更新状态/产生输出&lt;br/&gt;(e.g. 打印列表)];
-        D --&gt; B;
-        B -- "退出指令" --&gt; E(结束);
-    end
-
-    style B fill:#f9f9f9,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
-    style C fill:#cde4ff,stroke:#6a8ebf,stroke-width:2px
-    style D fill:#d5e8d4,stroke:#82b366,stroke-width:2px
+<pre class="mermaid mermaid-js">graph TD;
+A[开始] --&gt; B{等待外部事件}
+B --&gt; C[处理事件]
+C --&gt; D[更新状态/产生输出]
+D --&gt; B
+B --&gt; E[结束]
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -1076,61 +1080,57 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. 批处理 (Batch Processing)</span></span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>这是我们目前程序的模式。它像一个工厂的流水线，被设计用来执行一个定义明确、有始有终的任务。</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输入**：在程序启动前一次性提供（例如，代码里写死的歌曲，或者需要转码的视频文件）。</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**处理**：按照固定的逻辑，一步步执行，直到任务完成。</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输出**：任务完成后，产出最终结果（例如，控制台的打印信息，或者转码后的新视频文件）。</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>批处理程序是“一次性”的，它没有“然后”。你无法在它运行时和它“商量”：“嘿，等一下，我想再加一首歌”。</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 交互式 (Interactive Processing)</span></span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>这是我们日常使用的大部分软件的模式，比如文本编辑器、网页浏览器、游戏，甚至操作系统本身。它们的核心特征是“持续性”。</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输入**：程序启动后，**持续等待**外部世界的输入（事件）。这些事件可以是用的按键、鼠标点击、网络数据的到达等等。</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**处理**：每当一个事件发生，程序就对其进行响应和处理。</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输出**：处理完事件后，程序更新自己的状态，并可能产生输出（例如，在屏幕上显示一个新字符，或者向服务器发送一个请求）。处理完后，它并**不会结束**，而是回到“等待”状态。</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>这种“等待 -&gt; 处理 -&gt; 输出 -&gt; 继续等待”的模式，就是**事件循环 (Event Loop)**。</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输入**：在程序启动前一次性提供（例如，代码里写死的歌曲，或者需要转码的视频文件）。</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**处理**：按照固定的逻辑，一步步执行，直到任务完成。</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输出**：任务完成后，产出最终结果（例如，控制台的打印信息，或者转码后的新视频文件）。</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>批处理程序是“一次性”的，它没有“然后”。你无法在它运行时和它“商量”：“嘿，等一下，我想再加一首歌”。</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. 交互式 (Interactive Processing)</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>这是我们日常使用的大部分软件的模式，比如文本编辑器、网页浏览器、游戏，甚至操作系统本身。它们的核心特征是“持续性”。</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输入**：程序启动后，**持续等待**外部世界的输入（事件）。这些事件可以是用的按键、鼠标点击、网络数据的到达等等。</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**处理**：每当一个事件发生，程序就对其进行响应和处理。</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**输出**：处理完事件后，程序更新自己的状态，并可能产生输出（例如，在屏幕上显示一个新字符，或者向服务器发送一个请求）。处理完后，它并**不会结束**，而是回到“等待”状态。</span>
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>graph TD</span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    subgraph <span class="ot">"</span><span class="st">程序生命周期</span><span class="ot">"</span></span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        A(开始) --&gt; B{等待外部事件};</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        B -- <span class="ot">"</span><span class="st">事件发生&lt;br/&gt;(e.g. 用户输入)</span><span class="ot">"</span> --&gt; C[处理事件&lt;br/&gt;(e.g. 调用addSong)];</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        C --&gt; D[更新状态/产生输出&lt;br/&gt;(e.g. 打印列表)];</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        D --&gt; B;</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        B -- <span class="ot">"</span><span class="st">退出指令</span><span class="ot">"</span> --&gt; E(结束);</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    end</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    style B fill:<span class="co">#f9f9f9,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    style C fill:<span class="co">#cde4ff,stroke:#6a8ebf,stroke-width:2px</span></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    style D fill:<span class="co">#d5e8d4,stroke:#82b366,stroke-width:2px</span></span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>这种“等待 -&gt; 处理 -&gt; 输出 -&gt; 继续等待”的模式，就是**事件循环 (Event Loop)**。</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>graph TD;</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>A[开始] --&gt; B{等待外部事件}</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>B --&gt; C[处理事件]</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>C --&gt; D[更新状态/产生输出]</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>D --&gt; B</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>B --&gt; E[结束]</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>事件循环是几乎所有现代软件的心脏。它赋予了软件“生命”，使其能持续地对外部世界做出反应。当我们的Java程序调用<span class="in">`Scanner.nextLine()`</span>并“暂停”时，它实际上就进入了这个循环的一个阶段：**阻塞式等待 (Blocking I/O)**。</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>此时，我们的程序将执行的控制权交还给了操作系统，并告诉它：“嘿，我正在等用户从键盘输入一行字，在那之前，你不需要给我分配CPU时间，可以去忙别的。等用户敲了回车，你再叫醒我。” 这就是为什么一个等待输入的<span class="in">`while(true)`</span>循环不会把你的电脑CPU跑到100%的原因——它大部分时间都在高效地“睡眠”。</span>
 <span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>事件循环是几乎所有现代软件的心脏。它赋予了软件“生命”，使其能持续地对外部世界做出反应。当我们的Java程序调用<span class="in">`Scanner.nextLine()`</span>并“暂停”时，它实际上就进入了这个循环的一个阶段：**阻塞式等待 (Blocking I/O)**。</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>**顿悟在于：要让我们的程序从“静”到“动”，我们必须为它构建一个事件循环。这个循环将打破代码与现实世界的“第四面墙”，建立一个持续的“对话通道”，让用户可以通过输入来感知和改变我们的创造物，从而赋予它真正的“生命”。**</span>
 <span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>此时，我们的程序将执行的控制权交还给了操作系统，并告诉它：“嘿，我正在等用户从键盘输入一行字，在那之前，你不需要给我分配CPU时间，可以去忙别的。等用户敲了回车，你再叫醒我。” 这就是为什么一个等待输入的<span class="in">`while(true)`</span>循环不会把你的电脑CPU跑到100%的原因——它大部分时间都在高效地“睡眠”。</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>**顿悟在于：要让我们的程序从“静”到“动”，我们必须为它构建一个事件循环。这个循环将打破代码与现实世界的“第四面墙”，建立一个持续的“对话通道”，让用户可以通过输入来感知和改变我们的创造物，从而赋予它真正的“生命”。**</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
 <span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
-<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**思考**:</span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>想一想你电脑上安装的软件。哪些更接近“批处理”模式？（例如：压缩文件工具、代码编译器）</span>
-<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>哪些是典型的“交互式”模式？（例如：你的IDE、浏览器、音乐播放器）</span>
-<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>它们的启动、运行和结束过程，以及你与它们“对话”的方式，有何根本不同？</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**思考**:</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>想一想你电脑上安装的软件。哪些更接近“批处理”模式？（例如：压缩文件工具、代码编译器）</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>哪些是典型的“交互式”模式？（例如：你的IDE、浏览器、音乐播放器）</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>它们的启动、运行和结束过程，以及你与它们“对话”的方式，有何根本不同？</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI协同**:</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>    我们提到了“阻塞I/O”。这是理解交互式程序如何高效等待的关键。向你的AI伙伴提问：</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "你好，请用一个通俗的比喻（比如去餐厅点餐），解释一下计算机操作系统中‘阻塞I/O’（Blocking I/O）和‘非阻塞I/O’（Non-blocking I/O）这两个概念的区别。当一个Java程序调用</span><span class="in">`Scanner.nextLine()`</span><span class="at">时，这属于哪一种I/O模型？为什么我的程序会‘暂停’，此时CPU在做什么？"</span></span>
 <span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI协同**:</span>
-<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    我们提到了“阻塞I/O”。这是理解交互式程序如何高效等待的关键。向你的AI伙伴提问：</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "你好，请用一个通俗的比喻（比如去餐厅点餐），解释一下计算机操作系统中‘阻塞I/O’（Blocking I/O）和‘非阻塞I/O’（Non-blocking I/O）这两个概念的区别。当一个Java程序调用</span><span class="in">`Scanner.nextLine()`</span><span class="at">时，这属于哪一种I/O模型？为什么我的程序会‘暂停’，此时CPU在做什么？"</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入思考**:</span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    我们即将构建的是一个**命令行界面 (Command-Line Interface, CLI)**。它的“事件”主要是用户的键盘输入。</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**图形用户界面 (Graphical User Interface, GUI)** 的应用（比如VS Code），它的事件循环可能在等待哪些完全不同类型的“事件”？（想一想你的鼠标和键盘能做什么）</span>
-<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**Web后端服务器**（比如<span class="in">`vibevault.com`</span>），它的事件循环主要在等待什么事件？</span>
-<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**语音助手**（比如Siri），它的事件循环又在等待什么呢？</span>
-<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    这个思考有助于你理解，尽管表现形式千差万别，但现代软件的核心驱动机制是高度统一的。 </span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入思考**:</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>    我们即将构建的是一个**命令行界面 (Command-Line Interface, CLI)**。它的“事件”主要是用户的键盘输入。</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**图形用户界面 (Graphical User Interface, GUI)** 的应用（比如VS Code），它的事件循环可能在等待哪些完全不同类型的“事件”？（想一想你的鼠标和键盘能做什么）</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**Web后端服务器**（比如<span class="in">`vibevault.com`</span>），它的事件循环主要在等待什么事件？</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个**语音助手**（比如Siri），它的事件循环又在等待什么呢？</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    这个思考有助于你理解，尽管表现形式千差万别，但现代软件的核心驱动机制是高度统一的。 </span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

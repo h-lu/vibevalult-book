@@ -499,6 +499,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“形式追随功能。” —— 路易斯·沙利文 (Louis Sullivan)</p>
 </blockquote>
+<div class="video-container">
+<iframe src="//player.bilibili.com/player.html?bvid=BV1oGapzsEet&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400">
+</iframe>
+</div>
 <section id="本节危机知其然不知其所以然" class="level2">
 <h2 class="anchored" data-anchor-id="本节危机知其然不知其所以然">本节危机：知其然，不知其所以然</h2>
 <p>在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。</p>
@@ -1086,131 +1090,135 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "形式追随功能。" —— 路易斯·沙利文 (Louis Sullivan)</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：知其然，不知其所以然</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>::: {.video-container}</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"//player.bilibili.com/player.html?bvid=BV1oGapzsEet</span><span class="er">&amp;</span><span class="st">page=1"</span><span class="ot"> scrolling</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> border</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> frameborder</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> framespacing</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> allowfullscreen</span><span class="op">=</span><span class="st">"true"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>我们知道需要一个<span class="in">`Playlist`</span>类，但它具体应该长什么样？</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：知其然，不知其所以然</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如何在Java代码中表达“一个播放列表拥有一个名字和一组歌曲”这个概念？</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如何确保每个<span class="in">`Playlist`</span>对象在被创建出来的那一刻，就处于一个有效的、初始化的状态？</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>代码中那个神秘的<span class="in">`this`</span>关键字，到底指向什么？</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>我们知道需要一个<span class="in">`Playlist`</span>类，但它具体应该长什么样？</span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：如何将“封装”这个抽象的设计原则，转化为具体的、精确的、符合Java语法的代码实现？**</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：`class`是业务蓝图，`new`是施工建造</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如何在Java代码中表达“一个播放列表拥有一个名字和一组歌曲”这个概念？</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如何确保每个<span class="in">`Playlist`</span>对象在被创建出来的那一刻，就处于一个有效的、初始化的状态？</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>代码中那个神秘的<span class="in">`this`</span>关键字，到底指向什么？</span>
 <span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>Java用<span class="in">`class`</span>关键字，为我们提供了绘制“业务蓝图”的能力。一个<span class="in">`class`</span>，就是对一类事物（比如“播放列表”）的共同特征（属性）和行为（方法）的详细描述。</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：如何将“封装”这个抽象的设计原则，转化为具体的、精确的、符合Java语法的代码实现？**</span>
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>而当我们使用<span class="in">`new`</span>关键字时，Java虚拟机就会按照这份蓝图，在内存中“施工建造”，创造出一个个具体、独立的实例（instance），也叫作对象（object）。每个对象都拥有蓝图上定义的全部属性和方法。</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：`class`是业务蓝图，`new`是施工建造</span></span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>**顿悟在于：`class`定义了“是什么”，而对象则是那个活生生的“存在”。通过`private`关键字守护内部状态，通过`public`构造函数和方法提供服务，我们就构建出了一个职责分明的、封装良好的“分子结构”。**</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>Java用<span class="in">`class`</span>关键字，为我们提供了绘制“业务蓝图”的能力。一个<span class="in">`class`</span>，就是对一类事物（比如“播放列表”）的共同特征（属性）和行为（方法）的详细描述。</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>而当我们使用<span class="in">`new`</span>关键字时，Java虚拟机就会按照这份蓝图，在内存中“施工建造”，创造出一个个具体、独立的实例（instance），也叫作对象（object）。每个对象都拥有蓝图上定义的全部属性和方法。</span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 绘制Playlist蓝图</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>**顿悟在于：`class`定义了“是什么”，而对象则是那个活生生的“存在”。通过`private`关键字守护内部状态，通过`public`构造函数和方法提供服务，我们就构建出了一个职责分明的、封装良好的“分子结构”。**</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>让我们回到VS Code，开始绘制<span class="in">`Playlist`</span>的蓝图。</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>在<span class="in">`src/main/java/com/vibevault`</span>目录下，创建一个新文件，命名为<span class="in">`Playlist.java`</span>。</span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>输入以下代码：</span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Playlist <span class="op">{</span></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. 成员变量 (Member Variables / Fields)</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    它们定义了Playlist的“属性”或“状态”</span></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    使用private，将实现细节“锁”在黑盒子里</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="bu">String</span> name<span class="op">;</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> songs<span class="op">;</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. 构造函数 (Constructor)</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    它的名字必须与类名完全相同，且没有返回类型</span></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    负责在对象创建时，进行初始化工作</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 3. 'this' 关键字</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        <span class="co">//    它指向“当前正在被创建的这个对象实例”</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="co">//    用来明确区分“成员变量name”和“参数name”</span></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">=</span> name<span class="op">;</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span> <span class="co">// 初始化为空的歌曲列表</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- 后续我们会在这里添加更多方法 ---</span></span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 1. 绘制Playlist蓝图</span></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>让我们回到VS Code，开始绘制<span class="in">`Playlist`</span>的蓝图。</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>在<span class="in">`src/main/java/com/vibevault`</span>目录下，创建一个新文件，命名为<span class="in">`Playlist.java`</span>。</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>输入以下代码：</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> Playlist <span class="op">{</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 1. 成员变量 (Member Variables / Fields)</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    它们定义了Playlist的“属性”或“状态”</span></span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    使用private，将实现细节“锁”在黑盒子里</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="bu">String</span> name<span class="op">;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> songs<span class="op">;</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 2. 构造函数 (Constructor)</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    它的名字必须与类名完全相同，且没有返回类型</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>    <span class="co">//    负责在对象创建时，进行初始化工作</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 3. 'this' 关键字</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="co">//    它指向“当前正在被创建的这个对象实例”</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>        <span class="co">//    用来明确区分“成员变量name”和“参数name”</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">=</span> name<span class="op">;</span></span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span> <span class="co">// 初始化为空的歌曲列表</span></span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>**代码剖析:**</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`import`语句**: 我们需要用到<span class="in">`List`</span>和<span class="in">`ArrayList`</span>，它们位于<span class="in">`java.util`</span>包中，所以必须先<span class="in">`import`</span>进来。</span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`public class Playlist`**: 声明一个名为<span class="in">`Playlist`</span>的公共类。</span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**成员变量 (Fields)**:</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`private final String name;`</span>: 我们声明了一个私有的(<span class="in">`private`</span>)、最终的(<span class="in">`final`</span>)字符串变量<span class="in">`name`</span>。<span class="in">`private`</span>意味着只有<span class="in">`Playlist`</span>类内部的代码才能直接访问它，这是封装的核心。<span class="in">`final`</span>意味着这个<span class="in">`name`</span>在对象被构造函数初始化之后，就不能再被改变了。这种设计，使得<span class="in">`name`</span>这个属性是**不可变的 (Immutable)**。不可变对象是构建健壮、可预测、尤其是在并发环境中更安全的软件的基石。</span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`private final List&lt;Song&gt; songs;`</span>: 同理，我们声明了一个私有的、最终的<span class="in">`Song`</span>列表。这就像汽车的引擎被锁在引擎盖（<span class="in">`private`</span>）下一样，我们向外界隐藏了播放列表内部是如何存储歌曲的。调用者不需要知道，也不应该知道我们用的是<span class="in">`ArrayList`</span>还是别的什么东西。此外，我们声明的类型是接口<span class="in">`List`</span>，而不是具体的实现<span class="in">`ArrayList`</span>。这是一种良好的编程实践，叫做“面向接口编程”，它为我们未来更换具体实现提供了灵活性。</span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**构造函数 (Constructor)**:</span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public Playlist(String name)`</span>: 这是<span class="in">`Playlist`</span>类的构造函数。当外部代码写<span class="in">`new Playlist("我的最爱")`</span>时，这个方法就会被调用。</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`this.name = name;`</span>: **这是理解`this`的关键。** 左边的`this.name`指的是当前这个`Playlist`对象的**成员变量**`name`。右边的`name`指的是从构造函数**参数**传递进来的<span class="in">`name`</span>值。这行代码的作用就是，将外部传入的名字，赋值给我们内部的成员变量。</span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`this.songs = new ArrayList&lt;&gt;();`</span>: 我们创建了一个全新的、空的<span class="in">`ArrayList`</span>实例，并将其引用赋值给了成员变量<span class="in">`songs`</span>。这确保了每个<span class="in">`Playlist`</span>对象都拥有自己独立的一份歌曲列表。</span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 让“分子”存在</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a>现在我们有了蓝图，就可以在<span class="in">`VibeVaultApp.java`</span>中建造出具体的<span class="in">`Playlist`</span>对象了。</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>    <span class="co">// --- 后续我们会在这里添加更多方法 ---</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>**代码剖析:**</span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`import`语句**: 我们需要用到<span class="in">`List`</span>和<span class="in">`ArrayList`</span>，它们位于<span class="in">`java.util`</span>包中，所以必须先<span class="in">`import`</span>进来。</span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**`public class Playlist`**: 声明一个名为<span class="in">`Playlist`</span>的公共类。</span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**成员变量 (Fields)**:</span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`private final String name;`</span>: 我们声明了一个私有的(<span class="in">`private`</span>)、最终的(<span class="in">`final`</span>)字符串变量<span class="in">`name`</span>。<span class="in">`private`</span>意味着只有<span class="in">`Playlist`</span>类内部的代码才能直接访问它，这是封装的核心。<span class="in">`final`</span>意味着这个<span class="in">`name`</span>在对象被构造函数初始化之后，就不能再被改变了。这种设计，使得<span class="in">`name`</span>这个属性是**不可变的 (Immutable)**。不可变对象是构建健壮、可预测、尤其是在并发环境中更安全的软件的基石。</span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`private final List&lt;Song&gt; songs;`</span>: 同理，我们声明了一个私有的、最终的<span class="in">`Song`</span>列表。这就像汽车的引擎被锁在引擎盖（<span class="in">`private`</span>）下一样，我们向外界隐藏了播放列表内部是如何存储歌曲的。调用者不需要知道，也不应该知道我们用的是<span class="in">`ArrayList`</span>还是别的什么东西。此外，我们声明的类型是接口<span class="in">`List`</span>，而不是具体的实现<span class="in">`ArrayList`</span>。这是一种良好的编程实践，叫做“面向接口编程”，它为我们未来更换具体实现提供了灵活性。</span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**构造函数 (Constructor)**:</span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public Playlist(String name)`</span>: 这是<span class="in">`Playlist`</span>类的构造函数。当外部代码写<span class="in">`new Playlist("我的最爱")`</span>时，这个方法就会被调用。</span>
+<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`this.name = name;`</span>: **这是理解`this`的关键。** 左边的`this.name`指的是当前这个`Playlist`对象的**成员变量**`name`。右边的`name`指的是从构造函数**参数**传递进来的<span class="in">`name`</span>值。这行代码的作用就是，将外部传入的名字，赋值给我们内部的成员变量。</span>
+<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`this.songs = new ArrayList&lt;&gt;();`</span>: 我们创建了一个全新的、空的<span class="in">`ArrayList`</span>实例，并将其引用赋值给了成员变量<span class="in">`songs`</span>。这确保了每个<span class="in">`Playlist`</span>对象都拥有自己独立的一份歌曲列表。</span>
 <span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`VibeVaultApp.java`</span>，用<span class="in">`Playlist`</span>来组织我们的<span class="in">`Song`</span>：</span>
+<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 让“分子”存在</span></span>
 <span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 创建两个Song原子</span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>        Song song1 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">);</span></span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>        Song song2 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 使用Playlist蓝图，建造一个名为"Rock Classics"的播放列表分子</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>        Playlist rockClassics <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"Rock Classics"</span><span class="op">);</span></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>        <span class="co">// （我们很快就会为Playlist添加addSong方法）</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Successfully created playlist: "</span> <span class="op">+</span> rockClassics<span class="op">);</span> <span class="co">// 这里会调用默认的toString方法</span></span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>现在运行程序，虽然我们还不能添加歌曲，但程序可以成功创建一个<span class="in">`Playlist`</span>对象。输出可能是一串类似<span class="in">`com.vibevault.Playlist@1f32e575`</span>的字符，这是Java对象默认的<span class="in">`toString()`</span>行为。别担心，我们稍后会改进它。</span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>现在我们有了蓝图，就可以在<span class="in">`VibeVaultApp.java`</span>中建造出具体的<span class="in">`Playlist`</span>对象了。</span>
+<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`VibeVaultApp.java`</span>，用<span class="in">`Playlist`</span>来组织我们的<span class="in">`Song`</span>：</span>
+<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
+<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
+<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 创建两个Song原子</span></span>
+<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>        Song song1 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">);</span></span>
+<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a>        Song song2 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
+<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 使用Playlist蓝图，建造一个名为"Rock Classics"的播放列表分子</span></span>
+<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>        Playlist rockClassics <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"Rock Classics"</span><span class="op">);</span></span>
+<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a>        <span class="co">// （我们很快就会为Playlist添加addSong方法）</span></span>
+<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"Successfully created playlist: "</span> <span class="op">+</span> rockClassics<span class="op">);</span> <span class="co">// 这里会调用默认的toString方法</span></span>
+<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>现在运行程序，虽然我们还不能添加歌曲，但程序可以成功创建一个<span class="in">`Playlist`</span>对象。输出可能是一串类似<span class="in">`com.vibevault.Playlist@1f32e575`</span>的字符，这是Java对象默认的<span class="in">`toString()`</span>行为。别担心，我们稍后会改进它。</span>
 <span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
-<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a>    严格按照本节的指导，在你的项目中创建<span class="in">`Playlist.java`</span>文件，并完整地编写出<span class="in">`Playlist`</span>类的基本骨架。确保它包含一个私有的<span class="in">`name`</span>（字符串）和一个私有的<span class="in">`songs`</span>（<span class="in">`List&lt;Song&gt;`</span>）成员变量，并提供一个接收<span class="in">`name`</span>的构造函数来初始化这两个变量。</span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**:</span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist.java`</span>类中，添加两个新的**公共方法 (public methods)**：</span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public String getName()`</span>: 这个方法不需要参数，它直接返回成员变量<span class="in">`name`</span>的值。</span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public int getSongCount()`</span>: 这个方法不需要参数，它返回内部<span class="in">`songs`</span>列表的大小（可以使用<span class="in">`songs.size()`</span>方法）。</span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`VibeVaultApp.java`</span>的<span class="in">`main`</span>方法中，创建<span class="in">`Playlist`</span>对象后，调用这两个新方法并打印出结果，以验证它们是否工作正常。</span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**破坏性实验**:</span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist`</span>的构造函数中，进行一个修改。**删除`this`关键字**，将代码改成这样：</span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> name<span class="op">;</span> <span class="co">// 没有 'this'</span></span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>    现在，在<span class="in">`main`</span>方法中调用你刚刚编写的<span class="in">`getName()`</span>方法并打印结果。你会发现<span class="in">`Playlist`</span>的名字是<span class="in">`null`</span>（或者空），而不是你传入的"Rock Classics"。为什么？这个实验如何从实践上证明了<span class="in">`this`</span>在区分同名成员变量和参数时的必要性？（提示：<span class="in">`name = name;`</span>这行代码实际上是把参数<span class="in">`name`</span>赋值给了它自己，成员变量<span class="in">`name`</span>从未被触及。）</span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**思考与设计**:</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    我们当前的构造函数只能创建一个空的播放列表。如果我们想在创建<span class="in">`Playlist`</span>时，就能立即包含一组**初始歌曲**，我们应该如何设计一个新的构造函数？</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>这个新构造函数的参数应该是什么样的？（提示：可能需要两个参数，一个<span class="in">`name`</span>，一个<span class="in">`List&lt;Song&gt;`</span>）</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在Java中，一个类可以有多个同名但参数列表不同的构造函数，这个特性叫做**构造函数重载 (Constructor Overloading)**。请尝试写出这个新的构造函数。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb4-108"><a href="#cb4-108" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb4-109"><a href="#cb4-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
+<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a>    严格按照本节的指导，在你的项目中创建<span class="in">`Playlist.java`</span>文件，并完整地编写出<span class="in">`Playlist`</span>类的基本骨架。确保它包含一个私有的<span class="in">`name`</span>（字符串）和一个私有的<span class="in">`songs`</span>（<span class="in">`List&lt;Song&gt;`</span>）成员变量，并提供一个接收<span class="in">`name`</span>的构造函数来初始化这两个变量。</span>
+<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**:</span>
+<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist.java`</span>类中，添加两个新的**公共方法 (public methods)**：</span>
+<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public String getName()`</span>: 这个方法不需要参数，它直接返回成员变量<span class="in">`name`</span>的值。</span>
+<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`public int getSongCount()`</span>: 这个方法不需要参数，它返回内部<span class="in">`songs`</span>列表的大小（可以使用<span class="in">`songs.size()`</span>方法）。</span>
+<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`VibeVaultApp.java`</span>的<span class="in">`main`</span>方法中，创建<span class="in">`Playlist`</span>对象后，调用这两个新方法并打印出结果，以验证它们是否工作正常。</span>
+<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**破坏性实验**:</span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist`</span>的构造函数中，进行一个修改。**删除`this`关键字**，将代码改成这样：</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a>        name <span class="op">=</span> name<span class="op">;</span> <span class="co">// 没有 'this'</span></span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>    现在，在<span class="in">`main`</span>方法中调用你刚刚编写的<span class="in">`getName()`</span>方法并打印结果。你会发现<span class="in">`Playlist`</span>的名字是<span class="in">`null`</span>（或者空），而不是你传入的"Rock Classics"。为什么？这个实验如何从实践上证明了<span class="in">`this`</span>在区分同名成员变量和参数时的必要性？（提示：<span class="in">`name = name;`</span>这行代码实际上是把参数<span class="in">`name`</span>赋值给了它自己，成员变量<span class="in">`name`</span>从未被触及。）</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**思考与设计**:</span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>    我们当前的构造函数只能创建一个空的播放列表。如果我们想在创建<span class="in">`Playlist`</span>时，就能立即包含一组**初始歌曲**，我们应该如何设计一个新的构造函数？</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>这个新构造函数的参数应该是什么样的？（提示：可能需要两个参数，一个<span class="in">`name`</span>，一个<span class="in">`List&lt;Song&gt;`</span>）</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在Java中，一个类可以有多个同名但参数列表不同的构造函数，这个特性叫做**构造函数重载 (Constructor Overloading)**。请尝试写出这个新的构造函数。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -499,6 +499,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“前提正确，结论必然正确。” —— 亚里士多德</p>
 </blockquote>
+<div class="video-container">
+<iframe src="//player.bilibili.com/player.html?bvid=BV1oGapzsErv&amp;page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400">
+</iframe>
+</div>
 <section id="本节危机选择的困境" class="level2">
 <h2 class="anchored" data-anchor-id="本节危机选择的困境">本节危机：选择的困境</h2>
 <p>我们已经为<code>Playlist</code>分子设计好了蓝图，并确定它需要一个内部“容器”来存放<code>Song</code>原子。在Java强大的标准库 <code>java.util</code> 中，有许多现成的容器可供选择，它们都被统称为<strong>集合 (Collections)</strong>。</p>
@@ -1145,177 +1149,181 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "前提正确，结论必然正确。" —— 亚里士多德</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：选择的困境</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>我们已经为<span class="in">`Playlist`</span>分子设计好了蓝图，并确定它需要一个内部“容器”来存放<span class="in">`Song`</span>原子。在Java强大的标准库 <span class="in">`java.util`</span> 中，有许多现成的容器可供选择，它们都被统称为**集合 (Collections)**。</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>::: {.video-container}</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">iframe</span><span class="ot"> src</span><span class="op">=</span><span class="st">"//player.bilibili.com/player.html?bvid=BV1oGapzsErv</span><span class="er">&amp;</span><span class="st">page=1"</span><span class="ot"> scrolling</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> border</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> frameborder</span><span class="op">=</span><span class="st">"no"</span><span class="ot"> framespacing</span><span class="op">=</span><span class="st">"0"</span><span class="ot"> allowfullscreen</span><span class="op">=</span><span class="st">"true"</span><span class="ot"> width</span><span class="op">=</span><span class="st">"100%"</span><span class="ot"> height</span><span class="op">=</span><span class="st">"400"</span><span class="dt">&gt;&lt;/</span><span class="kw">iframe</span><span class="dt">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>但问题来了，我们应该用哪一个？</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：选择的困境</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`ArrayList&lt;Song&gt;`</span>?</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`LinkedList&lt;Song&gt;`</span>?</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`HashSet&lt;Song&gt;`</span>?</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>还是别的什么？</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>这是一个典型的工程决策。如果仅仅凭“感觉”或者“之前用过这个”来选择，很可能会为项目的未来埋下性能隐患。例如，一个在10个元素时工作良好的选择，在10万个元素时可能会慢如蜗牛。</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：在众多看似相似的选项面前，如何基于第一性原理，为当前的需求做出最明智、最无可辩驳的技术选型？**</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>我们已经为<span class="in">`Playlist`</span>分子设计好了蓝图，并确定它需要一个内部“容器”来存放<span class="in">`Song`</span>原子。在Java强大的标准库 <span class="in">`java.util`</span> 中，有许多现成的容器可供选择，它们都被统称为**集合 (Collections)**。</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>但问题来了，我们应该用哪一个？</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`ArrayList&lt;Song&gt;`</span>?</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`LinkedList&lt;Song&gt;`</span>?</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`HashSet&lt;Song&gt;`</span>?</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>还是别的什么？</span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：数据结构决定性能宿命</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>这是一个典型的工程决策。如果仅仅凭“感觉”或者“之前用过这个”来选择，很可能会为项目的未来埋下性能隐患。例如，一个在10个元素时工作良好的选择，在10万个元素时可能会慢如蜗牛。</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>每一种集合类型，其性能特征都由它底层的**数据结构 (Data Structure)** 所决定。这就像汽车的发动机类型（V8、涡轮增压、电动）决定了它的加速、油耗和维护成本一样，是其内在的、无法改变的“物理定律”。</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：在众多看似相似的选项面前，如何基于第一性原理，为当前的需求做出最明智、最无可辩驳的技术选型？**</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>让我们像侦探一样，剖析三种最常见的集合类型，看看它们的“内心”到底是什么：</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：数据结构决定性能宿命</span></span>
 <span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. `ArrayList`：肚子里是“数组”</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>每一种集合类型，其性能特征都由它底层的**数据结构 (Data Structure)** 所决定。这就像汽车的发动机类型（V8、涡轮增压、电动）决定了它的加速、油耗和维护成本一样，是其内在的、无法改变的“物理定律”。</span>
 <span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**动态数组**。你可以把它想象成一个有序号的储物柜排，内存地址是连续的。</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**查询 (`get(index)`)**：**极快 (O(1))**。因为内存地址连续，计算机可以像计算数学公式一样，瞬间定位到第<span class="in">`i`</span>个储物柜。</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**尾部添加 (`add(song)`)**：**通常很快 (O(1))**。只要储物柜排末尾还有空位，放个东西进去就行。只有当储物柜满了，才需要一次“大动干戈”的扩容（建一排更大的新柜子，把旧东西全搬过去），这偶尔会慢一下。</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**中间/头部插入/删除 (`add(index, song)`/`remove(index)`)**：**极慢 (O(n))**。想象一下，要在储物柜排的中间插入一个新柜子，你必须把它后面的所有柜子都向后挪动一格。删除同理。元素越多，成本越高。</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. `LinkedList`：肚子里是“锁链”</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**双向链表**。你可以把它想象成一串用锁链连起来的珠子。每个珠子（节点）只知道自己的上一个和下一个珠子是谁，它们在内存中的位置是分散的。</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**查询 (`get(index)`)**：**极慢 (O(n))**。因为内存地址不连续，要找第<span class="in">`i`</span>个珠子，你必须从第一颗珠子开始，一个一个数过去。</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**头部/尾部添加/删除 (`addFirst`/`removeLast`)**：**极快 (O(1))**。因为<span class="in">`LinkedList`</span>始终抓住链子的头和尾，断开或接上一个新珠子，只需要改动几个“链条”的指向即可。</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**中间插入/删除**：**慢 (O(n))**。虽然操作本身（改链条）很快，但你还是得先花时间找到那个要操作的珠子，这个查找过程是O(n)的。</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. `HashSet`：肚子里是“字典”</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**哈希表**（内部实际使用<span class="in">`HashMap`</span>）。你可以把它想象成一本根据拼音首字母（<span class="in">`hashCode()`</span>）索引的字典。</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**添加/删除/查询 (`add`/`remove`/`contains`)**：**平均极快 (O(1))**。无论字典有多厚，只要你知道一个词的拼音首字母，就能立刻翻到那一页附近。这就是哈希的魔力。</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**两大“天条”**:</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="ss">        1.  </span>**元素唯一**：字典里不会有两个完全一样的词条。</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="ss">        2.  </span>**顺序不保**：字典是按拼音首字母组织的，不是按你添加的顺序。</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>**做出我们的选择**</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>现在，回到我们<span class="in">`Playlist`</span>的需求：</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>让我们像侦探一样，剖析三种最常见的集合类型，看看它们的“内心”到底是什么：</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. `ArrayList`：肚子里是“数组”</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**动态数组**。你可以把它想象成一个有序号的储物柜排，内存地址是连续的。</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**查询 (`get(index)`)**：**极快 (O(1))**。因为内存地址连续，计算机可以像计算数学公式一样，瞬间定位到第<span class="in">`i`</span>个储物柜。</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**尾部添加 (`add(song)`)**：**通常很快 (O(1))**。只要储物柜排末尾还有空位，放个东西进去就行。只有当储物柜满了，才需要一次“大动干戈”的扩容（建一排更大的新柜子，把旧东西全搬过去），这偶尔会慢一下。</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**中间/头部插入/删除 (`add(index, song)`/`remove(index)`)**：**极慢 (O(n))**。想象一下，要在储物柜排的中间插入一个新柜子，你必须把它后面的所有柜子都向后挪动一格。删除同理。元素越多，成本越高。</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. `LinkedList`：肚子里是“锁链”</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**双向链表**。你可以把它想象成一串用锁链连起来的珠子。每个珠子（节点）只知道自己的上一个和下一个珠子是谁，它们在内存中的位置是分散的。</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**查询 (`get(index)`)**：**极慢 (O(n))**。因为内存地址不连续，要找第<span class="in">`i`</span>个珠子，你必须从第一颗珠子开始，一个一个数过去。</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**头部/尾部添加/删除 (`addFirst`/`removeLast`)**：**极快 (O(1))**。因为<span class="in">`LinkedList`</span>始终抓住链子的头和尾，断开或接上一个新珠子，只需要改动几个“链条”的指向即可。</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**中间插入/删除**：**慢 (O(n))**。虽然操作本身（改链条）很快，但你还是得先花时间找到那个要操作的珠子，这个查找过程是O(n)的。</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. `HashSet`：肚子里是“字典”</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**底层结构**：一个**哈希表**（内部实际使用<span class="in">`HashMap`</span>）。你可以把它想象成一本根据拼音首字母（<span class="in">`hashCode()`</span>）索引的字典。</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能宿命**:</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**添加/删除/查询 (`add`/`remove`/`contains`)**：**平均极快 (O(1))**。无论字典有多厚，只要你知道一个词的拼音首字母，就能立刻翻到那一页附近。这就是哈希的魔力。</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**两大“天条”**:</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="ss">        1.  </span>**元素唯一**：字典里不会有两个完全一样的词条。</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="ss">        2.  </span>**顺序不保**：字典是按拼音首字母组织的，不是按你添加的顺序。</span>
 <span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们需要按顺序播放歌曲吗？**需要**。所以<span class="in">`HashSet`</span>的无序性不满足要求，淘汰。</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们最常见的操作是“在列表末尾添加一首歌”和“从头到尾遍历播放”。<span class="in">`ArrayList`</span>的尾部添加和遍历查询都非常快。</span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们会频繁地在播放列表的“中间”插入歌曲吗？很少。</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>**做出我们的选择**</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>现在，回到我们<span class="in">`Playlist`</span>的需求：</span>
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>**结论不言而喻：对于当前`Playlist`的需求，`ArrayList`是性能和功能的最佳选择。**</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们需要按顺序播放歌曲吗？**需要**。所以<span class="in">`HashSet`</span>的无序性不满足要求，淘汰。</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们最常见的操作是“在列表末尾添加一首歌”和“从头到尾遍历播放”。<span class="in">`ArrayList`</span>的尾部添加和遍历查询都非常快。</span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们会频繁地在播放列表的“中间”插入歌曲吗？很少。</span>
 <span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 为`Playlist`分子赋予行为</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>**结论不言而喻：对于当前`Playlist`的需求，`ArrayList`是性能和功能的最佳选择。**</span>
 <span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>理论分析完毕，现在让我们动手，为<span class="in">`Playlist.java`</span>添加核心的业务方法。</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>请打开<span class="in">`Playlist.java`</span>，在构造函数下方添加以下方法：</span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="fu">## 2. 为`Playlist`分子赋予行为</span></span>
 <span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co">// 在 Playlist.java 中 ...</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="co">// ... (成员变量和构造函数保持不变) ...</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 方法 (Methods) ---</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="co">// 它们定义了Playlist的“行为”</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">向播放列表末尾添加一首歌。</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">song</span><span class="co"> 要添加的歌曲，不能为</span>null<span class="co">。</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>song <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>song<span class="op">);</span></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">列出播放列表中的所有歌曲到控制台。</span></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">listSongs</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"--- Playlist: "</span> <span class="op">+</span> <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">+</span> <span class="st">" ---"</span><span class="op">);</span></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"This playlist is empty."</span><span class="op">);</span></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">size</span><span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>            Song currentSong <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">get</span><span class="op">(</span>i<span class="op">);</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">((</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="st">". "</span> <span class="op">+</span> currentSong<span class="op">.</span><span class="fu">title</span><span class="op">()</span> <span class="op">+</span> <span class="st">" - "</span> <span class="op">+</span> currentSong<span class="op">.</span><span class="fu">artist</span><span class="op">());</span></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"---------------------------------"</span><span class="op">);</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="co">// 这是为了让 System.out.println(playlistObject) 时能有更友好的输出</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="bu">String</span> <span class="fu">toString</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Playlist{name='"</span> <span class="op">+</span> name <span class="op">+</span> <span class="st">"', song_count="</span> <span class="op">+</span> songs<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">+</span> <span class="st">"}"</span><span class="op">;</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>**代码剖析:**</span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`addSong(Song song)`</span>: 我们定义了一个公开的(<span class="in">`public`</span>)方法来添加歌曲。注意，我们对传入的<span class="in">`song`</span>做了非空检查，这是良好编程习惯的一部分，可以增加代码的健壮性。我们将歌曲添加到了内部<span class="in">`songs`</span>列表的末尾。</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`listSongs()`</span>: 这个方法遍历内部的<span class="in">`songs`</span>列表，并格式化输出到控制台。我们使用了经典的<span class="in">`for`</span>循环和<span class="in">`songs.get(i)`</span>，这在<span class="in">`ArrayList`</span>上效率很高。</span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Override public String toString()`</span>: 这是一个特殊的方法。<span class="in">`@Override`</span>注解告诉编译器，我们想要“覆盖”从<span class="in">`Object`</span>类继承来的默认<span class="in">`toString`</span>方法。现在，当我们打印一个<span class="in">`Playlist`</span>对象时，它会输出我们自定义的、更有意义的字符串，而不是<span class="in">`com.vibevault.Playlist@1f32e575`</span>。</span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>理论分析完毕，现在让我们动手，为<span class="in">`Playlist.java`</span>添加核心的业务方法。</span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a>请打开<span class="in">`Playlist.java`</span>，在构造函数下方添加以下方法：</span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="co">// 在 Playlist.java 中 ...</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="co">// ... (成员变量和构造函数保持不变) ...</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="co">// --- 方法 (Methods) ---</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="co">// 它们定义了Playlist的“行为”</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">向播放列表末尾添加一首歌。</span></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co"> * </span><span class="an">@param</span><span class="co"> </span><span class="an">song</span><span class="co"> 要添加的歌曲，不能为</span>null<span class="co">。</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>song <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>song<span class="op">);</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="co">/**</span></span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a> <span class="co">*</span> <span class="co">列出播放列表中的所有歌曲到控制台。</span></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a> <span class="co">*/</span></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="dt">void</span> <span class="fu">listSongs</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"--- Playlist: "</span> <span class="op">+</span> <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">+</span> <span class="st">" ---"</span><span class="op">);</span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span><span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"This playlist is empty."</span><span class="op">);</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">size</span><span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>            Song currentSong <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">get</span><span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">((</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">)</span> <span class="op">+</span> <span class="st">". "</span> <span class="op">+</span> currentSong<span class="op">.</span><span class="fu">title</span><span class="op">()</span> <span class="op">+</span> <span class="st">" - "</span> <span class="op">+</span> currentSong<span class="op">.</span><span class="fu">artist</span><span class="op">());</span></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"---------------------------------"</span><span class="op">);</span></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="co">// 这是为了让 System.out.println(playlistObject) 时能有更友好的输出</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="at">@Override</span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="bu">String</span> <span class="fu">toString</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"Playlist{name='"</span> <span class="op">+</span> name <span class="op">+</span> <span class="st">"', song_count="</span> <span class="op">+</span> songs<span class="op">.</span><span class="fu">size</span><span class="op">()</span> <span class="op">+</span> <span class="st">"}"</span><span class="op">;</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>**代码剖析:**</span>
 <span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 在App中验证我们的分子</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a>最后，回到<span class="in">`VibeVaultApp.java`</span>，让我们完整地使用一下<span class="in">`Playlist`</span>对象：</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`addSong(Song song)`</span>: 我们定义了一个公开的(<span class="in">`public`</span>)方法来添加歌曲。注意，我们对传入的<span class="in">`song`</span>做了非空检查，这是良好编程习惯的一部分，可以增加代码的健壮性。我们将歌曲添加到了内部<span class="in">`songs`</span>列表的末尾。</span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`listSongs()`</span>: 这个方法遍历内部的<span class="in">`songs`</span>列表，并格式化输出到控制台。我们使用了经典的<span class="in">`for`</span>循环和<span class="in">`songs.get(i)`</span>，这在<span class="in">`ArrayList`</span>上效率很高。</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Override public String toString()`</span>: 这是一个特殊的方法。<span class="in">`@Override`</span>注解告诉编译器，我们想要“覆盖”从<span class="in">`Object`</span>类继承来的默认<span class="in">`toString`</span>方法。现在，当我们打印一个<span class="in">`Playlist`</span>对象时，它会输出我们自定义的、更有意义的字符串，而不是<span class="in">`com.vibevault.Playlist@1f32e575`</span>。</span>
 <span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 1. 创建一些Song原子</span></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a>        Song song1 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">);</span></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>        Song song2 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>        Song song3 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Hotel California"</span><span class="op">,</span> <span class="st">"Eagles"</span><span class="op">,</span> <span class="dv">390</span><span class="op">);</span></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 2. 创建一个Playlist分子</span></span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        Playlist rockClassics <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"Rock Classics"</span><span class="op">);</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 3. 为分子添加行为（调用方法）</span></span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song1<span class="op">);</span></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song2<span class="op">);</span></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song3<span class="op">);</span></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 4. 验证结果</span></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">listSongs</span><span class="op">();</span></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>rockClassics<span class="op">);</span> <span class="co">// 验证我们重写的toString方法</span></span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>运行<span class="in">`VibeVaultApp.java`</span>，你将看到清晰、格式化的输出，证明我们的<span class="in">`Playlist`</span>分子已经可以按我们的意图工作了！</span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3. 在App中验证我们的分子</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>最后，回到<span class="in">`VibeVaultApp.java`</span>，让我们完整地使用一下<span class="in">`Playlist`</span>对象：</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 1. 创建一些Song原子</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>        Song song1 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">);</span></span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>        Song song2 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>        Song song3 <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Hotel California"</span><span class="op">,</span> <span class="st">"Eagles"</span><span class="op">,</span> <span class="dv">390</span><span class="op">);</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 2. 创建一个Playlist分子</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>        Playlist rockClassics <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"Rock Classics"</span><span class="op">);</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 3. 为分子添加行为（调用方法）</span></span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song1<span class="op">);</span></span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song2<span class="op">);</span></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song3<span class="op">);</span></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 4. 验证结果</span></span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a>        rockClassics<span class="op">.</span><span class="fu">listSongs</span><span class="op">();</span></span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>        <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>rockClassics<span class="op">);</span> <span class="co">// 验证我们重写的toString方法</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>运行<span class="in">`VibeVaultApp.java`</span>，你将看到清晰、格式化的输出，证明我们的<span class="in">`Playlist`</span>分子已经可以按我们的意图工作了！</span>
 <span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>    将<span class="in">`addSong`</span>和<span class="in">`listSongs`</span>方法完整地实现到你的<span class="in">`Playlist.java`</span>中。然后在<span class="in">`main`</span>方法中创建一个<span class="in">`Playlist`</span>实例，添加几首你喜欢的<span class="in">`Song`</span>，并调用<span class="in">`listSongs`</span>来验证结果是否如预期一样。</span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习与深入思考**:</span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist`</span>类中创建一个名为<span class="in">`findSongByTitle(String title)`</span>的方法。它应该遍历歌曲列表，如果找到了一个<span class="in">`Song`</span>的标题与传入的<span class="in">`title`</span>完全匹配，就返回这个<span class="in">`Song`</span>对象。</span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**关键问题**：如果遍历完整个列表都没找到，这个方法应该返回什么？</span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个常见的选择是返回<span class="in">`null`</span>。但这有什么潜在的风险？请向你的AI伙伴提问：“Java中的NullPointerException是什么？为什么它被称为‘十亿美元的错误’？请给我一个会导致它发生的小代码例子。”</span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>有没有比返回<span class="in">`null`</span>更安全的方式？（提示：可以了解一下Java 8引入的<span class="in">`Optional&lt;T&gt;`</span>类）。</span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同与性能实验**:</span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>    这个实验将让你亲眼看到数据结构底层实现的巨大差异。向你的AI伙伴发出以下指令：</span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请帮我写一段Java代码。这段代码需要做两件事：</span></span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 1. 创建一个</span><span class="in">`ArrayList&lt;Integer&gt;`</span><span class="at">和一个</span><span class="in">`LinkedList&lt;Integer&gt;`</span><span class="at">。</span></span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 2. 分别测量并打印出：向这两个list的**开头**（索引为0的位置）连续插入10万个整数，各需要多少毫秒。</span></span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 请在代码中添加清晰的计时逻辑和输出。"</span></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="at">    运行AI生成的代码。你观察到的时间差异有多大？这个结果如何从实践上印证了我们在本节中关于</span><span class="in">`ArrayList`</span><span class="at">和</span><span class="in">`LinkedList`</span><span class="at">性能宿命的理论分析？</span></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**设计思考 (回顾与升华)**:</span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a>    现在，让我们考虑一个新的业务需求：<span class="in">`VibeVault`</span>需要一个“我最喜爱的歌曲”列表，这个列表有一个非常重要的特性——**不允许包含重复的歌曲**。</span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在这种情况下，<span class="in">`ArrayList`</span>还是<span class="in">`Playlist`</span>内部容器的最佳选择吗？为什么？</span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>根据我们对<span class="in">`HashSet`</span>的分析，它是否是更好的选择？为什么？</span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果我们将<span class="in">`private final List&lt;Song&gt; songs;`</span>修改为<span class="in">`private final Set&lt;Song&gt; songs;`</span>，并且在构造函数中改为<span class="in">`this.songs = new HashSet&lt;&gt;();`</span>，那么我们之前写的<span class="in">`public void addSong(Song song)`</span>和<span class="in">`public void listSongs()`</span>这两个**公开方法**的方法签名（即方法名和参数）需要改变吗？</span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果公开方法无需改变，这是否再次、并且强有力地证明了“**封装**”的巨大价值？ </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**:</span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>    将<span class="in">`addSong`</span>和<span class="in">`listSongs`</span>方法完整地实现到你的<span class="in">`Playlist.java`</span>中。然后在<span class="in">`main`</span>方法中创建一个<span class="in">`Playlist`</span>实例，添加几首你喜欢的<span class="in">`Song`</span>，并调用<span class="in">`listSongs`</span>来验证结果是否如预期一样。</span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习与深入思考**:</span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>    在<span class="in">`Playlist`</span>类中创建一个名为<span class="in">`findSongByTitle(String title)`</span>的方法。它应该遍历歌曲列表，如果找到了一个<span class="in">`Song`</span>的标题与传入的<span class="in">`title`</span>完全匹配，就返回这个<span class="in">`Song`</span>对象。</span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**关键问题**：如果遍历完整个列表都没找到，这个方法应该返回什么？</span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>一个常见的选择是返回<span class="in">`null`</span>。但这有什么潜在的风险？请向你的AI伙伴提问：“Java中的NullPointerException是什么？为什么它被称为‘十亿美元的错误’？请给我一个会导致它发生的小代码例子。”</span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>有没有比返回<span class="in">`null`</span>更安全的方式？（提示：可以了解一下Java 8引入的<span class="in">`Optional&lt;T&gt;`</span>类）。</span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同与性能实验**:</span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>    这个实验将让你亲眼看到数据结构底层实现的巨大差异。向你的AI伙伴发出以下指令：</span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请帮我写一段Java代码。这段代码需要做两件事：</span></span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 1. 创建一个</span><span class="in">`ArrayList&lt;Integer&gt;`</span><span class="at">和一个</span><span class="in">`LinkedList&lt;Integer&gt;`</span><span class="at">。</span></span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 2. 分别测量并打印出：向这两个list的**开头**（索引为0的位置）连续插入10万个整数，各需要多少毫秒。</span></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 请在代码中添加清晰的计时逻辑和输出。"</span></span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt;</span></span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="at">    运行AI生成的代码。你观察到的时间差异有多大？这个结果如何从实践上印证了我们在本节中关于</span><span class="in">`ArrayList`</span><span class="at">和</span><span class="in">`LinkedList`</span><span class="at">性能宿命的理论分析？</span></span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**设计思考 (回顾与升华)**:</span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>    现在，让我们考虑一个新的业务需求：<span class="in">`VibeVault`</span>需要一个“我最喜爱的歌曲”列表，这个列表有一个非常重要的特性——**不允许包含重复的歌曲**。</span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在这种情况下，<span class="in">`ArrayList`</span>还是<span class="in">`Playlist`</span>内部容器的最佳选择吗？为什么？</span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>根据我们对<span class="in">`HashSet`</span>的分析，它是否是更好的选择？为什么？</span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果我们将<span class="in">`private final List&lt;Song&gt; songs;`</span>修改为<span class="in">`private final Set&lt;Song&gt; songs;`</span>，并且在构造函数中改为<span class="in">`this.songs = new HashSet&lt;&gt;();`</span>，那么我们之前写的<span class="in">`public void addSong(Song song)`</span>和<span class="in">`public void listSongs()`</span>这两个**公开方法**的方法签名（即方法名和参数）需要改变吗？</span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果公开方法无需改变，这是否再次、并且强有力地证明了“**封装**”的巨大价值？ </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

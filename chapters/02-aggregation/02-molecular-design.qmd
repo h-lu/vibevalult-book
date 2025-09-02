@@ -4,6 +4,10 @@ title: "设计播放列表“分子”"
 
 > "形式追随功能。" —— 路易斯·沙利文 (Louis Sullivan)
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1oGapzsEet&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：知其然，不知其所以然
 
 在上一节，我们从理论上理解了封装的“为什么”——为了隐藏细节、明确责任，从而控制软件的复杂性。但理论和实践之间，总有一段距离。
@@ -116,7 +120,7 @@ public class VibeVaultApp {
 
 3.  **破坏性实验**:
     在`Playlist`的构造函数中，进行一个修改。**删除`this`关键字**，将代码改成这样：
-    
+
     ```java
     public Playlist(String name) {
         name = name; // 没有 'this'

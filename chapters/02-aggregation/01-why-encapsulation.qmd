@@ -4,6 +4,10 @@ title: "为何要封装？从数据集合到业务对象"
 
 > "复杂性是计算机软件的唯一主要困难。" —— 弗雷德·布鲁克斯，《人月神话》
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1oGapzsE3V&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：失控的“原子”集合
 
 在第一章，我们成功铸造了“歌曲”(`Song`)这个数字原子。现在，我们自然而然地想将它们组织起来。一个最直接的想法，可能就是在我们的`VibeVaultApp`的`main`方法里，创建一个列表来存放它们：

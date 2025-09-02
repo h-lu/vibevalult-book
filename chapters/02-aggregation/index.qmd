@@ -4,13 +4,13 @@ title: "第二章：从“一”到“多”：构建第一个“分子结构”
 
 > "一生二，二生三，三生万物。" - 《道德经》
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1fTapzZEaU&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本章危机
 
 我们创造了"歌曲"这个数字原子，但单个的原子无法表达复杂的意义。一首歌本身价值有限，但一个精心编排的"播放列表"却能承载情感和故事。我们如何从"一"走向"多"，从简单的原子构建出更复杂的分子？
-
-::: {.video-container}
-<iframe src="//player.bilibili.com/player.html?bvid=BV1WUhCztEaJ&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
-:::
 
 ## 本章顿悟
 

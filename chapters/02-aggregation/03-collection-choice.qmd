@@ -4,6 +4,10 @@ title: "选择容器：为何是ArrayList？"
 
 > "前提正确，结论必然正确。" —— 亚里士多德
 
+::: {.video-container}
+<iframe src="//player.bilibili.com/player.html?bvid=BV1oGapzsErv&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：选择的困境
 
 我们已经为`Playlist`分子设计好了蓝图，并确定它需要一个内部“容器”来存放`Song`原子。在Java强大的标准库 `java.util` 中，有许多现成的容器可供选择，它们都被统称为**集合 (Collections)**。
