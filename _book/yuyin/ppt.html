@@ -225,6 +225,44 @@
 <li>第3–4周：轻量ML上线、在线校准、A/B灰度</li>
 </ul>
 </section>
+<section id="路线图进度-难度可实现性" class="slide level2">
+<h2>路线图：进度 × 难度（可实现性）</h2>
+<div class="cell" data-reveal="true" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class=""><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+  %% 进度 × 难度 四象限（无连线，提升兼容性）
+  subgraph Q1["短期 · 低难度"]
+    a1["询价标准化模板"]
+    a2["建议价卡 规则V1"]
+    a3["留痕&amp;看板V1"]
+    a4["路由卡 规则V1"]
+  end
+  subgraph Q2["短期 · 中等难度"]
+    b1["RAG提案卡V1（知识库+模板）"]
+  end
+  subgraph Q3["中长期 · 低难度"]
+    c1["建议价卡 ML+校准"]
+    c2["路由卡 ML+超时切换"]
+    c3["A/B灰度+在线学习"]
+  end
+  subgraph Q4["中长期 · 高难度"]
+    d1["数字孪生回放"]
+    d2["多对手智能路由（SOR）"]
+    d3["强化学习/安全Bandit"]
+    d4["XVA/抵押品优化"]
+    d5["联邦/隐私学习"]
+    d6["智能执行Algo"]
+  end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
 <section id="合规与边界" class="slide level2">
 <h2>合规与边界</h2>
 <ul>
