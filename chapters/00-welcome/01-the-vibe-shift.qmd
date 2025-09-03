@@ -1,5 +1,5 @@
 ---
-title: "Vibe的转变：什么是Vibe Coding？"
+title: "0.1 - Vibe的转变：什么是Vibe Coding？"
 ---
 
 > "我们称之为思想的，是与音乐共舞的情感。" - 弗拉基米尔·纳博科夫
