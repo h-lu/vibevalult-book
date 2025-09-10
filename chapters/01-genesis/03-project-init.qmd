@@ -144,14 +144,6 @@ repositories {
 }
 ```
 
-完成后，建议清理历史缓存并重试构建：
-
-```bash
-rm -rf ~/.gradle/wrapper/dists/gradle-9.0.0* ~/.gradle/caches
-./gradlew --version | cat
-./gradlew build
-```
-
 > 提示：若仍有网络波动，请以镜像索引页为准选择最新版本（阿里云镜像索引：`https://mirrors.aliyun.com/macports/distfiles/gradle/`）。
 
 ## 2. 在VS Code中打开你的“建筑工地”
