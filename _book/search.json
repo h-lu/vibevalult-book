@@ -210,7 +210,7 @@
     "href": "chapters/01-genesis/03-project-init.html#在vs-code中打开你的建筑工地",
     "title": "1.3 - 绘制蓝图：初始化你的Gradle项目",
     "section": "2. 在VS Code中打开你的“建筑工地”",
-    "text": "2. 在VS Code中打开你的“建筑工地”\n项目已初始化完毕。现在，让我们用智能工坊来审视它。在VibeVault目录下执行：\ncode .\nVS Code会自动打开当前项目。右下角可能会弹窗询问“是否信任此文件夹的作者？”，请选择“是”。VS Code的Java扩展包会自动识别这是一个Gradle项目，并开始同步依赖项。",
+    "text": "2. 在VS Code中打开你的“建筑工地”\n使用 VS Code 打开当前项目。右下角可能会弹窗询问“是否信任此文件夹的作者？”，请选择“是”。VS Code的Java扩展包会自动识别这是一个Gradle项目，并开始同步依赖项。",
     "crumbs": [
       "第一章：从“无”到“有”：创造你的第一个“数字原子”",
       "<span class='chapter-number'>8</span>  <span class='chapter-title'>1.3 - 绘制蓝图：初始化你的Gradle项目</span>"
