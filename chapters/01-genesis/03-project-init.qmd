@@ -72,6 +72,88 @@ title: "1.3 - 绘制蓝图：初始化你的Gradle项目"
     
     完成后，Gradle会为你生成一套完整、现代化的项目结构。
 
+## 国内网络环境与加速指南（无法科学上网时必读）
+
+在国内网络环境下，直接访问 Gradle 官方分发站点和部分依赖仓库可能较慢或不稳定。若你无法科学上网，请按下述方法加速。以下示例基于本书示例项目 `chapter-code/ch02` 的目录结构。
+
+- **目标**：
+  - **安装/下载 Gradle** 更稳定（用于执行 `gradle init` 或首次下载 Wrapper）。
+  - **Gradle Wrapper 分发镜像**，避免从 `services.gradle.org` 下载失败。
+  - **插件与依赖仓库镜像**，加速解析 `plugins` 与三方依赖。
+
+### 1) 安装 Gradle（用于执行 `gradle init` 或无 Wrapper 时）
+
+如果你本机尚未安装 Gradle，建议从镜像站直接下载并手动加入 PATH（以 9.0.0 为例）：
+
+```bash
+# macOS/Linux 示例
+curl -L -o ~/Downloads/gradle-9.0.0-bin.zip https://mirrors.aliyun.com/macports/distfiles/gradle/gradle-9.0.0-bin.zip
+unzip ~/Downloads/gradle-9.0.0-bin.zip -d ~/opt
+echo 'export PATH="$HOME/opt/gradle-9.0.0/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+gradle -v
+```
+
+Windows 可从镜像站下载 zip，解压至如 `C:\\opt\\gradle-9.0.0`，将 `C:\\opt\\gradle-9.0.0\\bin` 加入系统 PATH 后，重开终端执行 `gradle -v` 验证。
+
+### 2) 配置 Gradle Wrapper 使用国内镜像
+
+以 `chapter-code/ch02` 为例，打开 `gradle/wrapper/gradle-wrapper.properties`，将分发地址替换为镜像，并关闭域名校验：
+
+```properties
+distributionUrl=https\://mirrors.aliyun.com/macports/distfiles/gradle/gradle-9.0.0-bin.zip
+validateDistributionUrl=false
+# 其余保持不变，例如：
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+networkTimeout=10000
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+```
+
+说明：新版 Wrapper 默认 `validateDistributionUrl=true` 仅允许官方域名，若使用镜像，请显式设为 `false`。
+
+### 3) 配置插件与依赖仓库镜像
+
+- 在 `settings.gradle.kts` 顶部为插件解析添加镜像（置于现有 `plugins { ... }` 之前）：
+
+```kotlin
+pluginManagement {
+    repositories {
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.10.0"
+}
+
+rootProject.name = "VibeVault"
+include("app")
+```
+
+- 在 `app/build.gradle.kts` 中为依赖解析添加镜像（保留 `mavenCentral()` 以兜底）：
+
+```kotlin
+repositories {
+    maven { url = uri("https://maven.aliyun.com/repository/public") }
+    maven { url = uri("https://maven.aliyun.com/repository/central") }
+    mavenCentral()
+}
+```
+
+完成后，建议清理历史缓存并重试构建：
+
+```bash
+rm -rf ~/.gradle/wrapper/dists/gradle-9.0.0* ~/.gradle/caches
+./gradlew --version | cat
+./gradlew build
+```
+
+> 提示：若仍有网络波动，请以镜像索引页为准选择最新版本（阿里云镜像索引：`https://mirrors.aliyun.com/macports/distfiles/gradle/`）。
+
 ## 2. 在VS Code中打开你的“建筑工地”
 
 项目已初始化完毕。现在，让我们用智能工坊来审视它。在`VibeVault`目录下执行：

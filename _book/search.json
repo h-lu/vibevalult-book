@@ -1485,5 +1485,16 @@
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>12</span>  <span class='chapter-title'>选择容器：为何是ArrayList？</span>"
     ]
+  },
+  {
+    "objectID": "chapters/01-genesis/03-project-init.html#国内网络环境与加速指南无法科学上网时必读",
+    "href": "chapters/01-genesis/03-project-init.html#国内网络环境与加速指南无法科学上网时必读",
+    "title": "1.3 - 绘制蓝图：初始化你的Gradle项目",
+    "section": "国内网络环境与加速指南（无法科学上网时必读）",
+    "text": "国内网络环境与加速指南（无法科学上网时必读）\n在国内网络环境下，直接访问 Gradle 官方分发站点和部分依赖仓库可能较慢或不稳定。若你无法科学上网，请按下述方法加速。以下示例基于本书示例项目 chapter-code/ch02 的目录结构。\n\n目标：\n\n安装/下载 Gradle 更稳定（用于执行 gradle init 或首次下载 Wrapper）。\nGradle Wrapper 分发镜像，避免从 services.gradle.org 下载失败。\n插件与依赖仓库镜像，加速解析 plugins 与三方依赖。\n\n\n\n1) 安装 Gradle（用于执行 gradle init 或无 Wrapper 时）\n如果你本机尚未安装 Gradle，建议从镜像站直接下载并手动加入 PATH（以 9.0.0 为例）：\n# macOS/Linux 示例\ncurl -L -o ~/Downloads/gradle-9.0.0-bin.zip https://mirrors.aliyun.com/macports/distfiles/gradle/gradle-9.0.0-bin.zip\nunzip ~/Downloads/gradle-9.0.0-bin.zip -d ~/opt\necho 'export PATH=\"$HOME/opt/gradle-9.0.0/bin:$PATH\"' &gt;&gt; ~/.zshrc\nsource ~/.zshrc\ngradle -v\nWindows 可从镜像站下载 zip，解压至如 C:\\\\opt\\\\gradle-9.0.0，将 C:\\\\opt\\\\gradle-9.0.0\\\\bin 加入系统 PATH 后，重开终端执行 gradle -v 验证。\n\n\n2) 配置 Gradle Wrapper 使用国内镜像\n以 chapter-code/ch02 为例，打开 gradle/wrapper/gradle-wrapper.properties，将分发地址替换为镜像，并关闭域名校验：\ndistributionUrl=https\\://mirrors.aliyun.com/macports/distfiles/gradle/gradle-9.0.0-bin.zip\nvalidateDistributionUrl=false\n# 其余保持不变，例如：\ndistributionBase=GRADLE_USER_HOME\ndistributionPath=wrapper/dists\nnetworkTimeout=10000\nzipStoreBase=GRADLE_USER_HOME\nzipStorePath=wrapper/dists\n说明：新版 Wrapper 默认 validateDistributionUrl=true 仅允许官方域名，若使用镜像，请显式设为 false。\n\n\n3) 配置插件与依赖仓库镜像\n\n在 settings.gradle.kts 顶部为插件解析添加镜像（置于现有 plugins { ... } 之前）：\n\npluginManagement {\n    repositories {\n        maven { url = uri(\"https://maven.aliyun.com/repository/gradle-plugin\") }\n        gradlePluginPortal()\n        mavenCentral()\n    }\n}\n\nplugins {\n    id(\"org.gradle.toolchains.foojay-resolver-convention\") version \"0.10.0\"\n}\n\nrootProject.name = \"VibeVault\"\ninclude(\"app\")\n\n在 app/build.gradle.kts 中为依赖解析添加镜像（保留 mavenCentral() 以兜底）：\n\nrepositories {\n    maven { url = uri(\"https://maven.aliyun.com/repository/public\") }\n    maven { url = uri(\"https://maven.aliyun.com/repository/central\") }\n    mavenCentral()\n}\n完成后，建议清理历史缓存并重试构建：\nrm -rf ~/.gradle/wrapper/dists/gradle-9.0.0* ~/.gradle/caches\n./gradlew --version | cat\n./gradlew build\n\n提示：若仍有网络波动，请以镜像索引页为准选择最新版本（阿里云镜像索引：https://mirrors.aliyun.com/macports/distfiles/gradle/）。",
+    "crumbs": [
+      "第一章：从“无”到“有”：创造你的第一个“数字原子”",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>1.3 - 绘制蓝图：初始化你的Gradle项目</span>"
+    ]
   }
 ]
