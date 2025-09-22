@@ -4,6 +4,10 @@ title: "3.1 - 为何需要交互？批处理 vs. 事件循环"
 
 > "程序应该像对话一样互动，而不是独白。" - 艾伦·凯
 
+::: {.video-container}
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1M5Jfz2EEy&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：孤独的创造物
 
 在第二章，我们成功地构建了`Playlist`这个“分子结构”。它有自己的状态和行为，是一个封装良好的业务对象。我们可以像这样在`main`方法里与它“对话”：

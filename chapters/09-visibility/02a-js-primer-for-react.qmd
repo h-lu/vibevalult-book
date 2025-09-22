@@ -1,5 +1,5 @@
 ---
-title: "React前的必修课：现代JavaScript语法速成"
+title: "9.3 - React前的必修课：现代JavaScript语法速成"
 ---
 
 > “在建造高楼之前，必须先有坚实的地基。”

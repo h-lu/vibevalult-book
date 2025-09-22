@@ -4,6 +4,10 @@ title: "第三章：从“静”到“动”：赋予创造物与世界对话的
 
 > "存在，就是被感知。" - 乔治·贝克莱
 
+::: {.video-container}
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1M5Jfz2Eq4&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本章危机
 
 我们创造的`Playlist`对象是“死”的。它静静地躺在代码中，程序按照预设的剧本执行完毕便宣告结束。我们无法在程序运行时与它进行任何形式的互动，无法添加新歌，也无法执行任何操作。一个无法在运行时被我们所“感知”和“改变”的创造物，它的存在又有何意义？

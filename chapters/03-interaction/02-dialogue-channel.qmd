@@ -4,6 +4,10 @@ title: "3.2 - 建立对话通道：主循环与用户输入"
 
 > "对话是编程的本质。" - 艾伦·凯
 
+::: {.video-container}
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1t5Jfz2EWE&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：无法言语，一触即溃
 
 理论是灰色的，而生命之树常青。我们已经顿悟到需要一个“事件循环”来赋予程序生命，但如何用Java代码实现这个循环？我们如何搭建一个可靠的通道，来接收用户的指令，并保证这个通道不会因为用户一些意想不到的操作（比如在要求输入数字时输入了字母）而轻易崩溃？

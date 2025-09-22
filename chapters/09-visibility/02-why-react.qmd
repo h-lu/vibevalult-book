@@ -1,5 +1,5 @@
 ---
-title: "为何选择React？声明式的UI革命"
+title: "9.2 - 为何选择React？声明式的UI革命"
 ---
 
 > "我思，故我在。" (Cogito, ergo sum) - 勒内·笛卡尔 (René Descartes)
