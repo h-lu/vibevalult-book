@@ -1562,5 +1562,16 @@
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
     ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#练习",
+    "href": "chapters/02-aggregation/00-git.html#练习",
+    "title": "2.0 - Git 入门：版本控制与分支管理",
+    "section": "练习",
+    "text": "练习\n在你上一章创建的项目中，创建一个新分支如 ch02，并在这个分支上进行开发。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
+    ]
   }
 ]
