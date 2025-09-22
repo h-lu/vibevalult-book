@@ -1502,7 +1502,7 @@
     "href": "chapters/02-aggregation/00-git.html",
     "title": "2.0 - Git 入门：版本控制与分支管理",
     "section": "",
-    "text": "什么是 Git？\nGit 是一个分布式版本控制系统。想象一下，你在写一本书，每写完一个章节，你就保存一个版本。这样，如果你后来觉得某个章节写得不好，可以随时回到之前的任何一个版本。Git 就是这样一个工具，但它更强大，特别适合软件开发团队协作。\n它能帮助你： - 追踪文件的每一次修改。 - 随时回退到历史上的任何一个版本。 - 方便地与他人协作，而不会互相干扰。",
+    "text": "什么是 Git？\nGit 是一个分布式版本控制系统。想象一下，你在写一本书，每写完一个章节，你就保存一个版本。这样，如果你后来觉得某个章节写得不好，可以随时回到之前的任何一个版本。Git 就是这样一个工具，但它更强大，特别适合软件开发团队协作。\n它能帮助你：",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
@@ -1513,7 +1513,7 @@
     "href": "chapters/02-aggregation/00-git.html#如何安装-git",
     "title": "2.0 - Git 入门：版本控制与分支管理",
     "section": "如何安装 Git？",
-    "text": "如何安装 Git？\n你可以从 Git 官方网站下载并安装 Git。\n\n官方网站: https://git-scm.com/downloads\n\n根据你的操作系统（Windows, macOS, or Linux）选择对应的版本进行安装。",
+    "text": "如何安装 Git？\n你可以从 Git 官方网站下载并安装 Git。\n\n官方网站: https://git-scm.com/downloads\n中国镜像: https://registry.npmmirror.com/binary.html?path=git-for-windows/\n\n根据你的操作系统（Windows, macOS, or Linux）选择对应的版本进行安装。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
@@ -1546,7 +1546,7 @@
     "href": "chapters/02-aggregation/00-git.html#分支-branching",
     "title": "2.0 - Git 入门：版本控制与分支管理",
     "section": "分支 (Branching)",
-    "text": "分支 (Branching)\n分支是 Git 最核心、最强大的功能之一。它允许你从主开发线上分离出来，在一个独立的环境中进行工作，而不会影响到主线。\n\n什么是分支？\n可以把分支想象成一条独立的开发路径。默认情况下，你的所有工作都在一个叫做 main（或 master）的主分支上。当你创建一个新分支时，你实际上是创建了当前项目状态的一个副本，然后可以在这个副本上自由地进行修改。\n\n\n为什么使用分支？\n\n并行开发: 团队成员可以在各自的分支上开发新功能，互不干扰。\n隔离风险: 在一个新分支上开发实验性功能，如果失败了，直接删除该分支即可，不会对主项目造成任何影响。\n清晰的工作流: 比如，你可以为每个新功能创建一个 feature 分支，为修复 bug 创建一个 fix 分支。这使得项目历史非常清晰。\n\n\n\n如何使用分支？\n假设我们正在开发一个网站，main 分支上是稳定运行的代码。现在，我们要开发一个新的登录功能。\n\n创建新分支: 我们首先创建一个名为 feature/login 的新分支。 bash     git branch feature/login\n查看所有分支: 这个命令会列出所有本地分支，并在当前所在的分支前用 * 标记。\n    git branch\n    ```\n输出可能像这样：\n* main\n  feature/login\n```\n切换到新分支: 现在我们需要切换到新分支上进行开发。 bash     git switch feature/login     # 或者使用旧的命令     # git checkout feature/login 现在，你所做的任何修改和提交都将发生在这个 feature/login 分支上，而 main 分支保持不变。\n在新分支上工作: 你可以像平常一样修改代码、添加文件，然后提交。 bash     # (修改代码...)     git add .     git commit -m \"Add login form\"     # (继续修改...)     git add .     git commit -m \"Implement login logic\"\n合并分支: 当登录功能开发完成并且测试通过后，我们就可以把它合并回 main 分支了。 首先，切换回 main 分支： bash     git switch main 然后，执行合并命令： bash     git merge feature/login 现在，main 分支就包含了 feature/login 分支上的所有新代码了。\n删除分支: 合并完成后，feature/login 分支的历史使命就完成了，我们可以安全地删除它。 bash     git branch -d feature/login",
+    "text": "分支 (Branching)\n分支是 Git 最核心、最强大的功能之一。它允许你从主开发线上分离出来，在一个独立的环境中进行工作，而不会影响到主线。\n\n什么是分支？\n可以把分支想象成一条独立的开发路径。默认情况下，你的所有工作都在一个叫做 main（或 master）的主分支上。当你创建一个新分支时，你实际上是创建了当前项目状态的一个副本，然后可以在这个副本上自由地进行修改。\n\n\n为什么使用分支？\n\n并行开发: 团队成员可以在各自的分支上开发新功能，互不干扰。\n隔离风险: 在一个新分支上开发实验性功能，如果失败了，直接删除该分支即可，不会对主项目造成任何影响。\n清晰的工作流: 比如，你可以为每个新功能创建一个 feature 分支，为修复 bug 创建一个 fix 分支。这使得项目历史非常清晰。\n\n\n\n如何使用分支？\n假设我们正在开发一个网站，main 分支上是稳定运行的代码。现在，我们要开发一个新的登录功能。\n\n创建新分支: 我们首先创建一个名为 feature/login 的新分支。\ngit branch feature/login\n查看所有分支: 这个命令会列出所有本地分支，并在当前所在的分支前用 * 标记。\ngit branch\n输出可能像这样：\n* main\n  feature/login\n切换到新分支: 现在我们需要切换到新分支上进行开发。\ngit switch feature/login\n# 或者使用旧的命令\n# git checkout feature/login\n现在，你所做的任何修改和提交都将发生在这个 feature/login 分支上，而 main 分支保持不变。\n在新分支上工作: 你可以像平常一样修改代码、添加文件，然后提交。\n# (修改代码...)\ngit add .\ngit commit -m \"Add login form\"\n# (继续修改...)\ngit add .\ngit commit -m \"Implement login logic\"\n合并分支: 当登录功能开发完成并且测试通过后，我们就可以把它合并回 main 分支了。 首先，切换回 main 分支：\ngit switch main\n然后，执行合并命令：\ngit merge feature/login\n现在，main 分支就包含了 feature/login 分支上的所有新代码了。\n删除分支: 合并完成后，feature/login 分支的历史使命就完成了，我们可以安全地删除它。\ngit branch -d feature/login",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
@@ -1569,6 +1569,17 @@
     "title": "2.0 - Git 入门：版本控制与分支管理",
     "section": "练习",
     "text": "练习\n在你上一章创建的项目中，创建一个新分支如 ch02，并在这个分支上进行开发。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#什么是-git",
+    "href": "chapters/02-aggregation/00-git.html#什么是-git",
+    "title": "2.0 - Git 入门：版本控制与分支管理",
+    "section": "",
+    "text": "追踪文件的每一次修改。\n随时回退到历史上的任何一个版本。\n方便地与他人协作，而不会互相干扰。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：版本控制与分支管理</span>"

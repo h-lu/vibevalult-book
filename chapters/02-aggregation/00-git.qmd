@@ -5,6 +5,7 @@
 Git 是一个分布式版本控制系统。想象一下，你在写一本书，每写完一个章节，你就保存一个版本。这样，如果你后来觉得某个章节写得不好，可以随时回到之前的任何一个版本。Git 就是这样一个工具，但它更强大，特别适合软件开发团队协作。
 
 它能帮助你：
+
 - 追踪文件的每一次修改。
 - 随时回退到历史上的任何一个版本。
 - 方便地与他人协作，而不会互相干扰。
@@ -14,6 +15,7 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 你可以从 Git 官方网站下载并安装 Git。
 
 - **官方网站**: [https://git-scm.com/downloads](https://git-scm.com/downloads)
+- **中国镜像**: [https://registry.npmmirror.com/binary.html?path=git-for-windows/](https://registry.npmmirror.com/binary.html?path=git-for-windows/)
 
 根据你的操作系统（Windows, macOS, or Linux）选择对应的版本进行安装。
 
@@ -51,16 +53,19 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 
 1.  **创建新分支**:
     我们首先创建一个名为 `feature/login` 的新分支。
+
     ```bash
     git branch feature/login
     ```
 
 2.  **查看所有分支**:
     这个命令会列出所有本地分支，并在当前所在的分支前用 `*` 标记。
+
     ```bash
     git branch
     ```
     输出可能像这样：
+
     ```
     * main
       feature/login
@@ -68,6 +73,7 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 
 3.  **切换到新分支**:
     现在我们需要切换到新分支上进行开发。
+
     ```bash
     git switch feature/login
     # 或者使用旧的命令
@@ -77,6 +83,7 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 
 4.  **在新分支上工作**:
     你可以像平常一样修改代码、添加文件，然后提交。
+
     ```bash
     # (修改代码...)
     git add .
@@ -89,10 +96,12 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 5.  **合并分支**:
     当登录功能开发完成并且测试通过后，我们就可以把它合并回 `main` 分支了。
     首先，切换回 `main` 分支：
+
     ```bash
     git switch main
     ```
     然后，执行合并命令：
+
     ```bash
     git merge feature/login
     ```
@@ -100,6 +109,7 @@ Git 是一个分布式版本控制系统。想象一下，你在写一本书，�
 
 6.  **删除分支**:
     合并完成后，`feature/login` 分支的历史使命就完成了，我们可以安全地删除它。
+
     ```bash
     git branch -d feature/login
     ```
