@@ -31,6 +31,7 @@ book:
         - chapters/02-aggregation/01-why-encapsulation.qmd
         - chapters/02-aggregation/02-molecular-design.qmd
         - chapters/02-aggregation/03-collection-choice.qmd
+    
     - part: chapters/03-interaction/index.qmd
       chapters:
         - chapters/03-interaction/01-why-interactive.qmd

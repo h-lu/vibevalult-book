@@ -2,6 +2,10 @@
 
 > “前事不忘，后事之师。”
 
+::: {.video-container}
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1QvnwzfEFA&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="400"></iframe>
+:::
+
 ## 本节危机：我的代码昨天还是好的！
 
 在上一章，我们成功地初始化了 `VibeVault` 项目，它能够运行，能够通过测试，我们甚至还引入了 `Gson` 库。这是一个完美的开端。但一个幽灵般的问题开始浮现：

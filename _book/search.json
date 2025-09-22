@@ -1573,5 +1573,60 @@
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>附录：第一性原理——驾驭AI的思考引擎</span>"
     ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html",
+    "href": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html",
+    "title": "2.4 - 签订契约：用AI能懂的语言绘制蓝图",
+    "section": "",
+    "text": "本节危机：AI有时像个“糊涂”的实习生\n我们拥有了强大的AI编程伙伴，它可以为我们生成代码。但如果我们直接对它说：“嘿，给我写一个处理播放列表的Java类”，结果可能会五花八门。AI可能会生成一个只有歌曲标题的列表，也可能会包含一大堆我们根本不需要的复杂功能。\n就像与一位实习生合作，如果你不给他一份清晰的需求规格说明书，他可能会凭着自己的想象力（和网上搜到的代码）交付一个完全不符合你期望的东西。代码一旦被生成，再去修改它的结构，往往比推倒重来还要费劲。\n我们面临的危机是：如何精确、无歧”地向AI传达我们的设计意图，确保它能一次性生成结构正确、符合我们期望的代码“骨架”？",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#本节顿悟像建筑师一样先给ai一份uml蓝图",
+    "href": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#本节顿悟像建筑师一样先给ai一份uml蓝图",
+    "title": "2.4 - 签订契约：用AI能懂的语言绘制蓝图",
+    "section": "本节顿悟：像建筑师一样，先给AI一份UML蓝图",
+    "text": "本节顿悟：像建筑师一样，先给AI一份UML蓝图\n答案是，在让AI“施工”（写代码）之前，我们先为它提供一份清晰的“建筑蓝图”。在软件工程领域，这份蓝图就是UML（统一建模语言）。\n传统的UML需要用专门的图形软件绘制，分享和版本管理都很麻烦。但在现代开发实践中，我们有了更好的选择：用纯文本来描述UML。这就是像 Mermaid 这样的工具大放异彩的地方。\nMermaid允许我们用非常直观的文本语法来定义UML图表。这份纯文本的“蓝图”对AI来说是完美的输入：\n\n精确无歧义：它清晰地定义了类、属性、类型和它们之间的关系。\n机器可读：AI可以轻松解析这段文本，并准确地将其翻译成任何编程语言的代码结构。\n易于版本控制：我们可以像管理源码一样，用Git来追踪我们“蓝图”的每一次修改。\n\n顿悟在于：我们不应将AI视为一个无所不能的黑盒，而是一个需要清晰指令的强大“代码生成引擎”。通过提供Mermaid定义的UML类图作为“契约”，我们就能驾驭AI，让它成为我们高效、可靠的“代码建筑师”。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#定义我们的核心契约",
+    "href": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#定义我们的核心契约",
+    "title": "2.4 - 签订契约：用AI能懂的语言绘制蓝图",
+    "section": "1. 定义我们的核心“契约”",
+    "text": "1. 定义我们的核心“契约”\n现在，让我们运用在行业最佳实践（Spotify API）中学到的知识，为 VibeVault 的两个核心概念——Song 和 Playlist——定义它们的“契约”。\n我们将使用Mermaid的 classDiagram 语法来绘制这份蓝图。\n\n\n\n\n\nclassDiagram\n    class Song {\n        -String id\n        -String title\n        -String artist\n        -String album\n        -int durationInSeconds\n    }\n\n    class Playlist {\n        -String id\n        -String name\n        -String description\n        -List~Song~ tracks\n        +addSong(Song song) void\n        +removeSong(Song song) void\n    }\n\n    Playlist \"1\" -- \"0..*\" Song : contains\n\n\n\n\n\n\n让我们来解读这份UML“蓝图”的语法：\n\nclass Song: 定义了一个名为 Song 的类。\n-String id: 定义了一个名为 id 的属性。前面的 - 代表它的可见性是“私有”（private），意味着只有在 Song 类内部才能直接访问它。紧随其后的是它的类型 String。\n+addSong(Song song) void: 定义了一个名为 addSong 的方法。前面的 + 代表它的可见性是“公开”（public），意味着任何地方的代码都可以调用它。括号内是它的参数，最后是它的返回类型 void（无返回）。\nList~Song~ tracks: 定义了一个类型为列表的属性 tracks，并且这个列表里只能存放 Song 类型的对象。\nPlaylist \"1\" -- \"0..*\" Song: 这定义了两个类之间的“聚合”关系。一个 Playlist 对象（\"1\"）可以包含零个或多个（\"0..*\"）Song 对象。这正是本章的核心主题。\n\n这份Mermaid代码不仅是一张清晰的图表（在支持Mermaid的编辑器中会自动渲染），更是一份可以复制、粘贴、直接交给AI的精确指令。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#将蓝图交给ai建筑师",
+    "href": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#将蓝图交给ai建筑师",
+    "title": "2.4 - 签订契约：用AI能懂的语言绘制蓝图",
+    "section": "2. 将“蓝图”交给AI建筑师",
+    "text": "2. 将“蓝图”交给AI建筑师\n现在，最神奇的时刻到来了。我们可以直接将上面的Mermaid代码块交给我们的AI伙伴，并给出这样的指令（Prompt）:\n\nAI Prompt 示例:\n你好，你是一位精通领域驱动设计（DDD）和Java编程的专家。请根据以下Mermaid格式的UML类图，为我生成对应的Java POJO（Plain Old Java Object）类。\n设计要求:\n\n严格遵循类图中的属性名和类型。\n所有属性都应为私有（private）。\n为每个属性生成公开的（public）getter方法。\n为 Playlist 类中的 tracks 属性进行初始化，确保它在对象创建时是一个空的列表，避免空指针异常。\naddSong 和 removeSong 方法需要实现基本的添加和移除逻辑。\n请为每个类添加一个无参构造函数。\n遵循标准的Java命名规范。\n\n这是UML蓝图：\nclassDiagram\n    class Song {\n        -String id\n        -String title\n        -String artist\n        -String album\n        -int durationInSeconds\n    }\n\n    class Playlist {\n        -String id\n        -String name\n        -String description\n        -List~Song~ tracks\n        +addSong(Song song) void\n        +removeSong(Song song) void\n    }\n\n    Playlist \"1\" -- \"0..*\" Song : contains\n\n通过这样一个结构清晰、要求明确的Prompt，AI几乎可以完美地生成我们所需要的Java代码。它不再是猜测，而是在我们定义的“契约”下进行精确的“代码翻译”。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#vibe-check-思考与练习",
+    "href": "chapters/02-aggregation/04-defining-contracts-with-mermaid.html#vibe-check-思考与练习",
+    "title": "2.4 - 签订契约：用AI能懂的语言绘制蓝图",
+    "section": "Vibe Check (思考与练习)",
+    "text": "Vibe Check (思考与练习)\n\n扩展你的蓝图: Song类目前的信息还比较基础。请参考我们之前调研的Spotify Track对象，为Song类至少增加3个你认为有用的属性（例如popularity, isExplicit等）。\n\n首先，修改上面的Mermaid classDiagram代码，在Song类中添加新的私有属性和对应的公开getter方法。\n然后，将你修改后的Mermaid代码和需求，作为新的Prompt交给AI，看看它是否能为你更新Java代码。\n\nAI协同: 将你新生成的 Song.java 和 Playlist.java 文件的代码完整地复制给AI，然后向它提问： &gt; “你好，这是我项目中两个核心的实体类。请你扮演一位代码审查专家，从封装、命名和健壮性的角度，评估一下我的代码。有没有什么可以改进的地方？特别是对于Playlist类中的tracks列表，直接返回它本身是否是最佳实践？为什么？”\n\n这个练习将引导你思考超越“代码生成”本身的问题，开始关注代码质量和设计原则。这正是从“代码使用者”向“代码设计者”转变的关键一步。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
   }
 ]
