@@ -27,6 +27,7 @@ book:
         
     - part: chapters/02-aggregation/index.qmd
       chapters:
+        - chapters/02-aggregation/00-git.qmd
         - chapters/02-aggregation/01-why-encapsulation.qmd
         - chapters/02-aggregation/02-molecular-design.qmd
         - chapters/02-aggregation/03-collection-choice.qmd
