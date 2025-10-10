@@ -44,3 +44,4 @@ application {
     // Define the main class for the application.
     mainClass = "com.vibevault.VibeVaultApp"
 }
+
