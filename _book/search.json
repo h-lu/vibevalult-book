@@ -362,7 +362,7 @@
     "href": "chapters/02-aggregation/00-git.html",
     "title": "2.0 - Git 入门：代码的时光机",
     "section": "",
-    "text": "本节危机：我的代码昨天还是好的！\n在上一章，我们成功地初始化了 VibeVault 项目，它能够运行，能够通过测试，我们甚至还引入了 Gson 库。这是一个完美的开端。但一个幽灵般的问题开始浮现：\n没有版本控制，我们的项目就像是建在沙滩上的城堡，任何一次错误的修改都可能让它毁于一旦。我们面临的危机是：如何为我们的代码建立一个可靠的“存档”和“撤销”机制，让我们可以大胆地向前探索，同时拥有随时回到过去的“超能力”？",
+    "text": "本节危机：我的代码昨天还是好的！\n在上一章，我们成功地初始化了 VibeVault 项目，它能够运行，能够通过测试，我们甚至还引入了 Gson 库。这是一个完美的开端。但一个幽灵般的问题开始浮现：\n没有版本控制，我们的项目就像是建在沙滩上的城堡，任何一次错误的修改都可能让它毁于一旦。我们面临的危机是：如何为我们的代码建立一个可靠的”存档”和”撤销”机制，让我们可以大胆地向前探索，同时拥有随时回到过去的”超能力”？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
@@ -373,7 +373,7 @@
     "href": "chapters/02-aggregation/00-git.html#本节危机我的代码昨天还是好的",
     "title": "2.0 - Git 入门：代码的时光机",
     "section": "",
-    "text": "如果我为了尝试一个新功能，改了5个文件，结果发现想法是错的，该如何“撤销”这5个文件的所有修改？\n如果我的代码今天还能正常工作，明天加了一个新功能后就崩溃了，我如何能精确地知道我昨天和今天代码的“区别”？\n当项目越来越复杂，我们如何安全地保存每一个“里程碑”式的版本，以便随时可以回溯？",
+    "text": "如果我为了尝试一个新功能，改了5个文件，结果发现想法是错的，该如何”撤销”这5个文件的所有修改？\n如果我的代码今天还能正常工作，明天加了一个新功能后就崩溃了，我如何能精确地知道我昨天和今天代码的”区别”？\n当项目越来越复杂，我们如何安全地保存每一个”里程碑”式的版本，以便随时可以回溯？",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
@@ -383,8 +383,8 @@
     "objectID": "chapters/02-aggregation/00-git.html#本节顿悟git代码的终极存档大法",
     "href": "chapters/02-aggregation/00-git.html#本节顿悟git代码的终极存档大法",
     "title": "2.0 - Git 入门：代码的时光机",
-    "section": "本节顿悟：Git，代码的终极“存档”大法",
-    "text": "本节顿悟：Git，代码的终极“存档”大法\n答案就是 Git。Git 是一个分布式版本控制系统，我们可以将它理解为一台为代码量身定做的“时光机”。\n它不仅仅是保存文件的副本，而是以“快照”（Commit）的形式，记录下你每一次有意义的修改。更强大的是，它引入了“平行宇宙”的概念——分支（Branch）。你可以在一个独立的宇宙里尽情实验，成功了，就将它合并回主宇宙；失败了，就将这个平行宇宙直接抛弃，主宇宙的代码丝毫不受影响。\n顿悟在于：我们应该像玩游戏一样频繁“存档”我们的代码。 每完成一个小功能，就创建一个“存档点”（Commit）。在进行大的改动前，就开启一个“新的冒险线”（Branch）。这不仅给了我们无限的后悔药，也让我们的开发历史变得清晰可追溯。",
+    "section": "本节顿悟：Git，代码的终极”存档”大法",
+    "text": "本节顿悟：Git，代码的终极”存档”大法\n答案就是 Git。Git 是一个分布式版本控制系统，我们可以将它理解为一台为代码量身定做的”时光机”。\n它不仅仅是保存文件的副本，而是以”快照”（Commit）的形式，记录下你每一次有意义的修改。更强大的是，它引入了”平行宇宙”的概念——分支（Branch）。你可以在一个独立的宇宙里尽情实验，成功了，就将它合并回主宇宙；失败了，就将这个平行宇宙直接抛弃，主宇宙的代码丝毫不受影响。\n顿悟在于：我们应该像玩游戏一样频繁”存档”我们的代码。 每完成一个小功能，就创建一个”存档点”（Commit）。在进行大的改动前，就开启一个”新的冒险线”（Branch）。这不仅给了我们无限的后悔药，也让我们的开发历史变得清晰可追溯。",
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
@@ -1627,6 +1627,72 @@
     "crumbs": [
       "第二章：从“一”到“多”：构建第一个“分子结构”",
       "<span class='chapter-number'>14</span>  <span class='chapter-title'>2.4 - 签订契约：用AI能懂的语言绘制蓝图</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#准备工作安装-git",
+    "href": "chapters/02-aggregation/00-git.html#准备工作安装-git",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "准备工作：安装 Git",
+    "text": "准备工作：安装 Git\n如果你在第一章的工具准备环节中尚未安装 Git，请先完成安装：\n\n官方网站: https://git-scm.com/downloads\n中国镜像: https://registry.npmmirror.com/binary.html?path=git-for-windows/\n\n根据你的操作系统（Windows, macOS, or Linux）选择对应的版本进行安装。安装完成后，在终端中运行 git --version 确认安装成功。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#git-基础理解三个区域与首次提交",
+    "href": "chapters/02-aggregation/00-git.html#git-基础理解三个区域与首次提交",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "1. Git 基础：理解三个区域与首次提交",
+    "text": "1. Git 基础：理解三个区域与首次提交\n在使用 Git 之前，我们需要理解 Git 的核心工作模型。Git 将你的项目分为三个”区域”：\n\nGit 的三区模型\n┌─────────────┐    git add    ┌─────────────┐   git commit   ┌─────────────┐\n│  工作区      │  ──────────&gt;  │  暂存区      │  ───────────&gt;  │  版本库      │\n│ Working Dir │               │ Staging Area│                │ Repository  │\n│ (你的文件夹)  │               │ (准备提交)    │                │ (.git目录)   │\n└─────────────┘               └─────────────┘                └─────────────┘\n\n工作区（Working Directory）：你实际编辑文件的地方，就是你在电脑上看到的项目文件夹。\n暂存区（Staging Area）：一个”中转站”，用来精心挑选你想要提交的修改。这让你可以分批次、有选择地提交代码。\n版本库（Repository）：存储在 .git 目录中的所有历史记录和版本快照。\n\n\n为什么要有暂存区？ 想象你修改了5个文件，但只有3个文件的修改是相关的，应该作为一个”功能”提交。暂存区让你可以只将这3个文件添加到下一次提交中，而保留另外2个文件的修改继续开发。\n\n\n\n初始化仓库\n现在，让我们为 VibeVault 项目注入版本控制的灵魂。打开终端，确保你位于项目根目录下：\n# 初始化Git仓库\ngit init\n这个命令会在你的项目下创建一个隐藏的 .git 目录——这就是你的”时光机”本体。\n\n\n定义忽略规则：.gitignore\n执行 git status 命令，你会看到 Git 把项目里所有的文件都列了出来。但我们并不想追踪所有文件。像 build 目录下的编译产物，或者 .gradle 目录下的缓存，它们都是可以被重新生成的临时文件，不应该进入版本历史。\n在项目根目录下创建 .gitignore 文件，并填入以下内容：\n# Gradle 构建产物和缓存\n.gradle\nbuild/\n\n# Gradle 配置\ngradle-app.setting\n\n# 保留 Gradle Wrapper（重要！）\n!gradle-wrapper.jar\n!gradle/wrapper/gradle-wrapper.properties\n\n# 其他缓存\n.gradletasknamecache\n再次运行 git status，你会发现 build 和 .gradle 目录已经从列表中消失了。\n\n\n创建第一个提交（Commit）\n现在，让我们拍摄项目的第一张”历史快照”：\n# 第一步：将所有未被忽略的文件添加到暂存区\ngit add .\n\n# 第二步：查看暂存区的状态（可选，但建议养成习惯）\ngit status\n\n# 第三步：提交暂存区的内容到版本库\ngit commit -m \"Initial commit of VibeVault project\"\n让我们解析这些命令的含义：\n\ngit add .：将当前目录（.）下所有修改过的文件添加到暂存区。你也可以用 git add &lt;文件名&gt; 来只添加特定文件。\ngit status：查看当前工作区和暂存区的状态，这是你最常用的命令之一。\ngit commit -m \"...\"：将暂存区的内容提交到版本库，-m 后面是提交信息（commit message）。\n\n\n提交信息的艺术：好的提交信息应该简洁地描述”做了什么”，例如 \"添加用户注册功能\" 而不是 \"修改了代码\"。养成写清晰提交信息的习惯，未来的你会感谢现在的你。\n\n\n\n查看历史记录\n恭喜！你已经创建了第一个提交。运行以下命令查看提交历史：\n# 查看详细历史\ngit log\n\n# 查看简洁的单行历史（推荐）\ngit log --oneline\n你会看到类似这样的输出：\na1b2c3d (HEAD -&gt; main) Initial commit of VibeVault project\n这里的 a1b2c3d 是提交的哈希值（实际上更长，这里显示的是简短版本），它是这个提交在时间线上的唯一”坐标”。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#分支平行宇宙的力量",
+    "href": "chapters/02-aggregation/00-git.html#分支平行宇宙的力量",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "2. 分支：平行宇宙的力量",
+    "text": "2. 分支：平行宇宙的力量\n\n为什么需要分支？\n想象一下：你正在主分支上开发一个新功能，写到一半时，突然需要紧急修复一个严重的 bug。如果没有分支，你有两个糟糕的选择：\n\n提交半成品代码（破坏了项目稳定性）\n先不提交，直接在半成品基础上修 bug（代码会变得一团糟）\n\n分支解决了这个问题。 它让你可以：\n\n在一个独立的”平行宇宙”中开发新功能，不影响主线代码\n随时切换到主分支去修复 bug\n功能开发完成后，再将分支合并回主线\n\n\n\n本书的章节学习工作流\n在本书中，我们将采用一个简单而强大的分支策略：\n\nmain 分支：作为我们的”黄金主线”，只存放每个章节最终完成的、稳定的代码。\nch02、ch03 等分支：每一章的开发过程都在专门的分支上进行。\n\n这样做的好处是：\n\n隔离性：你在 ch02 分支上的任何修改，都不会影响到 main 分支。\n清晰性：每个分支清晰地对应一章的内容，让项目的演进历史一目了然。\n安全性：main 分支永远是你”确定能用”的版本。\n\n\n\n创建并切换分支\n现在，让我们为第二章的学习创建一个新分支：\n# 创建名为 ch02 的新分支\ngit branch ch02\n\n# 切换到 ch02 分支\ngit switch ch02\n\n# 或者用一条命令完成创建和切换\ngit switch -c ch02\n\n注意：较旧的 Git 版本使用 git checkout -b ch02 来创建并切换分支。git switch 是 Git 2.23 引入的新命令，语义更清晰。\n\n运行 git branch 可以查看所有分支，当前分支前会有一个 * 标记：\n* ch02\n  main\n现在，你已经身处 ch02 这个”平行宇宙”了。从现在起，你在本章的所有编码、修改、提交，都将记录在 ch02 分支上。\n\n\n章节学习的完整循环\n在接下来的学习中，你将不断重复这个模式：\n1. 开始新章节（例如第3章）：\n# 切换回主分支\ngit switch main\n# 为第3章创建并切换到新分支\ngit switch -c ch03\n2. 在分支上学习和编码：\n# 修改代码...\ngit add .\ngit commit -m \"完成了xxx功能\"\n# 继续修改...\ngit add .\ngit commit -m \"添加了yyy测试\"\n# 重复...\n3. 完成章节，合并成果：\n# 切换回主分支\ngit switch main\n# 将 ch03 分支的全部成果合并到 main 分支\ngit merge ch03\n这个简单的工作流将贯穿我们整个学习旅程，让你在不知不觉中成为一名专业的”代码时空旅行者”。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#日常操作查看状态与历史",
+    "href": "chapters/02-aggregation/00-git.html#日常操作查看状态与历史",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "3. 日常操作：查看状态与历史",
+    "text": "3. 日常操作：查看状态与历史\n在日常开发中，你需要频繁地查看项目的状态和历史。掌握这些命令能让你始终清楚”我在哪里，我改了什么”。\n\n查看当前状态\ngit status\n这是你最常用的命令之一。它会告诉你：\n\n当前在哪个分支\n哪些文件被修改了\n哪些文件在暂存区\n哪些文件还未被追踪\n\n养成习惯：在每次 git add 之前和之后都运行一次 git status，确认你要提交的内容。\n\n\n查看提交历史\n# 查看详细的提交历史\ngit log\n\n# 查看简洁的单行历史（推荐）\ngit log --oneline\n\n# 查看带有分支图的历史（可视化分支结构）\ngit log --oneline --graph --all\n\n# 查看最近 5 次提交\ngit log --oneline -5\n\n\n查看文件差异\n# 查看工作区相对于暂存区的修改\ngit diff\n\n# 查看暂存区相对于上次提交的修改\ngit diff --staged\n\n# 查看某个文件的修改\ngit diff &lt;文件名&gt;\n使用场景：在提交前运行 git diff --staged，仔细检查你即将提交的内容，避免提交不必要的修改或敏感信息。\n\n\n实践建议\n养成以下工作节奏：\n\n修改代码前：git status 确认工作区干净\n修改代码后：git diff 查看修改内容\n准备提交前：git add . → git status 确认暂存内容\n提交前最后检查：git diff --staged 仔细审查\n提交：git commit -m \"清晰的提交信息\"\n提交后：git log --oneline 确认提交成功",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#时光机技能版本回退与恢复",
+    "href": "chapters/02-aggregation/00-git.html#时光机技能版本回退与恢复",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "4. 时光机技能：版本回退与恢复",
+    "text": "4. 时光机技能：版本回退与恢复\nGit 最强大的能力之一，就是让我们能够自由地在不同的时间点之间穿梭。当你发现当前的修改出了问题，或者想要撤销某些提交，你需要掌握”时光倒流”的技能。\n\n理解 HEAD 指针\n在 Git 中，HEAD 是一个特殊的指针，它始终指向你当前所在的提交（commit）。你可以把它想象成”你现在站在时间线的哪个位置”。\n\nHEAD：当前提交\nHEAD~1 或 HEAD^：当前提交的上一个提交（父提交）\nHEAD~2：往前数第二个提交\nHEAD~n：往前数第 n 个提交\n\n理解 HEAD 是掌握版本回退的关键。\n\n\n三种回退场景\nGit 提供了 git reset 命令来回退版本，它有三种模式，对应三种不同的使用场景：\n\n\n\n\n\n\n\n\n\n\n\n模式\n命令\n工作区\n暂存区\n版本库\n使用场景\n\n\n\n\n--soft\ngit reset --soft HEAD~1\n保留\n保留\n回退\n修改提交信息，合并多个提交\n\n\n--mixed\ngit reset HEAD~1\n保留\n清空\n回退\n撤销提交，重新组织要提交的内容\n\n\n--hard\ngit reset --hard HEAD~1\n清空\n清空\n回退\n完全放弃最近的修改，回到过去\n\n\n\n\n场景一：修改最后一次提交（--soft）\n问题：你刚提交了一个 commit，但发现提交信息写错了，或者想再添加一些文件到这次提交中。\n解决方案：\n# 回退到上一个 commit，但保留所有修改\ngit reset --soft HEAD~1\n\n# 修改文件或重新添加文件...\ngit add .\n\n# 重新提交\ngit commit -m \"正确的提交信息\"\n效果：就像”撤销”了最后一次提交，但所有代码修改都还在，你可以重新提交。\n\n\n场景二：撤销提交但保留修改（--mixed，默认）\n问题：你提交了代码，但觉得这次提交包含的内容太多或太杂，想要重新组织。\n解决方案：\n# 回退到上一个 commit，保留工作区修改，但清空暂存区\ngit reset HEAD~1\n\n# 现在你可以重新选择要提交的文件\ngit add &lt;特定文件&gt;\ngit commit -m \"更合理的提交1\"\n\ngit add &lt;其他文件&gt;\ngit commit -m \"更合理的提交2\"\n效果：提交被撤销，代码修改还在工作区，你可以重新分批提交。\n\n\n场景三：完全回退（--hard，危险！）\n问题：你确定最近的修改完全是错的，想要彻底抛弃它们，回到过去。\n解决方案：\n# 回退到上一个 commit，丢弃所有后续修改\ngit reset --hard HEAD~1\n\n# 或回退到指定的 commit\ngit reset --hard a1b2c3d\n\n⚠️ 警告：--hard 会永久删除未提交的修改，请谨慎使用！在使用前，最好先用 git stash 保存当前修改，或者确认你真的不需要它们了。\n\n效果：时光机倒流，一切回到指定的过去，中间的修改消失。\n\n\n\n只读查看：git checkout\n如果你只是想”看看”之前某个版本的代码，而不是真的要回退，可以使用：\n# 切换到某个历史 commit（进入\"分离 HEAD\"状态）\ngit checkout a1b2c3d\n\n# 查看或运行代码...\n\n# 查看完毕后，切换回分支\ngit switch ch02\n这不会改变任何历史，只是让你”时空旅行”到过去观察一下。\n\n\n后悔药：reflog 救命机制\n如果你不小心用 git reset --hard 删除了重要的 commit，不要慌张！Git 有一个”黑匣子”——reflog，它记录了 HEAD 的所有移动历史。\n# 查看所有 HEAD 移动的历史记录\ngit reflog\n你会看到类似这样的输出：\na1b2c3d (HEAD -&gt; ch02) HEAD@{0}: reset: moving to HEAD~1\nd4e5f6g HEAD@{1}: commit: 添加了用户类\nh7i8j9k HEAD@{2}: commit: 完成基础配置\n你可以使用 HEAD@{n} 或 commit 哈希值来恢复：\n# 恢复到 reflog 中的某个状态\ngit reset --hard HEAD@{1}\n这就是你的”终极后悔药”。即使误删了提交，只要是在本地操作的，reflog 都能帮你找回来（在一定时间内）。\n\n\n实践演练\n让我们在 ch02 分支上练习一下：\n# 1. 做一些修改并提交\n# （修改某个文件...）\ngit add .\ngit commit -m \"实验性修改\"\n\n# 2. 查看历史\ngit log --oneline\n\n# 3. 假设你想撤销刚才的提交但保留修改\ngit reset --soft HEAD~1\n\n# 4. 查看状态，你会发现修改还在暂存区\ngit status\n\n# 5. 重新提交或继续修改\ngit commit -m \"改进后的版本\"\n记住：在分支上实验是安全的。 即使出错了，你的 main 分支依然是稳定的。",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-aggregation/00-git.html#本章准备完成",
+    "href": "chapters/02-aggregation/00-git.html#本章准备完成",
+    "title": "2.0 - Git 入门：代码的时光机",
+    "section": "本章准备完成",
+    "text": "本章准备完成\n到这里，你已经掌握了 Git 的核心技能：\n✅ 理解 Git 的三区模型：工作区、暂存区、版本库\n✅ 初始化项目：git init、.gitignore、首次提交\n✅ 使用分支：创建、切换、合并分支\n✅ 日常操作：查看状态、历史、差异\n✅ 版本回退：reset 的三种模式，reflog 救命机制\n\nGit 命令速查表\n# 基础操作\ngit init                  # 初始化仓库\ngit status                # 查看状态\ngit add .                 # 添加所有修改到暂存区\ngit commit -m \"信息\"      # 提交\ngit log --oneline         # 查看历史\n\n# 分支操作\ngit branch                # 查看所有分支\ngit switch -c &lt;分支名&gt;    # 创建并切换分支\ngit switch &lt;分支名&gt;       # 切换分支\ngit merge &lt;分支名&gt;        # 合并分支\n\n# 查看差异\ngit diff                  # 工作区 vs 暂存区\ngit diff --staged         # 暂存区 vs 版本库\n\n# 版本回退\ngit reset --soft HEAD~1   # 软回退（保留所有修改）\ngit reset HEAD~1          # 混合回退（保留工作区修改）\ngit reset --hard HEAD~1   # 硬回退（丢弃所有修改，危险！）\ngit reflog                # 查看 HEAD 历史（救命药）\n\n\n接下来的学习\n你现在应该已经位于 ch02 分支上了。在本章接下来的内容中，我们将开始学习封装的概念，设计新的 Java 类来管理歌曲数据。\n请在 ch02 分支上完成这些工作，并练习使用 git add 和 git commit 来记录你的开发进度。记住：频繁提交，清晰描述。每完成一个小功能或修复一个小问题，就提交一次。\n在第二章的最后，我们将一起实践第一次 git merge 操作，将你的学习成果合并回 main 分支，为第三章的学习做好准备。\n现在，让我们开始真正的编码冒险吧！ 🚀",
+    "crumbs": [
+      "第二章：从“一”到“多”：构建第一个“分子结构”",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>2.0 - Git 入门：代码的时光机</span>"
     ]
   }
 ]
