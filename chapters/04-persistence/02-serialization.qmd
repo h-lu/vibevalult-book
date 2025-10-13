@@ -223,6 +223,7 @@ import com.vibevault.model.Song;
         // 抛出: IllegalArgumentException: CSV格式错误：期望3个字段，实际得到 4 个字段
         ```
     *   **RFC 4180解决方案**：标准的CSV格式规范使用双引号来包裹包含特殊字符的字段：
+    
         ```java
         // 改进的toCsvString实现（示例）
         public String toCsvStringRobust() {
@@ -234,5 +235,6 @@ import com.vibevault.model.Song;
         // 输出: "No, Woman, No Cry","Bob Marley",237
         ```
     *   **AI协同挑战**：
+
         > "请帮我实现一个符合RFC 4180标准的CSV解析器，能够正确处理字段中包含逗号、换行符和双引号的情况。请解释你的实现逻辑，特别是如何处理转义的双引号。"
     *   **权衡思考**：尝试修改你的`toCsvString`和`fromCsvString`来支持带逗号的歌名。你会发现解析逻辑会变得复杂得多（需要状态机来跟踪是否在引号内）。这个思考能让你深刻体会到，选择一种数据格式，实际上是在**简洁性**和**健壮性**之间做出权衡。这也是为什么JSON和XML等格式会存在的原因——它们用更复杂的语法换取了更强的表达能力和更少的歧义。 

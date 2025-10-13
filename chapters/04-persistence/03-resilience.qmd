@@ -125,5 +125,6 @@ public class Playlist {
 3.  **深入思考：`try-with-resources`**
     虽然`Files.write`和`Files.readAllLines`为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（`FileInputStream`, `FileWriter`等），并且必须在`finally`块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。
     *   **AI协同**：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问：
+    
         > "你好，请解释一下Java中的 `try-with-resources` 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 `close()` 方法。这背后的 `AutoCloseable` 接口又起到了什么作用？"
     *   理解`try-with-resources`，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。 

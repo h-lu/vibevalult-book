@@ -627,8 +627,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul></li>
 <li><strong>深入思考：<code>try-with-resources</code></strong> 虽然<code>Files.write</code>和<code>Files.readAllLines</code>为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（<code>FileInputStream</code>, <code>FileWriter</code>等），并且必须在<code>finally</code>块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。
 <ul>
-<li><strong>AI协同</strong>：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问： &gt; “你好，请解释一下Java中的 <code>try-with-resources</code> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 <code>close()</code> 方法。这背后的 <code>AutoCloseable</code> 接口又起到了什么作用？”</li>
-<li>理解<code>try-with-resources</code>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。</li>
+<li><p><strong>AI协同</strong>：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问：</p>
+<blockquote class="blockquote">
+<p>“你好，请解释一下Java中的 <code>try-with-resources</code> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 <code>close()</code> 方法。这背后的 <code>AutoCloseable</code> 接口又起到了什么作用？”</p>
+</blockquote></li>
+<li><p>理解<code>try-with-resources</code>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。</p></li>
 </ul></li>
 </ol>
 
@@ -1227,8 +1230,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入思考：`try-with-resources`**</span>
 <span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>    虽然<span class="in">`Files.write`</span>和<span class="in">`Files.readAllLines`</span>为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（<span class="in">`FileInputStream`</span>, <span class="in">`FileWriter`</span>等），并且必须在<span class="in">`finally`</span>块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。</span>
 <span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**AI协同**：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问：</span>
-<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="at">        &gt; "你好，请解释一下Java中的 </span><span class="in">`try-with-resources`</span><span class="at"> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 </span><span class="in">`close()`</span><span class="at"> 方法。这背后的 </span><span class="in">`AutoCloseable`</span><span class="at"> 接口又起到了什么作用？"</span></span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>理解<span class="in">`try-with-resources`</span>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="at">        &gt; "你好，请解释一下Java中的 </span><span class="in">`try-with-resources`</span><span class="at"> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 </span><span class="in">`close()`</span><span class="at"> 方法。这背后的 </span><span class="in">`AutoCloseable`</span><span class="at"> 接口又起到了什么作用？"</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>理解<span class="in">`try-with-resources`</span>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
