@@ -27,10 +27,12 @@ Song song = new Song("Bohemian Rhapsody", "Queen", 355);
 解决方案是，让我们自己的数据类型（`Song`和`Playlist`）学会如何“描述自己”和“解析描述”。我们将为它们编写专门的序列化和反序列化方法。
 
 在动手之前，让我们先做一次小小的重构，以体现“关注点分离”这一重要的软件设计原则。我们项目中的类，可以按其职责分为不同的类别：
+
 *   **Model**: 负责承载数据和核心业务逻辑的类，如`Song`和`Playlist`。
 *   **App**: 负责程序入口和用户交互的类，如`VibeVaultApp`。
 
 因此，我们将在`src/main/java/com/vibevault/`下创建两个新的子包（也就是子目录）：`model`和`app`。
+
 1.  将`Song.java`和`Playlist.java`文件**移动**到`model`目录中。
 2.  将`VibeVaultApp.java`文件**移动**到`app`目录中。
 3.  修改每个文件头部的`package`声明，以及`VibeVaultApp.java`中对`model`类的`import`语句。
@@ -40,6 +42,7 @@ Song song = new Song("Bohemian Rhapsody", "Queen", 355);
 ### 1. `Song`的序列化与反序列化
 
 我们将在`Song.java`这个`record`中，实现两个核心方法：
+
 *   `public String toCsvString()`: 将一个`Song`实例对象，转换成一个CSV格式的字符串。
 *   `public static Song fromCsvString(String csv)`: 这是一个静态方法，它接收一个CSV格式的字符串，并从中“重建”出一个新的`Song`实例。
 
@@ -52,6 +55,10 @@ public record Song(String title, String artist, int durationInSeconds) {
     /**
      * 将Song对象序列化为CSV格式的字符串。
      * 例如: "Bohemian Rhapsody,Queen,355"
+     * 
+     * 注意：当前实现不支持标题或艺术家中包含逗号的情况。
+     * 如果需要支持，请考虑使用JSON格式或实现RFC 4180标准的CSV解析。
+     * 
      * @return CSV格式的字符串
      */
     public String toCsvString() {
@@ -61,20 +68,44 @@ public record Song(String title, String artist, int durationInSeconds) {
     /**
      * 从CSV格式的字符串反序列化，创建一个Song对象。
      * 这是一个静态工厂方法。
+     * 
      * @param csvLine CSV格式的一行文本
      * @return 一个新的Song对象
+     * @throws IllegalArgumentException 如果CSV格式不正确（字段数量不对或时长不是数字）
      */
     public static Song fromCsvString(String csvLine) {
+        if (csvLine == null || csvLine.trim().isEmpty()) {
+            throw new IllegalArgumentException("CSV行不能为空");
+        }
+        
         String[] fields = csvLine.split(",");
-        // 这里我们假设CSV格式总是正确的，后续会讨论异常处理
-        String title = fields[0];
-        String artist = fields[1];
-        int duration = Integer.parseInt(fields[2]);
-        return new Song(title, artist, duration);
+        
+        if (fields.length != 3) {
+            throw new IllegalArgumentException(
+                "CSV格式错误：期望3个字段，实际得到 " + fields.length + " 个字段"
+            );
+        }
+        
+        String title = fields[0].trim();
+        String artist = fields[1].trim();
+        
+        try {
+            int duration = Integer.parseInt(fields[2].trim());
+            return new Song(title, artist, duration);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(
+                "CSV格式错误：时长必须是数字，得到的是 '" + fields[2] + "'"
+            );
+        }
     }
 }
 ```
-**深度解读**：`fromCsvString`方法前的`static`关键字意味着它是一个**静态方法**。它不属于任何一个具体的`Song`对象实例，而是直接属于`Song`这个类本身。这种通过一个描述性名称的静态方法（而不是构造函数）来创建对象的方式，是一种非常有用的设计模式，称为**静态工厂方法 (Static Factory Method)**。
+**深度解读**：
+1. `fromCsvString`方法前的`static`关键字意味着它是一个**静态方法**。它不属于任何一个具体的`Song`对象实例，而是直接属于`Song`这个类本身。这种通过一个描述性名称的静态方法（而不是构造函数）来创建对象的方式，是一种非常有用的设计模式，称为**静态工厂方法 (Static Factory Method)**。
+
+2. 注意我们添加了**输入验证**：检查空值、字段数量和数字格式。这体现了**防御性编程**的思想——永远不要假设输入是正确的。当发现错误时，我们抛出`IllegalArgumentException`并提供清晰的错误消息，这让调试变得容易得多。
+
+3. 使用`trim()`方法去除字段两端的空白字符，这让我们的解析器更加宽容，能够处理格式稍有不规范的CSV文件（比如 `"title , artist , 123"` 这样在逗号后有空格的情况）。
 
 ### 2. `Playlist`的序列化与反序列化
 
@@ -116,6 +147,10 @@ public class Playlist {
     public void loadFromStrings(List<String> csvLines) {
         this.songs.clear(); // 清空旧数据
         for (String line : csvLines) {
+            // 跳过空行
+            if (line == null || line.trim().isEmpty()) {
+                continue;
+            }
             this.songs.add(Song.fromCsvString(line));
         }
     }
@@ -124,6 +159,8 @@ public class Playlist {
     // Note: To keep the example concise, we are omitting other getters like getName().
 }
 ```
+
+**关键改进**：注意`loadFromStrings`方法中添加了空行检查。这是一个重要的**边缘情况处理**——CSV文件可能包含空行（用户手动编辑时很容易产生），如果不跳过这些空行，`Song.fromCsvString()`会抛出异常。这种对边缘情况的考虑，是区分"能用的代码"和"健壮的代码"的关键。
 
 现在，更新你的主应用`VibeVaultApp.java`，它需要`import`来自`model`包的类。
 
@@ -136,7 +173,9 @@ import com.vibevault.model.Song;
 // ... (rest of the VibeVaultApp class)
 ```
 
-**顿悟在于：通过为数据模型（Model）自身添加`to...`（序列化）和`from...`（反序列化）方法，我们实现了业务逻辑与持久化格式之间的清晰转换。对象不再是被动的数据容器，而是主动拥有了“自我描述”和“自我构建”的能力。尤其是静态工厂方法模式（如`Song.fromCsvString`）的应用，让对象的创建过程变得更具可读性和意图性，这是面向对象设计中一个非常强大和优雅的实践。**
+**顿悟在于：通过为数据模型（Model）自身添加`to...`（序列化）和`from...`（反序列化）方法，我们实现了业务逻辑与持久化格式之间的清晰转换。对象不再是被动的数据容器，而是主动拥有了"自我描述"和"自我构建"的能力。尤其是静态工厂方法模式（如`Song.fromCsvString`）的应用，让对象的创建过程变得更具可读性和意图性，这是面向对象设计中一个非常强大和优雅的实践。**
+
+**更进一步**：我们的实现不仅仅是"能用"，更是"健壮"的。通过添加输入验证、空值检查和空行过滤，我们的代码能够优雅地处理各种边缘情况，而不是在遇到意外输入时崩溃。这种**防御性编程**的思维方式，是专业软件工程师的标志。
 
 ---
 
@@ -149,11 +188,51 @@ import com.vibevault.model.Song;
 
 2.  **破坏性实验 (Hacker Time!)**:
     *   手动创建一个格式错误的CSV字符串，比如：`"Missing one field,Queen"` 或者 `"Wrong type,Queen,not_a_number"`。
-    *   将这个错误的字符串传递给`Song.fromCsvString()`方法，程序会发生什么？你会看到哪种类型的异常？（提示：`ArrayIndexOutOfBoundsException` 或 `NumberFormatException`）
-    *   **思考**：我们应该在哪里处理这些潜在的错误？是在`Song.fromCsvString()`内部用`try-catch`捕获，还是应该让调用它的`Playlist.loadFromStrings()`方法来处理？这个问题没有唯一答案，但它引导我们思考不同层级的“责任划分”。通常，更底层的转换方法（如`fromCsvString`）可以选择直接抛出异常，让更高层的业务逻辑（如`loadFromStrings`）来决定如何应对这些错误（是跳过这一行，还是中断整个加载过程？）。
+    *   将这个错误的字符串传递给`Song.fromCsvString()`方法，程序会发生什么？
+        ```java
+        // 测试代码
+        try {
+            Song song1 = Song.fromCsvString("Missing one field,Queen");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            // 输出: CSV格式错误：期望3个字段，实际得到 2 个字段
+        }
+        
+        try {
+            Song song2 = Song.fromCsvString("Wrong type,Queen,not_a_number");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            // 输出: CSV格式错误：时长必须是数字，得到的是 'not_a_number'
+        }
+        ```
+    *   **思考**：我们应该在哪里处理这些潜在的错误？是在`Song.fromCsvString()`内部用`try-catch`捕获，还是应该让调用它的`Playlist.loadFromStrings()`方法来处理？
+        *   我们的实现选择了让`fromCsvString()`抛出`IllegalArgumentException`，这是一种**快速失败（Fail Fast）**的设计哲学。
+        *   这样做的好处是：底层方法专注于验证和转换，而上层方法（如`Playlist.loadFromFile()`）可以决定如何应对错误（是跳过这一行，还是中断整个加载过程？）。
+        *   这种"责任划分"是软件设计中非常重要的原则，它让每一层都有清晰的职责边界。
 
 3.  **深入思考：CSV格式的脆弱性**:
     我们目前的CSV实现非常简单，但也很脆弱。
-    *   如果一首歌的歌名本身就包含一个逗号，比如 `No, Woman, No Cry`，我们的`split(",")`逻辑会发生什么？
-    *   标准的CSV格式规范（RFC 4180）是如何解决这个问题的？（提示：可以研究一下用英文双引号`"`将字段包裹起来的做法）。
-    *   尝试修改你的`toCsvString`和`fromCsvString`来支持带逗号的歌名。你会发现解析逻辑会变得复杂得多。这个思考能让你深刻体会到，选择一种数据格式，实际上是在**简洁性**和**健壮性**之间做出权衡。这也是为什么JSON和XML等格式会存在的原因。 
+    *   **问题演示**：如果一首歌的歌名本身就包含一个逗号，比如 `No, Woman, No Cry`，我们的`split(",")`逻辑会发生什么？
+        ```java
+        Song song = new Song("No, Woman, No Cry", "Bob Marley", 237);
+        String csv = song.toCsvString();
+        // 结果: "No, Woman, No Cry,Bob Marley,237"
+        
+        Song parsed = Song.fromCsvString(csv);
+        // 错误！split(",") 会得到4个字段而不是3个
+        // 抛出: IllegalArgumentException: CSV格式错误：期望3个字段，实际得到 4 个字段
+        ```
+    *   **RFC 4180解决方案**：标准的CSV格式规范使用双引号来包裹包含特殊字符的字段：
+        ```java
+        // 改进的toCsvString实现（示例）
+        public String toCsvStringRobust() {
+            return String.format("\"%s\",\"%s\",%d", 
+                title.replace("\"", "\"\""),  // 转义内部的引号
+                artist.replace("\"", "\"\""), 
+                durationInSeconds);
+        }
+        // 输出: "No, Woman, No Cry","Bob Marley",237
+        ```
+    *   **AI协同挑战**：
+        > "请帮我实现一个符合RFC 4180标准的CSV解析器，能够正确处理字段中包含逗号、换行符和双引号的情况。请解释你的实现逻辑，特别是如何处理转义的双引号。"
+    *   **权衡思考**：尝试修改你的`toCsvString`和`fromCsvString`来支持带逗号的歌名。你会发现解析逻辑会变得复杂得多（需要状态机来跟踪是否在引号内）。这个思考能让你深刻体会到，选择一种数据格式，实际上是在**简洁性**和**健壮性**之间做出权衡。这也是为什么JSON和XML等格式会存在的原因——它们用更复杂的语法换取了更强的表达能力和更少的歧义。 

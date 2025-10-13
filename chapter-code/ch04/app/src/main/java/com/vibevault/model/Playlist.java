@@ -78,23 +78,32 @@ public class Playlist {
     public void loadFromStrings(List<String> csvLines) {
         this.songs.clear(); // 清空旧数据
         for (String line : csvLines) {
+            // 跳过空行
+            if (line == null || line.trim().isEmpty()) {
+                continue;
+            }
             this.songs.add(Song.fromCsvString(line));
         }
     }
 
     /**
      * 将当前播放列表保存到磁盘文件。
-     * @param filePath 文件的路径，例如 "playlist.csv"
+     * @param filePath 文件的路径，例如 "data/playlist.csv"
      */
     public void saveToFile(String filePath) {
         List<String> csvLines = this.saveToStrings();
         Path path = Paths.get(filePath);
         try {
+            // 确保目录存在
+            Path parentDir = path.getParent();
+            if (parentDir != null && Files.notExists(parentDir)) {
+                Files.createDirectories(parentDir);
+            }
             Files.write(path, csvLines);
-            System.out.println("播放列表已成功保存到 " + filePath);
+            System.out.println("✅ 播放列表已成功保存到 " + filePath);
         } catch (IOException e) {
             // 提供更友好的用户反馈
-            System.err.println("错误：无法保存播放列表。请检查文件权限或磁盘空间。");
+            System.err.println("❌ 错误：无法保存播放列表。请检查文件权限或磁盘空间。");
             // 打印详细的异常信息，方便开发者调试
             e.printStackTrace();
         }
@@ -102,16 +111,26 @@ public class Playlist {
 
     /**
      * 从磁盘文件加载播放列表。
-     * @param filePath 文件的路径，例如 "playlist.csv"
+     * @param filePath 文件的路径，例如 "data/playlist.csv"
      */
     public void loadFromFile(String filePath) {
         Path path = Paths.get(filePath);
+        
+        if (Files.notExists(path)) {
+            System.out.println("ℹ️ 提示：未找到播放列表文件 " + filePath + "，将为您创建一个新的。");
+            return;
+        }
+
         try {
-            List<String> csvLines = Files.readAllLines(path); // 魔法发生的地方！
-            this.loadFromStrings(csvLines); // 调用我们之前写的反序列化方法
+            List<String> csvLines = Files.readAllLines(path);
+            this.loadFromStrings(csvLines);
+            System.out.println("✅ 播放列表已从 " + filePath + " 成功加载。");
         } catch (IOException e) {
-            // 在下一节，我们将详细讨论如何处理这个异常
-            System.out.println("信息：未找到播放列表文件或读取失败，将创建一个新的播放列表。");
+            System.err.println("❌ 错误：无法从文件加载播放列表。文件可能已损坏或无读取权限。");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("❌ 错误：解析文件内容失败，文件格式可能不正确。 (" + e.getMessage() + ")");
+            e.printStackTrace();
         }
     }
     public int getSongCount() {

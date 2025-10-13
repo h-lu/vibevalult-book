@@ -592,7 +592,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="vibe-check-思考与练习" class="level2">
 <h2 class="anchored" data-anchor-id="vibe-check-思考与练习">Vibe Check (思考与练习)</h2>
 <ol type="1">
-<li><strong>核心练习：赋予应用“记忆”</strong> 这是激动人心的一步！我们将修改<code>VibeVaultApp.java</code>的<code>main</code>方法，让它在启动和关闭时自动加载和保存播放列表。
+<li><strong>核心练习：赋予应用”记忆”</strong> 这是激动人心的一步！我们将修改<code>VibeVaultApp.java</code>的<code>main</code>方法，让它在启动和关闭时自动加载和保存播放列表。
 <ul>
 <li>定义一个常量来存储数据文件路径，例如 <code>private static final String DATA_FILE = "data/playlist.csv";</code>。这比在代码中硬编码字符串要好得多。</li>
 <li>在<code>main</code>方法的开头，初始化<code>Playlist</code>对象之后，立刻调用<code>playlist.loadFromFile(DATA_FILE)</code>。</li>
@@ -605,12 +605,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>再次启动应用</strong>。</li>
 <li>立刻输入<code>2</code>查看播放列表。你之前添加的歌曲是否都神奇地出现了？</li>
 </ol></li>
-<li>恭喜你！你的应用从此拥有了穿越关机黑暗的“记忆”！</li>
+<li>恭喜你！你的应用从此拥有了穿越关机黑暗的”记忆”！</li>
+<li><strong>注意</strong>：我们的代码已经自动处理了目录创建，所以即使<code>data</code>文件夹不存在，程序也会自动创建它。</li>
 </ul></li>
 <li><strong>破坏性实验 (Hacker Time!)</strong>:
 <ul>
-<li><strong>权限测试</strong>: 在你的电脑上，找到<code>playlist.csv</code>文件。右键点击 -&gt; 属性/显示简介，将其权限修改为“只读”。然后再次运行你的Java程序。尝试添加一首歌然后退出。观察<code>saveToFile</code>方法会打印出什么样的错误信息？</li>
-<li><strong>文件损坏测试</strong>: 手动编辑<code>playlist.csv</code>文件，将其中一首歌的时长改成一个非数字字符串（比如 “abc”）。然后启动程序。观察<code>loadFromFile</code>方法会捕获到哪个<code>catch</code>块？</li>
+<li><strong>权限测试</strong>: 在你的电脑上，找到<code>data/playlist.csv</code>文件。
+<ul>
+<li><strong>macOS/Linux</strong>: 在终端中运行 <code>chmod 444 data/playlist.csv</code> 将文件设为只读。</li>
+<li><strong>Windows</strong>: 右键点击文件 -&gt; 属性 -&gt; 勾选”只读”。</li>
+<li>然后再次运行你的Java程序。尝试添加一首歌然后退出。观察<code>saveToFile</code>方法会打印出什么样的错误信息？</li>
+<li><strong>预期输出</strong>: 你应该看到类似 <code>❌ 错误：无法保存播放列表。请检查文件权限或磁盘空间。</code> 的消息，以及详细的<code>IOException</code>堆栈跟踪。</li>
+<li><strong>恢复</strong>: macOS/Linux运行 <code>chmod 644 data/playlist.csv</code>，Windows取消”只读”勾选。</li>
+</ul></li>
+<li><strong>文件损坏测试</strong>: 手动编辑<code>data/playlist.csv</code>文件，将其中一首歌的时长改成一个非数字字符串（比如 “abc”）。然后启动程序。
+<ul>
+<li><strong>预期输出</strong>: 你应该看到 <code>❌ 错误：解析文件内容失败，文件格式可能不正确。</code> 的消息。</li>
+<li>观察<code>loadFromFile</code>方法会捕获到哪个<code>catch</code>块？（提示：是第二个<code>catch (Exception e)</code>块）</li>
+</ul></li>
+<li><strong>空行测试</strong>: 在<code>data/playlist.csv</code>文件中添加几个空行（在歌曲之间或末尾）。重新启动程序，看看是否能正常加载。我们的代码已经处理了这种情况！</li>
 </ul></li>
 <li><strong>深入思考：<code>try-with-resources</code></strong> 虽然<code>Files.write</code>和<code>Files.readAllLines</code>为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（<code>FileInputStream</code>, <code>FileWriter</code>等），并且必须在<code>finally</code>块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。
 <ul>
@@ -1185,7 +1198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
 <span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习：赋予应用“记忆”**</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习：赋予应用"记忆"**</span>
 <span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>    这是激动人心的一步！我们将修改<span class="in">`VibeVaultApp.java`</span>的<span class="in">`main`</span>方法，让它在启动和关闭时自动加载和保存播放列表。</span>
 <span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>定义一个常量来存储数据文件路径，例如 <span class="in">`private static final String DATA_FILE = "data/playlist.csv";`</span>。这比在代码中硬编码字符串要好得多。</span>
 <span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`main`</span>方法的开头，初始化<span class="in">`Playlist`</span>对象之后，立刻调用<span class="in">`playlist.loadFromFile(DATA_FILE)`</span>。</span>
@@ -1196,17 +1209,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="ss">        3. </span>打开这个文件，检查内容是否正确。</span>
 <span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a><span class="ss">        4. </span>**再次启动应用**。</span>
 <span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a><span class="ss">        5. </span>立刻输入<span class="in">`2`</span>查看播放列表。你之前添加的歌曲是否都神奇地出现了？</span>
-<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>恭喜你！你的应用从此拥有了穿越关机黑暗的“记忆”！</span>
-<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验 (Hacker Time!)**:</span>
-<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**权限测试**: 在你的电脑上，找到<span class="in">`playlist.csv`</span>文件。右键点击 -&gt; 属性/显示简介，将其权限修改为“只读”。然后再次运行你的Java程序。尝试添加一首歌然后退出。观察<span class="in">`saveToFile`</span>方法会打印出什么样的错误信息？</span>
-<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**文件损坏测试**: 手动编辑<span class="in">`playlist.csv`</span>文件，将其中一首歌的时长改成一个非数字字符串（比如 "abc"）。然后启动程序。观察<span class="in">`loadFromFile`</span>方法会捕获到哪个<span class="in">`catch`</span>块？</span>
-<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入思考：`try-with-resources`**</span>
-<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>    虽然<span class="in">`Files.write`</span>和<span class="in">`Files.readAllLines`</span>为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（<span class="in">`FileInputStream`</span>, <span class="in">`FileWriter`</span>等），并且必须在<span class="in">`finally`</span>块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。</span>
-<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**AI协同**：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问：</span>
-<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="at">        &gt; "你好，请解释一下Java中的 </span><span class="in">`try-with-resources`</span><span class="at"> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 </span><span class="in">`close()`</span><span class="at"> 方法。这背后的 </span><span class="in">`AutoCloseable`</span><span class="at"> 接口又起到了什么作用？"</span></span>
-<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>理解<span class="in">`try-with-resources`</span>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>恭喜你！你的应用从此拥有了穿越关机黑暗的"记忆"！</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**注意**：我们的代码已经自动处理了目录创建，所以即使<span class="in">`data`</span>文件夹不存在，程序也会自动创建它。</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**破坏性实验 (Hacker Time!)**:</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**权限测试**: 在你的电脑上，找到<span class="in">`data/playlist.csv`</span>文件。</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>**macOS/Linux**: 在终端中运行 <span class="in">`chmod 444 data/playlist.csv`</span> 将文件设为只读。</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>**Windows**: 右键点击文件 -&gt; 属性 -&gt; 勾选"只读"。</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>然后再次运行你的Java程序。尝试添加一首歌然后退出。观察<span class="in">`saveToFile`</span>方法会打印出什么样的错误信息？</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>**预期输出**: 你应该看到类似 <span class="in">`❌ 错误：无法保存播放列表。请检查文件权限或磁盘空间。`</span> 的消息，以及详细的<span class="in">`IOException`</span>堆栈跟踪。</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>**恢复**: macOS/Linux运行 <span class="in">`chmod 644 data/playlist.csv`</span>，Windows取消"只读"勾选。</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**文件损坏测试**: 手动编辑<span class="in">`data/playlist.csv`</span>文件，将其中一首歌的时长改成一个非数字字符串（比如 "abc"）。然后启动程序。</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>**预期输出**: 你应该看到 <span class="in">`❌ 错误：解析文件内容失败，文件格式可能不正确。`</span> 的消息。</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="ss">        *   </span>观察<span class="in">`loadFromFile`</span>方法会捕获到哪个<span class="in">`catch`</span>块？（提示：是第二个<span class="in">`catch (Exception e)`</span>块）</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**空行测试**: 在<span class="in">`data/playlist.csv`</span>文件中添加几个空行（在歌曲之间或末尾）。重新启动程序，看看是否能正常加载。我们的代码已经处理了这种情况！</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**深入思考：`try-with-resources`**</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>    虽然<span class="in">`Files.write`</span>和<span class="in">`Files.readAllLines`</span>为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（<span class="in">`FileInputStream`</span>, <span class="in">`FileWriter`</span>等），并且必须在<span class="in">`finally`</span>块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**AI协同**：为了解决这个问题，Java 7引入了一个非常优雅的语法糖。请向你的AI伙伴提问：</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a><span class="at">        &gt; "你好，请解释一下Java中的 </span><span class="in">`try-with-resources`</span><span class="at"> 语句。它解决了什么问题？请给我一个使用它来逐行读取文件的代码示例，并解释为什么我们不需要在代码中显式地调用 </span><span class="in">`close()`</span><span class="at"> 方法。这背后的 </span><span class="in">`AutoCloseable`</span><span class="at"> 接口又起到了什么作用？"</span></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>理解<span class="in">`try-with-resources`</span>，能让你对Java的资源管理和异常处理有一个更完整、更现代的认识。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -512,7 +512,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="本章顿悟" class="level2">
 <h2 class="anchored" data-anchor-id="本章顿悟">本章顿悟</h2>
-<p>我们需要在两种完全不同的“存在”介质之间架起一座桥梁： * <strong>内存 (RAM)</strong>：高速、动态、但断电即忘的“思维空间”。 * <strong>磁盘 (Disk)</strong>：相对慢速、静态、但长久稳定的“物理石碑”。</p>
+<p>我们需要在两种完全不同的“存在”介质之间架起一座桥梁：</p>
+<ul>
+<li><strong>内存 (RAM)</strong>：高速、动态、但断电即忘的“思维空间”。</li>
+<li><strong>磁盘 (Disk)</strong>：相对慢速、静态、但长久稳定的“物理石碑”。</li>
+</ul>
 <p>将对象从内存中，以一种标准化的格式（如文本），“翻译”并“刻写”到磁盘上的过程，就是<strong>持久化 (Persistence)</strong>。反之，从磁盘读取数据，重新在内存中构建出对象的过程，就是<strong>反持久化</strong>。</p>
 <p>在本章中，我们将赋予VibeVault“记忆”的能力，完成从“瞬时状态”到“持久状态”的决定性飞跃。我们将：</p>
 <ol type="1">
@@ -1007,18 +1011,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本章顿悟</span></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>我们需要在两种完全不同的“存在”介质之间架起一座桥梁：</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**内存 (RAM)**：高速、动态、但断电即忘的“思维空间”。</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**磁盘 (Disk)**：相对慢速、静态、但长久稳定的“物理石碑”。</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>将对象从内存中，以一种标准化的格式（如文本），“翻译”并“刻写”到磁盘上的过程，就是**持久化 (Persistence)**。反之，从磁盘读取数据，重新在内存中构建出对象的过程，就是**反持久化**。</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>在本章中，我们将赋予VibeVault“记忆”的能力，完成从“瞬时状态”到“持久状态”的决定性飞跃。我们将：</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[为何需要持久化？](./01-why-persistence.qmd)**: 从第一性原理出发，深刻理解RAM的“易失性”与Disk的“非易失性”之间的物理宿命。</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[对象的语言：序列化](./02-serialization.qmd)**: 学习如何将内存中复杂的Java对象，“翻译”成一种通用的、基于文本的数据格式（CSV），这个过程称为序列化。</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[代码的韧性：文件IO与异常处理](./03-resilience.qmd)**: 掌握使用现代Java I/O API，将序列化数据可靠地写入磁盘，并为所有文件操作构建健壮的异常处理逻辑。</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>完成本章后，你的VibeVault将拥有记忆。每次启动，它都能记起上次关闭时的所有状态，真正成为一个可以持续积累和成长的应用。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**内存 (RAM)**：高速、动态、但断电即忘的“思维空间”。</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**磁盘 (Disk)**：相对慢速、静态、但长久稳定的“物理石碑”。</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>将对象从内存中，以一种标准化的格式（如文本），“翻译”并“刻写”到磁盘上的过程，就是**持久化 (Persistence)**。反之，从磁盘读取数据，重新在内存中构建出对象的过程，就是**反持久化**。</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>在本章中，我们将赋予VibeVault“记忆”的能力，完成从“瞬时状态”到“持久状态”的决定性飞跃。我们将：</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[为何需要持久化？](./01-why-persistence.qmd)**: 从第一性原理出发，深刻理解RAM的“易失性”与Disk的“非易失性”之间的物理宿命。</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[对象的语言：序列化](./02-serialization.qmd)**: 学习如何将内存中复杂的Java对象，“翻译”成一种通用的、基于文本的数据格式（CSV），这个过程称为序列化。</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[代码的韧性：文件IO与异常处理](./03-resilience.qmd)**: 掌握使用现代Java I/O API，将序列化数据可靠地写入磁盘，并为所有文件操作构建健壮的异常处理逻辑。</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>完成本章后，你的VibeVault将拥有记忆。每次启动，它都能记起上次关闭时的所有状态，真正成为一个可以持续积累和成长的应用。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

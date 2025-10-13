@@ -96,7 +96,7 @@ public class Playlist {
 
 ## Vibe Check (思考与练习)
 
-1.  **核心练习：赋予应用“记忆”**
+1.  **核心练习：赋予应用"记忆"**
     这是激动人心的一步！我们将修改`VibeVaultApp.java`的`main`方法，让它在启动和关闭时自动加载和保存播放列表。
     *   定义一个常量来存储数据文件路径，例如 `private static final String DATA_FILE = "data/playlist.csv";`。这比在代码中硬编码字符串要好得多。
     *   在`main`方法的开头，初始化`Playlist`对象之后，立刻调用`playlist.loadFromFile(DATA_FILE)`。
@@ -107,11 +107,20 @@ public class Playlist {
         3. 打开这个文件，检查内容是否正确。
         4. **再次启动应用**。
         5. 立刻输入`2`查看播放列表。你之前添加的歌曲是否都神奇地出现了？
-    *   恭喜你！你的应用从此拥有了穿越关机黑暗的“记忆”！
+    *   恭喜你！你的应用从此拥有了穿越关机黑暗的"记忆"！
+    *   **注意**：我们的代码已经自动处理了目录创建，所以即使`data`文件夹不存在，程序也会自动创建它。
 
 2.  **破坏性实验 (Hacker Time!)**:
-    *   **权限测试**: 在你的电脑上，找到`playlist.csv`文件。右键点击 -> 属性/显示简介，将其权限修改为“只读”。然后再次运行你的Java程序。尝试添加一首歌然后退出。观察`saveToFile`方法会打印出什么样的错误信息？
-    *   **文件损坏测试**: 手动编辑`playlist.csv`文件，将其中一首歌的时长改成一个非数字字符串（比如 "abc"）。然后启动程序。观察`loadFromFile`方法会捕获到哪个`catch`块？
+    *   **权限测试**: 在你的电脑上，找到`data/playlist.csv`文件。
+        *   **macOS/Linux**: 在终端中运行 `chmod 444 data/playlist.csv` 将文件设为只读。
+        *   **Windows**: 右键点击文件 -> 属性 -> 勾选"只读"。
+        *   然后再次运行你的Java程序。尝试添加一首歌然后退出。观察`saveToFile`方法会打印出什么样的错误信息？
+        *   **预期输出**: 你应该看到类似 `❌ 错误：无法保存播放列表。请检查文件权限或磁盘空间。` 的消息，以及详细的`IOException`堆栈跟踪。
+        *   **恢复**: macOS/Linux运行 `chmod 644 data/playlist.csv`，Windows取消"只读"勾选。
+    *   **文件损坏测试**: 手动编辑`data/playlist.csv`文件，将其中一首歌的时长改成一个非数字字符串（比如 "abc"）。然后启动程序。
+        *   **预期输出**: 你应该看到 `❌ 错误：解析文件内容失败，文件格式可能不正确。` 的消息。
+        *   观察`loadFromFile`方法会捕获到哪个`catch`块？（提示：是第二个`catch (Exception e)`块）
+    *   **空行测试**: 在`data/playlist.csv`文件中添加几个空行（在歌曲之间或末尾）。重新启动程序，看看是否能正常加载。我们的代码已经处理了这种情况！
 
 3.  **深入思考：`try-with-resources`**
     虽然`Files.write`和`Files.readAllLines`为我们封装了资源管理，但在传统的Java I/O操作中，我们需要手动打开文件流（`FileInputStream`, `FileWriter`等），并且必须在`finally`块中确保它们被关闭，以避免资源泄漏。这是一个常见且容易出错的模式。
