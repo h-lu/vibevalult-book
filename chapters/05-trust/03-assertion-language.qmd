@@ -37,6 +37,7 @@ dependencies {
 testing { 
     // ... 
 }
+```
 
 > **深度解读**：我们这里使用了`3.25.3`版本。在真实项目中，你可以通过访问[Maven中央仓库](https://search.maven.org/)搜索`org.assertj:assertj-core`来查找最新的稳定版本。保持依赖更新是良好的工程习惯。
 
@@ -130,6 +131,7 @@ class PlaylistTest {
 #### 方式一：通过IDE（快速反馈）
 
 在IntelliJ IDEA或VS Code中，最快的方式是直接在 `PlaylistTest.java` 文件里操作：
+
 *   点击类名 `PlaylistTest` 旁边的绿色“播放”按钮来运行该类的所有测试。
 *   点击单个 `@Test` 方法（如 `shouldContainAddedSong`）旁边的按钮来只运行那一个测试。
 
@@ -141,10 +143,12 @@ IDE的测试运行器会立即启动，并在一个专门的窗口中以可视�
 
 1.  **打开终端**。
 2.  **导航到本章的代码目录**。对于第五章，路径是 `chapter-code/ch05/`。
+
     ```bash
     cd chapter-code/ch05
     ```
 3.  **执行Gradle测试任务**：
+
     ```bash
     ./gradlew test
     ```

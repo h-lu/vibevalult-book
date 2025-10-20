@@ -602,7 +602,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">assertEquals</span><span class="op">(</span><span class="dv">1</span><span class="op">,</span> playlist<span class="op">.</span><span class="fu">getSongCount</span><span class="op">());</span></span>
 <span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>代码深度剖析</strong>: * <code>@Test</code>: 这是一个JUnit 5注解，它像一个旗帜，告诉JUnit：“嗨，这个方法是一个需要独立运行的测试用例！” * <code>@DisplayName(...)</code>: 另一个JUnit 5注解。它允许我们为测试用例提供一个更具描述性、更易读的名称（支持中文和空格！），这在测试报告中看起来会非常清晰。 * <strong>Arrange-Act-Assert (3A模式)</strong>: 这是单元测试的经典结构。 1. <strong>准备 (Arrange)</strong>: 设置测试所需的所有前提条件和输入。 2. <strong>行动 (Act)</strong>: 执行我们真正想要测试的那个方法。 3. <strong>断言 (Assert)</strong>: 检查在“行动”之后，系统的状态是否变为了我们所“期望”的样子。 * <code>assertEquals(1, playlist.getSongCount())</code>: 这是JUnit 5提供的核心<strong>断言方法</strong>之一。它声明：“我<strong>期望</strong>第一个参数（<code>1</code>）与第二个参数（<code>playlist.getSongCount()</code>的返回值）是<strong>相等</strong>的”。如果它们相等，测试通过。如果不相等，测试失败，并会清晰地报告期望值和实际值分别是多少。这比我们自己写<code>if-else</code>来判断要强大和方便得多。</p>
+<p><strong>代码深度剖析</strong>:</p>
+<ul>
+<li><code>@Test</code>: 这是一个JUnit 5注解，它像一个旗帜，告诉JUnit：“嗨，这个方法是一个需要独立运行的测试用例！”</li>
+<li><code>@DisplayName(...)</code>: 另一个JUnit 5注解。它允许我们为测试用例提供一个更具描述性、更易读的名称（支持中文和空格！），这在测试报告中看起来会非常清晰。</li>
+<li><strong>Arrange-Act-Assert (3A模式)</strong>: 这是单元测试的经典结构。
+<ol type="1">
+<li><strong>准备 (Arrange)</strong>: 设置测试所需的所有前提条件和输入。</li>
+<li><strong>行动 (Act)</strong>: 执行我们真正想要测试的那个方法。</li>
+<li><strong>断言 (Assert)</strong>: 检查在“行动”之后，系统的状态是否变为了我们所“期望”的样子。</li>
+</ol></li>
+<li><code>assertEquals(1, playlist.getSongCount())</code>: 这是JUnit 5提供的核心<strong>断言方法</strong>之一。它声明：“我<strong>期望</strong>第一个参数（<code>1</code>）与第二个参数（<code>playlist.getSongCount()</code>的返回值）是<strong>相等</strong>的”。如果它们相等，测试通过。如果不相等，测试失败，并会清晰地报告期望值和实际值分别是多少。这比我们自己写<code>if-else</code>来判断要强大和方便得多。</li>
+</ul>
 <p><strong>运行测试</strong>: 在你的IDE中，点击<code>songCountShouldBeOneAfterAddingFirstSong</code>方法旁的绿色“播放”按钮。</p>
 <p><strong>观察结果</strong>: 你将看到一个<strong>绿色的测试通过标记</strong>。祝贺你！你不仅搭建了现代化的测试环境，还通过编写测试，反向驱动了主代码的设计优化，并验证了核心业务逻辑的正确性。</p>
 <hr>
@@ -1204,27 +1215,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a>**代码深度剖析**:</span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Test`</span>: 这是一个JUnit 5注解，它像一个旗帜，告诉JUnit：“嗨，这个方法是一个需要独立运行的测试用例！”</span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@DisplayName(...)`</span>: 另一个JUnit 5注解。它允许我们为测试用例提供一个更具描述性、更易读的名称（支持中文和空格！），这在测试报告中看起来会非常清晰。</span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Arrange-Act-Assert (3A模式)**: 这是单元测试的经典结构。</span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>**准备 (Arrange)**: 设置测试所需的所有前提条件和输入。</span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>**行动 (Act)**: 执行我们真正想要测试的那个方法。</span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    3.  </span>**断言 (Assert)**: 检查在“行动”之后，系统的状态是否变为了我们所“期望”的样子。</span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`assertEquals(1, playlist.getSongCount())`</span>: 这是JUnit 5提供的核心**断言方法**之一。它声明：“我**期望**第一个参数（`1`）与第二个参数（`playlist.getSongCount()`的返回值）是**相等**的”。如果它们相等，测试通过。如果不相等，测试失败，并会清晰地报告期望值和实际值分别是多少。这比我们自己写<span class="in">`if-else`</span>来判断要强大和方便得多。</span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a>**运行测试**:</span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>在你的IDE中，点击<span class="in">`songCountShouldBeOneAfterAddingFirstSong`</span>方法旁的绿色“播放”按钮。</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a>**观察结果**:</span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>你将看到一个**绿色的测试通过标记**。祝贺你！你不仅搭建了现代化的测试环境，还通过编写测试，反向驱动了主代码的设计优化，并验证了核心业务逻辑的正确性。</span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vibe Check (思考与练习)</span></span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**: 严格按照本节的步骤，更新你的<span class="in">`app/build.gradle.kts`</span>，为<span class="in">`Playlist.java`</span>添加<span class="in">`getSongCount()`</span>方法，然后创建并成功运行<span class="in">`PlaylistTest.java`</span>。</span>
-<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**扩展测试**: 在<span class="in">`PlaylistTest.java`</span>中再添加一个测试方法，使用<span class="in">`@DisplayName`</span>为其命名为“一个新建的空播放列表，歌曲数量应为0”，并用<span class="in">`assertEquals`</span>来验证这个断言。</span>
-<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**: 向你的AI助手提问：“JUnit 5的<span class="in">`assertEquals`</span>方法内部是如何工作的？当断言失败时，它为什么能同时告诉我期望值和实际值？它和简单的<span class="in">`if (actual != expected) throw new AssertionError()`</span>相比，为开发者提供了哪些额外的价值？” </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Test`</span>: 这是一个JUnit 5注解，它像一个旗帜，告诉JUnit：“嗨，这个方法是一个需要独立运行的测试用例！”</span>
+<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@DisplayName(...)`</span>: 另一个JUnit 5注解。它允许我们为测试用例提供一个更具描述性、更易读的名称（支持中文和空格！），这在测试报告中看起来会非常清晰。</span>
+<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Arrange-Act-Assert (3A模式)**: 这是单元测试的经典结构。</span>
+<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>**准备 (Arrange)**: 设置测试所需的所有前提条件和输入。</span>
+<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>**行动 (Act)**: 执行我们真正想要测试的那个方法。</span>
+<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    3.  </span>**断言 (Assert)**: 检查在“行动”之后，系统的状态是否变为了我们所“期望”的样子。</span>
+<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`assertEquals(1, playlist.getSongCount())`</span>: 这是JUnit 5提供的核心**断言方法**之一。它声明：“我**期望**第一个参数（`1`）与第二个参数（`playlist.getSongCount()`的返回值）是**相等**的”。如果它们相等，测试通过。如果不相等，测试失败，并会清晰地报告期望值和实际值分别是多少。这比我们自己写<span class="in">`if-else`</span>来判断要强大和方便得多。</span>
+<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a>**运行测试**:</span>
+<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a>在你的IDE中，点击<span class="in">`songCountShouldBeOneAfterAddingFirstSong`</span>方法旁的绿色“播放”按钮。</span>
+<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>**观察结果**:</span>
+<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a>你将看到一个**绿色的测试通过标记**。祝贺你！你不仅搭建了现代化的测试环境，还通过编写测试，反向驱动了主代码的设计优化，并验证了核心业务逻辑的正确性。</span>
+<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vibe Check (思考与练习)</span></span>
+<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-140"><a href="#cb4-140" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**: 严格按照本节的步骤，更新你的<span class="in">`app/build.gradle.kts`</span>，为<span class="in">`Playlist.java`</span>添加<span class="in">`getSongCount()`</span>方法，然后创建并成功运行<span class="in">`PlaylistTest.java`</span>。</span>
+<span id="cb4-141"><a href="#cb4-141" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**扩展测试**: 在<span class="in">`PlaylistTest.java`</span>中再添加一个测试方法，使用<span class="in">`@DisplayName`</span>为其命名为“一个新建的空播放列表，歌曲数量应为0”，并用<span class="in">`assertEquals`</span>来验证这个断言。</span>
+<span id="cb4-142"><a href="#cb4-142" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**: 向你的AI助手提问：“JUnit 5的<span class="in">`assertEquals`</span>方法内部是如何工作的？当断言失败时，它为什么能同时告诉我期望值和实际值？它和简单的<span class="in">`if (actual != expected) throw new AssertionError()`</span>相比，为开发者提供了哪些额外的价值？” </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
