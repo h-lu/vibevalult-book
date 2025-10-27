@@ -507,13 +507,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="本节危机知易行难" class="level2">
 <h2 class="anchored" data-anchor-id="本节危机知易行难">本节危机：知易行难</h2>
 <p>我们已经有了清晰的蓝图（三层架构）和设计图纸（接口）。但现在，我们面对的是一栋已经建好的、混乱的房子。我们需要在不让它“垮掉”（破坏现有功能）的前提下，对它的内部结构进行一次“大手术”。</p>
-<p>这个过程充满了风险： * 我们如何移动代码而不错漏任何细节？ * 我们如何确保在拆分和重组之后，所有部分依然能正确地协同工作？ * 我们如何验证重构后的系统，其外在行为与重构前完全一致？</p>
+<p>这个过程充满了风险：</p>
+<ul>
+<li>我们如何移动代码而不错漏任何细节？</li>
+<li>我们如何确保在拆分和重组之后，所有部分依然能正确地协同工作？</li>
+<li>我们如何验证重构后的系统，其外在行为与重构前完全一致？</li>
+</ul>
 <p><strong>我们面临的危机是：缺乏一套安全、严谨、循序渐进的操作流程，来指导我们完成这次复杂而关键的代码重构。</strong></p>
 </section>
 <section id="本节顿悟小步快跑测试先行" class="level2">
 <h2 class="anchored" data-anchor-id="本节顿悟小步快跑测试先行">本节顿悟：小步快跑，测试先行</h2>
 <p>重构的黄金法则是：<strong>在不改变软件外在行为的前提下，改善其内部结构。</strong></p>
-<p>要安全地做到这一点，我们的策略是： 1. <strong>依赖测试</strong>: 我们在第五章编写的单元测试，就是我们的“安全网”。每完成一小步重构，我们都应该运行测试，确保没有破坏任何东西。 2. <strong>小步快跑</strong>: 不要试图一次性完成所有重构。我们将一步一步地创建新类、移动旧逻辑，并不断验证。</p>
+<p>要安全地做到这一点，我们的策略是：</p>
+<ol type="1">
+<li><strong>依赖测试</strong>: 我们在第五章编写的单元测试，就是我们的“安全网”。每完成一小步重构，我们都应该运行测试，确保没有破坏任何东西。</li>
+<li><strong>小步快跑</strong>: 不要试图一次性完成所有重构。我们将一步一步地创建新类、移动旧逻辑，并不断验证。</li>
+</ol>
 <p>现在，让我们开始这场激动人心的手术。我们将基于第五章结束时的代码进行操作。</p>
 <section id="第零步复制项目" class="level3">
 <h3 class="anchored" data-anchor-id="第零步复制项目">第零步：复制项目</h3>
@@ -523,7 +532,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="第一步创建新的包结构" class="level3">
 <h3 class="anchored" data-anchor-id="第一步创建新的包结构">第一步：创建新的包结构</h3>
-<p>对抗混乱的第一步，是建立秩序井然的“抽屉”。在<code>src/main/java/com/vibevault/</code>目录下，创建以下四个子包（子目录）： * <code>app</code>: 我们新的主程序入口。 * <code>repository</code>: 数据访问层。 * <code>service</code>: 业务逻辑层。 * <code>ui</code>: 用户界面/表现层。</p>
+<p>对抗混乱的第一步，是建立秩序井然的“抽屉”。在<code>src/main/java/com/vibevault/</code>目录下，创建以下四个子包（子目录）：</p>
+<ul>
+<li><code>app</code>: 我们新的主程序入口。</li>
+<li><code>repository</code>: 数据访问层。</li>
+<li><code>service</code>: 业务逻辑层。</li>
+<li><code>ui</code>: 用户界面/表现层。</li>
+</ul>
 <p>将<code>model</code>包也放在<code>com/vibevault</code>下，最终你的<code>com/vibevault</code>目录看起来像这样：</p>
 <pre><code>com/vibevault/
 ├── app/
@@ -562,7 +577,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="第三步实现数据访问层" class="level3">
 <h3 class="anchored" data-anchor-id="第三步实现数据访问层">第三步：实现数据访问层</h3>
-<p>现在，我们从最底层开始，构建<code>Repository</code>的实现。 1. 在<code>repository</code>包下，创建一个新类 <code>FilePlaylistRepository</code>。 2. 将原来<code>Playlist.java</code>中所有与<strong>文件读写、序列化</strong>相关的逻辑，“剪切”到这个新类中。</p>
+<p>现在，我们从最底层开始，构建<code>Repository</code>的实现。</p>
+<ol type="1">
+<li>在<code>repository</code>包下，创建一个新类 <code>FilePlaylistRepository</code>。</li>
+<li>将原来<code>Playlist.java</code>中所有与<strong>文件读写、序列化</strong>相关的逻辑，“剪切”到这个新类中。</li>
+</ol>
 <div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/repository/FilePlaylistRepository.java</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1431,487 +1450,491 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>我们已经有了清晰的蓝图（三层架构）和设计图纸（接口）。但现在，我们面对的是一栋已经建好的、混乱的房子。我们需要在不让它“垮掉”（破坏现有功能）的前提下，对它的内部结构进行一次“大手术”。</span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>这个过程充满了风险：</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何移动代码而不错漏任何细节？</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何确保在拆分和重组之后，所有部分依然能正确地协同工作？</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何验证重构后的系统，其外在行为与重构前完全一致？</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：缺乏一套安全、严谨、循序渐进的操作流程，来指导我们完成这次复杂而关键的代码重构。**</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：小步快跑，测试先行</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>重构的黄金法则是：**在不改变软件外在行为的前提下，改善其内部结构。**</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>要安全地做到这一点，我们的策略是：</span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**依赖测试**: 我们在第五章编写的单元测试，就是我们的“安全网”。每完成一小步重构，我们都应该运行测试，确保没有破坏任何东西。</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**小步快跑**: 不要试图一次性完成所有重构。我们将一步一步地创建新类、移动旧逻辑，并不断验证。</span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>现在，让我们开始这场激动人心的手术。我们将基于第五章结束时的代码进行操作。</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何移动代码而不错漏任何细节？</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何确保在拆分和重组之后，所有部分依然能正确地协同工作？</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>我们如何验证重构后的系统，其外在行为与重构前完全一致？</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：缺乏一套安全、严谨、循序渐进的操作流程，来指导我们完成这次复杂而关键的代码重构。**</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：小步快跑，测试先行</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>重构的黄金法则是：**在不改变软件外在行为的前提下，改善其内部结构。**</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>要安全地做到这一点，我们的策略是：</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**依赖测试**: 我们在第五章编写的单元测试，就是我们的“安全网”。每完成一小步重构，我们都应该运行测试，确保没有破坏任何东西。</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**小步快跑**: 不要试图一次性完成所有重构。我们将一步一步地创建新类、移动旧逻辑，并不断验证。</span>
 <span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>现在，让我们开始这场激动人心的手术。我们将基于第五章结束时的代码进行操作。</span>
 <span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第零步：复制项目</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>为保证安全，我们先将第五章的代码复制一份，作为第六章的起点。</span>
-<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-R</span> chapter-code/ch05/ chapter-code/ch06/</span>
-<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>我们后续的所有操作，都在<span class="in">`chapter-code/ch06`</span>这个新目录中进行。</span>
-<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第一步：创建新的包结构</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第零步：复制项目</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>为保证安全，我们先将第五章的代码复制一份，作为第六章的起点。</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-R</span> chapter-code/ch05/ chapter-code/ch06/</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>我们后续的所有操作，都在<span class="in">`chapter-code/ch06`</span>这个新目录中进行。</span>
 <span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>对抗混乱的第一步，是建立秩序井然的“抽屉”。在<span class="in">`src/main/java/com/vibevault/`</span>目录下，创建以下四个子包（子目录）：</span>
-<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`app`</span>: 我们新的主程序入口。</span>
-<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`repository`</span>: 数据访问层。</span>
-<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`service`</span>: 业务逻辑层。</span>
-<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`ui`</span>: 用户界面/表现层。</span>
-<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>将<span class="in">`model`</span>包也放在<span class="in">`com/vibevault`</span>下，最终你的<span class="in">`com/vibevault`</span>目录看起来像这样：</span>
-<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="in">com/vibevault/</span></span>
-<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="in">├── app/</span></span>
-<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="in">├── model/</span></span>
-<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── Playlist.java</span></span>
-<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── Song.java</span></span>
-<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="in">├── repository/</span></span>
-<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="in">├── service/</span></span>
-<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="in">└── ui/</span></span>
-<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第二步：定义“契约”——接口</span></span>
-<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a>在对应的包下，创建我们上一节设计好的两个接口。</span>
-<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a>**Repository接口**:</span>
-<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/repository/PlaylistRepository.java</span></span>
-<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
-<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistRepository <span class="op">{</span></span>
-<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">);</span></span>
-<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a>    Playlist <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">);</span></span>
-<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a>**Service接口**:</span>
-<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/service/PlaylistService.java</span></span>
-<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
-<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">);</span></span>
-<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">);</span></span>
-<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a>    <span class="bu">String</span> <span class="fu">listSongs</span><span class="op">();</span></span>
-<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">saveData</span><span class="op">();</span></span>
-<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第三步：实现数据访问层</span></span>
-<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a>现在，我们从最底层开始，构建<span class="in">`Repository`</span>的实现。</span>
-<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>在<span class="in">`repository`</span>包下，创建一个新类 <span class="in">`FilePlaylistRepository`</span>。</span>
-<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>将原来<span class="in">`Playlist.java`</span>中所有与**文件读写、序列化**相关的逻辑，“剪切”到这个新类中。</span>
-<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/repository/FilePlaylistRepository.java</span></span>
-<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第一步：创建新的包结构</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a>对抗混乱的第一步，是建立秩序井然的“抽屉”。在<span class="in">`src/main/java/com/vibevault/`</span>目录下，创建以下四个子包（子目录）：</span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`app`</span>: 我们新的主程序入口。</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`repository`</span>: 数据访问层。</span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`service`</span>: 业务逻辑层。</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`ui`</span>: 用户界面/表现层。</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>将<span class="in">`model`</span>包也放在<span class="in">`com/vibevault`</span>下，最终你的<span class="in">`com/vibevault`</span>目录看起来像这样：</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="in">com/vibevault/</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="in">├── app/</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="in">├── model/</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="in">│   ├── Playlist.java</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="in">│   └── Song.java</span></span>
+<span id="cb12-56"><a href="#cb12-56" aria-hidden="true" tabindex="-1"></a><span class="in">├── repository/</span></span>
+<span id="cb12-57"><a href="#cb12-57" aria-hidden="true" tabindex="-1"></a><span class="in">├── service/</span></span>
+<span id="cb12-58"><a href="#cb12-58" aria-hidden="true" tabindex="-1"></a><span class="in">└── ui/</span></span>
+<span id="cb12-59"><a href="#cb12-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-60"><a href="#cb12-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-61"><a href="#cb12-61" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第二步：定义“契约”——接口</span></span>
+<span id="cb12-62"><a href="#cb12-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-63"><a href="#cb12-63" aria-hidden="true" tabindex="-1"></a>在对应的包下，创建我们上一节设计好的两个接口。</span>
+<span id="cb12-64"><a href="#cb12-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-65"><a href="#cb12-65" aria-hidden="true" tabindex="-1"></a>**Repository接口**:</span>
+<span id="cb12-66"><a href="#cb12-66" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb12-67"><a href="#cb12-67" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/repository/PlaylistRepository.java</span></span>
+<span id="cb12-68"><a href="#cb12-68" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
+<span id="cb12-69"><a href="#cb12-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-70"><a href="#cb12-70" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb12-71"><a href="#cb12-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-72"><a href="#cb12-72" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistRepository <span class="op">{</span></span>
+<span id="cb12-73"><a href="#cb12-73" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">);</span></span>
+<span id="cb12-74"><a href="#cb12-74" aria-hidden="true" tabindex="-1"></a>    Playlist <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">);</span></span>
+<span id="cb12-75"><a href="#cb12-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-76"><a href="#cb12-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-77"><a href="#cb12-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-78"><a href="#cb12-78" aria-hidden="true" tabindex="-1"></a>**Service接口**:</span>
+<span id="cb12-79"><a href="#cb12-79" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb12-80"><a href="#cb12-80" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/service/PlaylistService.java</span></span>
+<span id="cb12-81"><a href="#cb12-81" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb12-82"><a href="#cb12-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-83"><a href="#cb12-83" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb12-84"><a href="#cb12-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-85"><a href="#cb12-85" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
+<span id="cb12-86"><a href="#cb12-86" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">);</span></span>
+<span id="cb12-87"><a href="#cb12-87" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">);</span></span>
+<span id="cb12-88"><a href="#cb12-88" aria-hidden="true" tabindex="-1"></a>    <span class="bu">String</span> <span class="fu">listSongs</span><span class="op">();</span></span>
+<span id="cb12-89"><a href="#cb12-89" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">saveData</span><span class="op">();</span></span>
+<span id="cb12-90"><a href="#cb12-90" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-91"><a href="#cb12-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-92"><a href="#cb12-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-93"><a href="#cb12-93" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第三步：实现数据访问层</span></span>
+<span id="cb12-94"><a href="#cb12-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-95"><a href="#cb12-95" aria-hidden="true" tabindex="-1"></a>现在，我们从最底层开始，构建<span class="in">`Repository`</span>的实现。</span>
+<span id="cb12-96"><a href="#cb12-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-97"><a href="#cb12-97" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>在<span class="in">`repository`</span>包下，创建一个新类 <span class="in">`FilePlaylistRepository`</span>。</span>
+<span id="cb12-98"><a href="#cb12-98" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>将原来<span class="in">`Playlist.java`</span>中所有与**文件读写、序列化**相关的逻辑，“剪切”到这个新类中。</span>
 <span id="cb12-99"><a href="#cb12-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">IOException</span><span class="op">;</span></span>
-<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Files</span><span class="op">;</span></span>
-<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Path</span><span class="op">;</span></span>
-<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Paths</span><span class="op">;</span></span>
-<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
-<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
-<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> FilePlaylistRepository <span class="kw">implements</span> PlaylistRepository <span class="op">{</span></span>
-<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> FILE_PATH <span class="op">=</span> <span class="st">"data/playlist.csv"</span><span class="op">;</span></span>
-<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
-<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>        <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
-<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span>Song song <span class="op">:</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">())</span> <span class="op">{</span></span>
-<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>            csvLines<span class="op">.</span><span class="fu">add</span><span class="op">(</span><span class="bu">String</span><span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">"</span><span class="sc">%s</span><span class="st">,</span><span class="sc">%s</span><span class="st">,</span><span class="sc">%d</span><span class="st">"</span><span class="op">,</span> song<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">artist</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">durationInSeconds</span><span class="op">()));</span></span>
-<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>FILE_PATH<span class="op">);</span></span>
-<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>            Path parentDir <span class="op">=</span> path<span class="op">.</span><span class="fu">getParent</span><span class="op">();</span></span>
-<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>parentDir <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>parentDir<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>                Files<span class="op">.</span><span class="fu">createDirectories</span><span class="op">(</span>parentDir<span class="op">);</span></span>
-<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>            Files<span class="op">.</span><span class="fu">write</span><span class="op">(</span>path<span class="op">,</span> csvLines<span class="op">);</span></span>
-<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">err</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"❌ 错误：无法保存播放列表。"</span><span class="op">);</span></span>
-<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>            e<span class="op">.</span><span class="fu">printStackTrace</span><span class="op">();</span></span>
-<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
-<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Playlist <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 为了简化，我们暂时让文件名与playlistId无关</span></span>
-<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 在更复杂的系统中，这里可能会是 "data/" + playlistId + ".csv"</span></span>
-<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>        <span class="dt">final</span> <span class="bu">String</span> FILE_PATH <span class="op">=</span> <span class="st">"data/playlist.csv"</span><span class="op">;</span></span>
-<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>        Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>playlistId<span class="op">);</span></span>
-<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>FILE_PATH<span class="op">);</span></span>
-<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>path<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> playlist<span class="op">;</span> <span class="co">// 文件不存在，返回新的空列表</span></span>
-<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-100"><a href="#cb12-100" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb12-101"><a href="#cb12-101" aria-hidden="true" tabindex="-1"></a><span class="co">// In: src/main/java/com/vibevault/repository/FilePlaylistRepository.java</span></span>
+<span id="cb12-102"><a href="#cb12-102" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
+<span id="cb12-103"><a href="#cb12-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-104"><a href="#cb12-104" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb12-105"><a href="#cb12-105" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb12-106"><a href="#cb12-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-107"><a href="#cb12-107" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">IOException</span><span class="op">;</span></span>
+<span id="cb12-108"><a href="#cb12-108" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Files</span><span class="op">;</span></span>
+<span id="cb12-109"><a href="#cb12-109" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Path</span><span class="op">;</span></span>
+<span id="cb12-110"><a href="#cb12-110" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Paths</span><span class="op">;</span></span>
+<span id="cb12-111"><a href="#cb12-111" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
+<span id="cb12-112"><a href="#cb12-112" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
+<span id="cb12-113"><a href="#cb12-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-114"><a href="#cb12-114" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> FilePlaylistRepository <span class="kw">implements</span> PlaylistRepository <span class="op">{</span></span>
+<span id="cb12-115"><a href="#cb12-115" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> FILE_PATH <span class="op">=</span> <span class="st">"data/playlist.csv"</span><span class="op">;</span></span>
+<span id="cb12-116"><a href="#cb12-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-117"><a href="#cb12-117" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb12-118"><a href="#cb12-118" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-119"><a href="#cb12-119" aria-hidden="true" tabindex="-1"></a>        <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb12-120"><a href="#cb12-120" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> <span class="op">(</span>Song song <span class="op">:</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb12-121"><a href="#cb12-121" aria-hidden="true" tabindex="-1"></a>            csvLines<span class="op">.</span><span class="fu">add</span><span class="op">(</span><span class="bu">String</span><span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">"</span><span class="sc">%s</span><span class="st">,</span><span class="sc">%s</span><span class="st">,</span><span class="sc">%d</span><span class="st">"</span><span class="op">,</span> song<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">artist</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">durationInSeconds</span><span class="op">()));</span></span>
+<span id="cb12-122"><a href="#cb12-122" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-123"><a href="#cb12-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-124"><a href="#cb12-124" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>FILE_PATH<span class="op">);</span></span>
+<span id="cb12-125"><a href="#cb12-125" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb12-126"><a href="#cb12-126" aria-hidden="true" tabindex="-1"></a>            Path parentDir <span class="op">=</span> path<span class="op">.</span><span class="fu">getParent</span><span class="op">();</span></span>
+<span id="cb12-127"><a href="#cb12-127" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>parentDir <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>parentDir<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb12-128"><a href="#cb12-128" aria-hidden="true" tabindex="-1"></a>                Files<span class="op">.</span><span class="fu">createDirectories</span><span class="op">(</span>parentDir<span class="op">);</span></span>
+<span id="cb12-129"><a href="#cb12-129" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-130"><a href="#cb12-130" aria-hidden="true" tabindex="-1"></a>            Files<span class="op">.</span><span class="fu">write</span><span class="op">(</span>path<span class="op">,</span> csvLines<span class="op">);</span></span>
+<span id="cb12-131"><a href="#cb12-131" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-132"><a href="#cb12-132" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">err</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"❌ 错误：无法保存播放列表。"</span><span class="op">);</span></span>
+<span id="cb12-133"><a href="#cb12-133" aria-hidden="true" tabindex="-1"></a>            e<span class="op">.</span><span class="fu">printStackTrace</span><span class="op">();</span></span>
+<span id="cb12-134"><a href="#cb12-134" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-135"><a href="#cb12-135" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-136"><a href="#cb12-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-137"><a href="#cb12-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb12-138"><a href="#cb12-138" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Playlist <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-139"><a href="#cb12-139" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 为了简化，我们暂时让文件名与playlistId无关</span></span>
+<span id="cb12-140"><a href="#cb12-140" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 在更复杂的系统中，这里可能会是 "data/" + playlistId + ".csv"</span></span>
+<span id="cb12-141"><a href="#cb12-141" aria-hidden="true" tabindex="-1"></a>        <span class="dt">final</span> <span class="bu">String</span> FILE_PATH <span class="op">=</span> <span class="st">"data/playlist.csv"</span><span class="op">;</span></span>
+<span id="cb12-142"><a href="#cb12-142" aria-hidden="true" tabindex="-1"></a>        Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>playlistId<span class="op">);</span></span>
+<span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>FILE_PATH<span class="op">);</span></span>
 <span id="cb12-144"><a href="#cb12-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>            <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> Files<span class="op">.</span><span class="fu">readAllLines</span><span class="op">(</span>path<span class="op">);</span></span>
-<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="bu">String</span> line <span class="op">:</span> csvLines<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a>                <span class="bu">String</span><span class="op">[]</span> fields <span class="op">=</span> line<span class="op">.</span><span class="fu">split</span><span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
-<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="op">(</span>fields<span class="op">.</span><span class="fu">length</span> <span class="op">==</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>                    playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>fields<span class="op">[</span><span class="dv">0</span><span class="op">],</span> fields<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="bu">Integer</span><span class="op">.</span><span class="fu">parseInt</span><span class="op">(</span>fields<span class="op">[</span><span class="dv">2</span><span class="op">])));</span></span>
-<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
-<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> <span class="op">|</span> <span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">err</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"❌ 错误：无法加载播放列表。"</span><span class="op">);</span></span>
-<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>            e<span class="op">.</span><span class="fu">printStackTrace</span><span class="op">();</span></span>
-<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> playlist<span class="op">;</span></span>
-<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>**注意**: 我们把原来<span class="in">`Playlist`</span>类中复杂的<span class="in">`saveToFile`</span>, <span class="in">`loadFromFile`</span>, <span class="in">`saveToStrings`</span>, <span class="in">`loadFromStrings`</span>等方法，全部提炼并封装到了这个单一职责的类中。</span>
-<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第四步：重构并实现业务逻辑层</span></span>
-<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>现在，<span class="in">`Playlist`</span>类可以“减负”了。它不再需要关心持久化，只用做好自己的本职工作：管理一个歌曲列表。</span>
+<span id="cb12-145"><a href="#cb12-145" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>path<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb12-146"><a href="#cb12-146" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> playlist<span class="op">;</span> <span class="co">// 文件不存在，返回新的空列表</span></span>
+<span id="cb12-147"><a href="#cb12-147" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-148"><a href="#cb12-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-149"><a href="#cb12-149" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb12-150"><a href="#cb12-150" aria-hidden="true" tabindex="-1"></a>            <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> Files<span class="op">.</span><span class="fu">readAllLines</span><span class="op">(</span>path<span class="op">);</span></span>
+<span id="cb12-151"><a href="#cb12-151" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="bu">String</span> line <span class="op">:</span> csvLines<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-152"><a href="#cb12-152" aria-hidden="true" tabindex="-1"></a>                <span class="bu">String</span><span class="op">[]</span> fields <span class="op">=</span> line<span class="op">.</span><span class="fu">split</span><span class="op">(</span><span class="st">","</span><span class="op">);</span></span>
+<span id="cb12-153"><a href="#cb12-153" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="op">(</span>fields<span class="op">.</span><span class="fu">length</span> <span class="op">==</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-154"><a href="#cb12-154" aria-hidden="true" tabindex="-1"></a>                    playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>fields<span class="op">[</span><span class="dv">0</span><span class="op">],</span> fields<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="bu">Integer</span><span class="op">.</span><span class="fu">parseInt</span><span class="op">(</span>fields<span class="op">[</span><span class="dv">2</span><span class="op">])));</span></span>
+<span id="cb12-155"><a href="#cb12-155" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb12-156"><a href="#cb12-156" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-157"><a href="#cb12-157" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> <span class="op">|</span> <span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-158"><a href="#cb12-158" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">err</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"❌ 错误：无法加载播放列表。"</span><span class="op">);</span></span>
+<span id="cb12-159"><a href="#cb12-159" aria-hidden="true" tabindex="-1"></a>            e<span class="op">.</span><span class="fu">printStackTrace</span><span class="op">();</span></span>
+<span id="cb12-160"><a href="#cb12-160" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-161"><a href="#cb12-161" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> playlist<span class="op">;</span></span>
+<span id="cb12-162"><a href="#cb12-162" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-163"><a href="#cb12-163" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb12-164"><a href="#cb12-164" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb12-165"><a href="#cb12-165" aria-hidden="true" tabindex="-1"></a>**注意**: 我们把原来<span class="in">`Playlist`</span>类中复杂的<span class="in">`saveToFile`</span>, <span class="in">`loadFromFile`</span>, <span class="in">`saveToStrings`</span>, <span class="in">`loadFromStrings`</span>等方法，全部提炼并封装到了这个单一职责的类中。</span>
 <span id="cb12-166"><a href="#cb12-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**大刀阔斧地修改`Playlist.java`**: 删除所有持久化和序列化的方法，让它变回一个纯粹的“模型”。</span>
-<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/model/Playlist.java</span></span>
-<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">;</span></span>
-<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
-<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Collections</span><span class="op">;</span></span>
-<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
+<span id="cb12-167"><a href="#cb12-167" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第四步：重构并实现业务逻辑层</span></span>
+<span id="cb12-168"><a href="#cb12-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-169"><a href="#cb12-169" aria-hidden="true" tabindex="-1"></a>现在，<span class="in">`Playlist`</span>类可以“减负”了。它不再需要关心持久化，只用做好自己的本职工作：管理一个歌曲列表。</span>
+<span id="cb12-170"><a href="#cb12-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-171"><a href="#cb12-171" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**大刀阔斧地修改`Playlist.java`**: 删除所有持久化和序列化的方法，让它变回一个纯粹的“模型”。</span>
+<span id="cb12-172"><a href="#cb12-172" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb12-173"><a href="#cb12-173" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/model/Playlist.java</span></span>
+<span id="cb12-174"><a href="#cb12-174" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">;</span></span>
 <span id="cb12-175"><a href="#cb12-175" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> Playlist <span class="op">{</span></span>
-<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
-<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> songs<span class="op">;</span></span>
+<span id="cb12-176"><a href="#cb12-176" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">ArrayList</span><span class="op">;</span></span>
+<span id="cb12-177"><a href="#cb12-177" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Collections</span><span class="op">;</span></span>
+<span id="cb12-178"><a href="#cb12-178" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
 <span id="cb12-179"><a href="#cb12-179" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">=</span> name<span class="op">;</span></span>
-<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
-<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>song <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>                <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>song<span class="op">);</span></span>
-<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>songIndex <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> songIndex <span class="op">&lt;</span> songs<span class="op">.</span><span class="fu">size</span><span class="op">())</span> <span class="op">{</span></span>
-<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>                songs<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>songIndex<span class="op">);</span></span>
-<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">String</span> <span class="fu">getName</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> name<span class="op">;</span></span>
+<span id="cb12-180"><a href="#cb12-180" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> Playlist <span class="op">{</span></span>
+<span id="cb12-181"><a href="#cb12-181" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="bu">String</span> name<span class="op">;</span></span>
+<span id="cb12-182"><a href="#cb12-182" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> songs<span class="op">;</span></span>
+<span id="cb12-183"><a href="#cb12-183" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-184"><a href="#cb12-184" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">Playlist</span><span class="op">(</span><span class="bu">String</span> name<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-185"><a href="#cb12-185" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">name</span> <span class="op">=</span> name<span class="op">;</span></span>
+<span id="cb12-186"><a href="#cb12-186" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">ArrayList</span><span class="op">&lt;&gt;();</span></span>
+<span id="cb12-187"><a href="#cb12-187" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-188"><a href="#cb12-188" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-189"><a href="#cb12-189" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-190"><a href="#cb12-190" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>song <span class="op">!=</span> <span class="kw">null</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-191"><a href="#cb12-191" aria-hidden="true" tabindex="-1"></a>                <span class="kw">this</span><span class="op">.</span><span class="fu">songs</span><span class="op">.</span><span class="fu">add</span><span class="op">(</span>song<span class="op">);</span></span>
+<span id="cb12-192"><a href="#cb12-192" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-193"><a href="#cb12-193" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-194"><a href="#cb12-194" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-195"><a href="#cb12-195" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-196"><a href="#cb12-196" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>songIndex <span class="op">&gt;=</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> songIndex <span class="op">&lt;</span> songs<span class="op">.</span><span class="fu">size</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb12-197"><a href="#cb12-197" aria-hidden="true" tabindex="-1"></a>                songs<span class="op">.</span><span class="fu">remove</span><span class="op">(</span>songIndex<span class="op">);</span></span>
+<span id="cb12-198"><a href="#cb12-198" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
 <span id="cb12-199"><a href="#cb12-199" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
 <span id="cb12-200"><a href="#cb12-200" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> <span class="fu">getSongs</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">Collections</span><span class="op">.</span><span class="fu">unmodifiableList</span><span class="op">(</span>songs<span class="op">);</span> <span class="co">// 返回一个不可修改的视图，更安全</span></span>
+<span id="cb12-201"><a href="#cb12-201" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">String</span> <span class="fu">getName</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-202"><a href="#cb12-202" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> name<span class="op">;</span></span>
 <span id="cb12-203"><a href="#cb12-203" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建Service实现**: 在`service`包下创建`PlaylistServiceImpl.java`。它将**持有**<span class="in">`Playlist`</span>对象（业务模型）和<span class="in">`PlaylistRepository`</span>接口（数据访问），并负责协调它们。</span>
-<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
-<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb12-204"><a href="#cb12-204" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-205"><a href="#cb12-205" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">List</span><span class="op">&lt;</span>Song<span class="op">&gt;</span> <span class="fu">getSongs</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-206"><a href="#cb12-206" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">Collections</span><span class="op">.</span><span class="fu">unmodifiableList</span><span class="op">(</span>songs<span class="op">);</span> <span class="co">// 返回一个不可修改的视图，更安全</span></span>
+<span id="cb12-207"><a href="#cb12-207" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-208"><a href="#cb12-208" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-209"><a href="#cb12-209" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb12-210"><a href="#cb12-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-211"><a href="#cb12-211" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建Service实现**: 在`service`包下创建`PlaylistServiceImpl.java`。它将**持有**<span class="in">`Playlist`</span>对象（业务模型）和<span class="in">`PlaylistRepository`</span>接口（数据访问），并负责协调它们。</span>
+<span id="cb12-212"><a href="#cb12-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-213"><a href="#cb12-213" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb12-214"><a href="#cb12-214" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
+<span id="cb12-215"><a href="#cb12-215" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
 <span id="cb12-216"><a href="#cb12-216" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
-<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
-<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> Playlist playlist<span class="op">;</span></span>
-<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> DEFAULT_PLAYLIST_ID <span class="op">=</span> <span class="st">"my-favorites"</span><span class="op">;</span></span>
-<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
-<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 为了保持简单，我们启动时加载一个默认的播放列表</span></span>
-<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlist</span> <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span><span class="op">.</span><span class="fu">load</span><span class="op">(</span>DEFAULT_PLAYLIST_ID<span class="op">);</span> </span>
-<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song<span class="op">);</span></span>
-<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 注意，UI是1-based，业务是0-based</span></span>
-<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">removeSong</span><span class="op">(</span>songIndex <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
-<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">String</span> <span class="fu">listSongs</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a>            <span class="bu">StringBuilder</span> sb <span class="op">=</span> <span class="kw">new</span> <span class="bu">StringBuilder</span><span class="op">();</span></span>
-<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a>            sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"--- Playlist: "</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span>playlist<span class="op">.</span><span class="fu">getName</span><span class="op">()).</span><span class="fu">append</span><span class="op">(</span><span class="st">" ---</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
-<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>                sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"This playlist is empty.</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">size</span><span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a>                    Song currentSong <span class="op">=</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">get</span><span class="op">(</span>i<span class="op">);</span></span>
-<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a>                    sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="bu">String</span><span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st">. </span><span class="sc">%s</span><span class="st"> - </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> currentSong<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> currentSong<span class="op">.</span><span class="fu">artist</span><span class="op">()));</span></span>
-<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
-<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a>            sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"---------------------------------"</span><span class="op">);</span></span>
-<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> sb<span class="op">.</span><span class="fu">toString</span><span class="op">();</span></span>
-<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">saveData</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
-<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第五步：重构UI层并组装一切</span></span>
-<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>这是最后，也是最关键的一步：将所有零件组装起来。</span>
+<span id="cb12-217"><a href="#cb12-217" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb12-218"><a href="#cb12-218" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb12-219"><a href="#cb12-219" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb12-220"><a href="#cb12-220" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-221"><a href="#cb12-221" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
+<span id="cb12-222"><a href="#cb12-222" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
+<span id="cb12-223"><a href="#cb12-223" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> Playlist playlist<span class="op">;</span></span>
+<span id="cb12-224"><a href="#cb12-224" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> DEFAULT_PLAYLIST_ID <span class="op">=</span> <span class="st">"my-favorites"</span><span class="op">;</span></span>
+<span id="cb12-225"><a href="#cb12-225" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-226"><a href="#cb12-226" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-227"><a href="#cb12-227" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
+<span id="cb12-228"><a href="#cb12-228" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 为了保持简单，我们启动时加载一个默认的播放列表</span></span>
+<span id="cb12-229"><a href="#cb12-229" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlist</span> <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span><span class="op">.</span><span class="fu">load</span><span class="op">(</span>DEFAULT_PLAYLIST_ID<span class="op">);</span> </span>
+<span id="cb12-230"><a href="#cb12-230" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-231"><a href="#cb12-231" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-232"><a href="#cb12-232" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb12-233"><a href="#cb12-233" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">(</span>Song song<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-234"><a href="#cb12-234" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song<span class="op">);</span></span>
+<span id="cb12-235"><a href="#cb12-235" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-236"><a href="#cb12-236" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-237"><a href="#cb12-237" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb12-238"><a href="#cb12-238" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">(</span><span class="dt">int</span> songIndex<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-239"><a href="#cb12-239" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 注意，UI是1-based，业务是0-based</span></span>
+<span id="cb12-240"><a href="#cb12-240" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">removeSong</span><span class="op">(</span>songIndex <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb12-241"><a href="#cb12-241" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-242"><a href="#cb12-242" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-243"><a href="#cb12-243" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb12-244"><a href="#cb12-244" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="bu">String</span> <span class="fu">listSongs</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-245"><a href="#cb12-245" aria-hidden="true" tabindex="-1"></a>            <span class="bu">StringBuilder</span> sb <span class="op">=</span> <span class="kw">new</span> <span class="bu">StringBuilder</span><span class="op">();</span></span>
+<span id="cb12-246"><a href="#cb12-246" aria-hidden="true" tabindex="-1"></a>            sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"--- Playlist: "</span><span class="op">).</span><span class="fu">append</span><span class="op">(</span>playlist<span class="op">.</span><span class="fu">getName</span><span class="op">()).</span><span class="fu">append</span><span class="op">(</span><span class="st">" ---</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb12-247"><a href="#cb12-247" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb12-248"><a href="#cb12-248" aria-hidden="true" tabindex="-1"></a>                sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"This playlist is empty.</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb12-249"><a href="#cb12-249" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb12-250"><a href="#cb12-250" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">size</span><span class="op">();</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb12-251"><a href="#cb12-251" aria-hidden="true" tabindex="-1"></a>                    Song currentSong <span class="op">=</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">get</span><span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb12-252"><a href="#cb12-252" aria-hidden="true" tabindex="-1"></a>                    sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="bu">String</span><span class="op">.</span><span class="fu">format</span><span class="op">(</span><span class="st">"</span><span class="sc">%d</span><span class="st">. </span><span class="sc">%s</span><span class="st"> - </span><span class="sc">%s\n</span><span class="st">"</span><span class="op">,</span> i <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> currentSong<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> currentSong<span class="op">.</span><span class="fu">artist</span><span class="op">()));</span></span>
+<span id="cb12-253"><a href="#cb12-253" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb12-254"><a href="#cb12-254" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-255"><a href="#cb12-255" aria-hidden="true" tabindex="-1"></a>            sb<span class="op">.</span><span class="fu">append</span><span class="op">(</span><span class="st">"---------------------------------"</span><span class="op">);</span></span>
+<span id="cb12-256"><a href="#cb12-256" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> sb<span class="op">.</span><span class="fu">toString</span><span class="op">();</span></span>
+<span id="cb12-257"><a href="#cb12-257" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-258"><a href="#cb12-258" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-259"><a href="#cb12-259" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb12-260"><a href="#cb12-260" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">saveData</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-261"><a href="#cb12-261" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
+<span id="cb12-262"><a href="#cb12-262" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-263"><a href="#cb12-263" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-264"><a href="#cb12-264" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
 <span id="cb12-265"><a href="#cb12-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建`PlaylistController.java`**: 在<span class="in">`ui`</span>包下创建。<span class="in">`Controller`</span>是UI逻辑的核心，它持有<span class="in">`Service`</span>接口的引用。</span>
-<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/ui/PlaylistController.java</span></span>
-<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">ui</span><span class="op">;</span></span>
-<span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
-<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">InputMismatchException</span><span class="op">;</span></span>
-<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Scanner</span><span class="op">;</span></span>
-<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
-<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistService playlistService<span class="op">;</span></span>
-<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> <span class="bu">Scanner</span> scanner<span class="op">;</span></span>
+<span id="cb12-266"><a href="#cb12-266" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第五步：重构UI层并组装一切</span></span>
+<span id="cb12-267"><a href="#cb12-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-268"><a href="#cb12-268" aria-hidden="true" tabindex="-1"></a>这是最后，也是最关键的一步：将所有零件组装起来。</span>
+<span id="cb12-269"><a href="#cb12-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-270"><a href="#cb12-270" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建`PlaylistController.java`**: 在<span class="in">`ui`</span>包下创建。<span class="in">`Controller`</span>是UI逻辑的核心，它持有<span class="in">`Service`</span>接口的引用。</span>
+<span id="cb12-271"><a href="#cb12-271" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb12-272"><a href="#cb12-272" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/ui/PlaylistController.java</span></span>
+<span id="cb12-273"><a href="#cb12-273" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">ui</span><span class="op">;</span></span>
+<span id="cb12-274"><a href="#cb12-274" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-275"><a href="#cb12-275" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb12-276"><a href="#cb12-276" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
+<span id="cb12-277"><a href="#cb12-277" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-278"><a href="#cb12-278" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">InputMismatchException</span><span class="op">;</span></span>
+<span id="cb12-279"><a href="#cb12-279" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Scanner</span><span class="op">;</span></span>
 <span id="cb12-280"><a href="#cb12-280" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistController</span><span class="op">(</span>PlaylistService playlistService<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlistService</span> <span class="op">=</span> playlistService<span class="op">;</span></span>
-<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">scanner</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">Scanner</span><span class="op">(</span><span class="bu">System</span><span class="op">.</span><span class="fu">in</span><span class="op">);</span></span>
-<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">start</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a>            <span class="dt">boolean</span> running <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> <span class="op">(</span>running<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a>                <span class="fu">showMenu</span><span class="op">();</span></span>
-<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a>                <span class="dt">int</span> choice <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span></span>
-<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>                <span class="cf">switch</span> <span class="op">(</span>choice<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">1</span> <span class="op">-&gt;</span> <span class="fu">addSong</span><span class="op">();</span></span>
-<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">2</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>playlistService<span class="op">.</span><span class="fu">listSongs</span><span class="op">());</span></span>
-<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">3</span> <span class="op">-&gt;</span> <span class="fu">removeSong</span><span class="op">();</span></span>
-<span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">0</span> <span class="op">-&gt;</span> running <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">default</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"无效选择，请输入菜单中的数字。"</span><span class="op">);</span></span>
-<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
-<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">saveData</span><span class="op">();</span> <span class="co">// 退出时保存数据</span></span>
-<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"感谢使用 VibeVault！"</span><span class="op">);</span></span>
-<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">showMenu</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">--- VibeVault 音乐播放列表 ---"</span><span class="op">);</span></span>
-<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"1. 添加歌曲"</span><span class="op">);</span></span>
-<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"2. 查看播放列表"</span><span class="op">);</span></span>
-<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"3. 删除歌曲"</span><span class="op">);</span></span>
-<span id="cb12-309"><a href="#cb12-309" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"0. 退出"</span><span class="op">);</span></span>
-<span id="cb12-310"><a href="#cb12-310" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入你的选择: "</span><span class="op">);</span></span>
-<span id="cb12-311"><a href="#cb12-311" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">int</span> <span class="fu">getUserChoice</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a>                <span class="dt">int</span> choice <span class="op">=</span> <span class="bu">Integer</span><span class="op">.</span><span class="fu">parseInt</span><span class="op">(</span>scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">());</span> </span>
-<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> choice<span class="op">;</span></span>
-<span id="cb12-317"><a href="#cb12-317" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"无效输入，请输入一个整数。"</span><span class="op">);</span></span>
-<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// 返回一个无效选项</span></span>
-<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-322"><a href="#cb12-322" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-323"><a href="#cb12-323" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-324"><a href="#cb12-324" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入歌曲标题: "</span><span class="op">);</span></span>
-<span id="cb12-325"><a href="#cb12-325" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> title <span class="op">=</span> scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">();</span></span>
-<span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入艺术家: "</span><span class="op">);</span></span>
-<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> artist <span class="op">=</span> scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">();</span></span>
-<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入时长（秒）: "</span><span class="op">);</span></span>
-<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> duration <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span> <span class="co">// 复用choice逻辑</span></span>
-<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>title<span class="op">,</span> artist<span class="op">,</span> duration<span class="op">));</span></span>
-<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"歌曲添加成功！"</span><span class="op">);</span></span>
-<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-281"><a href="#cb12-281" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
+<span id="cb12-282"><a href="#cb12-282" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistService playlistService<span class="op">;</span></span>
+<span id="cb12-283"><a href="#cb12-283" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> <span class="bu">Scanner</span> scanner<span class="op">;</span></span>
+<span id="cb12-284"><a href="#cb12-284" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-285"><a href="#cb12-285" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistController</span><span class="op">(</span>PlaylistService playlistService<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-286"><a href="#cb12-286" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlistService</span> <span class="op">=</span> playlistService<span class="op">;</span></span>
+<span id="cb12-287"><a href="#cb12-287" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">scanner</span> <span class="op">=</span> <span class="kw">new</span> <span class="bu">Scanner</span><span class="op">(</span><span class="bu">System</span><span class="op">.</span><span class="fu">in</span><span class="op">);</span></span>
+<span id="cb12-288"><a href="#cb12-288" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-289"><a href="#cb12-289" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-290"><a href="#cb12-290" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">start</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-291"><a href="#cb12-291" aria-hidden="true" tabindex="-1"></a>            <span class="dt">boolean</span> running <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb12-292"><a href="#cb12-292" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span> <span class="op">(</span>running<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-293"><a href="#cb12-293" aria-hidden="true" tabindex="-1"></a>                <span class="fu">showMenu</span><span class="op">();</span></span>
+<span id="cb12-294"><a href="#cb12-294" aria-hidden="true" tabindex="-1"></a>                <span class="dt">int</span> choice <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span></span>
+<span id="cb12-295"><a href="#cb12-295" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-296"><a href="#cb12-296" aria-hidden="true" tabindex="-1"></a>                <span class="cf">switch</span> <span class="op">(</span>choice<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-297"><a href="#cb12-297" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">1</span> <span class="op">-&gt;</span> <span class="fu">addSong</span><span class="op">();</span></span>
+<span id="cb12-298"><a href="#cb12-298" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">2</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span>playlistService<span class="op">.</span><span class="fu">listSongs</span><span class="op">());</span></span>
+<span id="cb12-299"><a href="#cb12-299" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">3</span> <span class="op">-&gt;</span> <span class="fu">removeSong</span><span class="op">();</span></span>
+<span id="cb12-300"><a href="#cb12-300" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">case</span> <span class="dv">0</span> <span class="op">-&gt;</span> running <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb12-301"><a href="#cb12-301" aria-hidden="true" tabindex="-1"></a>                    <span class="kw">default</span> <span class="op">-&gt;</span> <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"无效选择，请输入菜单中的数字。"</span><span class="op">);</span></span>
+<span id="cb12-302"><a href="#cb12-302" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb12-303"><a href="#cb12-303" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-304"><a href="#cb12-304" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">saveData</span><span class="op">();</span> <span class="co">// 退出时保存数据</span></span>
+<span id="cb12-305"><a href="#cb12-305" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"感谢使用 VibeVault！"</span><span class="op">);</span></span>
+<span id="cb12-306"><a href="#cb12-306" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-307"><a href="#cb12-307" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-308"><a href="#cb12-308" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">showMenu</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-309"><a href="#cb12-309" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">--- VibeVault 音乐播放列表 ---"</span><span class="op">);</span></span>
+<span id="cb12-310"><a href="#cb12-310" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"1. 添加歌曲"</span><span class="op">);</span></span>
+<span id="cb12-311"><a href="#cb12-311" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"2. 查看播放列表"</span><span class="op">);</span></span>
+<span id="cb12-312"><a href="#cb12-312" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"3. 删除歌曲"</span><span class="op">);</span></span>
+<span id="cb12-313"><a href="#cb12-313" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"0. 退出"</span><span class="op">);</span></span>
+<span id="cb12-314"><a href="#cb12-314" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入你的选择: "</span><span class="op">);</span></span>
+<span id="cb12-315"><a href="#cb12-315" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-316"><a href="#cb12-316" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-317"><a href="#cb12-317" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">int</span> <span class="fu">getUserChoice</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-318"><a href="#cb12-318" aria-hidden="true" tabindex="-1"></a>            <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb12-319"><a href="#cb12-319" aria-hidden="true" tabindex="-1"></a>                <span class="dt">int</span> choice <span class="op">=</span> <span class="bu">Integer</span><span class="op">.</span><span class="fu">parseInt</span><span class="op">(</span>scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">());</span> </span>
+<span id="cb12-320"><a href="#cb12-320" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> choice<span class="op">;</span></span>
+<span id="cb12-321"><a href="#cb12-321" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-322"><a href="#cb12-322" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"无效输入，请输入一个整数。"</span><span class="op">);</span></span>
+<span id="cb12-323"><a href="#cb12-323" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span> <span class="co">// 返回一个无效选项</span></span>
+<span id="cb12-324"><a href="#cb12-324" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb12-325"><a href="#cb12-325" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">addSong</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入歌曲标题: "</span><span class="op">);</span></span>
+<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> title <span class="op">=</span> scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">();</span></span>
+<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入艺术家: "</span><span class="op">);</span></span>
+<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> artist <span class="op">=</span> scanner<span class="op">.</span><span class="fu">nextLine</span><span class="op">();</span></span>
+<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入时长（秒）: "</span><span class="op">);</span></span>
+<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> duration <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span> <span class="co">// 复用choice逻辑</span></span>
 <span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入要删除的歌曲编号: "</span><span class="op">);</span></span>
-<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> index <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span></span>
-<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">removeSong</span><span class="op">(</span>index<span class="op">);</span></span>
-<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"歌曲删除成功！"</span><span class="op">);</span></span>
-<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>    ```</span>
-<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>创建新的应用入口`VibeVaultApp<span class="op">.</span><span class="fu">java</span>`<span class="op">**:</span> 在`app`包下创建。这个类现在变得极其简单，它的唯一职责就是“组装”和“启动”。这个组装过程，就是<span class="op">**</span>依赖注入 <span class="op">(</span>Dependency Injection<span class="op">)**</span> 的最朴素形式。</span>
-<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>    ```java</span>
-<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/app/VibeVaultApp.java</span></span>
-<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">app</span><span class="op">;</span></span>
-<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">FilePlaylistRepository</span><span class="op">;</span></span>
-<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
-<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
-<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistServiceImpl</span><span class="op">;</span></span>
-<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">ui</span><span class="op">.</span><span class="im">PlaylistController</span><span class="op">;</span></span>
-<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
-<span id="cb12-356"><a href="#cb12-356" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb12-357"><a href="#cb12-357" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 依赖注入 (Dependency Injection)</span></span>
-<span id="cb12-358"><a href="#cb12-358" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 1. 创建最底层的Repository</span></span>
-<span id="cb12-359"><a href="#cb12-359" aria-hidden="true" tabindex="-1"></a>            PlaylistRepository repository <span class="op">=</span> <span class="kw">new</span> <span class="fu">FilePlaylistRepository</span><span class="op">();</span></span>
-<span id="cb12-360"><a href="#cb12-360" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 2. 创建Service，并把Repository“注入”进去</span></span>
-<span id="cb12-361"><a href="#cb12-361" aria-hidden="true" tabindex="-1"></a>            PlaylistService service <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>repository<span class="op">);</span></span>
-<span id="cb12-362"><a href="#cb12-362" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 3. 创建Controller，并把Service“注入”进去</span></span>
-<span id="cb12-363"><a href="#cb12-363" aria-hidden="true" tabindex="-1"></a>            PlaylistController controller <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistController</span><span class="op">(</span>service<span class="op">);</span></span>
-<span id="cb12-364"><a href="#cb12-364" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb12-365"><a href="#cb12-365" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 4. 启动应用</span></span>
-<span id="cb12-366"><a href="#cb12-366" aria-hidden="true" tabindex="-1"></a>            controller<span class="op">.</span><span class="fu">start</span><span class="op">();</span></span>
-<span id="cb12-367"><a href="#cb12-367" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-368"><a href="#cb12-368" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-369"><a href="#cb12-369" aria-hidden="true" tabindex="-1"></a>    ```</span>
-<span id="cb12-370"><a href="#cb12-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-371"><a href="#cb12-371" aria-hidden="true" tabindex="-1"></a>### 第六步：验证！</span>
-<span id="cb12-372"><a href="#cb12-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-373"><a href="#cb12-373" aria-hidden="true" tabindex="-1"></a>现在，运行你的新入口`VibeVaultApp`。你会发现，它的<span class="op">**</span>外部行为<span class="op">**</span>（菜单、功能、持久化）与重构前<span class="op">**</span>一模一样<span class="op">**</span>。但是，它的内部结构已经发生了翻天覆地的变化，从一个纠缠不清的“泥球”，变成了一个职责清晰、层次分明、易于维护和扩展的“水晶”！</span>
+<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>title<span class="op">,</span> artist<span class="op">,</span> duration<span class="op">));</span></span>
+<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"歌曲添加成功！"</span><span class="op">);</span></span>
+<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">void</span> <span class="fu">removeSong</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">print</span><span class="op">(</span><span class="st">"请输入要删除的歌曲编号: "</span><span class="op">);</span></span>
+<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>            <span class="dt">int</span> index <span class="op">=</span> <span class="fu">getUserChoice</span><span class="op">();</span></span>
+<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">removeSong</span><span class="op">(</span>index<span class="op">);</span></span>
+<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a>            <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"歌曲删除成功！"</span><span class="op">);</span></span>
+<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>    ```</span>
+<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>创建新的应用入口`VibeVaultApp<span class="op">.</span><span class="fu">java</span>`<span class="op">**:</span> 在`app`包下创建。这个类现在变得极其简单，它的唯一职责就是“组装”和“启动”。这个组装过程，就是<span class="op">**</span>依赖注入 <span class="op">(</span>Dependency Injection<span class="op">)**</span> 的最朴素形式。</span>
+<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>    ```java</span>
+<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/main/java/com/vibevault/app/VibeVaultApp.java</span></span>
+<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">app</span><span class="op">;</span></span>
+<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">FilePlaylistRepository</span><span class="op">;</span></span>
+<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
+<span id="cb12-356"><a href="#cb12-356" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistServiceImpl</span><span class="op">;</span></span>
+<span id="cb12-357"><a href="#cb12-357" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">ui</span><span class="op">.</span><span class="im">PlaylistController</span><span class="op">;</span></span>
+<span id="cb12-358"><a href="#cb12-358" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-359"><a href="#cb12-359" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> VibeVaultApp <span class="op">{</span></span>
+<span id="cb12-360"><a href="#cb12-360" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb12-361"><a href="#cb12-361" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 依赖注入 (Dependency Injection)</span></span>
+<span id="cb12-362"><a href="#cb12-362" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 1. 创建最底层的Repository</span></span>
+<span id="cb12-363"><a href="#cb12-363" aria-hidden="true" tabindex="-1"></a>            PlaylistRepository repository <span class="op">=</span> <span class="kw">new</span> <span class="fu">FilePlaylistRepository</span><span class="op">();</span></span>
+<span id="cb12-364"><a href="#cb12-364" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 2. 创建Service，并把Repository“注入”进去</span></span>
+<span id="cb12-365"><a href="#cb12-365" aria-hidden="true" tabindex="-1"></a>            PlaylistService service <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>repository<span class="op">);</span></span>
+<span id="cb12-366"><a href="#cb12-366" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 3. 创建Controller，并把Service“注入”进去</span></span>
+<span id="cb12-367"><a href="#cb12-367" aria-hidden="true" tabindex="-1"></a>            PlaylistController controller <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistController</span><span class="op">(</span>service<span class="op">);</span></span>
+<span id="cb12-368"><a href="#cb12-368" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-369"><a href="#cb12-369" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 4. 启动应用</span></span>
+<span id="cb12-370"><a href="#cb12-370" aria-hidden="true" tabindex="-1"></a>            controller<span class="op">.</span><span class="fu">start</span><span class="op">();</span></span>
+<span id="cb12-371"><a href="#cb12-371" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-372"><a href="#cb12-372" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-373"><a href="#cb12-373" aria-hidden="true" tabindex="-1"></a>    ```</span>
 <span id="cb12-374"><a href="#cb12-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-375"><a href="#cb12-375" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>我们的重构成功了！<span class="op">**</span></span>
+<span id="cb12-375"><a href="#cb12-375" aria-hidden="true" tabindex="-1"></a>### 第六步：验证！</span>
 <span id="cb12-376"><a href="#cb12-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-377"><a href="#cb12-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-378"><a href="#cb12-378" aria-hidden="true" tabindex="-1"></a>### 第七步：重构“信任”——升级我们的测试</span>
-<span id="cb12-379"><a href="#cb12-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-380"><a href="#cb12-380" aria-hidden="true" tabindex="-1"></a>重构的定义是“不改变软件外在行为”，但我们的单元测试作为“内部结构”的一部分，也必须跟随架构一起进化。事实上，这次重构最大的受益者之一，就是我们的测试。</span>
+<span id="cb12-377"><a href="#cb12-377" aria-hidden="true" tabindex="-1"></a>现在，运行你的新入口`VibeVaultApp`。你会发现，它的<span class="op">**</span>外部行为<span class="op">**</span>（菜单、功能、持久化）与重构前<span class="op">**</span>一模一样<span class="op">**</span>。但是，它的内部结构已经发生了翻天覆地的变化，从一个纠缠不清的“泥球”，变成了一个职责清晰、层次分明、易于维护和扩展的“水晶”！</span>
+<span id="cb12-378"><a href="#cb12-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-379"><a href="#cb12-379" aria-hidden="true" tabindex="-1"></a><span class="op">**</span>我们的重构成功了！<span class="op">**</span></span>
+<span id="cb12-380"><a href="#cb12-380" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-381"><a href="#cb12-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a>还记得在第五章，为了测试文件操作，我们不得不使用 `mockStatic` 这个“黑魔法”吗？现在，由于我们通过接口将数据访问层和业务逻辑层解耦了，测试将变得前所未有的简单和优雅。</span>
+<span id="cb12-382"><a href="#cb12-382" aria-hidden="true" tabindex="-1"></a>### 第七步：重构“信任”——升级我们的测试</span>
 <span id="cb12-383"><a href="#cb12-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-384"><a href="#cb12-384" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>清理战场<span class="op">**:</span></span>
-<span id="cb12-385"><a href="#cb12-385" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   删除 `src<span class="op">/</span>test<span class="op">/</span>java<span class="op">/</span>com<span class="op">/</span>vibevault<span class="op">/</span>model<span class="op">/</span>PlaylistTest<span class="op">.</span><span class="fu">java</span>`。它的职责已经被新的测试覆盖。</span>
-<span id="cb12-386"><a href="#cb12-386" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   删除 `src<span class="op">/</span>test<span class="op">/</span>java<span class="op">/</span>com<span class="op">/</span>vibevault<span class="op">/</span>model<span class="op">/</span>PlaylistPersistenceTest<span class="op">.</span><span class="fu">java</span>`。它测试的是旧的、混合了业务和持久化逻辑的`Playlist`类，已经不再适用。</span>
+<span id="cb12-384"><a href="#cb12-384" aria-hidden="true" tabindex="-1"></a>重构的定义是“不改变软件外在行为”，但我们的单元测试作为“内部结构”的一部分，也必须跟随架构一起进化。事实上，这次重构最大的受益者之一，就是我们的测试。</span>
+<span id="cb12-385"><a href="#cb12-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-386"><a href="#cb12-386" aria-hidden="true" tabindex="-1"></a>还记得在第五章，为了测试文件操作，我们不得不使用 `mockStatic` 这个“黑魔法”吗？现在，由于我们通过接口将数据访问层和业务逻辑层解耦了，测试将变得前所未有的简单和优雅。</span>
 <span id="cb12-387"><a href="#cb12-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-388"><a href="#cb12-388" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>添加测试依赖<span class="op">**:</span> 为了让Mockito和JUnit <span class="er">5</span>能够丝滑地协同工作（例如，使用`<span class="at">@ExtendWith</span><span class="op">(</span>MockitoExtension<span class="op">.</span><span class="fu">class</span><span class="op">)</span>`），我们需要在`app<span class="op">/</span>build<span class="op">.</span><span class="fu">gradle</span><span class="op">.</span><span class="fu">kts</span>`中添加`mockito<span class="op">-</span>junit<span class="op">-</span>jupiter`依赖。</span>
-<span id="cb12-389"><a href="#cb12-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-390"><a href="#cb12-390" aria-hidden="true" tabindex="-1"></a>    ```kotlin</span>
-<span id="cb12-391"><a href="#cb12-391" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: app/build.gradle.kts</span></span>
-<span id="cb12-392"><a href="#cb12-392" aria-hidden="true" tabindex="-1"></a>    dependencies <span class="op">{</span></span>
-<span id="cb12-393"><a href="#cb12-393" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ... a之前的assertj依赖 ...</span></span>
-<span id="cb12-394"><a href="#cb12-394" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-395"><a href="#cb12-395" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 添加Mockito 和 JUnit 5 (Jupiter) 的集成支持</span></span>
-<span id="cb12-396"><a href="#cb12-396" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 注意：mockito-junit-jupiter会传递性地引入mockito-core</span></span>
-<span id="cb12-397"><a href="#cb12-397" aria-hidden="true" tabindex="-1"></a>        <span class="fu">testImplementation</span><span class="op">(</span><span class="st">"org.mockito:mockito-junit-jupiter:5.11.0"</span><span class="op">)</span></span>
-<span id="cb12-398"><a href="#cb12-398" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-399"><a href="#cb12-399" aria-hidden="true" tabindex="-1"></a>    ```</span>
-<span id="cb12-400"><a href="#cb12-400" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> <span class="op">**</span>深度解读<span class="op">**</span>：`mockito<span class="op">-</span>junit<span class="op">-</span>jupiter` 包含了让 Mockito 的注解（如 `<span class="at">@Mock</span>`<span class="op">,</span> `<span class="at">@InjectMocks</span>`）和生命周期与 JUnit <span class="dv">5</span> 完美集成的所有必要代码。我们声明 `testImplementation` 是因为它只在测试时需要，不会被打包到最终的应用程序中。</span>
-<span id="cb12-401"><a href="#cb12-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-402"><a href="#cb12-402" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  <span class="op">**</span>为`PlaylistServiceImpl`编写单元测试<span class="op">**:</span> 这是我们新的核心业务逻辑。我们将使用JUnit <span class="dv">5</span>、AssertJ和Mockito来测试它。注意看，这次我们只需要`mock`一个普通的接口，而不再需要`mockStatic`！</span>
-<span id="cb12-403"><a href="#cb12-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-404"><a href="#cb12-404" aria-hidden="true" tabindex="-1"></a>    ```java</span>
-<span id="cb12-405"><a href="#cb12-405" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/test/java/com/vibevault/service/PlaylistServiceImplTest.java</span></span>
-<span id="cb12-406"><a href="#cb12-406" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb12-388"><a href="#cb12-388" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>清理战场<span class="op">**:</span></span>
+<span id="cb12-389"><a href="#cb12-389" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   删除 `src<span class="op">/</span>test<span class="op">/</span>java<span class="op">/</span>com<span class="op">/</span>vibevault<span class="op">/</span>model<span class="op">/</span>PlaylistTest<span class="op">.</span><span class="fu">java</span>`。它的职责已经被新的测试覆盖。</span>
+<span id="cb12-390"><a href="#cb12-390" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   删除 `src<span class="op">/</span>test<span class="op">/</span>java<span class="op">/</span>com<span class="op">/</span>vibevault<span class="op">/</span>model<span class="op">/</span>PlaylistPersistenceTest<span class="op">.</span><span class="fu">java</span>`。它测试的是旧的、混合了业务和持久化逻辑的`Playlist`类，已经不再适用。</span>
+<span id="cb12-391"><a href="#cb12-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-392"><a href="#cb12-392" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>添加测试依赖<span class="op">**:</span> 为了让Mockito和JUnit <span class="er">5</span>能够丝滑地协同工作（例如，使用`<span class="at">@ExtendWith</span><span class="op">(</span>MockitoExtension<span class="op">.</span><span class="fu">class</span><span class="op">)</span>`），我们需要在`app<span class="op">/</span>build<span class="op">.</span><span class="fu">gradle</span><span class="op">.</span><span class="fu">kts</span>`中添加`mockito<span class="op">-</span>junit<span class="op">-</span>jupiter`依赖。</span>
+<span id="cb12-393"><a href="#cb12-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-394"><a href="#cb12-394" aria-hidden="true" tabindex="-1"></a>    ```kotlin</span>
+<span id="cb12-395"><a href="#cb12-395" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: app/build.gradle.kts</span></span>
+<span id="cb12-396"><a href="#cb12-396" aria-hidden="true" tabindex="-1"></a>    dependencies <span class="op">{</span></span>
+<span id="cb12-397"><a href="#cb12-397" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ... a之前的assertj依赖 ...</span></span>
+<span id="cb12-398"><a href="#cb12-398" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-399"><a href="#cb12-399" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 添加Mockito 和 JUnit 5 (Jupiter) 的集成支持</span></span>
+<span id="cb12-400"><a href="#cb12-400" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 注意：mockito-junit-jupiter会传递性地引入mockito-core</span></span>
+<span id="cb12-401"><a href="#cb12-401" aria-hidden="true" tabindex="-1"></a>        <span class="fu">testImplementation</span><span class="op">(</span><span class="st">"org.mockito:mockito-junit-jupiter:5.11.0"</span><span class="op">)</span></span>
+<span id="cb12-402"><a href="#cb12-402" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-403"><a href="#cb12-403" aria-hidden="true" tabindex="-1"></a>    ```</span>
+<span id="cb12-404"><a href="#cb12-404" aria-hidden="true" tabindex="-1"></a>    <span class="op">&gt;</span> <span class="op">**</span>深度解读<span class="op">**</span>：`mockito<span class="op">-</span>junit<span class="op">-</span>jupiter` 包含了让 Mockito 的注解（如 `<span class="at">@Mock</span>`<span class="op">,</span> `<span class="at">@InjectMocks</span>`）和生命周期与 JUnit <span class="dv">5</span> 完美集成的所有必要代码。我们声明 `testImplementation` 是因为它只在测试时需要，不会被打包到最终的应用程序中。</span>
+<span id="cb12-405"><a href="#cb12-405" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-406"><a href="#cb12-406" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  <span class="op">**</span>为`PlaylistServiceImpl`编写单元测试<span class="op">**:</span> 这是我们新的核心业务逻辑。我们将使用JUnit <span class="dv">5</span>、AssertJ和Mockito来测试它。注意看，这次我们只需要`mock`一个普通的接口，而不再需要`mockStatic`！</span>
 <span id="cb12-407"><a href="#cb12-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-408"><a href="#cb12-408" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb12-409"><a href="#cb12-409" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb12-410"><a href="#cb12-410" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
-<span id="cb12-411"><a href="#cb12-411" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">BeforeEach</span><span class="op">;</span></span>
-<span id="cb12-412"><a href="#cb12-412" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">DisplayName</span><span class="op">;</span></span>
-<span id="cb12-413"><a href="#cb12-413" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">Test</span><span class="op">;</span></span>
-<span id="cb12-414"><a href="#cb12-414" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">extension</span><span class="op">.</span><span class="im">ExtendWith</span><span class="op">;</span></span>
-<span id="cb12-415"><a href="#cb12-415" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">InjectMocks</span><span class="op">;</span></span>
-<span id="cb12-416"><a href="#cb12-416" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">Mock</span><span class="op">;</span></span>
-<span id="cb12-417"><a href="#cb12-417" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">MockitoExtension</span><span class="op">;</span></span>
-<span id="cb12-418"><a href="#cb12-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-419"><a href="#cb12-419" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="kw">static</span><span class="im"> org</span><span class="op">.</span><span class="im">assertj</span><span class="op">.</span><span class="im">core</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">Assertions</span><span class="op">.</span><span class="im">assertThat</span><span class="op">;</span></span>
-<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="kw">static</span><span class="im"> org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">Mockito</span><span class="op">.*;</span></span>
-<span id="cb12-421"><a href="#cb12-421" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a>    <span class="at">@ExtendWith</span><span class="op">(</span>MockitoExtension<span class="op">.</span><span class="fu">class</span><span class="op">)</span> <span class="co">// 启用Mockito扩展</span></span>
-<span id="cb12-423"><a href="#cb12-423" aria-hidden="true" tabindex="-1"></a>    <span class="kw">class</span> PlaylistServiceImplTest <span class="op">{</span></span>
-<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-425"><a href="#cb12-425" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Mock</span> <span class="co">// 创建一个PlaylistRepository的模拟对象</span></span>
-<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PlaylistRepository repository<span class="op">;</span></span>
-<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a>        <span class="at">@InjectMocks</span> <span class="co">// 创建PlaylistServiceImpl实例，并自动注入上面@Mock标记的对象</span></span>
-<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PlaylistServiceImpl playlistService<span class="op">;</span></span>
-<span id="cb12-430"><a href="#cb12-430" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a>        <span class="at">@BeforeEach</span></span>
-<span id="cb12-432"><a href="#cb12-432" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">setUp</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 当repository.load()被以任意字符串参数调用时，都返回一个包含一首歌的新Playlist</span></span>
-<span id="cb12-434"><a href="#cb12-434" aria-hidden="true" tabindex="-1"></a>            Playlist initialPlaylist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"My Test Playlist"</span><span class="op">);</span></span>
-<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a>            initialPlaylist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">));</span></span>
-<span id="cb12-436"><a href="#cb12-436" aria-hidden="true" tabindex="-1"></a>            <span class="fu">when</span><span class="op">(</span>repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span><span class="fu">anyString</span><span class="op">())).</span><span class="fu">thenReturn</span><span class="op">(</span>initialPlaylist<span class="op">);</span></span>
-<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb12-438"><a href="#cb12-438" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 重新初始化service，以确保load在每个测试前都被正确地stub</span></span>
-<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a>            playlistService <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>repository<span class="op">);</span></span>
-<span id="cb12-440"><a href="#cb12-440" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-442"><a href="#cb12-442" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Test</span></span>
-<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a>        <span class="at">@DisplayName</span><span class="op">(</span><span class="st">"添加新歌曲后，歌曲列表应包含该歌曲"</span><span class="op">)</span></span>
-<span id="cb12-444"><a href="#cb12-444" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSong_shouldContainTheNewSong</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Arrange</span></span>
-<span id="cb12-446"><a href="#cb12-446" aria-hidden="true" tabindex="-1"></a>            Song newSong <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
-<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-448"><a href="#cb12-448" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Act</span></span>
-<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>newSong<span class="op">);</span></span>
-<span id="cb12-450"><a href="#cb12-450" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> songList <span class="op">=</span> playlistService<span class="op">.</span><span class="fu">listSongs</span><span class="op">();</span></span>
+<span id="cb12-408"><a href="#cb12-408" aria-hidden="true" tabindex="-1"></a>    ```java</span>
+<span id="cb12-409"><a href="#cb12-409" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: src/test/java/com/vibevault/service/PlaylistServiceImplTest.java</span></span>
+<span id="cb12-410"><a href="#cb12-410" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb12-411"><a href="#cb12-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-412"><a href="#cb12-412" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb12-413"><a href="#cb12-413" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb12-414"><a href="#cb12-414" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb12-415"><a href="#cb12-415" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">BeforeEach</span><span class="op">;</span></span>
+<span id="cb12-416"><a href="#cb12-416" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">DisplayName</span><span class="op">;</span></span>
+<span id="cb12-417"><a href="#cb12-417" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">Test</span><span class="op">;</span></span>
+<span id="cb12-418"><a href="#cb12-418" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">extension</span><span class="op">.</span><span class="im">ExtendWith</span><span class="op">;</span></span>
+<span id="cb12-419"><a href="#cb12-419" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">InjectMocks</span><span class="op">;</span></span>
+<span id="cb12-420"><a href="#cb12-420" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">Mock</span><span class="op">;</span></span>
+<span id="cb12-421"><a href="#cb12-421" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">junit</span><span class="op">.</span><span class="im">jupiter</span><span class="op">.</span><span class="im">MockitoExtension</span><span class="op">;</span></span>
+<span id="cb12-422"><a href="#cb12-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-423"><a href="#cb12-423" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="kw">static</span><span class="im"> org</span><span class="op">.</span><span class="im">assertj</span><span class="op">.</span><span class="im">core</span><span class="op">.</span><span class="im">api</span><span class="op">.</span><span class="im">Assertions</span><span class="op">.</span><span class="im">assertThat</span><span class="op">;</span></span>
+<span id="cb12-424"><a href="#cb12-424" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="kw">static</span><span class="im"> org</span><span class="op">.</span><span class="im">mockito</span><span class="op">.</span><span class="im">Mockito</span><span class="op">.*;</span></span>
+<span id="cb12-425"><a href="#cb12-425" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-426"><a href="#cb12-426" aria-hidden="true" tabindex="-1"></a>    <span class="at">@ExtendWith</span><span class="op">(</span>MockitoExtension<span class="op">.</span><span class="fu">class</span><span class="op">)</span> <span class="co">// 启用Mockito扩展</span></span>
+<span id="cb12-427"><a href="#cb12-427" aria-hidden="true" tabindex="-1"></a>    <span class="kw">class</span> PlaylistServiceImplTest <span class="op">{</span></span>
+<span id="cb12-428"><a href="#cb12-428" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-429"><a href="#cb12-429" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Mock</span> <span class="co">// 创建一个PlaylistRepository的模拟对象</span></span>
+<span id="cb12-430"><a href="#cb12-430" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PlaylistRepository repository<span class="op">;</span></span>
+<span id="cb12-431"><a href="#cb12-431" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-432"><a href="#cb12-432" aria-hidden="true" tabindex="-1"></a>        <span class="at">@InjectMocks</span> <span class="co">// 创建PlaylistServiceImpl实例，并自动注入上面@Mock标记的对象</span></span>
+<span id="cb12-433"><a href="#cb12-433" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> PlaylistServiceImpl playlistService<span class="op">;</span></span>
+<span id="cb12-434"><a href="#cb12-434" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-435"><a href="#cb12-435" aria-hidden="true" tabindex="-1"></a>        <span class="at">@BeforeEach</span></span>
+<span id="cb12-436"><a href="#cb12-436" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">setUp</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-437"><a href="#cb12-437" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 当repository.load()被以任意字符串参数调用时，都返回一个包含一首歌的新Playlist</span></span>
+<span id="cb12-438"><a href="#cb12-438" aria-hidden="true" tabindex="-1"></a>            Playlist initialPlaylist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span><span class="st">"My Test Playlist"</span><span class="op">);</span></span>
+<span id="cb12-439"><a href="#cb12-439" aria-hidden="true" tabindex="-1"></a>            initialPlaylist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">));</span></span>
+<span id="cb12-440"><a href="#cb12-440" aria-hidden="true" tabindex="-1"></a>            <span class="fu">when</span><span class="op">(</span>repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span><span class="fu">anyString</span><span class="op">())).</span><span class="fu">thenReturn</span><span class="op">(</span>initialPlaylist<span class="op">);</span></span>
+<span id="cb12-441"><a href="#cb12-441" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb12-442"><a href="#cb12-442" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 重新初始化service，以确保load在每个测试前都被正确地stub</span></span>
+<span id="cb12-443"><a href="#cb12-443" aria-hidden="true" tabindex="-1"></a>            playlistService <span class="op">=</span> <span class="kw">new</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>repository<span class="op">);</span></span>
+<span id="cb12-444"><a href="#cb12-444" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-445"><a href="#cb12-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-446"><a href="#cb12-446" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Test</span></span>
+<span id="cb12-447"><a href="#cb12-447" aria-hidden="true" tabindex="-1"></a>        <span class="at">@DisplayName</span><span class="op">(</span><span class="st">"添加新歌曲后，歌曲列表应包含该歌曲"</span><span class="op">)</span></span>
+<span id="cb12-448"><a href="#cb12-448" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSong_shouldContainTheNewSong</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-449"><a href="#cb12-449" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Arrange</span></span>
+<span id="cb12-450"><a href="#cb12-450" aria-hidden="true" tabindex="-1"></a>            Song newSong <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">);</span></span>
 <span id="cb12-451"><a href="#cb12-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Assert</span></span>
-<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a>            <span class="fu">assertThat</span><span class="op">(</span>songList<span class="op">).</span><span class="fu">contains</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">);</span></span>
-<span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a>            <span class="fu">assertThat</span><span class="op">(</span>songList<span class="op">).</span><span class="fu">contains</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">);</span> <span class="co">// 确认旧歌还在</span></span>
-<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-456"><a href="#cb12-456" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Test</span></span>
-<span id="cb12-458"><a href="#cb12-458" aria-hidden="true" tabindex="-1"></a>        <span class="at">@DisplayName</span><span class="op">(</span><span class="st">"保存数据时，应该调用repository的save方法"</span><span class="op">)</span></span>
-<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">saveData_shouldCallRepositorySave</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb12-460"><a href="#cb12-460" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Act</span></span>
-<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">saveData</span><span class="op">();</span></span>
-<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Assert</span></span>
-<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 验证repository.save()方法是否被调用了，并且是带着我们期望的Playlist对象调用的</span></span>
-<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a>            <span class="fu">verify</span><span class="op">(</span>repository<span class="op">,</span> <span class="fu">times</span><span class="op">(</span><span class="dv">1</span><span class="op">)).</span><span class="fu">save</span><span class="op">(</span><span class="fu">any</span><span class="op">(</span>Playlist<span class="op">.</span><span class="fu">class</span><span class="op">));</span></span>
-<span id="cb12-466"><a href="#cb12-466" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb12-467"><a href="#cb12-467" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a>    ```</span>
-<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>顿悟时刻<span class="op">**:</span> 看到测试`saveData`方法有多简单了吗？我们不再需要`ArgumentCaptor`去捕获`Files<span class="op">.</span><span class="fu">write</span>`的参数了。我们只需要验证`repository<span class="op">.</span><span class="fu">save</span><span class="op">()</span>`这个行为<span class="op">**</span>是否发生<span class="op">**</span>。这就是分层架构带来的“可测试性”的巨大提升！</span>
-<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a>### 从重构到模式：我们到底做了什么？</span>
-<span id="cb12-472"><a href="#cb12-472" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-473"><a href="#cb12-473" aria-hidden="true" tabindex="-1"></a>这次重构的意义，远不止是把代码从一个文件移动到另一个文件。我们实际上是遵循着业界沉淀已久的设计思想，将混乱的代码塑造成了两个经典的<span class="op">**</span>设计模式 <span class="op">(</span>Design Patterns<span class="op">)**</span>。</span>
+<span id="cb12-452"><a href="#cb12-452" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Act</span></span>
+<span id="cb12-453"><a href="#cb12-453" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>newSong<span class="op">);</span></span>
+<span id="cb12-454"><a href="#cb12-454" aria-hidden="true" tabindex="-1"></a>            <span class="bu">String</span> songList <span class="op">=</span> playlistService<span class="op">.</span><span class="fu">listSongs</span><span class="op">();</span></span>
+<span id="cb12-455"><a href="#cb12-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-456"><a href="#cb12-456" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Assert</span></span>
+<span id="cb12-457"><a href="#cb12-457" aria-hidden="true" tabindex="-1"></a>            <span class="fu">assertThat</span><span class="op">(</span>songList<span class="op">).</span><span class="fu">contains</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">);</span></span>
+<span id="cb12-458"><a href="#cb12-458" aria-hidden="true" tabindex="-1"></a>            <span class="fu">assertThat</span><span class="op">(</span>songList<span class="op">).</span><span class="fu">contains</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">);</span> <span class="co">// 确认旧歌还在</span></span>
+<span id="cb12-459"><a href="#cb12-459" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-460"><a href="#cb12-460" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-461"><a href="#cb12-461" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Test</span></span>
+<span id="cb12-462"><a href="#cb12-462" aria-hidden="true" tabindex="-1"></a>        <span class="at">@DisplayName</span><span class="op">(</span><span class="st">"保存数据时，应该调用repository的save方法"</span><span class="op">)</span></span>
+<span id="cb12-463"><a href="#cb12-463" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">saveData_shouldCallRepositorySave</span><span class="op">()</span> <span class="op">{</span></span>
+<span id="cb12-464"><a href="#cb12-464" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Act</span></span>
+<span id="cb12-465"><a href="#cb12-465" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">saveData</span><span class="op">();</span></span>
+<span id="cb12-466"><a href="#cb12-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-467"><a href="#cb12-467" aria-hidden="true" tabindex="-1"></a>            <span class="co">// Assert</span></span>
+<span id="cb12-468"><a href="#cb12-468" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 验证repository.save()方法是否被调用了，并且是带着我们期望的Playlist对象调用的</span></span>
+<span id="cb12-469"><a href="#cb12-469" aria-hidden="true" tabindex="-1"></a>            <span class="fu">verify</span><span class="op">(</span>repository<span class="op">,</span> <span class="fu">times</span><span class="op">(</span><span class="dv">1</span><span class="op">)).</span><span class="fu">save</span><span class="op">(</span><span class="fu">any</span><span class="op">(</span>Playlist<span class="op">.</span><span class="fu">class</span><span class="op">));</span></span>
+<span id="cb12-470"><a href="#cb12-470" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb12-471"><a href="#cb12-471" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb12-472"><a href="#cb12-472" aria-hidden="true" tabindex="-1"></a>    ```</span>
+<span id="cb12-473"><a href="#cb12-473" aria-hidden="true" tabindex="-1"></a>    <span class="op">**</span>顿悟时刻<span class="op">**:</span> 看到测试`saveData`方法有多简单了吗？我们不再需要`ArgumentCaptor`去捕获`Files<span class="op">.</span><span class="fu">write</span>`的参数了。我们只需要验证`repository<span class="op">.</span><span class="fu">save</span><span class="op">()</span>`这个行为<span class="op">**</span>是否发生<span class="op">**</span>。这就是分层架构带来的“可测试性”的巨大提升！</span>
 <span id="cb12-474"><a href="#cb12-474" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>仓库模式 <span class="op">(</span>Repository <span class="bu">Pattern</span><span class="op">)**</span></span>
-<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>角色<span class="op">**:</span> `PlaylistRepository` 接口和 `FilePlaylistRepository` 实现。</span>
-<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>目的<span class="op">**:</span> 它在“业务逻辑”和“数据存储”之间建立了一个抽象层。业务逻辑层（Service）不再关心数据究竟是存在CSV文件里，还是数据库里，或是某个云服务上。它只需要跟Repository这个“仓库管理员”对话，告诉它“存这个”或“取那个”就行了。这使得更换底层存储技术变得极其简单。</span>
+<span id="cb12-475"><a href="#cb12-475" aria-hidden="true" tabindex="-1"></a>### 从重构到模式：我们到底做了什么？</span>
+<span id="cb12-476"><a href="#cb12-476" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-477"><a href="#cb12-477" aria-hidden="true" tabindex="-1"></a>这次重构的意义，远不止是把代码从一个文件移动到另一个文件。我们实际上是遵循着业界沉淀已久的设计思想，将混乱的代码塑造成了两个经典的<span class="op">**</span>设计模式 <span class="op">(</span>Design Patterns<span class="op">)**</span>。</span>
 <span id="cb12-478"><a href="#cb12-478" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>服务层模式 <span class="op">(</span><span class="bu">Service</span> Layer <span class="bu">Pattern</span><span class="op">)**</span></span>
-<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>角色<span class="op">**:</span> `PlaylistService` 接口和 `PlaylistServiceImpl` 实现。</span>
-<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>目的<span class="op">**:</span> 它定义了应用程序的“业务能力边界”。所有核心的业务规则和流程都被封装在Service层。UI层（Controller）只负责调用这些服务，而不关心服务内部是如何实现的。这使得业务逻辑可以被不同的UI（命令行、Web页面、手机App）复用。</span>
+<span id="cb12-479"><a href="#cb12-479" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>仓库模式 <span class="op">(</span>Repository <span class="bu">Pattern</span><span class="op">)**</span></span>
+<span id="cb12-480"><a href="#cb12-480" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>角色<span class="op">**:</span> `PlaylistRepository` 接口和 `FilePlaylistRepository` 实现。</span>
+<span id="cb12-481"><a href="#cb12-481" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>目的<span class="op">**:</span> 它在“业务逻辑”和“数据存储”之间建立了一个抽象层。业务逻辑层（Service）不再关心数据究竟是存在CSV文件里，还是数据库里，或是某个云服务上。它只需要跟Repository这个“仓库管理员”对话，告诉它“存这个”或“取那个”就行了。这使得更换底层存储技术变得极其简单。</span>
 <span id="cb12-482"><a href="#cb12-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-483"><a href="#cb12-483" aria-hidden="true" tabindex="-1"></a>认识到这一点非常重要。你学会的不是一次性的技巧，而是构建可靠、可维护软件的通用蓝图。</span>
-<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a>## Vibe <span class="fu">Check</span> <span class="op">(</span>思考与练习<span class="op">)</span></span>
+<span id="cb12-483"><a href="#cb12-483" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>服务层模式 <span class="op">(</span><span class="bu">Service</span> Layer <span class="bu">Pattern</span><span class="op">)**</span></span>
+<span id="cb12-484"><a href="#cb12-484" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>角色<span class="op">**:</span> `PlaylistService` 接口和 `PlaylistServiceImpl` 实现。</span>
+<span id="cb12-485"><a href="#cb12-485" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   <span class="op">**</span>目的<span class="op">**:</span> 它定义了应用程序的“业务能力边界”。所有核心的业务规则和流程都被封装在Service层。UI层（Controller）只负责调用这些服务，而不关心服务内部是如何实现的。这使得业务逻辑可以被不同的UI（命令行、Web页面、手机App）复用。</span>
 <span id="cb12-486"><a href="#cb12-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>核心练习<span class="op">**:</span> 严格按照本教程的指导，一步一步，小心翼翼地完成整个三层架构的重构。确保最终程序能正常运行，且功能与之前一致。</span>
-<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>测试的角色<span class="op">**:</span> 我们在第五章编写的单元测试，在这次重构中扮演了什么角色？</span>
-<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   在重构`Playlist`类后，你之前写的`PlaylistTest`还能编译通过吗？为什么？（提示：持久化方法没了）</span>
-<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   你需要如何修改旧的测试，并为新的`FilePlaylistRepository`和`PlaylistServiceImpl`编写新的单元测试？</span>
-<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   这个过程是否让你深刻体会到，测试既是重构的“安全网”，也是重构需要付出的“成本”？</span>
-<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  <span class="op">**</span>AI协同与扩展<span class="op">**:</span> <span class="st">"我们现在有了一个`FilePlaylistRepository`。请AI帮我设想并设计一个`InMemoryPlaylistRepository`的`interface`实现。这个新的实现将把数据存在内存的一个`static`变量里，而不是文件里（这样程序一关数据就没，适合测试）。我们如何在`VibeVaultApp.java`中，只修改一行代码（`new FilePlaylistRepository()` -&gt; `new InMemoryPlaylistRepository()`），就让整个应用从‘文件模式’切换到‘内存模式’？"</span> 这个练习将让你深刻体会到分层架构和面向接口编程的巨大威力。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb12-487"><a href="#cb12-487" aria-hidden="true" tabindex="-1"></a>认识到这一点非常重要。你学会的不是一次性的技巧，而是构建可靠、可维护软件的通用蓝图。</span>
+<span id="cb12-488"><a href="#cb12-488" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-489"><a href="#cb12-489" aria-hidden="true" tabindex="-1"></a>## Vibe <span class="fu">Check</span> <span class="op">(</span>思考与练习<span class="op">)</span></span>
+<span id="cb12-490"><a href="#cb12-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-491"><a href="#cb12-491" aria-hidden="true" tabindex="-1"></a><span class="fl">1.</span>  <span class="op">**</span>核心练习<span class="op">**:</span> 严格按照本教程的指导，一步一步，小心翼翼地完成整个三层架构的重构。确保最终程序能正常运行，且功能与之前一致。</span>
+<span id="cb12-492"><a href="#cb12-492" aria-hidden="true" tabindex="-1"></a><span class="fl">2.</span>  <span class="op">**</span>测试的角色<span class="op">**:</span> 我们在第五章编写的单元测试，在这次重构中扮演了什么角色？</span>
+<span id="cb12-493"><a href="#cb12-493" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   在重构`Playlist`类后，你之前写的`PlaylistTest`还能编译通过吗？为什么？（提示：持久化方法没了）</span>
+<span id="cb12-494"><a href="#cb12-494" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   你需要如何修改旧的测试，并为新的`FilePlaylistRepository`和`PlaylistServiceImpl`编写新的单元测试？</span>
+<span id="cb12-495"><a href="#cb12-495" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span>   这个过程是否让你深刻体会到，测试既是重构的“安全网”，也是重构需要付出的“成本”？</span>
+<span id="cb12-496"><a href="#cb12-496" aria-hidden="true" tabindex="-1"></a><span class="fl">3.</span>  <span class="op">**</span>AI协同与扩展<span class="op">**:</span> <span class="st">"我们现在有了一个`FilePlaylistRepository`。请AI帮我设想并设计一个`InMemoryPlaylistRepository`的`interface`实现。这个新的实现将把数据存在内存的一个`static`变量里，而不是文件里（这样程序一关数据就没，适合测试）。我们如何在`VibeVaultApp.java`中，只修改一行代码（`new FilePlaylistRepository()` -&gt; `new InMemoryPlaylistRepository()`），就让整个应用从‘文件模式’切换到‘内存模式’？"</span> 这个练习将让你深刻体会到分层架构和面向接口编程的巨大威力。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -523,8 +523,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p><strong>软件架构，是一系列精心设计的“约束”，其唯一目的，就是通过限制我们的选择，来主动地、持续地对抗熵增。</strong></p>
 </blockquote>
-<p>一个好的架构，会为我们设定清晰的规则和边界： * “你（UI层）<strong>不准</strong>直接和文件系统对话。” * “你（业务逻辑层）<strong>不准</strong>知道数据库的存在。” * “你（数据访问层）<strong>只准</strong>负责数据的增删改查，不准包含任何业务规则。”</p>
-<p>这些“不准”和“只准”，就是架构施加的“约束”。正是这些约束，像房间里的柜子和隔板一样，为不同职责的代码划分了清晰的领地，迫使我们把功能放在正确的位置。这使得系统： * <strong>高内聚 (High Cohesion)</strong>：每个模块（或类）都只专注于做好一件相关的事情。 * <strong>低耦合 (Low Coupling)</strong>：模块之间的依赖关系降到最低，修改一个模块不会轻易地影响到其他模块。</p>
+<p>一个好的架构，会为我们设定清晰的规则和边界：</p>
+<ul>
+<li>“你（UI层）<strong>不准</strong>直接和文件系统对话。”</li>
+<li>“你（业务逻辑层）<strong>不准</strong>知道数据库的存在。”</li>
+<li>“你（数据访问层）<strong>只准</strong>负责数据的增删改查，不准包含任何业务规则。”</li>
+</ul>
+<p>这些“不准”和“只准”，就是架构施加的“约束”。正是这些约束，像房间里的柜子和隔板一样，为不同职责的代码划分了清晰的领地，迫使我们把功能放在正确的位置。这使得系统：</p>
+<ul>
+<li><strong>高内聚 (High Cohesion)</strong>：每个模块（或类）都只专注于做好一件相关的事情。</li>
+<li><strong>低耦合 (Low Coupling)</strong>：模块之间的依赖关系降到最低，修改一个模块不会轻易地影响到其他模块。</li>
+</ul>
 <p>“高内聚、低耦合”是衡量所有软件设计好坏的黄金标准，而它正是对抗熵增、保持软件长期可维护性的核心策略。而实现“高内聚、低耦合”最经典、最普遍的架构“约束”，就是<strong>分层架构 (Layered Architecture)</strong>。</p>
 <p><strong>顿悟在于：我们不应该将架构视为一种负担，而应该将其看作是帮助我们管理复杂性、保持代码长期健康的“健身计划”。它通过施加一些有益的“约束”（比如分层），让我们在面对不断变化的需求时，依然能够保持清晰、从容。</strong></p>
 <hr>
@@ -533,7 +542,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="vibe-check-思考与练习">Vibe Check (思考与练习)</h2>
 <ol type="1">
 <li><p><strong>思考</strong>: 在你的房间里，如果你不主动花精力去整理（施加“秩序”），它会自然地变得越来越整齐，还是越来越混乱？软件代码也是一样吗？为什么？这个比喻如何帮助你理解软件的“熵增”？</p></li>
-<li><p><strong>AI协同</strong>: “高内聚、低耦合”是软件设计的核心原则。请向你的AI伙伴提问： &gt; “请用一个通俗易懂的比喻（比如一个公司的不同部门，或者一支乐队的不同乐手），来解释‘高内-聚、低耦合’（High Cohesion, Low Coupling）这两个软件设计原则。为什么说‘高内聚、低耦合’的系统更容易维护和扩展？”</p></li>
+<li><p><strong>AI协同</strong>: “高内聚、低耦合”是软件设计的核心原则。请向你的AI伙伴提问：</p>
+<blockquote class="blockquote">
+<p>“请用一个通俗易懂的比喻（比如一个公司的不同部门，或者一支乐队的不同乐手），来解释‘高内-聚、低耦合’（High Cohesion, Low Coupling）这两个软件设计原则。为什么说‘高内聚、低耦合’的系统更容易维护和扩展？”</p>
+</blockquote></li>
 <li><p><strong>案例分析</strong>: 回顾我们目前（第五章结束时）的代码，你能指出哪些地方体现了“低内聚”或“高耦合”吗？</p>
 <ul>
 <li><strong>低内聚的例子</strong>: <code>Playlist</code> 类是不是做了太多不相干的事情（管理歌曲列表、序列化成CSV、文件读写）？</li>
@@ -1039,32 +1051,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **软件架构，是一系列精心设计的“约束”，其唯一目的，就是通过限制我们的选择，来主动地、持续地对抗熵增。**</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>一个好的架构，会为我们设定清晰的规则和边界：</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（UI层）**不准**直接和文件系统对话。”</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（业务逻辑层）**不准**知道数据库的存在。”</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（数据访问层）**只准**负责数据的增删改查，不准包含任何业务规则。”</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>这些“不准”和“只准”，就是架构施加的“约束”。正是这些约束，像房间里的柜子和隔板一样，为不同职责的代码划分了清晰的领地，迫使我们把功能放在正确的位置。这使得系统：</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**高内聚 (High Cohesion)**：每个模块（或类）都只专注于做好一件相关的事情。</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**低耦合 (Low Coupling)**：模块之间的依赖关系降到最低，修改一个模块不会轻易地影响到其他模块。</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>“高内聚、低耦合”是衡量所有软件设计好坏的黄金标准，而它正是对抗熵增、保持软件长期可维护性的核心策略。而实现“高内聚、低耦合”最经典、最普遍的架构“约束”，就是**分层架构 (Layered Architecture)**。</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（UI层）**不准**直接和文件系统对话。”</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（业务逻辑层）**不准**知道数据库的存在。”</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>“你（数据访问层）**只准**负责数据的增删改查，不准包含任何业务规则。”</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>这些“不准”和“只准”，就是架构施加的“约束”。正是这些约束，像房间里的柜子和隔板一样，为不同职责的代码划分了清晰的领地，迫使我们把功能放在正确的位置。这使得系统：</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**高内聚 (High Cohesion)**：每个模块（或类）都只专注于做好一件相关的事情。</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**低耦合 (Low Coupling)**：模块之间的依赖关系降到最低，修改一个模块不会轻易地影响到其他模块。</span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>**顿悟在于：我们不应该将架构视为一种负担，而应该将其看作是帮助我们管理复杂性、保持代码长期健康的“健身计划”。它通过施加一些有益的“约束”（比如分层），让我们在面对不断变化的需求时，依然能够保持清晰、从容。**</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>“高内聚、低耦合”是衡量所有软件设计好坏的黄金标准，而它正是对抗熵增、保持软件长期可维护性的核心策略。而实现“高内聚、低耦合”最经典、最普遍的架构“约束”，就是**分层架构 (Layered Architecture)**。</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>**顿悟在于：我们不应该将架构视为一种负担，而应该将其看作是帮助我们管理复杂性、保持代码长期健康的“健身计划”。它通过施加一些有益的“约束”（比如分层），让我们在面对不断变化的需求时，依然能够保持清晰、从容。**</span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**思考**: 在你的房间里，如果你不主动花精力去整理（施加“秩序”），它会自然地变得越来越整齐，还是越来越混乱？软件代码也是一样吗？为什么？这个比喻如何帮助你理解软件的“熵增”？</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (思考与练习)</span></span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI协同**: "高内聚、低耦合"是软件设计的核心原则。请向你的AI伙伴提问：</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请用一个通俗易懂的比喻（比如一个公司的不同部门，或者一支乐队的不同乐手），来解释‘高内-聚、低耦合’（High Cohesion, Low Coupling）这两个软件设计原则。为什么说‘高内聚、低耦合’的系统更容易维护和扩展？"</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**案例分析**: 回顾我们目前（第五章结束时）的代码，你能指出哪些地方体现了“低内聚”或“高耦合”吗？</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**低内聚的例子**: <span class="in">`Playlist`</span> 类是不是做了太多不相干的事情（管理歌曲列表、序列化成CSV、文件读写）？</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**高耦合的例子**: <span class="in">`VibeVaultApp`</span> 类是不是和<span class="in">`Playlist`</span>类的内部实现（特别是文件操作部分）耦合得太紧了？如果<span class="in">`Playlist`</span>的存盘方式改变，<span class="in">`VibeVaultApp`</span>是否也可能需要修改？</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>这个分析将为你下一节学习“三层架构”做好充分的心理准备。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**思考**: 在你的房间里，如果你不主动花精力去整理（施加“秩序”），它会自然地变得越来越整齐，还是越来越混乱？软件代码也是一样吗？为什么？这个比喻如何帮助你理解软件的“熵增”？</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI协同**: "高内聚、低耦合"是软件设计的核心原则。请向你的AI伙伴提问：</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请用一个通俗易懂的比喻（比如一个公司的不同部门，或者一支乐队的不同乐手），来解释‘高内-聚、低耦合’（High Cohesion, Low Coupling）这两个软件设计原则。为什么说‘高内聚、低耦合’的系统更容易维护和扩展？"</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**案例分析**: 回顾我们目前（第五章结束时）的代码，你能指出哪些地方体现了“低内聚”或“高耦合”吗？</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**低内聚的例子**: <span class="in">`Playlist`</span> 类是不是做了太多不相干的事情（管理歌曲列表、序列化成CSV、文件读写）？</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**高耦合的例子**: <span class="in">`VibeVaultApp`</span> 类是不是和<span class="in">`Playlist`</span>类的内部实现（特别是文件操作部分）耦合得太紧了？如果<span class="in">`Playlist`</span>的存盘方式改变，<span class="in">`VibeVaultApp`</span>是否也可能需要修改？</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>这个分析将为你下一节学习“三层架构”做好充分的心理准备。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
