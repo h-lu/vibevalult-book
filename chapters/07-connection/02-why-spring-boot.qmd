@@ -62,12 +62,14 @@ Spring Boot通过**Starters**彻底解决了这个问题。`spring-boot-starter-
 
 1.  **复制项目**:
     在终端中执行以下命令，将第六章的代码复制为第七章的新起点。
+
     ```bash
     cp -R chapter-code/ch06/ chapter-code/ch07/
     ```
     我们将在`chapter-code/ch07`目录下进行操作。
 
 2.  **定义项目的“法律” - `libs.versions.toml`**:
+
     “版本目录”是管理所有外部依赖的“单一事实来源”。它让我们将“用什么依赖”和“用哪个版本”这两个关注点彻底分离。
 
     **首先，在`chapter-code/ch07/gradle/`目录下，创建一个名为`libs.versions.toml`的文件。** 如果`gradle`目录不存在，请创建它。
