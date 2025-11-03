@@ -42,22 +42,6 @@ public class Playlist {
         }
     }
 
-    /**
-     * 列出播放列表中的所有歌曲到控制台。
-     */
-    public void listSongs() {
-        System.out.println("--- Playlist: " + this.name + " ---");
-        if (this.songs.isEmpty()) {
-            System.out.println("This playlist is empty.");
-        } else {
-            for (int i = 0; i < this.songs.size(); i++) {
-                Song currentSong = this.songs.get(i);
-                System.out.println((i + 1) + ". " + currentSong.title() + " - " + currentSong.artist());
-            }
-        }
-        System.out.println("---------------------------------");
-    }
-
     // 这是为了让 System.out.println(playlistObject) 时能有更友好的输出
     @Override
     public String toString() {

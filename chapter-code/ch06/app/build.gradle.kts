@@ -13,6 +13,8 @@ plugins {
 
 repositories {
     // Use Maven Central for resolving dependencies.
+    maven { url = uri("https://maven.aliyun.com/repository/public") }
+    maven { url = uri("https://maven.aliyun.com/repository/central") }
     mavenCentral()
 }
 
@@ -49,4 +51,11 @@ application {
 
 tasks.withType<JavaExec> {
     standardInput = System.`in`
+    // 设置编码为 UTF-8，解决 Windows 控制台中文乱码问题
+    jvmArgs = listOf("-Dfile.encoding=UTF-8", "-Dconsole.encoding=UTF-8")
+}
+
+// 设置编译和运行时编码
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
 }

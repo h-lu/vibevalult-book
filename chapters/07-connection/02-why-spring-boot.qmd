@@ -77,7 +77,7 @@ Spring Boot通过**Starters**彻底解决了这个问题。`spring-boot-starter-
     ```toml
     # In: chapter-code/ch07/gradle/libs.versions.toml
     [versions]
-    springBoot = "3.4.8"
+    springBoot = "3.5.7"
     springDependencyManagement = "1.1.7"
 
     [libraries]
@@ -104,6 +104,7 @@ Spring Boot通过**Starters**彻底解决了这个问题。`spring-boot-starter-
     dependencyResolutionManagement {
         repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
         repositories {
+            maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
             google()
             mavenCentral()
         }
