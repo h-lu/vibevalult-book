@@ -931,9 +931,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>验证404 Not Found</strong>: 接着访问一个不存在的播放列表： <code>http://localhost:8080/api/playlists/non-existent-id</code></p>
 <p>这次，你将看到一个由Spring Boot自动生成的、专业的404错误响应页面或JSON，这正是我们通过<code>ResourceNotFoundException</code>和<code>@ResponseStatus</code>注解所实现的。</p></li>
 <li><p><strong>验证POST请求</strong>: 使用<code>curl</code>或Postman等工具，向播放列表添加一首新歌。</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists/my-favorites/songs <span class="dt">\</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">-d</span> <span class="st">'{"title": "Hotel California", "artist": "Eagles"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># macOS/Linux (bash shell)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists/my-favorites/songs <span class="dt">\</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">-d</span> <span class="st">'{"title": "Hotel California", "artist": "Eagles"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode powershell code-with-copy"><code class="sourceCode powershell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Windows PowerShell</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-RestMethod</span> <span class="op">-</span>Uri <span class="st">"http://localhost:8080/api/playlists/my-favorites/songs"</span> `</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Method Post `</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Headers @<span class="op">{</span><span class="st">"Content-Type"</span><span class="op">=</span><span class="st">"application/json"</span><span class="op">}</span> `</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">-</span>Body <span class="st">'{"title": "Hotel California", "artist": "Eagles"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>这个命令应该会返回一个<code>201 Created</code>状态码。执行后，再次在浏览器中访问<code>http://localhost:8080/api/playlists/my-favorites</code>，你会兴奋地发现，新歌已经被成功添加进去了！</p></li>
 </ol>
 </section>
@@ -1418,503 +1424,512 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "7.3 - 构建你的第一个API"</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "千里之行，始于足下。" - 老子</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：万事俱备，如何连接？</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>在上一节，我们成功地将VibeVault项目升级成了一个现代化的Spring Boot应用。我们拥有了一个功能完备的Web服务器，随时准备好接收网络请求。然而，我们之前在第六章中精心设计的业务逻辑组件——<span class="in">`PlaylistService`</span>、<span class="in">`FilePlaylistRepository`</span>等，目前还静静地躺在代码库里，与这个Web服务器**完全隔离**。</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>Spring Boot的自动配置虽然强大，但它并不知道我们编写的这些类是做什么的，也不知道应该在何时创建它们、如何将它们组合在一起。我们手动<span class="in">`new`</span>对象的传统方式，无法让这些组件融入Spring的自动化管理世界。</span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：如何将我们自己编写的业务组件，“注册”到Spring的管理体系中，并建立一座桥梁，将外部传入的HTTP请求，精确地“路由”到正确的业务逻辑上，从而真正地将它们从一个本地应用，演进为一个Web API？**</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：注解——给Spring的“指令”</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>Spring Boot通过**注解 (Annotations)** 来完美地解决了这个问题。注解就像是我们贴在Java类、方法或字段上的“标签”。当Spring Boot应用启动时，它会像一个勤劳的管家一样，扫描我们代码中所有贴有特定标签的组件，然后根据这些标签的指示来自动化地完成对象的创建、组装和管理。</span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### 核心“组件”注解：声明Bean的角色</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Component`</span>: 这是最基础、最通用的标签。一旦贴在一个类上，就等于告诉Spring：“请为我创建这个类的一个实例（instance），并由你来全权管理它的生命周期。”这个由Spring创建和管理的实例，我们称之为**Bean**。</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Repository`</span>: 这是<span class="in">`@Component`</span>的一个特殊化版本，专门用来贴在**数据访问层**（Repository）的实现类上。它不仅声明了这是一个Bean，还清晰地向其他开发者传达了它的角色——“这是一个负责数据存储与检索的仓库”。</span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Service`</span>: 同样是<span class="in">`@Component`</span>的特殊化版本，用于**业务逻辑层**（Service）的实现类。它表明这个Bean的角色是提供具体的“业务服务”。</span>
-<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@RestController`</span>: 这是一个功能更强大的组合标签，我们贴在**表现层**（Controller）的类上。它告诉Spring两件重要的事情：</span>
-<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>这也是一个Bean，专门负责处理HTTP请求。</span>
-<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>这个控制器下所有方法的返回值，都应该被自动序列化成JSON格式，并直接作为HTTP响应的内容发送给客户端。</span>
-<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### 核心“连接”注解：实现依赖注入</span></span>
-<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>当我们把所有组件都使用上述注解标记为Bean后，Spring容器就会在启动时自动创建它们。那么，组件之间的依赖关系（比如<span class="in">`PlaylistServiceImpl`</span>需要一个<span class="in">`PlaylistRepository`</span>）如何建立呢？我们不再需要手动<span class="in">`new`</span>。</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>取而代之的是，我们使用**构造函数注入 (Constructor Injection)** 的方式来声明依赖，这是Spring官方最为推荐的方式。</span>
-<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a><span class="at">@Service</span></span>
-<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
-<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
-<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 这是PlaylistServiceImpl的构造函数</span></span>
-<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 当Spring要创建PlaylistServiceImpl这个Bean时，</span></span>
-<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 它会检查这个构造函数，发现需要一个PlaylistRepository类型的参数。</span></span>
-<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 于是，Spring会自动在它所管理的全部Bean中，寻找一个匹配的PlaylistRepository Bean，</span></span>
-<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 并自动地、无形地将它作为参数“注入”进来。</span></span>
-<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
-<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
-<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>这个过程，就好像组件的创建和依赖的“控制权”，从我们程序员手中**反转**给了Spring容器，再由容器将依赖关系**注入**到需要它的地方。这就是Spring框架最核心、最基础的思想——**控制反转 (Inversion of Control - IoC)** 和 **依赖注入 (Dependency Injection - DI)**。</span>
-<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a>现在，让我们动手将第六章的所有零件，用注解的方式重新连接和升级，构建出我们的第一个API。</span>
-<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (动手与思考)</span></span>
-<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>我们将按照以下步骤，逐步将<span class="in">`ch07`</span>项目从一个简陋的命令行应用，彻底重构为一个功能完备、设计优雅的现代Web API。</span>
-<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第一步：标注并重构Repository</span></span>
-<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>我们首先从数据访问层开始。当前 <span class="in">`FilePlaylistRepository`</span> 的设计存在一些问题：它只能处理单个固定的文件 (<span class="in">`data/playlist.csv`</span>)，并且在文件不存在时处理方式不够健壮。我们需要对其进行改造。</span>
-<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>**修改 `FilePlaylistRepository.java`**</span>
-<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>为其添加 <span class="in">`@Repository`</span> 注解，将其声明为一个由Spring管理的Bean。</span>
-<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>改造 <span class="in">`save`</span> 和 <span class="in">`load`</span> 方法，让它们能够根据 <span class="in">`playlistId`</span> 处理**不同**的文件。例如，ID为 "my-favorites" 的播放列表应存为 <span class="in">`my-favorites.csv`</span>。</span>
-<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[最佳实践]** 改造 <span class="in">`load`</span> 方法，使其返回 <span class="in">`Optional&lt;Playlist&gt;`</span>。这是现代Java中处理“可能不存在”的值的标准方式，可以有效避免 <span class="in">`NullPointerException`</span>。</span>
-<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[最佳实践]** 在IO操作失败时，抛出运行时异常，而不是简单地在控制台打印错误。</span>
-<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/repository/FilePlaylistRepository.java</span></span>
-<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
-<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Repository</span><span class="op">;</span> <span class="co">// 引入注解</span></span>
-<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">IOException</span><span class="op">;</span></span>
-<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Files</span><span class="op">;</span></span>
-<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Path</span><span class="op">;</span></span>
-<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Paths</span><span class="op">;</span></span>
-<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
-<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Optional</span><span class="op">;</span> <span class="co">// 引入Optional</span></span>
-<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a><span class="at">@Repository</span> <span class="co">// &lt;--- 添加标签</span></span>
-<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> FilePlaylistRepository <span class="kw">implements</span> PlaylistRepository <span class="op">{</span></span>
-<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> DATA_DIRECTORY <span class="op">=</span> <span class="st">"data"</span><span class="op">;</span></span>
-<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> Path DATA_PATH <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>DATA_DIRECTORY<span class="op">);</span></span>
-<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
-<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 让文件名与播放列表的ID动态关联</span></span>
-<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> DATA_PATH<span class="op">.</span><span class="fu">resolve</span><span class="op">(</span>playlist<span class="op">.</span><span class="fu">getName</span><span class="op">()</span> <span class="op">+</span> <span class="st">".csv"</span><span class="op">);</span></span>
-<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 使用Stream API，代码更简洁</span></span>
-<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>        <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">stream</span><span class="op">()</span></span>
-<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">map</span><span class="op">(</span>Song<span class="op">::</span>toCsvString<span class="op">)</span></span>
-<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">toList</span><span class="op">();</span></span>
-<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 确保 "data" 目录存在</span></span>
-<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>DATA_PATH<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>                 Files<span class="op">.</span><span class="fu">createDirectories</span><span class="op">(</span>DATA_PATH<span class="op">);</span></span>
-<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a>            Files<span class="op">.</span><span class="fu">write</span><span class="op">(</span>path<span class="op">,</span> csvLines<span class="op">);</span></span>
-<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 抛出运行时异常，让错误在更高层级被处理</span></span>
-<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a>            <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">RuntimeException</span><span class="op">(</span><span class="st">"Error saving playlist to "</span> <span class="op">+</span> path<span class="op">,</span> e<span class="op">);</span></span>
-<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
-<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Optional<span class="op">&lt;</span>Playlist<span class="op">&gt;</span> <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">)</span> <span class="op">{</span> <span class="co">// &lt;--- 返回类型改为Optional&lt;Playlist&gt;</span></span>
-<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> DATA_PATH<span class="op">.</span><span class="fu">resolve</span><span class="op">(</span>playlistId <span class="op">+</span> <span class="st">".csv"</span><span class="op">);</span></span>
-<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>path<span class="op">))</span> <span class="op">{</span></span>
-<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> Optional<span class="op">.</span><span class="fu">empty</span><span class="op">();</span> <span class="co">// &lt;--- 如果文件不存在，明确返回“空”</span></span>
-<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>        Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>playlistId<span class="op">);</span></span>
-<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
-<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a>            <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> Files<span class="op">.</span><span class="fu">readAllLines</span><span class="op">(</span>path<span class="op">);</span></span>
-<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="bu">String</span> line <span class="op">:</span> csvLines<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 复用Song中的静态工厂方法，保持代码干净</span></span>
-<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>Song<span class="op">.</span><span class="fu">fromCsvString</span><span class="op">(</span>line<span class="op">));</span></span>
-<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> <span class="op">|</span> <span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a>             <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">RuntimeException</span><span class="op">(</span><span class="st">"Error loading playlist from "</span> <span class="op">+</span> path<span class="op">,</span> e<span class="op">);</span></span>
-<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Optional<span class="op">.</span><span class="fu">of</span><span class="op">(</span>playlist<span class="op">);</span> <span class="co">// &lt;--- 用Optional包装返回结果</span></span>
-<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>**修改 `PlaylistRepository.java` 接口**</span>
-<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a>为了使 <span class="in">`FilePlaylistRepository`</span> 的修改能够成功编译，我们**必须**同步更新 <span class="in">`PlaylistRepository`</span> 接口，使其 <span class="in">`load`</span> 方法的返回类型也变为 <span class="in">`Optional&lt;Playlist&gt;`</span>。</span>
-<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/repository/PlaylistRepository.java</span></span>
-<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
-<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Optional</span><span class="op">;</span></span>
-<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistRepository <span class="op">{</span></span>
-<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">);</span></span>
-<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a>    Optional<span class="op">&lt;</span>Playlist<span class="op">&gt;</span> <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">);</span> <span class="co">// &lt;--- 修改返回类型</span></span>
-<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第二步：彻底重构Service层</span></span>
-<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>当前的 <span class="in">`PlaylistService`</span> 接口和实现完全是为命令行交互设计的。我们需要重新定义它的职责，使其服务于一个RESTful API。</span>
-<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**修改 `PlaylistService.java` 接口**:</span>
-<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a>    重新定义接口方法，使其符合API的业务场景，如“根据ID获取播放列表”、“向指定播放列表添加歌曲”。</span>
-<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistService.java</span></span>
-<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 我们将在这里引入DTO，但为了步骤清晰，先使用内部模型</span></span>
-<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
-<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a>        Playlist <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">);</span></span>
-<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> Song song<span class="op">);</span></span>
-<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**修改 `PlaylistServiceImpl.java` 实现**:</span>
-<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加 <span class="in">`@Service`</span> 注解。</span>
-<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用构造函数注入 <span class="in">`PlaylistRepository`</span>。</span>
-<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现新的接口方法，并处理从Repository返回的<span class="in">`Optional`</span>。</span>
-<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
-<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
-<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Service</span><span class="op">;</span> <span class="co">// 引入注解</span></span>
-<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Service</span> <span class="co">// &lt;--- 添加标签</span></span>
-<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
-<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
-<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>        <span class="co">// &lt;--- 使用构造函数注入依赖</span></span>
-<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
-<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> Playlist <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 调用repository，如果返回的Optional为空，暂时返回null</span></span>
-<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 我们很快会用更好的方式（异常处理）来改进它</span></span>
-<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>id<span class="op">).</span><span class="fu">orElse</span><span class="op">(</span><span class="kw">null</span><span class="op">);</span></span>
-<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> Song song<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 先加载播放列表，如果不存在则抛出异常，确保操作的有效性</span></span>
-<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>playlistId<span class="op">)</span></span>
-<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="bu">IllegalStateException</span><span class="op">(</span><span class="st">"Cannot add song to a non-existent playlist: "</span> <span class="op">+</span> playlistId<span class="op">));</span></span>
-<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 执行业务逻辑并持久化</span></span>
-<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song<span class="op">);</span></span>
-<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
-<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第三步：Model vs. DTO - 为什么要多此一举？</span></span>
-<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>在进入下一步之前，我们必须理解一个关键的软件设计原则：**API的“契约”应该与其内部的“领域模型”解耦**。</span>
-<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**领域模型 (Domain Model)**: 这是我们应用的核心。像`Playlist`和`Song`这样的`record`或`class`，它们不仅仅是数据的容器，更封装了业务规则和行为（例如`Playlist`中的`addSong`方法）。它们是为应用内部的 **业务逻辑** 服务的。领域模型可能会包含许多内部状态、复杂的对象关系，甚至一些不应该对外暴露的敏感信息。</span>
-<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**数据传输对象 (Data Transfer Object - DTO)**: DTO的目标则非常单纯：**为数据传输而生**。它是一个纯粹的数据载体，专门用于在不同层之间（特别是应用边界，如我们的REST API）传递信息。DTO应该是“扁平的”，只包含客户端需要或允许提供的字段，**不包含任何业务逻辑**。</span>
-<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a>**为什么要区分它们？**</span>
-<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**API稳定性**: 我们的内部领域模型<span class="in">`Song`</span>可能会经常变化，比如我们想增加<span class="in">`durationInSeconds`</span>、<span class="in">`genre`</span>、<span class="in">`album`</span>等字段。如果API直接暴露<span class="in">`Song`</span>模型，每次内部模型的改动都可能破坏API的兼容性，导致客户端应用崩溃。而DTO作为一层“防腐层”，可以保持API的稳定，即使内部模型已经演化。</span>
-<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安全性**: 我们的<span class="in">`User`</span>模型可能包含<span class="in">`hashedPassword`</span>和<span class="in">`roles`</span>字段。如果直接返回<span class="in">`User`</span>模型，会将这些敏感信息泄露给客户端。通过创建一个<span class="in">`UserDTO`</span>，我们可以精确控制只返回<span class="in">`username`</span>和<span class="in">`email`</span>等安全信息。</span>
-<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**关注点分离**: <span class="in">`Controller`</span>的职责是处理HTTP请求和响应，它应该只关心DTO。<span class="in">`Service`</span>层的职责是执行业务逻辑，它应该关心领域模型。这种分离使得代码结构更清晰，职责更单一。</span>
-<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **顿悟**: 将Model和DTO分离，就像是为你的房子装上了**窗户和门**。你不会把整个客厅（Model）都推到街上（API）去和人交流，而是通过一个精确控制大小和开关的门窗（DTO）来与外界互动。</span></span>
-<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a>现在，让我们来定义API的“数据契约”。</span>
-<span id="cb15-234"><a href="#cb15-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-235"><a href="#cb15-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第四步：定义API的“数据契约” - DTOs</span></span>
-<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a>直接在API的输入和输出中使用我们的内部领域模型（<span class="in">`Playlist`</span>和<span class="in">`Song`</span>）通常被认为是一种**不良实践**。API应该通过**DTO (Data Transfer Object)** 来与外部世界沟通。在现代Java中，<span class="in">`record`</span>是创建DTO的完美工具。</span>
-<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建DTO包**: 在<span class="in">`com.vibevault`</span>下创建新包<span class="in">`dto`</span>。</span>
-<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建DTO类**: 在<span class="in">`dto`</span>包下使用<span class="in">`record`</span>关键字创建<span class="in">`SongDTO.java`</span>和<span class="in">`PlaylistDTO.java`</span>。</span>
-<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/dto/SongDTO.java</span></span>
-<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">;</span></span>
-<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 我们决定只在API中暴露歌曲的标题和艺术家，</span></span>
-<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 隐藏`durationInSeconds`这个内部实现细节。</span></span>
-<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">record</span> <span class="fu">SongDTO</span><span class="op">(</span><span class="bu">String</span> title<span class="op">,</span> <span class="bu">String</span> artist<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/dto/PlaylistDTO.java</span></span>
-<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">;</span></span>
-<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
-<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">record</span> <span class="fu">PlaylistDTO</span><span class="op">(</span><span class="bu">String</span> name<span class="op">,</span> <span class="bu">List</span><span class="op">&lt;</span>SongDTO<span class="op">&gt;</span> songs<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第五步：演进Service层以处理DTO和异常</span></span>
-<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a>现在我们有了DTO，需要更新<span class="in">`PlaylistService`</span>，让它能够理解和返回DTO，并能优雅地处理“资源未找到”的场景。</span>
-<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建自定义异常**:</span>
-<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a>    一个专业的API应该对不同的错误返回不同的HTTP状态码。例如，当请求的资源不存在时，应返回404 Not Found。</span>
-<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`com.vibevault`</span>下创建新包<span class="in">`exception`</span>。</span>
-<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在其中定义<span class="in">`ResourceNotFoundException.java`</span>。</span>
-<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/exception/ResourceNotFoundException.java</span></span>
-<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">exception</span><span class="op">;</span></span>
-<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatus</span><span class="op">;</span></span>
-<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">web</span><span class="op">.</span><span class="im">bind</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">ResponseStatus</span><span class="op">;</span></span>
-<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a>    <span class="at">@ResponseStatus</span><span class="op">(</span>value <span class="op">=</span> HttpStatus<span class="op">.</span><span class="fu">NOT_FOUND</span><span class="op">)</span> <span class="co">// &lt;--- 关键注解</span></span>
-<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> ResourceNotFoundException <span class="kw">extends</span> <span class="bu">RuntimeException</span> <span class="op">{</span></span>
-<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="bu">String</span> message<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>            <span class="kw">super</span><span class="op">(</span>message<span class="op">);</span></span>
-<span id="cb15-282"><a href="#cb15-282" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-283"><a href="#cb15-283" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-284"><a href="#cb15-284" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-285"><a href="#cb15-285" aria-hidden="true" tabindex="-1"></a>    *`@ResponseStatus(HttpStatus.NOT_FOUND)`这个注解威力巨大。当这个异常在Controller层被抛出且未被捕获时，Spring框架会自动拦截它，并生成一个标准的HTTP 404 Not Found响应。*</span>
-<span id="cb15-286"><a href="#cb15-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-287"><a href="#cb15-287" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**更新`PlaylistService`接口**:</span>
-<span id="cb15-288"><a href="#cb15-288" aria-hidden="true" tabindex="-1"></a>    让接口的契约使用我们新定义的DTO。</span>
-<span id="cb15-289"><a href="#cb15-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-290"><a href="#cb15-290" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-291"><a href="#cb15-291" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistService.java</span></span>
-<span id="cb15-292"><a href="#cb15-292" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb15-293"><a href="#cb15-293" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-294"><a href="#cb15-294" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
-<span id="cb15-295"><a href="#cb15-295" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
-<span id="cb15-296"><a href="#cb15-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-297"><a href="#cb15-297" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
-<span id="cb15-298"><a href="#cb15-298" aria-hidden="true" tabindex="-1"></a>        PlaylistDTO <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">);</span></span>
-<span id="cb15-299"><a href="#cb15-299" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> SongDTO songDTO<span class="op">);</span></span>
-<span id="cb15-300"><a href="#cb15-300" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-301"><a href="#cb15-301" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-302"><a href="#cb15-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-303"><a href="#cb15-303" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**完善`PlaylistServiceImpl`实现**:</span>
-<span id="cb15-304"><a href="#cb15-304" aria-hidden="true" tabindex="-1"></a>    这是连接所有逻辑的核心。它负责调用Repository，处理<span class="in">`Optional`</span>返回的可能为空的情况（抛出异常），并将领域模型安全地转换为外部的DTO。</span>
-<span id="cb15-305"><a href="#cb15-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-306"><a href="#cb15-306" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-307"><a href="#cb15-307" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
-<span id="cb15-308"><a href="#cb15-308" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
-<span id="cb15-309"><a href="#cb15-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-310"><a href="#cb15-310" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
-<span id="cb15-311"><a href="#cb15-311" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
-<span id="cb15-312"><a href="#cb15-312" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">exception</span><span class="op">.</span><span class="im">ResourceNotFoundException</span><span class="op">;</span></span>
-<span id="cb15-313"><a href="#cb15-313" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-314"><a href="#cb15-314" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb15-315"><a href="#cb15-315" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
-<span id="cb15-316"><a href="#cb15-316" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">stream</span><span class="op">.</span><span class="im">Collectors</span><span class="op">;</span></span>
-<span id="cb15-317"><a href="#cb15-317" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Service</span><span class="op">;</span></span>
-<span id="cb15-318"><a href="#cb15-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-319"><a href="#cb15-319" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Service</span></span>
-<span id="cb15-320"><a href="#cb15-320" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
-<span id="cb15-321"><a href="#cb15-321" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
-<span id="cb15-322"><a href="#cb15-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-323"><a href="#cb15-323" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-324"><a href="#cb15-324" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
-<span id="cb15-325"><a href="#cb15-325" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-326"><a href="#cb15-326" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb15-327"><a href="#cb15-327" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb15-328"><a href="#cb15-328" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PlaylistDTO <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-329"><a href="#cb15-329" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 调用repository，如果返回的Optional为空，则立即抛出我们自定义的异常</span></span>
-<span id="cb15-330"><a href="#cb15-330" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>id<span class="op">)</span></span>
-<span id="cb15-331"><a href="#cb15-331" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="st">"Playlist not found with id: "</span> <span class="op">+</span> id<span class="op">));</span></span>
-<span id="cb15-332"><a href="#cb15-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-333"><a href="#cb15-333" aria-hidden="true" tabindex="-1"></a>            <span class="co">// [模型转换] 将内部的Playlist领域模型，安全地转换为外部的PlaylistDTO</span></span>
-<span id="cb15-334"><a href="#cb15-334" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">new</span> <span class="fu">PlaylistDTO</span><span class="op">(</span></span>
-<span id="cb15-335"><a href="#cb15-335" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">getName</span><span class="op">(),</span></span>
-<span id="cb15-336"><a href="#cb15-336" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">stream</span><span class="op">()</span></span>
-<span id="cb15-337"><a href="#cb15-337" aria-hidden="true" tabindex="-1"></a>                    <span class="op">.</span><span class="fu">map</span><span class="op">(</span>song <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">SongDTO</span><span class="op">(</span>song<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">artist</span><span class="op">()))</span> <span class="co">// 只取需要暴露的字段</span></span>
-<span id="cb15-338"><a href="#cb15-338" aria-hidden="true" tabindex="-1"></a>                    <span class="op">.</span><span class="fu">collect</span><span class="op">(</span>Collectors<span class="op">.</span><span class="fu">toList</span><span class="op">())</span></span>
-<span id="cb15-339"><a href="#cb15-339" aria-hidden="true" tabindex="-1"></a>            <span class="op">);</span></span>
-<span id="cb15-340"><a href="#cb15-340" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-341"><a href="#cb15-341" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-342"><a href="#cb15-342" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
-<span id="cb15-343"><a href="#cb15-343" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> SongDTO songDTO<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-344"><a href="#cb15-344" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 先加载播放列表，如果不存在则同样会抛出404异常，确保操作的有效性</span></span>
-<span id="cb15-345"><a href="#cb15-345" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>playlistId<span class="op">)</span></span>
-<span id="cb15-346"><a href="#cb15-346" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="st">"Playlist not found with id: "</span> <span class="op">+</span> playlistId<span class="op">));</span></span>
-<span id="cb15-347"><a href="#cb15-347" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb15-348"><a href="#cb15-348" aria-hidden="true" tabindex="-1"></a>            <span class="co">// [模型转换] 将外部传入的SongDTO，转换为内部的Song领域模型</span></span>
-<span id="cb15-349"><a href="#cb15-349" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 注意：因为SongDTO没有时长信息，我们在这里使用一个默认值0</span></span>
-<span id="cb15-350"><a href="#cb15-350" aria-hidden="true" tabindex="-1"></a>            Song newSong <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>songDTO<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> songDTO<span class="op">.</span><span class="fu">artist</span><span class="op">(),</span> <span class="dv">0</span><span class="op">);</span></span>
-<span id="cb15-351"><a href="#cb15-351" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb15-352"><a href="#cb15-352" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 执行业务逻辑并持久化</span></span>
-<span id="cb15-353"><a href="#cb15-353" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>newSong<span class="op">);</span></span>
-<span id="cb15-354"><a href="#cb15-354" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
-<span id="cb15-355"><a href="#cb15-355" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-356"><a href="#cb15-356" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-357"><a href="#cb15-357" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-358"><a href="#cb15-358" aria-hidden="true" tabindex="-1"></a>    *请仔细体会`getPlaylistById`方法：`orElseThrow`的运用，使得处理“数据不存在”这个业务场景的逻辑变得异常清晰和简洁。这正是`Optional`的威力所在。*</span>
-<span id="cb15-359"><a href="#cb15-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-360"><a href="#cb15-360" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第六步：创建Web控制器，连接外部世界</span></span>
-<span id="cb15-361"><a href="#cb15-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-362"><a href="#cb15-362" aria-hidden="true" tabindex="-1"></a>万事俱备，只欠东风。现在，我们可以创建真正的API端点，作为我们服务的HTTP入口。</span>
-<span id="cb15-363"><a href="#cb15-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-364"><a href="#cb15-364" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建Controller包**: 在<span class="in">`com.vibevault`</span>下创建一个新的包<span class="in">`controller`</span>。</span>
-<span id="cb15-365"><a href="#cb15-365" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建`PlaylistController.java`**:</span>
-<span id="cb15-366"><a href="#cb15-366" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-367"><a href="#cb15-367" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
-<span id="cb15-368"><a href="#cb15-368" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/controller/PlaylistController.java</span></span>
-<span id="cb15-369"><a href="#cb15-369" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">controller</span><span class="op">;</span></span>
-<span id="cb15-370"><a href="#cb15-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-371"><a href="#cb15-371" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
-<span id="cb15-372"><a href="#cb15-372" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
-<span id="cb15-373"><a href="#cb15-373" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
-<span id="cb15-374"><a href="#cb15-374" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatus</span><span class="op">;</span></span>
-<span id="cb15-375"><a href="#cb15-375" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">web</span><span class="op">.</span><span class="im">bind</span><span class="op">.</span><span class="im">annotation</span><span class="op">.*;</span></span>
-<span id="cb15-376"><a href="#cb15-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-377"><a href="#cb15-377" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RestController</span> <span class="co">// &lt;--- 关键标签：声明这是一个RESTful控制器</span></span>
-<span id="cb15-378"><a href="#cb15-378" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestMapping</span><span class="op">(</span><span class="st">"/api/playlists"</span><span class="op">)</span> <span class="co">// &lt;--- 声明这个控制器下所有API的URL基础路径</span></span>
-<span id="cb15-379"><a href="#cb15-379" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
-<span id="cb15-380"><a href="#cb15-380" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-381"><a href="#cb15-381" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistService playlistService<span class="op">;</span></span>
-<span id="cb15-382"><a href="#cb15-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-383"><a href="#cb15-383" aria-hidden="true" tabindex="-1"></a>        <span class="co">// &lt;--- 通过构造函数注入Service Bean</span></span>
-<span id="cb15-384"><a href="#cb15-384" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistController</span><span class="op">(</span>PlaylistService playlistService<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-385"><a href="#cb15-385" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlistService</span> <span class="op">=</span> playlistService<span class="op">;</span></span>
-<span id="cb15-386"><a href="#cb15-386" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-387"><a href="#cb15-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-388"><a href="#cb15-388" aria-hidden="true" tabindex="-1"></a>        <span class="at">@GetMapping</span><span class="op">(</span><span class="st">"/{id}"</span><span class="op">)</span> <span class="co">// &lt;--- 将此方法映射到 GET /api/playlists/{id} 请求</span></span>
-<span id="cb15-389"><a href="#cb15-389" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PlaylistDTO <span class="fu">getPlaylist</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-390"><a href="#cb15-390" aria-hidden="true" tabindex="-1"></a>            <span class="co">// @PathVariable会将URL路径中的{id}部分，绑定到方法的id参数上</span></span>
-<span id="cb15-391"><a href="#cb15-391" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> playlistService<span class="op">.</span><span class="fu">getPlaylistById</span><span class="op">(</span>id<span class="op">);</span></span>
-<span id="cb15-392"><a href="#cb15-392" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-393"><a href="#cb15-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-394"><a href="#cb15-394" aria-hidden="true" tabindex="-1"></a>        <span class="at">@PostMapping</span><span class="op">(</span><span class="st">"/{id}/songs"</span><span class="op">)</span> <span class="co">// &lt;--- 将此方法映射到 POST /api/playlists/{id}/songs 请求</span></span>
-<span id="cb15-395"><a href="#cb15-395" aria-hidden="true" tabindex="-1"></a>        <span class="at">@ResponseStatus</span><span class="op">(</span>HttpStatus<span class="op">.</span><span class="fu">CREATED</span><span class="op">)</span> <span class="co">// &lt;--- 设定成功响应的HTTP状态码为201 Created，这是RESTful设计的最佳实践</span></span>
-<span id="cb15-396"><a href="#cb15-396" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="bu">String</span> id<span class="op">,</span> <span class="at">@RequestBody</span> SongDTO songDTO<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-397"><a href="#cb15-397" aria-hidden="true" tabindex="-1"></a>            <span class="co">// @RequestBody会将HTTP请求体中的JSON内容，自动反序列化并绑定到SongDTO对象上</span></span>
-<span id="cb15-398"><a href="#cb15-398" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSongToPlaylist</span><span class="op">(</span>id<span class="op">,</span> songDTO<span class="op">);</span></span>
-<span id="cb15-399"><a href="#cb15-399" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="cb15-400"><a href="#cb15-400" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-401"><a href="#cb15-401" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-402"><a href="#cb15-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-403"><a href="#cb15-403" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第七步：创建启动“种子数据”</span></span>
-<span id="cb15-404"><a href="#cb15-404" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-405"><a href="#cb15-405" aria-hidden="true" tabindex="-1"></a>为了让我们的API在第一次启动时就有数据可供测试和查看，我们将使用 <span class="in">`CommandLineRunner`</span>。这是一个特殊的Spring Boot接口，我们只需提供一个实现了它的Bean，Spring Boot就会在应用完全启动后，自动执行其中的<span class="in">`run`</span>方法。这是初始化数据的绝佳时机。</span>
-<span id="cb15-406"><a href="#cb15-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-407"><a href="#cb15-407" aria-hidden="true" tabindex="-1"></a>**修改主启动类 `VibeVaultApplication.java`**:</span>
-<span id="cb15-408"><a href="#cb15-408" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb15-409"><a href="#cb15-409" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/VibeVaultApplication.java</span></span>
-<span id="cb15-410"><a href="#cb15-410" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
-<span id="cb15-411"><a href="#cb15-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-412"><a href="#cb15-412" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
-<span id="cb15-413"><a href="#cb15-413" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
-<span id="cb15-414"><a href="#cb15-414" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
-<span id="cb15-415"><a href="#cb15-415" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">CommandLineRunner</span><span class="op">;</span></span>
-<span id="cb15-416"><a href="#cb15-416" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">SpringApplication</span><span class="op">;</span></span>
-<span id="cb15-417"><a href="#cb15-417" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">autoconfigure</span><span class="op">.</span><span class="im">SpringBootApplication</span><span class="op">;</span></span>
-<span id="cb15-418"><a href="#cb15-418" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">context</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">Bean</span><span class="op">;</span></span>
-<span id="cb15-419"><a href="#cb15-419" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">context</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">Profile</span><span class="op">;</span></span>
-<span id="cb15-420"><a href="#cb15-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-421"><a href="#cb15-421" aria-hidden="true" tabindex="-1"></a><span class="at">@SpringBootApplication</span></span>
-<span id="cb15-422"><a href="#cb15-422" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApplication <span class="op">{</span></span>
-<span id="cb15-423"><a href="#cb15-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-424"><a href="#cb15-424" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-425"><a href="#cb15-425" aria-hidden="true" tabindex="-1"></a>        SpringApplication<span class="op">.</span><span class="fu">run</span><span class="op">(</span>VibeVaultApplication<span class="op">.</span><span class="fu">class</span><span class="op">,</span> args<span class="op">);</span></span>
-<span id="cb15-426"><a href="#cb15-426" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-427"><a href="#cb15-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-428"><a href="#cb15-428" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Bean</span> <span class="co">// &lt;--- 将这个CommandLineRunner注册为一个Bean</span></span>
-<span id="cb15-429"><a href="#cb15-429" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Profile</span><span class="op">(</span><span class="st">"!test"</span><span class="op">)</span> <span class="co">// &lt;--- 这个Bean只在非"test"环境下生效，避免影响自动化测试</span></span>
-<span id="cb15-430"><a href="#cb15-430" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> CommandLineRunner <span class="fu">initData</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb15-431"><a href="#cb15-431" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> args <span class="op">-&gt;</span> <span class="op">{</span></span>
-<span id="cb15-432"><a href="#cb15-432" aria-hidden="true" tabindex="-1"></a>            <span class="dt">final</span> <span class="bu">String</span> defaultPlaylistId <span class="op">=</span> <span class="st">"my-favorites"</span><span class="op">;</span></span>
-<span id="cb15-433"><a href="#cb15-433" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 检查默认播放列表是否已存在，避免重复创建</span></span>
-<span id="cb15-434"><a href="#cb15-434" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>defaultPlaylistId<span class="op">).</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
-<span id="cb15-435"><a href="#cb15-435" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"ℹ️ 默认播放列表不存在，正在创建示例数据..."</span><span class="op">);</span></span>
-<span id="cb15-436"><a href="#cb15-436" aria-hidden="true" tabindex="-1"></a>                Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>defaultPlaylistId<span class="op">);</span></span>
-<span id="cb15-437"><a href="#cb15-437" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">));</span></span>
-<span id="cb15-438"><a href="#cb15-438" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">));</span></span>
-<span id="cb15-439"><a href="#cb15-439" aria-hidden="true" tabindex="-1"></a>                repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
-<span id="cb15-440"><a href="#cb15-440" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"✅ 示例数据创建完毕！"</span><span class="op">);</span></span>
-<span id="cb15-441"><a href="#cb15-441" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb15-442"><a href="#cb15-442" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"ℹ️ 默认播放列表已存在，无需创建示例数据。"</span><span class="op">);</span></span>
-<span id="cb15-443"><a href="#cb15-443" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
-<span id="cb15-444"><a href="#cb15-444" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
-<span id="cb15-445"><a href="#cb15-445" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb15-446"><a href="#cb15-446" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb15-447"><a href="#cb15-447" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-448"><a href="#cb15-448" aria-hidden="true" tabindex="-1"></a>*`@Profile("!test")`注解是一个非常实用的技巧。它告诉Spring，只有在当前激活的配置（profile）不是`test`时，才创建这个`initData` Bean。这可以防止在运行自动化测试时，初始化逻辑对测试环境造成干扰。*</span>
-<span id="cb15-449"><a href="#cb15-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-450"><a href="#cb15-450" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第八步：启动与验证！</span></span>
-<span id="cb15-451"><a href="#cb15-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-452"><a href="#cb15-452" aria-hidden="true" tabindex="-1"></a>恭喜！您已经成功地将所有组件连接起来，构建了一个完整的Web API。现在，让我们启动并验证它。</span>
-<span id="cb15-453"><a href="#cb15-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-454"><a href="#cb15-454" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**启动应用**: 在IDE中，找到并运行<span class="in">`VibeVaultApplication`</span>的<span class="in">`main`</span>方法。</span>
-<span id="cb15-455"><a href="#cb15-455" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-456"><a href="#cb15-456" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**验证GET请求**: 打开你的浏览器或任何API测试工具，访问地址：</span>
-<span id="cb15-457"><a href="#cb15-457" aria-hidden="true" tabindex="-1"></a>    <span class="in">`http://localhost:8080/api/playlists/my-favorites`</span></span>
-<span id="cb15-458"><a href="#cb15-458" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-459"><a href="#cb15-459" aria-hidden="true" tabindex="-1"></a>    你应该能看到一个结构清晰的JSON响应，其中包含了我们自动创建的两首歌曲。注意，响应中不包含<span class="in">`durationInSeconds`</span>字段，因为我们的<span class="in">`SongDTO`</span>中没有定义它。</span>
-<span id="cb15-460"><a href="#cb15-460" aria-hidden="true" tabindex="-1"></a>    <span class="in">```json</span></span>
-<span id="cb15-461"><a href="#cb15-461" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb15-462"><a href="#cb15-462" aria-hidden="true" tabindex="-1"></a>      <span class="st">"name"</span><span class="op">:</span> <span class="st">"my-favorites"</span><span class="op">,</span></span>
-<span id="cb15-463"><a href="#cb15-463" aria-hidden="true" tabindex="-1"></a>      <span class="st">"songs"</span><span class="op">:</span> [</span>
-<span id="cb15-464"><a href="#cb15-464" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb15-465"><a href="#cb15-465" aria-hidden="true" tabindex="-1"></a>          <span class="st">"title"</span><span class="op">:</span> <span class="st">"Bohemian Rhapsody"</span><span class="op">,</span></span>
-<span id="cb15-466"><a href="#cb15-466" aria-hidden="true" tabindex="-1"></a>          <span class="st">"artist"</span><span class="op">:</span> <span class="st">"Queen"</span></span>
-<span id="cb15-467"><a href="#cb15-467" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
-<span id="cb15-468"><a href="#cb15-468" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb15-469"><a href="#cb15-469" aria-hidden="true" tabindex="-1"></a>          <span class="st">"title"</span><span class="op">:</span> <span class="st">"Stairway to Heaven"</span><span class="op">,</span></span>
-<span id="cb15-470"><a href="#cb15-470" aria-hidden="true" tabindex="-1"></a>          <span class="st">"artist"</span><span class="op">:</span> <span class="st">"Led Zeppelin"</span></span>
-<span id="cb15-471"><a href="#cb15-471" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb15-472"><a href="#cb15-472" aria-hidden="true" tabindex="-1"></a>      ]</span>
-<span id="cb15-473"><a href="#cb15-473" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb15-474"><a href="#cb15-474" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-475"><a href="#cb15-475" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-476"><a href="#cb15-476" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**验证404 Not Found**: 接着访问一个不存在的播放列表：</span>
-<span id="cb15-477"><a href="#cb15-477" aria-hidden="true" tabindex="-1"></a>    <span class="in">`http://localhost:8080/api/playlists/non-existent-id`</span></span>
-<span id="cb15-478"><a href="#cb15-478" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb15-479"><a href="#cb15-479" aria-hidden="true" tabindex="-1"></a>    这次，你将看到一个由Spring Boot自动生成的、专业的404错误响应页面或JSON，这正是我们通过<span class="in">`ResourceNotFoundException`</span>和<span class="in">`@ResponseStatus`</span>注解所实现的。</span>
-<span id="cb15-480"><a href="#cb15-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-481"><a href="#cb15-481" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**验证POST请求**: 使用<span class="in">`curl`</span>或Postman等工具，向播放列表添加一首新歌。</span>
-<span id="cb15-482"><a href="#cb15-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-483"><a href="#cb15-483" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb15-484"><a href="#cb15-484" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists/my-favorites/songs <span class="dt">\</span></span>
-<span id="cb15-485"><a href="#cb15-485" aria-hidden="true" tabindex="-1"></a>         <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb15-486"><a href="#cb15-486" aria-hidden="true" tabindex="-1"></a>         <span class="at">-d</span> <span class="st">'{"title": "Hotel California", "artist": "Eagles"}'</span></span>
-<span id="cb15-487"><a href="#cb15-487" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb15-488"><a href="#cb15-488" aria-hidden="true" tabindex="-1"></a>    这个命令应该会返回一个<span class="in">`201 Created`</span>状态码。执行后，再次在浏览器中访问<span class="in">`http://localhost:8080/api/playlists/my-favorites`</span>，你会兴奋地发现，新歌已经被成功添加进去了！</span>
-<span id="cb15-489"><a href="#cb15-489" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-490"><a href="#cb15-490" aria-hidden="true" tabindex="-1"></a><span class="fu">### 思考与练习</span></span>
-<span id="cb15-491"><a href="#cb15-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-492"><a href="#cb15-492" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**编码练习**: 基于以上知识，请为<span class="in">`PlaylistController`</span>实现<span class="in">`DELETE /api/playlists/{id}/songs`</span>端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的<span class="in">`title`</span>作为参数来识别要删除的歌曲。</span>
-<span id="cb15-493"><a href="#cb15-493" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>你需要在<span class="in">`PlaylistService`</span>和<span class="in">`Playlist`</span>领域模型中添加相应的删除逻辑。</span>
-<span id="cb15-494"><a href="#cb15-494" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：如何处理要删除的歌曲不存在的情况？应该返回什么HTTP状态码？</span>
-<span id="cb15-495"><a href="#cb15-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-496"><a href="#cb15-496" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**思考**: <span class="in">`@RestController`</span>注解和传统的<span class="in">`@Controller`</span>注解有什么本质区别？（提示：可以查阅一下<span class="in">`@ResponseBody`</span>注解的作用，<span class="in">`@RestController`</span>其实是<span class="in">`@Controller`</span> + <span class="in">`@ResponseBody`</span>的便捷组合。）</span>
-<span id="cb15-497"><a href="#cb15-497" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**: "请向我解释Spring Boot中的<span class="in">`@ControllerAdvice`</span>和<span class="in">`@ExceptionHandler`</span>注解。相比于我们现在使用的<span class="in">`@ResponseStatus`</span>，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获<span class="in">`ResourceNotFoundException`</span>并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "7.3 - 构建你的第一个API"</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "千里之行，始于足下。" - 老子</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：万事俱备，如何连接？</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>在上一节，我们成功地将VibeVault项目升级成了一个现代化的Spring Boot应用。我们拥有了一个功能完备的Web服务器，随时准备好接收网络请求。然而，我们之前在第六章中精心设计的业务逻辑组件——<span class="in">`PlaylistService`</span>、<span class="in">`FilePlaylistRepository`</span>等，目前还静静地躺在代码库里，与这个Web服务器**完全隔离**。</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>Spring Boot的自动配置虽然强大，但它并不知道我们编写的这些类是做什么的，也不知道应该在何时创建它们、如何将它们组合在一起。我们手动<span class="in">`new`</span>对象的传统方式，无法让这些组件融入Spring的自动化管理世界。</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>**我们面临的危机是：如何将我们自己编写的业务组件，“注册”到Spring的管理体系中，并建立一座桥梁，将外部传入的HTTP请求，精确地“路由”到正确的业务逻辑上，从而真正地将它们从一个本地应用，演进为一个Web API？**</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：注解——给Spring的“指令”</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>Spring Boot通过**注解 (Annotations)** 来完美地解决了这个问题。注解就像是我们贴在Java类、方法或字段上的“标签”。当Spring Boot应用启动时，它会像一个勤劳的管家一样，扫描我们代码中所有贴有特定标签的组件，然后根据这些标签的指示来自动化地完成对象的创建、组装和管理。</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="fu">### 核心“组件”注解：声明Bean的角色</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Component`</span>: 这是最基础、最通用的标签。一旦贴在一个类上，就等于告诉Spring：“请为我创建这个类的一个实例（instance），并由你来全权管理它的生命周期。”这个由Spring创建和管理的实例，我们称之为**Bean**。</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Repository`</span>: 这是<span class="in">`@Component`</span>的一个特殊化版本，专门用来贴在**数据访问层**（Repository）的实现类上。它不仅声明了这是一个Bean，还清晰地向其他开发者传达了它的角色——“这是一个负责数据存储与检索的仓库”。</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Service`</span>: 同样是<span class="in">`@Component`</span>的特殊化版本，用于**业务逻辑层**（Service）的实现类。它表明这个Bean的角色是提供具体的“业务服务”。</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@RestController`</span>: 这是一个功能更强大的组合标签，我们贴在**表现层**（Controller）的类上。它告诉Spring两件重要的事情：</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>这也是一个Bean，专门负责处理HTTP请求。</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>这个控制器下所有方法的返回值，都应该被自动序列化成JSON格式，并直接作为HTTP响应的内容发送给客户端。</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a><span class="fu">### 核心“连接”注解：实现依赖注入</span></span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>当我们把所有组件都使用上述注解标记为Bean后，Spring容器就会在启动时自动创建它们。那么，组件之间的依赖关系（比如<span class="in">`PlaylistServiceImpl`</span>需要一个<span class="in">`PlaylistRepository`</span>）如何建立呢？我们不再需要手动<span class="in">`new`</span>。</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>取而代之的是，我们使用**构造函数注入 (Constructor Injection)** 的方式来声明依赖，这是Spring官方最为推荐的方式。</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="at">@Service</span></span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 这是PlaylistServiceImpl的构造函数</span></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 当Spring要创建PlaylistServiceImpl这个Bean时，</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 它会检查这个构造函数，发现需要一个PlaylistRepository类型的参数。</span></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 于是，Spring会自动在它所管理的全部Bean中，寻找一个匹配的PlaylistRepository Bean，</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 并自动地、无形地将它作为参数“注入”进来。</span></span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>        <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>这个过程，就好像组件的创建和依赖的“控制权”，从我们程序员手中**反转**给了Spring容器，再由容器将依赖关系**注入**到需要它的地方。这就是Spring框架最核心、最基础的思想——**控制反转 (Inversion of Control - IoC)** 和 **依赖注入 (Dependency Injection - DI)**。</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a>现在，让我们动手将第六章的所有零件，用注解的方式重新连接和升级，构建出我们的第一个API。</span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check (动手与思考)</span></span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>我们将按照以下步骤，逐步将<span class="in">`ch07`</span>项目从一个简陋的命令行应用，彻底重构为一个功能完备、设计优雅的现代Web API。</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第一步：标注并重构Repository</span></span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>我们首先从数据访问层开始。当前 <span class="in">`FilePlaylistRepository`</span> 的设计存在一些问题：它只能处理单个固定的文件 (<span class="in">`data/playlist.csv`</span>)，并且在文件不存在时处理方式不够健壮。我们需要对其进行改造。</span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>**修改 `FilePlaylistRepository.java`**</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>为其添加 <span class="in">`@Repository`</span> 注解，将其声明为一个由Spring管理的Bean。</span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>改造 <span class="in">`save`</span> 和 <span class="in">`load`</span> 方法，让它们能够根据 <span class="in">`playlistId`</span> 处理**不同**的文件。例如，ID为 "my-favorites" 的播放列表应存为 <span class="in">`my-favorites.csv`</span>。</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[最佳实践]** 改造 <span class="in">`load`</span> 方法，使其返回 <span class="in">`Optional&lt;Playlist&gt;`</span>。这是现代Java中处理“可能不存在”的值的标准方式，可以有效避免 <span class="in">`NullPointerException`</span>。</span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[最佳实践]** 在IO操作失败时，抛出运行时异常，而不是简单地在控制台打印错误。</span>
+<span id="cb16-72"><a href="#cb16-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-73"><a href="#cb16-73" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb16-74"><a href="#cb16-74" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/repository/FilePlaylistRepository.java</span></span>
+<span id="cb16-75"><a href="#cb16-75" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
+<span id="cb16-76"><a href="#cb16-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-77"><a href="#cb16-77" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-78"><a href="#cb16-78" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb16-79"><a href="#cb16-79" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Repository</span><span class="op">;</span> <span class="co">// 引入注解</span></span>
+<span id="cb16-80"><a href="#cb16-80" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">io</span><span class="op">.</span><span class="im">IOException</span><span class="op">;</span></span>
+<span id="cb16-81"><a href="#cb16-81" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Files</span><span class="op">;</span></span>
+<span id="cb16-82"><a href="#cb16-82" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Path</span><span class="op">;</span></span>
+<span id="cb16-83"><a href="#cb16-83" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">nio</span><span class="op">.</span><span class="im">file</span><span class="op">.</span><span class="im">Paths</span><span class="op">;</span></span>
+<span id="cb16-84"><a href="#cb16-84" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
+<span id="cb16-85"><a href="#cb16-85" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Optional</span><span class="op">;</span> <span class="co">// 引入Optional</span></span>
+<span id="cb16-86"><a href="#cb16-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-87"><a href="#cb16-87" aria-hidden="true" tabindex="-1"></a><span class="at">@Repository</span> <span class="co">// &lt;--- 添加标签</span></span>
+<span id="cb16-88"><a href="#cb16-88" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> FilePlaylistRepository <span class="kw">implements</span> PlaylistRepository <span class="op">{</span></span>
+<span id="cb16-89"><a href="#cb16-89" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> <span class="bu">String</span> DATA_DIRECTORY <span class="op">=</span> <span class="st">"data"</span><span class="op">;</span></span>
+<span id="cb16-90"><a href="#cb16-90" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">final</span> Path DATA_PATH <span class="op">=</span> Paths<span class="op">.</span><span class="fu">get</span><span class="op">(</span>DATA_DIRECTORY<span class="op">);</span></span>
+<span id="cb16-91"><a href="#cb16-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-92"><a href="#cb16-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb16-93"><a href="#cb16-93" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-94"><a href="#cb16-94" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 让文件名与播放列表的ID动态关联</span></span>
+<span id="cb16-95"><a href="#cb16-95" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> DATA_PATH<span class="op">.</span><span class="fu">resolve</span><span class="op">(</span>playlist<span class="op">.</span><span class="fu">getName</span><span class="op">()</span> <span class="op">+</span> <span class="st">".csv"</span><span class="op">);</span></span>
+<span id="cb16-96"><a href="#cb16-96" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-97"><a href="#cb16-97" aria-hidden="true" tabindex="-1"></a>        <span class="co">// 使用Stream API，代码更简洁</span></span>
+<span id="cb16-98"><a href="#cb16-98" aria-hidden="true" tabindex="-1"></a>        <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">stream</span><span class="op">()</span></span>
+<span id="cb16-99"><a href="#cb16-99" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">map</span><span class="op">(</span>Song<span class="op">::</span>toCsvString<span class="op">)</span></span>
+<span id="cb16-100"><a href="#cb16-100" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">toList</span><span class="op">();</span></span>
+<span id="cb16-101"><a href="#cb16-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-102"><a href="#cb16-102" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb16-103"><a href="#cb16-103" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 确保 "data" 目录存在</span></span>
+<span id="cb16-104"><a href="#cb16-104" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>DATA_PATH<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb16-105"><a href="#cb16-105" aria-hidden="true" tabindex="-1"></a>                 Files<span class="op">.</span><span class="fu">createDirectories</span><span class="op">(</span>DATA_PATH<span class="op">);</span></span>
+<span id="cb16-106"><a href="#cb16-106" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb16-107"><a href="#cb16-107" aria-hidden="true" tabindex="-1"></a>            Files<span class="op">.</span><span class="fu">write</span><span class="op">(</span>path<span class="op">,</span> csvLines<span class="op">);</span></span>
+<span id="cb16-108"><a href="#cb16-108" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-109"><a href="#cb16-109" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 抛出运行时异常，让错误在更高层级被处理</span></span>
+<span id="cb16-110"><a href="#cb16-110" aria-hidden="true" tabindex="-1"></a>            <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">RuntimeException</span><span class="op">(</span><span class="st">"Error saving playlist to "</span> <span class="op">+</span> path<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb16-111"><a href="#cb16-111" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-112"><a href="#cb16-112" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-113"><a href="#cb16-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-114"><a href="#cb16-114" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Override</span></span>
+<span id="cb16-115"><a href="#cb16-115" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> Optional<span class="op">&lt;</span>Playlist<span class="op">&gt;</span> <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">)</span> <span class="op">{</span> <span class="co">// &lt;--- 返回类型改为Optional&lt;Playlist&gt;</span></span>
+<span id="cb16-116"><a href="#cb16-116" aria-hidden="true" tabindex="-1"></a>        Path path <span class="op">=</span> DATA_PATH<span class="op">.</span><span class="fu">resolve</span><span class="op">(</span>playlistId <span class="op">+</span> <span class="st">".csv"</span><span class="op">);</span></span>
+<span id="cb16-117"><a href="#cb16-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-118"><a href="#cb16-118" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>Files<span class="op">.</span><span class="fu">notExists</span><span class="op">(</span>path<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb16-119"><a href="#cb16-119" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> Optional<span class="op">.</span><span class="fu">empty</span><span class="op">();</span> <span class="co">// &lt;--- 如果文件不存在，明确返回“空”</span></span>
+<span id="cb16-120"><a href="#cb16-120" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-121"><a href="#cb16-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-122"><a href="#cb16-122" aria-hidden="true" tabindex="-1"></a>        Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>playlistId<span class="op">);</span></span>
+<span id="cb16-123"><a href="#cb16-123" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span> <span class="op">{</span></span>
+<span id="cb16-124"><a href="#cb16-124" aria-hidden="true" tabindex="-1"></a>            <span class="bu">List</span><span class="op">&lt;</span><span class="bu">String</span><span class="op">&gt;</span> csvLines <span class="op">=</span> Files<span class="op">.</span><span class="fu">readAllLines</span><span class="op">(</span>path<span class="op">);</span></span>
+<span id="cb16-125"><a href="#cb16-125" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> <span class="op">(</span><span class="bu">String</span> line <span class="op">:</span> csvLines<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-126"><a href="#cb16-126" aria-hidden="true" tabindex="-1"></a>                <span class="co">// 复用Song中的静态工厂方法，保持代码干净</span></span>
+<span id="cb16-127"><a href="#cb16-127" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>Song<span class="op">.</span><span class="fu">fromCsvString</span><span class="op">(</span>line<span class="op">));</span></span>
+<span id="cb16-128"><a href="#cb16-128" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb16-129"><a href="#cb16-129" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span> <span class="cf">catch</span> <span class="op">(</span><span class="bu">IOException</span> <span class="op">|</span> <span class="bu">NumberFormatException</span> e<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-130"><a href="#cb16-130" aria-hidden="true" tabindex="-1"></a>             <span class="cf">throw</span> <span class="kw">new</span> <span class="bu">RuntimeException</span><span class="op">(</span><span class="st">"Error loading playlist from "</span> <span class="op">+</span> path<span class="op">,</span> e<span class="op">);</span></span>
+<span id="cb16-131"><a href="#cb16-131" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-132"><a href="#cb16-132" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Optional<span class="op">.</span><span class="fu">of</span><span class="op">(</span>playlist<span class="op">);</span> <span class="co">// &lt;--- 用Optional包装返回结果</span></span>
+<span id="cb16-133"><a href="#cb16-133" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-134"><a href="#cb16-134" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-135"><a href="#cb16-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-136"><a href="#cb16-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-137"><a href="#cb16-137" aria-hidden="true" tabindex="-1"></a>**修改 `PlaylistRepository.java` 接口**</span>
+<span id="cb16-138"><a href="#cb16-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-139"><a href="#cb16-139" aria-hidden="true" tabindex="-1"></a>为了使 <span class="in">`FilePlaylistRepository`</span> 的修改能够成功编译，我们**必须**同步更新 <span class="in">`PlaylistRepository`</span> 接口，使其 <span class="in">`load`</span> 方法的返回类型也变为 <span class="in">`Optional&lt;Playlist&gt;`</span>。</span>
+<span id="cb16-140"><a href="#cb16-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-141"><a href="#cb16-141" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb16-142"><a href="#cb16-142" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/repository/PlaylistRepository.java</span></span>
+<span id="cb16-143"><a href="#cb16-143" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">;</span></span>
+<span id="cb16-144"><a href="#cb16-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-145"><a href="#cb16-145" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-146"><a href="#cb16-146" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">Optional</span><span class="op">;</span></span>
+<span id="cb16-147"><a href="#cb16-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-148"><a href="#cb16-148" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">interface</span> PlaylistRepository <span class="op">{</span></span>
+<span id="cb16-149"><a href="#cb16-149" aria-hidden="true" tabindex="-1"></a>    <span class="dt">void</span> <span class="fu">save</span><span class="op">(</span>Playlist playlist<span class="op">);</span></span>
+<span id="cb16-150"><a href="#cb16-150" aria-hidden="true" tabindex="-1"></a>    Optional<span class="op">&lt;</span>Playlist<span class="op">&gt;</span> <span class="fu">load</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">);</span> <span class="co">// &lt;--- 修改返回类型</span></span>
+<span id="cb16-151"><a href="#cb16-151" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-152"><a href="#cb16-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-153"><a href="#cb16-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-154"><a href="#cb16-154" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第二步：彻底重构Service层</span></span>
+<span id="cb16-155"><a href="#cb16-155" aria-hidden="true" tabindex="-1"></a>当前的 <span class="in">`PlaylistService`</span> 接口和实现完全是为命令行交互设计的。我们需要重新定义它的职责，使其服务于一个RESTful API。</span>
+<span id="cb16-156"><a href="#cb16-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-157"><a href="#cb16-157" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**修改 `PlaylistService.java` 接口**:</span>
+<span id="cb16-158"><a href="#cb16-158" aria-hidden="true" tabindex="-1"></a>    重新定义接口方法，使其符合API的业务场景，如“根据ID获取播放列表”、“向指定播放列表添加歌曲”。</span>
+<span id="cb16-159"><a href="#cb16-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-160"><a href="#cb16-160" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-161"><a href="#cb16-161" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistService.java</span></span>
+<span id="cb16-162"><a href="#cb16-162" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb16-163"><a href="#cb16-163" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-164"><a href="#cb16-164" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 我们将在这里引入DTO，但为了步骤清晰，先使用内部模型</span></span>
+<span id="cb16-165"><a href="#cb16-165" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-166"><a href="#cb16-166" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb16-167"><a href="#cb16-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-168"><a href="#cb16-168" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
+<span id="cb16-169"><a href="#cb16-169" aria-hidden="true" tabindex="-1"></a>        Playlist <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">);</span></span>
+<span id="cb16-170"><a href="#cb16-170" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> Song song<span class="op">);</span></span>
+<span id="cb16-171"><a href="#cb16-171" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-172"><a href="#cb16-172" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-173"><a href="#cb16-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-174"><a href="#cb16-174" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**修改 `PlaylistServiceImpl.java` 实现**:</span>
+<span id="cb16-175"><a href="#cb16-175" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加 <span class="in">`@Service`</span> 注解。</span>
+<span id="cb16-176"><a href="#cb16-176" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用构造函数注入 <span class="in">`PlaylistRepository`</span>。</span>
+<span id="cb16-177"><a href="#cb16-177" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现新的接口方法，并处理从Repository返回的<span class="in">`Optional`</span>。</span>
+<span id="cb16-178"><a href="#cb16-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-179"><a href="#cb16-179" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-180"><a href="#cb16-180" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
+<span id="cb16-181"><a href="#cb16-181" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb16-182"><a href="#cb16-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-183"><a href="#cb16-183" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-184"><a href="#cb16-184" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb16-185"><a href="#cb16-185" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb16-186"><a href="#cb16-186" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Service</span><span class="op">;</span> <span class="co">// 引入注解</span></span>
+<span id="cb16-187"><a href="#cb16-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-188"><a href="#cb16-188" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Service</span> <span class="co">// &lt;--- 添加标签</span></span>
+<span id="cb16-189"><a href="#cb16-189" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
+<span id="cb16-190"><a href="#cb16-190" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
+<span id="cb16-191"><a href="#cb16-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-192"><a href="#cb16-192" aria-hidden="true" tabindex="-1"></a>        <span class="co">// &lt;--- 使用构造函数注入依赖</span></span>
+<span id="cb16-193"><a href="#cb16-193" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-194"><a href="#cb16-194" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
+<span id="cb16-195"><a href="#cb16-195" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-196"><a href="#cb16-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-197"><a href="#cb16-197" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb16-198"><a href="#cb16-198" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> Playlist <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-199"><a href="#cb16-199" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 调用repository，如果返回的Optional为空，暂时返回null</span></span>
+<span id="cb16-200"><a href="#cb16-200" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 我们很快会用更好的方式（异常处理）来改进它</span></span>
+<span id="cb16-201"><a href="#cb16-201" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>id<span class="op">).</span><span class="fu">orElse</span><span class="op">(</span><span class="kw">null</span><span class="op">);</span></span>
+<span id="cb16-202"><a href="#cb16-202" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-203"><a href="#cb16-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-204"><a href="#cb16-204" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb16-205"><a href="#cb16-205" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> Song song<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-206"><a href="#cb16-206" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 先加载播放列表，如果不存在则抛出异常，确保操作的有效性</span></span>
+<span id="cb16-207"><a href="#cb16-207" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>playlistId<span class="op">)</span></span>
+<span id="cb16-208"><a href="#cb16-208" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="bu">IllegalStateException</span><span class="op">(</span><span class="st">"Cannot add song to a non-existent playlist: "</span> <span class="op">+</span> playlistId<span class="op">));</span></span>
+<span id="cb16-209"><a href="#cb16-209" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-210"><a href="#cb16-210" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 执行业务逻辑并持久化</span></span>
+<span id="cb16-211"><a href="#cb16-211" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>song<span class="op">);</span></span>
+<span id="cb16-212"><a href="#cb16-212" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
+<span id="cb16-213"><a href="#cb16-213" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-214"><a href="#cb16-214" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-215"><a href="#cb16-215" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-216"><a href="#cb16-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-217"><a href="#cb16-217" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第三步：Model vs. DTO - 为什么要多此一举？</span></span>
+<span id="cb16-218"><a href="#cb16-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-219"><a href="#cb16-219" aria-hidden="true" tabindex="-1"></a>在进入下一步之前，我们必须理解一个关键的软件设计原则：**API的“契约”应该与其内部的“领域模型”解耦**。</span>
+<span id="cb16-220"><a href="#cb16-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-221"><a href="#cb16-221" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**领域模型 (Domain Model)**: 这是我们应用的核心。像`Playlist`和`Song`这样的`record`或`class`，它们不仅仅是数据的容器，更封装了业务规则和行为（例如`Playlist`中的`addSong`方法）。它们是为应用内部的 **业务逻辑** 服务的。领域模型可能会包含许多内部状态、复杂的对象关系，甚至一些不应该对外暴露的敏感信息。</span>
+<span id="cb16-222"><a href="#cb16-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-223"><a href="#cb16-223" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**数据传输对象 (Data Transfer Object - DTO)**: DTO的目标则非常单纯：**为数据传输而生**。它是一个纯粹的数据载体，专门用于在不同层之间（特别是应用边界，如我们的REST API）传递信息。DTO应该是“扁平的”，只包含客户端需要或允许提供的字段，**不包含任何业务逻辑**。</span>
+<span id="cb16-224"><a href="#cb16-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-225"><a href="#cb16-225" aria-hidden="true" tabindex="-1"></a>**为什么要区分它们？**</span>
+<span id="cb16-226"><a href="#cb16-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-227"><a href="#cb16-227" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**API稳定性**: 我们的内部领域模型<span class="in">`Song`</span>可能会经常变化，比如我们想增加<span class="in">`durationInSeconds`</span>、<span class="in">`genre`</span>、<span class="in">`album`</span>等字段。如果API直接暴露<span class="in">`Song`</span>模型，每次内部模型的改动都可能破坏API的兼容性，导致客户端应用崩溃。而DTO作为一层“防腐层”，可以保持API的稳定，即使内部模型已经演化。</span>
+<span id="cb16-228"><a href="#cb16-228" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安全性**: 我们的<span class="in">`User`</span>模型可能包含<span class="in">`hashedPassword`</span>和<span class="in">`roles`</span>字段。如果直接返回<span class="in">`User`</span>模型，会将这些敏感信息泄露给客户端。通过创建一个<span class="in">`UserDTO`</span>，我们可以精确控制只返回<span class="in">`username`</span>和<span class="in">`email`</span>等安全信息。</span>
+<span id="cb16-229"><a href="#cb16-229" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**关注点分离**: <span class="in">`Controller`</span>的职责是处理HTTP请求和响应，它应该只关心DTO。<span class="in">`Service`</span>层的职责是执行业务逻辑，它应该关心领域模型。这种分离使得代码结构更清晰，职责更单一。</span>
+<span id="cb16-230"><a href="#cb16-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-231"><a href="#cb16-231" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **顿悟**: 将Model和DTO分离，就像是为你的房子装上了**窗户和门**。你不会把整个客厅（Model）都推到街上（API）去和人交流，而是通过一个精确控制大小和开关的门窗（DTO）来与外界互动。</span></span>
+<span id="cb16-232"><a href="#cb16-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-233"><a href="#cb16-233" aria-hidden="true" tabindex="-1"></a>现在，让我们来定义API的“数据契约”。</span>
+<span id="cb16-234"><a href="#cb16-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-235"><a href="#cb16-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第四步：定义API的“数据契约” - DTOs</span></span>
+<span id="cb16-236"><a href="#cb16-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-237"><a href="#cb16-237" aria-hidden="true" tabindex="-1"></a>直接在API的输入和输出中使用我们的内部领域模型（<span class="in">`Playlist`</span>和<span class="in">`Song`</span>）通常被认为是一种**不良实践**。API应该通过**DTO (Data Transfer Object)** 来与外部世界沟通。在现代Java中，<span class="in">`record`</span>是创建DTO的完美工具。</span>
+<span id="cb16-238"><a href="#cb16-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-239"><a href="#cb16-239" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建DTO包**: 在<span class="in">`com.vibevault`</span>下创建新包<span class="in">`dto`</span>。</span>
+<span id="cb16-240"><a href="#cb16-240" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建DTO类**: 在<span class="in">`dto`</span>包下使用<span class="in">`record`</span>关键字创建<span class="in">`SongDTO.java`</span>和<span class="in">`PlaylistDTO.java`</span>。</span>
+<span id="cb16-241"><a href="#cb16-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-242"><a href="#cb16-242" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-243"><a href="#cb16-243" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/dto/SongDTO.java</span></span>
+<span id="cb16-244"><a href="#cb16-244" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">;</span></span>
+<span id="cb16-245"><a href="#cb16-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-246"><a href="#cb16-246" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 我们决定只在API中暴露歌曲的标题和艺术家，</span></span>
+<span id="cb16-247"><a href="#cb16-247" aria-hidden="true" tabindex="-1"></a>    <span class="co">// 隐藏`durationInSeconds`这个内部实现细节。</span></span>
+<span id="cb16-248"><a href="#cb16-248" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">record</span> <span class="fu">SongDTO</span><span class="op">(</span><span class="bu">String</span> title<span class="op">,</span> <span class="bu">String</span> artist<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-249"><a href="#cb16-249" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-250"><a href="#cb16-250" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-251"><a href="#cb16-251" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-252"><a href="#cb16-252" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-253"><a href="#cb16-253" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/dto/PlaylistDTO.java</span></span>
+<span id="cb16-254"><a href="#cb16-254" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">;</span></span>
+<span id="cb16-255"><a href="#cb16-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-256"><a href="#cb16-256" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">List</span><span class="op">;</span></span>
+<span id="cb16-257"><a href="#cb16-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-258"><a href="#cb16-258" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">record</span> <span class="fu">PlaylistDTO</span><span class="op">(</span><span class="bu">String</span> name<span class="op">,</span> <span class="bu">List</span><span class="op">&lt;</span>SongDTO<span class="op">&gt;</span> songs<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-259"><a href="#cb16-259" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-260"><a href="#cb16-260" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-261"><a href="#cb16-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-262"><a href="#cb16-262" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第五步：演进Service层以处理DTO和异常</span></span>
+<span id="cb16-263"><a href="#cb16-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-264"><a href="#cb16-264" aria-hidden="true" tabindex="-1"></a>现在我们有了DTO，需要更新<span class="in">`PlaylistService`</span>，让它能够理解和返回DTO，并能优雅地处理“资源未找到”的场景。</span>
+<span id="cb16-265"><a href="#cb16-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-266"><a href="#cb16-266" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建自定义异常**:</span>
+<span id="cb16-267"><a href="#cb16-267" aria-hidden="true" tabindex="-1"></a>    一个专业的API应该对不同的错误返回不同的HTTP状态码。例如，当请求的资源不存在时，应返回404 Not Found。</span>
+<span id="cb16-268"><a href="#cb16-268" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`com.vibevault`</span>下创建新包<span class="in">`exception`</span>。</span>
+<span id="cb16-269"><a href="#cb16-269" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在其中定义<span class="in">`ResourceNotFoundException.java`</span>。</span>
+<span id="cb16-270"><a href="#cb16-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-271"><a href="#cb16-271" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-272"><a href="#cb16-272" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/exception/ResourceNotFoundException.java</span></span>
+<span id="cb16-273"><a href="#cb16-273" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">exception</span><span class="op">;</span></span>
+<span id="cb16-274"><a href="#cb16-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-275"><a href="#cb16-275" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatus</span><span class="op">;</span></span>
+<span id="cb16-276"><a href="#cb16-276" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">web</span><span class="op">.</span><span class="im">bind</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">ResponseStatus</span><span class="op">;</span></span>
+<span id="cb16-277"><a href="#cb16-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-278"><a href="#cb16-278" aria-hidden="true" tabindex="-1"></a>    <span class="at">@ResponseStatus</span><span class="op">(</span>value <span class="op">=</span> HttpStatus<span class="op">.</span><span class="fu">NOT_FOUND</span><span class="op">)</span> <span class="co">// &lt;--- 关键注解</span></span>
+<span id="cb16-279"><a href="#cb16-279" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> ResourceNotFoundException <span class="kw">extends</span> <span class="bu">RuntimeException</span> <span class="op">{</span></span>
+<span id="cb16-280"><a href="#cb16-280" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="bu">String</span> message<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-281"><a href="#cb16-281" aria-hidden="true" tabindex="-1"></a>            <span class="kw">super</span><span class="op">(</span>message<span class="op">);</span></span>
+<span id="cb16-282"><a href="#cb16-282" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-283"><a href="#cb16-283" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-284"><a href="#cb16-284" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-285"><a href="#cb16-285" aria-hidden="true" tabindex="-1"></a>    *`@ResponseStatus(HttpStatus.NOT_FOUND)`这个注解威力巨大。当这个异常在Controller层被抛出且未被捕获时，Spring框架会自动拦截它，并生成一个标准的HTTP 404 Not Found响应。*</span>
+<span id="cb16-286"><a href="#cb16-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-287"><a href="#cb16-287" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**更新`PlaylistService`接口**:</span>
+<span id="cb16-288"><a href="#cb16-288" aria-hidden="true" tabindex="-1"></a>    让接口的契约使用我们新定义的DTO。</span>
+<span id="cb16-289"><a href="#cb16-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-290"><a href="#cb16-290" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-291"><a href="#cb16-291" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistService.java</span></span>
+<span id="cb16-292"><a href="#cb16-292" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb16-293"><a href="#cb16-293" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-294"><a href="#cb16-294" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
+<span id="cb16-295"><a href="#cb16-295" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
+<span id="cb16-296"><a href="#cb16-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-297"><a href="#cb16-297" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">interface</span> PlaylistService <span class="op">{</span></span>
+<span id="cb16-298"><a href="#cb16-298" aria-hidden="true" tabindex="-1"></a>        PlaylistDTO <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">);</span></span>
+<span id="cb16-299"><a href="#cb16-299" aria-hidden="true" tabindex="-1"></a>        <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> SongDTO songDTO<span class="op">);</span></span>
+<span id="cb16-300"><a href="#cb16-300" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-301"><a href="#cb16-301" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-302"><a href="#cb16-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-303"><a href="#cb16-303" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**完善`PlaylistServiceImpl`实现**:</span>
+<span id="cb16-304"><a href="#cb16-304" aria-hidden="true" tabindex="-1"></a>    这是连接所有逻辑的核心。它负责调用Repository，处理<span class="in">`Optional`</span>返回的可能为空的情况（抛出异常），并将领域模型安全地转换为外部的DTO。</span>
+<span id="cb16-305"><a href="#cb16-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-306"><a href="#cb16-306" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-307"><a href="#cb16-307" aria-hidden="true" tabindex="-1"></a>    <span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/service/PlaylistServiceImpl.java</span></span>
+<span id="cb16-308"><a href="#cb16-308" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">;</span></span>
+<span id="cb16-309"><a href="#cb16-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-310"><a href="#cb16-310" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
+<span id="cb16-311"><a href="#cb16-311" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
+<span id="cb16-312"><a href="#cb16-312" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">exception</span><span class="op">.</span><span class="im">ResourceNotFoundException</span><span class="op">;</span></span>
+<span id="cb16-313"><a href="#cb16-313" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-314"><a href="#cb16-314" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb16-315"><a href="#cb16-315" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb16-316"><a href="#cb16-316" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">java</span><span class="op">.</span><span class="im">util</span><span class="op">.</span><span class="im">stream</span><span class="op">.</span><span class="im">Collectors</span><span class="op">;</span></span>
+<span id="cb16-317"><a href="#cb16-317" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">stereotype</span><span class="op">.</span><span class="im">Service</span><span class="op">;</span></span>
+<span id="cb16-318"><a href="#cb16-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-319"><a href="#cb16-319" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Service</span></span>
+<span id="cb16-320"><a href="#cb16-320" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistServiceImpl <span class="kw">implements</span> PlaylistService <span class="op">{</span></span>
+<span id="cb16-321"><a href="#cb16-321" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistRepository repository<span class="op">;</span></span>
+<span id="cb16-322"><a href="#cb16-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-323"><a href="#cb16-323" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistServiceImpl</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-324"><a href="#cb16-324" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">repository</span> <span class="op">=</span> repository<span class="op">;</span></span>
+<span id="cb16-325"><a href="#cb16-325" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-326"><a href="#cb16-326" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb16-327"><a href="#cb16-327" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb16-328"><a href="#cb16-328" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PlaylistDTO <span class="fu">getPlaylistById</span><span class="op">(</span><span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-329"><a href="#cb16-329" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 调用repository，如果返回的Optional为空，则立即抛出我们自定义的异常</span></span>
+<span id="cb16-330"><a href="#cb16-330" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>id<span class="op">)</span></span>
+<span id="cb16-331"><a href="#cb16-331" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="st">"Playlist not found with id: "</span> <span class="op">+</span> id<span class="op">));</span></span>
+<span id="cb16-332"><a href="#cb16-332" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-333"><a href="#cb16-333" aria-hidden="true" tabindex="-1"></a>            <span class="co">// [模型转换] 将内部的Playlist领域模型，安全地转换为外部的PlaylistDTO</span></span>
+<span id="cb16-334"><a href="#cb16-334" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="kw">new</span> <span class="fu">PlaylistDTO</span><span class="op">(</span></span>
+<span id="cb16-335"><a href="#cb16-335" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">getName</span><span class="op">(),</span></span>
+<span id="cb16-336"><a href="#cb16-336" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">getSongs</span><span class="op">().</span><span class="fu">stream</span><span class="op">()</span></span>
+<span id="cb16-337"><a href="#cb16-337" aria-hidden="true" tabindex="-1"></a>                    <span class="op">.</span><span class="fu">map</span><span class="op">(</span>song <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">SongDTO</span><span class="op">(</span>song<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> song<span class="op">.</span><span class="fu">artist</span><span class="op">()))</span> <span class="co">// 只取需要暴露的字段</span></span>
+<span id="cb16-338"><a href="#cb16-338" aria-hidden="true" tabindex="-1"></a>                    <span class="op">.</span><span class="fu">collect</span><span class="op">(</span>Collectors<span class="op">.</span><span class="fu">toList</span><span class="op">())</span></span>
+<span id="cb16-339"><a href="#cb16-339" aria-hidden="true" tabindex="-1"></a>            <span class="op">);</span></span>
+<span id="cb16-340"><a href="#cb16-340" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-341"><a href="#cb16-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-342"><a href="#cb16-342" aria-hidden="true" tabindex="-1"></a>        <span class="at">@Override</span></span>
+<span id="cb16-343"><a href="#cb16-343" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="bu">String</span> playlistId<span class="op">,</span> SongDTO songDTO<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-344"><a href="#cb16-344" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 先加载播放列表，如果不存在则同样会抛出404异常，确保操作的有效性</span></span>
+<span id="cb16-345"><a href="#cb16-345" aria-hidden="true" tabindex="-1"></a>            Playlist playlist <span class="op">=</span> repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>playlistId<span class="op">)</span></span>
+<span id="cb16-346"><a href="#cb16-346" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">orElseThrow</span><span class="op">(()</span> <span class="op">-&gt;</span> <span class="kw">new</span> <span class="fu">ResourceNotFoundException</span><span class="op">(</span><span class="st">"Playlist not found with id: "</span> <span class="op">+</span> playlistId<span class="op">));</span></span>
+<span id="cb16-347"><a href="#cb16-347" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-348"><a href="#cb16-348" aria-hidden="true" tabindex="-1"></a>            <span class="co">// [模型转换] 将外部传入的SongDTO，转换为内部的Song领域模型</span></span>
+<span id="cb16-349"><a href="#cb16-349" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 注意：因为SongDTO没有时长信息，我们在这里使用一个默认值0</span></span>
+<span id="cb16-350"><a href="#cb16-350" aria-hidden="true" tabindex="-1"></a>            Song newSong <span class="op">=</span> <span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span>songDTO<span class="op">.</span><span class="fu">title</span><span class="op">(),</span> songDTO<span class="op">.</span><span class="fu">artist</span><span class="op">(),</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb16-351"><a href="#cb16-351" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb16-352"><a href="#cb16-352" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 执行业务逻辑并持久化</span></span>
+<span id="cb16-353"><a href="#cb16-353" aria-hidden="true" tabindex="-1"></a>            playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span>newSong<span class="op">);</span></span>
+<span id="cb16-354"><a href="#cb16-354" aria-hidden="true" tabindex="-1"></a>            repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
+<span id="cb16-355"><a href="#cb16-355" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-356"><a href="#cb16-356" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-357"><a href="#cb16-357" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-358"><a href="#cb16-358" aria-hidden="true" tabindex="-1"></a>    *请仔细体会`getPlaylistById`方法：`orElseThrow`的运用，使得处理“数据不存在”这个业务场景的逻辑变得异常清晰和简洁。这正是`Optional`的威力所在。*</span>
+<span id="cb16-359"><a href="#cb16-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-360"><a href="#cb16-360" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第六步：创建Web控制器，连接外部世界</span></span>
+<span id="cb16-361"><a href="#cb16-361" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-362"><a href="#cb16-362" aria-hidden="true" tabindex="-1"></a>万事俱备，只欠东风。现在，我们可以创建真正的API端点，作为我们服务的HTTP入口。</span>
+<span id="cb16-363"><a href="#cb16-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-364"><a href="#cb16-364" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**创建Controller包**: 在<span class="in">`com.vibevault`</span>下创建一个新的包<span class="in">`controller`</span>。</span>
+<span id="cb16-365"><a href="#cb16-365" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**创建`PlaylistController.java`**:</span>
+<span id="cb16-366"><a href="#cb16-366" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-367"><a href="#cb16-367" aria-hidden="true" tabindex="-1"></a>    <span class="in">```java</span></span>
+<span id="cb16-368"><a href="#cb16-368" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Create new file: chapter-code/ch07/app/src/main/java/com/vibevault/controller/PlaylistController.java</span></span>
+<span id="cb16-369"><a href="#cb16-369" aria-hidden="true" tabindex="-1"></a>    <span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">controller</span><span class="op">;</span></span>
+<span id="cb16-370"><a href="#cb16-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-371"><a href="#cb16-371" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">PlaylistDTO</span><span class="op">;</span></span>
+<span id="cb16-372"><a href="#cb16-372" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">dto</span><span class="op">.</span><span class="im">SongDTO</span><span class="op">;</span></span>
+<span id="cb16-373"><a href="#cb16-373" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">service</span><span class="op">.</span><span class="im">PlaylistService</span><span class="op">;</span></span>
+<span id="cb16-374"><a href="#cb16-374" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">http</span><span class="op">.</span><span class="im">HttpStatus</span><span class="op">;</span></span>
+<span id="cb16-375"><a href="#cb16-375" aria-hidden="true" tabindex="-1"></a>    <span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">web</span><span class="op">.</span><span class="im">bind</span><span class="op">.</span><span class="im">annotation</span><span class="op">.*;</span></span>
+<span id="cb16-376"><a href="#cb16-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-377"><a href="#cb16-377" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RestController</span> <span class="co">// &lt;--- 关键标签：声明这是一个RESTful控制器</span></span>
+<span id="cb16-378"><a href="#cb16-378" aria-hidden="true" tabindex="-1"></a>    <span class="at">@RequestMapping</span><span class="op">(</span><span class="st">"/api/playlists"</span><span class="op">)</span> <span class="co">// &lt;--- 声明这个控制器下所有API的URL基础路径</span></span>
+<span id="cb16-379"><a href="#cb16-379" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
+<span id="cb16-380"><a href="#cb16-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-381"><a href="#cb16-381" aria-hidden="true" tabindex="-1"></a>        <span class="kw">private</span> <span class="dt">final</span> PlaylistService playlistService<span class="op">;</span></span>
+<span id="cb16-382"><a href="#cb16-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-383"><a href="#cb16-383" aria-hidden="true" tabindex="-1"></a>        <span class="co">// &lt;--- 通过构造函数注入Service Bean</span></span>
+<span id="cb16-384"><a href="#cb16-384" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="fu">PlaylistController</span><span class="op">(</span>PlaylistService playlistService<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-385"><a href="#cb16-385" aria-hidden="true" tabindex="-1"></a>            <span class="kw">this</span><span class="op">.</span><span class="fu">playlistService</span> <span class="op">=</span> playlistService<span class="op">;</span></span>
+<span id="cb16-386"><a href="#cb16-386" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-387"><a href="#cb16-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-388"><a href="#cb16-388" aria-hidden="true" tabindex="-1"></a>        <span class="at">@GetMapping</span><span class="op">(</span><span class="st">"/{id}"</span><span class="op">)</span> <span class="co">// &lt;--- 将此方法映射到 GET /api/playlists/{id} 请求</span></span>
+<span id="cb16-389"><a href="#cb16-389" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> PlaylistDTO <span class="fu">getPlaylist</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="bu">String</span> id<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-390"><a href="#cb16-390" aria-hidden="true" tabindex="-1"></a>            <span class="co">// @PathVariable会将URL路径中的{id}部分，绑定到方法的id参数上</span></span>
+<span id="cb16-391"><a href="#cb16-391" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> playlistService<span class="op">.</span><span class="fu">getPlaylistById</span><span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb16-392"><a href="#cb16-392" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-393"><a href="#cb16-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-394"><a href="#cb16-394" aria-hidden="true" tabindex="-1"></a>        <span class="at">@PostMapping</span><span class="op">(</span><span class="st">"/{id}/songs"</span><span class="op">)</span> <span class="co">// &lt;--- 将此方法映射到 POST /api/playlists/{id}/songs 请求</span></span>
+<span id="cb16-395"><a href="#cb16-395" aria-hidden="true" tabindex="-1"></a>        <span class="at">@ResponseStatus</span><span class="op">(</span>HttpStatus<span class="op">.</span><span class="fu">CREATED</span><span class="op">)</span> <span class="co">// &lt;--- 设定成功响应的HTTP状态码为201 Created，这是RESTful设计的最佳实践</span></span>
+<span id="cb16-396"><a href="#cb16-396" aria-hidden="true" tabindex="-1"></a>        <span class="kw">public</span> <span class="dt">void</span> <span class="fu">addSongToPlaylist</span><span class="op">(</span><span class="at">@PathVariable</span> <span class="bu">String</span> id<span class="op">,</span> <span class="at">@RequestBody</span> SongDTO songDTO<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-397"><a href="#cb16-397" aria-hidden="true" tabindex="-1"></a>            <span class="co">// @RequestBody会将HTTP请求体中的JSON内容，自动反序列化并绑定到SongDTO对象上</span></span>
+<span id="cb16-398"><a href="#cb16-398" aria-hidden="true" tabindex="-1"></a>            playlistService<span class="op">.</span><span class="fu">addSongToPlaylist</span><span class="op">(</span>id<span class="op">,</span> songDTO<span class="op">);</span></span>
+<span id="cb16-399"><a href="#cb16-399" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb16-400"><a href="#cb16-400" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-401"><a href="#cb16-401" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-402"><a href="#cb16-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-403"><a href="#cb16-403" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第七步：创建启动“种子数据”</span></span>
+<span id="cb16-404"><a href="#cb16-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-405"><a href="#cb16-405" aria-hidden="true" tabindex="-1"></a>为了让我们的API在第一次启动时就有数据可供测试和查看，我们将使用 <span class="in">`CommandLineRunner`</span>。这是一个特殊的Spring Boot接口，我们只需提供一个实现了它的Bean，Spring Boot就会在应用完全启动后，自动执行其中的<span class="in">`run`</span>方法。这是初始化数据的绝佳时机。</span>
+<span id="cb16-406"><a href="#cb16-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-407"><a href="#cb16-407" aria-hidden="true" tabindex="-1"></a>**修改主启动类 `VibeVaultApplication.java`**:</span>
+<span id="cb16-408"><a href="#cb16-408" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb16-409"><a href="#cb16-409" aria-hidden="true" tabindex="-1"></a><span class="co">// In: chapter-code/ch07/app/src/main/java/com/vibevault/VibeVaultApplication.java</span></span>
+<span id="cb16-410"><a href="#cb16-410" aria-hidden="true" tabindex="-1"></a><span class="kw">package</span><span class="im"> com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">;</span></span>
+<span id="cb16-411"><a href="#cb16-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-412"><a href="#cb16-412" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Playlist</span><span class="op">;</span></span>
+<span id="cb16-413"><a href="#cb16-413" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">model</span><span class="op">.</span><span class="im">Song</span><span class="op">;</span></span>
+<span id="cb16-414"><a href="#cb16-414" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">com</span><span class="op">.</span><span class="im">vibevault</span><span class="op">.</span><span class="im">repository</span><span class="op">.</span><span class="im">PlaylistRepository</span><span class="op">;</span></span>
+<span id="cb16-415"><a href="#cb16-415" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">CommandLineRunner</span><span class="op">;</span></span>
+<span id="cb16-416"><a href="#cb16-416" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">SpringApplication</span><span class="op">;</span></span>
+<span id="cb16-417"><a href="#cb16-417" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">boot</span><span class="op">.</span><span class="im">autoconfigure</span><span class="op">.</span><span class="im">SpringBootApplication</span><span class="op">;</span></span>
+<span id="cb16-418"><a href="#cb16-418" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">context</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">Bean</span><span class="op">;</span></span>
+<span id="cb16-419"><a href="#cb16-419" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">org</span><span class="op">.</span><span class="im">springframework</span><span class="op">.</span><span class="im">context</span><span class="op">.</span><span class="im">annotation</span><span class="op">.</span><span class="im">Profile</span><span class="op">;</span></span>
+<span id="cb16-420"><a href="#cb16-420" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-421"><a href="#cb16-421" aria-hidden="true" tabindex="-1"></a><span class="at">@SpringBootApplication</span></span>
+<span id="cb16-422"><a href="#cb16-422" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> VibeVaultApplication <span class="op">{</span></span>
+<span id="cb16-423"><a href="#cb16-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-424"><a href="#cb16-424" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span><span class="op">(</span><span class="bu">String</span><span class="op">[]</span> args<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-425"><a href="#cb16-425" aria-hidden="true" tabindex="-1"></a>        SpringApplication<span class="op">.</span><span class="fu">run</span><span class="op">(</span>VibeVaultApplication<span class="op">.</span><span class="fu">class</span><span class="op">,</span> args<span class="op">);</span></span>
+<span id="cb16-426"><a href="#cb16-426" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-427"><a href="#cb16-427" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-428"><a href="#cb16-428" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Bean</span> <span class="co">// &lt;--- 将这个CommandLineRunner注册为一个Bean</span></span>
+<span id="cb16-429"><a href="#cb16-429" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Profile</span><span class="op">(</span><span class="st">"!test"</span><span class="op">)</span> <span class="co">// &lt;--- 这个Bean只在非"test"环境下生效，避免影响自动化测试</span></span>
+<span id="cb16-430"><a href="#cb16-430" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> CommandLineRunner <span class="fu">initData</span><span class="op">(</span>PlaylistRepository repository<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb16-431"><a href="#cb16-431" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> args <span class="op">-&gt;</span> <span class="op">{</span></span>
+<span id="cb16-432"><a href="#cb16-432" aria-hidden="true" tabindex="-1"></a>            <span class="dt">final</span> <span class="bu">String</span> defaultPlaylistId <span class="op">=</span> <span class="st">"my-favorites"</span><span class="op">;</span></span>
+<span id="cb16-433"><a href="#cb16-433" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 检查默认播放列表是否已存在，避免重复创建</span></span>
+<span id="cb16-434"><a href="#cb16-434" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>repository<span class="op">.</span><span class="fu">load</span><span class="op">(</span>defaultPlaylistId<span class="op">).</span><span class="fu">isEmpty</span><span class="op">())</span> <span class="op">{</span></span>
+<span id="cb16-435"><a href="#cb16-435" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"ℹ️ 默认播放列表不存在，正在创建示例数据..."</span><span class="op">);</span></span>
+<span id="cb16-436"><a href="#cb16-436" aria-hidden="true" tabindex="-1"></a>                Playlist playlist <span class="op">=</span> <span class="kw">new</span> <span class="fu">Playlist</span><span class="op">(</span>defaultPlaylistId<span class="op">);</span></span>
+<span id="cb16-437"><a href="#cb16-437" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Bohemian Rhapsody"</span><span class="op">,</span> <span class="st">"Queen"</span><span class="op">,</span> <span class="dv">355</span><span class="op">));</span></span>
+<span id="cb16-438"><a href="#cb16-438" aria-hidden="true" tabindex="-1"></a>                playlist<span class="op">.</span><span class="fu">addSong</span><span class="op">(</span><span class="kw">new</span> <span class="fu">Song</span><span class="op">(</span><span class="st">"Stairway to Heaven"</span><span class="op">,</span> <span class="st">"Led Zeppelin"</span><span class="op">,</span> <span class="dv">482</span><span class="op">));</span></span>
+<span id="cb16-439"><a href="#cb16-439" aria-hidden="true" tabindex="-1"></a>                repository<span class="op">.</span><span class="fu">save</span><span class="op">(</span>playlist<span class="op">);</span></span>
+<span id="cb16-440"><a href="#cb16-440" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"✅ 示例数据创建完毕！"</span><span class="op">);</span></span>
+<span id="cb16-441"><a href="#cb16-441" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb16-442"><a href="#cb16-442" aria-hidden="true" tabindex="-1"></a>                <span class="bu">System</span><span class="op">.</span><span class="fu">out</span><span class="op">.</span><span class="fu">println</span><span class="op">(</span><span class="st">"ℹ️ 默认播放列表已存在，无需创建示例数据。"</span><span class="op">);</span></span>
+<span id="cb16-443"><a href="#cb16-443" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb16-444"><a href="#cb16-444" aria-hidden="true" tabindex="-1"></a>        <span class="op">};</span></span>
+<span id="cb16-445"><a href="#cb16-445" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb16-446"><a href="#cb16-446" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb16-447"><a href="#cb16-447" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb16-448"><a href="#cb16-448" aria-hidden="true" tabindex="-1"></a>*`@Profile("!test")`注解是一个非常实用的技巧。它告诉Spring，只有在当前激活的配置（profile）不是`test`时，才创建这个`initData` Bean。这可以防止在运行自动化测试时，初始化逻辑对测试环境造成干扰。*</span>
+<span id="cb16-449"><a href="#cb16-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-450"><a href="#cb16-450" aria-hidden="true" tabindex="-1"></a><span class="fu">### 第八步：启动与验证！</span></span>
+<span id="cb16-451"><a href="#cb16-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-452"><a href="#cb16-452" aria-hidden="true" tabindex="-1"></a>恭喜！您已经成功地将所有组件连接起来，构建了一个完整的Web API。现在，让我们启动并验证它。</span>
+<span id="cb16-453"><a href="#cb16-453" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-454"><a href="#cb16-454" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**启动应用**: 在IDE中，找到并运行<span class="in">`VibeVaultApplication`</span>的<span class="in">`main`</span>方法。</span>
+<span id="cb16-455"><a href="#cb16-455" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-456"><a href="#cb16-456" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**验证GET请求**: 打开你的浏览器或任何API测试工具，访问地址：</span>
+<span id="cb16-457"><a href="#cb16-457" aria-hidden="true" tabindex="-1"></a>    <span class="in">`http://localhost:8080/api/playlists/my-favorites`</span></span>
+<span id="cb16-458"><a href="#cb16-458" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-459"><a href="#cb16-459" aria-hidden="true" tabindex="-1"></a>    你应该能看到一个结构清晰的JSON响应，其中包含了我们自动创建的两首歌曲。注意，响应中不包含<span class="in">`durationInSeconds`</span>字段，因为我们的<span class="in">`SongDTO`</span>中没有定义它。</span>
+<span id="cb16-460"><a href="#cb16-460" aria-hidden="true" tabindex="-1"></a>    <span class="in">```json</span></span>
+<span id="cb16-461"><a href="#cb16-461" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb16-462"><a href="#cb16-462" aria-hidden="true" tabindex="-1"></a>      <span class="st">"name"</span><span class="op">:</span> <span class="st">"my-favorites"</span><span class="op">,</span></span>
+<span id="cb16-463"><a href="#cb16-463" aria-hidden="true" tabindex="-1"></a>      <span class="st">"songs"</span><span class="op">:</span> [</span>
+<span id="cb16-464"><a href="#cb16-464" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb16-465"><a href="#cb16-465" aria-hidden="true" tabindex="-1"></a>          <span class="st">"title"</span><span class="op">:</span> <span class="st">"Bohemian Rhapsody"</span><span class="op">,</span></span>
+<span id="cb16-466"><a href="#cb16-466" aria-hidden="true" tabindex="-1"></a>          <span class="st">"artist"</span><span class="op">:</span> <span class="st">"Queen"</span></span>
+<span id="cb16-467"><a href="#cb16-467" aria-hidden="true" tabindex="-1"></a>        }<span class="op">,</span></span>
+<span id="cb16-468"><a href="#cb16-468" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb16-469"><a href="#cb16-469" aria-hidden="true" tabindex="-1"></a>          <span class="st">"title"</span><span class="op">:</span> <span class="st">"Stairway to Heaven"</span><span class="op">,</span></span>
+<span id="cb16-470"><a href="#cb16-470" aria-hidden="true" tabindex="-1"></a>          <span class="st">"artist"</span><span class="op">:</span> <span class="st">"Led Zeppelin"</span></span>
+<span id="cb16-471"><a href="#cb16-471" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb16-472"><a href="#cb16-472" aria-hidden="true" tabindex="-1"></a>      ]</span>
+<span id="cb16-473"><a href="#cb16-473" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-474"><a href="#cb16-474" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-475"><a href="#cb16-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-476"><a href="#cb16-476" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**验证404 Not Found**: 接着访问一个不存在的播放列表：</span>
+<span id="cb16-477"><a href="#cb16-477" aria-hidden="true" tabindex="-1"></a>    <span class="in">`http://localhost:8080/api/playlists/non-existent-id`</span></span>
+<span id="cb16-478"><a href="#cb16-478" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-479"><a href="#cb16-479" aria-hidden="true" tabindex="-1"></a>    这次，你将看到一个由Spring Boot自动生成的、专业的404错误响应页面或JSON，这正是我们通过<span class="in">`ResourceNotFoundException`</span>和<span class="in">`@ResponseStatus`</span>注解所实现的。</span>
+<span id="cb16-480"><a href="#cb16-480" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-481"><a href="#cb16-481" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**验证POST请求**: 使用<span class="in">`curl`</span>或Postman等工具，向播放列表添加一首新歌。</span>
+<span id="cb16-482"><a href="#cb16-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-483"><a href="#cb16-483" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb16-484"><a href="#cb16-484" aria-hidden="true" tabindex="-1"></a>    <span class="co"># macOS/Linux (bash shell)</span></span>
+<span id="cb16-485"><a href="#cb16-485" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists/my-favorites/songs <span class="dt">\</span></span>
+<span id="cb16-486"><a href="#cb16-486" aria-hidden="true" tabindex="-1"></a>         <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb16-487"><a href="#cb16-487" aria-hidden="true" tabindex="-1"></a>         <span class="at">-d</span> <span class="st">'{"title": "Hotel California", "artist": "Eagles"}'</span></span>
+<span id="cb16-488"><a href="#cb16-488" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb16-489"><a href="#cb16-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-490"><a href="#cb16-490" aria-hidden="true" tabindex="-1"></a>    <span class="in">```powershell</span></span>
+<span id="cb16-491"><a href="#cb16-491" aria-hidden="true" tabindex="-1"></a><span class="in">    # Windows PowerShell</span></span>
+<span id="cb16-492"><a href="#cb16-492" aria-hidden="true" tabindex="-1"></a><span class="in">    Invoke-RestMethod -Uri "http://localhost:8080/api/playlists/my-favorites/songs" `</span></span>
+<span id="cb16-493"><a href="#cb16-493" aria-hidden="true" tabindex="-1"></a><span class="in">        -Method Post `</span></span>
+<span id="cb16-494"><a href="#cb16-494" aria-hidden="true" tabindex="-1"></a><span class="in">        -Headers @{"Content-Type"="application/json"} `</span></span>
+<span id="cb16-495"><a href="#cb16-495" aria-hidden="true" tabindex="-1"></a><span class="in">        -Body '{"title": "Hotel California", "artist": "Eagles"}'</span></span>
+<span id="cb16-496"><a href="#cb16-496" aria-hidden="true" tabindex="-1"></a><span class="in">    ```</span></span>
+<span id="cb16-497"><a href="#cb16-497" aria-hidden="true" tabindex="-1"></a>    这个命令应该会返回一个<span class="in">`201 Created`</span>状态码。执行后，再次在浏览器中访问<span class="in">`http://localhost:8080/api/playlists/my-favorites`</span>，你会兴奋地发现，新歌已经被成功添加进去了！</span>
+<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a><span class="fu">### 思考与练习</span></span>
+<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**编码练习**: 基于以上知识，请为<span class="in">`PlaylistController`</span>实现<span class="in">`DELETE /api/playlists/{id}/songs`</span>端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的<span class="in">`title`</span>作为参数来识别要删除的歌曲。</span>
+<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>你需要在<span class="in">`PlaylistService`</span>和<span class="in">`Playlist`</span>领域模型中添加相应的删除逻辑。</span>
+<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：如何处理要删除的歌曲不存在的情况？应该返回什么HTTP状态码？</span>
+<span id="cb16-504"><a href="#cb16-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-505"><a href="#cb16-505" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**思考**: <span class="in">`@RestController`</span>注解和传统的<span class="in">`@Controller`</span>注解有什么本质区别？（提示：可以查阅一下<span class="in">`@ResponseBody`</span>注解的作用，<span class="in">`@RestController`</span>其实是<span class="in">`@Controller`</span> + <span class="in">`@ResponseBody`</span>的便捷组合。）</span>
+<span id="cb16-506"><a href="#cb16-506" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**: "请向我解释Spring Boot中的<span class="in">`@ControllerAdvice`</span>和<span class="in">`@ExceptionHandler`</span>注解。相比于我们现在使用的<span class="in">`@ResponseStatus`</span>，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获<span class="in">`ResourceNotFoundException`</span>并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

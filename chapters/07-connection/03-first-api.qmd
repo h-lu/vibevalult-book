@@ -481,9 +481,18 @@ public class VibeVaultApplication {
 4.  **验证POST请求**: 使用`curl`或Postman等工具，向播放列表添加一首新歌。
 
     ```bash
+    # macOS/Linux (bash shell)
     curl -X POST http://localhost:8080/api/playlists/my-favorites/songs \
          -H "Content-Type: application/json" \
          -d '{"title": "Hotel California", "artist": "Eagles"}'
+    ```
+
+    ```powershell
+    # Windows PowerShell
+    Invoke-RestMethod -Uri "http://localhost:8080/api/playlists/my-favorites/songs" `
+        -Method Post `
+        -Headers @{"Content-Type"="application/json"} `
+        -Body '{"title": "Hotel California", "artist": "Eagles"}'
     ```
     这个命令应该会返回一个`201 Created`状态码。执行后，再次在浏览器中访问`http://localhost:8080/api/playlists/my-favorites`，你会兴奋地发现，新歌已经被成功添加进去了！
 
