@@ -495,9 +495,21 @@ public class VibeVaultApplication {
 
 ### 思考与练习
 
-1.  **编码练习**: 基于以上知识，请为`PlaylistController`实现`DELETE /api/playlists/{id}/songs`端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的`title`作为参数来识别要删除的歌曲。
+1.  **编码练习**: 实现创建播放列表功能。为`PlaylistController`添加`POST /api/playlists`端点，用于创建新的播放列表。
+    *   你需要创建一个DTO类（如`CreatePlaylistRequest`）来接收请求体，包含播放列表的名称。
+    *   在`PlaylistService`中添加`createPlaylist`方法，处理创建逻辑。
+    *   思考：创建成功后应该返回什么HTTP状态码？应该返回完整的播放列表对象还是只返回ID？
+    *   验证：使用Postman或curl测试创建功能，确保能成功创建播放列表。
+
+2.  **编码练习**: 实现删除播放列表功能。为`PlaylistController`添加`DELETE /api/playlists/{id}`端点，用于删除指定的播放列表。
+    *   在`PlaylistService`中添加`deletePlaylist`方法，处理删除逻辑。
+    *   思考：如果播放列表不存在，应该返回什么HTTP状态码（404 Not Found）？
+    *   思考：删除操作是否应该有确认机制？在实际应用中，删除操作通常需要更谨慎。
+    *   验证：使用Postman或curl测试删除功能，确保能成功删除播放列表，并验证删除后再次访问该播放列表会返回404。
+
+3.  **编码练习**: 基于以上知识，请为`PlaylistController`实现`DELETE /api/playlists/{id}/songs`端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的`title`作为参数来识别要删除的歌曲。
     *   你需要在`PlaylistService`和`Playlist`领域模型中添加相应的删除逻辑。
     *   思考：如何处理要删除的歌曲不存在的情况？应该返回什么HTTP状态码？
 
-2.  **思考**: `@RestController`注解和传统的`@Controller`注解有什么本质区别？（提示：可以查阅一下`@ResponseBody`注解的作用，`@RestController`其实是`@Controller` + `@ResponseBody`的便捷组合。）
-3.  **AI协同**: "请向我解释Spring Boot中的`@ControllerAdvice`和`@ExceptionHandler`注解。相比于我们现在使用的`@ResponseStatus`，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获`ResourceNotFoundException`并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" 
+4.  **思考**: `@RestController`注解和传统的`@Controller`注解有什么本质区别？（提示：可以查阅一下`@ResponseBody`注解的作用，`@RestController`其实是`@Controller` + `@ResponseBody`的便捷组合。）
+5.  **AI协同**: "请向我解释Spring Boot中的`@ControllerAdvice`和`@ExceptionHandler`注解。相比于我们现在使用的`@ResponseStatus`，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获`ResourceNotFoundException`并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" 

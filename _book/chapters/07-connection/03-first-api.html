@@ -943,6 +943,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="思考与练习" class="level3">
 <h3 class="anchored" data-anchor-id="思考与练习">思考与练习</h3>
 <ol type="1">
+<li><strong>编码练习</strong>: 实现创建播放列表功能。为<code>PlaylistController</code>添加<code>POST /api/playlists</code>端点，用于创建新的播放列表。
+<ul>
+<li>你需要创建一个DTO类（如<code>CreatePlaylistRequest</code>）来接收请求体，包含播放列表的名称。</li>
+<li>在<code>PlaylistService</code>中添加<code>createPlaylist</code>方法，处理创建逻辑。</li>
+<li>思考：创建成功后应该返回什么HTTP状态码？应该返回完整的播放列表对象还是只返回ID？</li>
+<li>验证：使用Postman或curl测试创建功能，确保能成功创建播放列表。</li>
+</ul></li>
+<li><strong>编码练习</strong>: 实现删除播放列表功能。为<code>PlaylistController</code>添加<code>DELETE /api/playlists/{id}</code>端点，用于删除指定的播放列表。
+<ul>
+<li>在<code>PlaylistService</code>中添加<code>deletePlaylist</code>方法，处理删除逻辑。</li>
+<li>思考：如果播放列表不存在，应该返回什么HTTP状态码（404 Not Found）？</li>
+<li>思考：删除操作是否应该有确认机制？在实际应用中，删除操作通常需要更谨慎。</li>
+<li>验证：使用Postman或curl测试删除功能，确保能成功删除播放列表，并验证删除后再次访问该播放列表会返回404。</li>
+</ul></li>
 <li><strong>编码练习</strong>: 基于以上知识，请为<code>PlaylistController</code>实现<code>DELETE /api/playlists/{id}/songs</code>端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的<code>title</code>作为参数来识别要删除的歌曲。
 <ul>
 <li>你需要在<code>PlaylistService</code>和<code>Playlist</code>领域模型中添加相应的删除逻辑。</li>
@@ -1918,12 +1932,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-495"><a href="#cb16-495" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-496"><a href="#cb16-496" aria-hidden="true" tabindex="-1"></a><span class="fu">### 思考与练习</span></span>
 <span id="cb16-497"><a href="#cb16-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**编码练习**: 基于以上知识，请为<span class="in">`PlaylistController`</span>实现<span class="in">`DELETE /api/playlists/{id}/songs`</span>端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的<span class="in">`title`</span>作为参数来识别要删除的歌曲。</span>
-<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>你需要在<span class="in">`PlaylistService`</span>和<span class="in">`Playlist`</span>领域模型中添加相应的删除逻辑。</span>
-<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：如何处理要删除的歌曲不存在的情况？应该返回什么HTTP状态码？</span>
-<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**思考**: <span class="in">`@RestController`</span>注解和传统的<span class="in">`@Controller`</span>注解有什么本质区别？（提示：可以查阅一下<span class="in">`@ResponseBody`</span>注解的作用，<span class="in">`@RestController`</span>其实是<span class="in">`@Controller`</span> + <span class="in">`@ResponseBody`</span>的便捷组合。）</span>
-<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**AI协同**: "请向我解释Spring Boot中的<span class="in">`@ControllerAdvice`</span>和<span class="in">`@ExceptionHandler`</span>注解。相比于我们现在使用的<span class="in">`@ResponseStatus`</span>，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获<span class="in">`ResourceNotFoundException`</span>并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb16-498"><a href="#cb16-498" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**编码练习**: 实现创建播放列表功能。为<span class="in">`PlaylistController`</span>添加<span class="in">`POST /api/playlists`</span>端点，用于创建新的播放列表。</span>
+<span id="cb16-499"><a href="#cb16-499" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>你需要创建一个DTO类（如<span class="in">`CreatePlaylistRequest`</span>）来接收请求体，包含播放列表的名称。</span>
+<span id="cb16-500"><a href="#cb16-500" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`PlaylistService`</span>中添加<span class="in">`createPlaylist`</span>方法，处理创建逻辑。</span>
+<span id="cb16-501"><a href="#cb16-501" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：创建成功后应该返回什么HTTP状态码？应该返回完整的播放列表对象还是只返回ID？</span>
+<span id="cb16-502"><a href="#cb16-502" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>验证：使用Postman或curl测试创建功能，确保能成功创建播放列表。</span>
+<span id="cb16-503"><a href="#cb16-503" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-504"><a href="#cb16-504" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**: 实现删除播放列表功能。为<span class="in">`PlaylistController`</span>添加<span class="in">`DELETE /api/playlists/{id}`</span>端点，用于删除指定的播放列表。</span>
+<span id="cb16-505"><a href="#cb16-505" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`PlaylistService`</span>中添加<span class="in">`deletePlaylist`</span>方法，处理删除逻辑。</span>
+<span id="cb16-506"><a href="#cb16-506" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：如果播放列表不存在，应该返回什么HTTP状态码（404 Not Found）？</span>
+<span id="cb16-507"><a href="#cb16-507" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：删除操作是否应该有确认机制？在实际应用中，删除操作通常需要更谨慎。</span>
+<span id="cb16-508"><a href="#cb16-508" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>验证：使用Postman或curl测试删除功能，确保能成功删除播放列表，并验证删除后再次访问该播放列表会返回404。</span>
+<span id="cb16-509"><a href="#cb16-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-510"><a href="#cb16-510" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**编码练习**: 基于以上知识，请为<span class="in">`PlaylistController`</span>实现<span class="in">`DELETE /api/playlists/{id}/songs`</span>端点，用于从播放列表中删除一首指定的歌曲。你需要提供歌曲的<span class="in">`title`</span>作为参数来识别要删除的歌曲。</span>
+<span id="cb16-511"><a href="#cb16-511" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>你需要在<span class="in">`PlaylistService`</span>和<span class="in">`Playlist`</span>领域模型中添加相应的删除逻辑。</span>
+<span id="cb16-512"><a href="#cb16-512" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>思考：如何处理要删除的歌曲不存在的情况？应该返回什么HTTP状态码？</span>
+<span id="cb16-513"><a href="#cb16-513" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-514"><a href="#cb16-514" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**思考**: <span class="in">`@RestController`</span>注解和传统的<span class="in">`@Controller`</span>注解有什么本质区别？（提示：可以查阅一下<span class="in">`@ResponseBody`</span>注解的作用，<span class="in">`@RestController`</span>其实是<span class="in">`@Controller`</span> + <span class="in">`@ResponseBody`</span>的便捷组合。）</span>
+<span id="cb16-515"><a href="#cb16-515" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**AI协同**: "请向我解释Spring Boot中的<span class="in">`@ControllerAdvice`</span>和<span class="in">`@ExceptionHandler`</span>注解。相比于我们现在使用的<span class="in">`@ResponseStatus`</span>，它们能如何更精细地控制API的错误响应格式？请给我一个具体的例子，展示如何捕获<span class="in">`ResourceNotFoundException`</span>并返回一个包含错误信息、时间戳和请求路径的自定义JSON响应体。" </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
