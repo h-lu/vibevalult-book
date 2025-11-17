@@ -69,6 +69,7 @@ book:
         - chapters/08-concurrency/01-why-database.qmd
         - chapters/08-concurrency/02-why-orm.qmd
         - chapters/08-concurrency/03-database-migration.qmd
+        - chapters/08-concurrency/04-psql-guide.qmd
         
     - part: chapters/09-visibility/index.qmd
       chapters:

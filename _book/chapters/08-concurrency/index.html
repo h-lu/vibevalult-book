@@ -419,6 +419,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <a href="../../chapters/08-concurrency/03-database-migration.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.3 - 迁移到PostgreSQL</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/04-psql-guide.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.4 - PostgreSQL 实战指南：连接与操作</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -516,6 +521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong><a href="../../chapters/08-concurrency/01-why-database.html">为何需要数据库</a></strong>: 从第一性原理出发，揭示文件系统在并发写入下的根本缺陷，并理解关系型数据库提供的ACID（原子性、一致性、隔离性、持久性）四大特性，是如何成为保护数据完整性的“守护神”。</li>
 <li><strong><a href="../../chapters/08-concurrency/02-why-orm.html">为何需要ORM</a></strong>: 深入探讨Java的“对象世界”与数据库的“关系世界”之间的“阻抗不匹配”，并顿悟ORM（对象关系映射）框架（如JPA/Hibernate）是如何作为“同声传译”，让我们能用优雅的、面向对象的方式操作数据库。</li>
 <li><strong><a href="../../chapters/08-concurrency/03-database-migration.html">迁移到PostgreSQL</a></strong>: 亲自动手，将我们的<code>FilePlaylistRepository</code>彻底改造为由Spring Data JPA驱动的<code>JpaRepository</code>。我们将学习如何配置数据库连接，如何用<code>@Entity</code>注解将Java类映射为数据库表，并最终见证ORM如何将繁琐的SQL操作，简化为一行行优雅的Java代码。</li>
+<li><strong><a href="../../chapters/08-concurrency/04-psql-guide.html">PostgreSQL 实战指南</a></strong>: 掌握PostgreSQL数据库的实际操作技能。从连接到数据库服务器，到使用<code>psql</code>命令行工具执行SQL查询，再到排查常见问题，本指南将帮助你熟练地使用数据库工具，为开发和调试提供强大的支持。</li>
 </ol>
 <p>这一章将是VibeVault从一个“原型”走向一个“健壮应用”的关键一步，为你构建高并发、高可靠性的系统打下坚实的基础。</p>
 
@@ -1006,8 +1012,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[为何需要数据库](./01-why-database.qmd)**: 从第一性原理出发，揭示文件系统在并发写入下的根本缺陷，并理解关系型数据库提供的ACID（原子性、一致性、隔离性、持久性）四大特性，是如何成为保护数据完整性的“守护神”。</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[为何需要ORM](./02-why-orm.qmd)**: 深入探讨Java的“对象世界”与数据库的“关系世界”之间的“阻抗不匹配”，并顿悟ORM（对象关系映射）框架（如JPA/Hibernate）是如何作为“同声传译”，让我们能用优雅的、面向对象的方式操作数据库。</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[迁移到PostgreSQL](./03-database-migration.qmd)**: 亲自动手，将我们的<span class="in">`FilePlaylistRepository`</span>彻底改造为由Spring Data JPA驱动的<span class="in">`JpaRepository`</span>。我们将学习如何配置数据库连接，如何用<span class="in">`@Entity`</span>注解将Java类映射为数据库表，并最终见证ORM如何将繁琐的SQL操作，简化为一行行优雅的Java代码。</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>这一章将是VibeVault从一个“原型”走向一个“健壮应用”的关键一步，为你构建高并发、高可靠性的系统打下坚实的基础。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[PostgreSQL 实战指南](./04-psql-guide.qmd)**: 掌握PostgreSQL数据库的实际操作技能。从连接到数据库服务器，到使用<span class="in">`psql`</span>命令行工具执行SQL查询，再到排查常见问题，本指南将帮助你熟练地使用数据库工具，为开发和调试提供强大的支持。</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>这一章将是VibeVault从一个“原型”走向一个“健壮应用”的关键一步，为你构建高并发、高可靠性的系统打下坚实的基础。 </span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

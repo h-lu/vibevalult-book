@@ -71,6 +71,8 @@ title: "8.3 - 迁移到PostgreSQL"
 > ```sql
 > CREATE DATABASE vibevault;
 > ```
+>
+> **使用课程提供的共享数据库**: 如果你使用的是课程提供的共享PostgreSQL服务器，请参考 [PostgreSQL 实战指南](./04-psql-guide.qmd) 了解如何连接和配置。你不需要创建数据库，因为系统已经为你分配了独立的数据库（数据库名为 `st你的学号`）。
 
 ```properties
 # In: chapter-code/ch08/app/src/main/resources/application.properties

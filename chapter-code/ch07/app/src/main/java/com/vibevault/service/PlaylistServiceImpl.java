@@ -8,6 +8,7 @@ import com.vibevault.model.Playlist;
 import com.vibevault.model.Song;
 import com.vibevault.exception.ResourceNotFoundException;
 import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -44,6 +45,32 @@ public class PlaylistServiceImpl implements PlaylistService {
         
         // 执行业务逻辑并持久化
         playlist.addSong(newSong);
+        repository.save(playlist);
+    }
+
+    @Override
+    public void removeSongFromPlaylist(String playlistId, String title) {
+        // 先加载播放列表，如果不存在则抛出404异常
+        Playlist playlist = repository.load(playlistId)
+            .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + playlistId));
+        
+        // 查找要删除的歌曲索引
+        List<Song> songs = playlist.getSongs();
+        int indexToRemove = -1;
+        for (int i = 0; i < songs.size(); i++) {
+            if (songs.get(i).title().equals(title)) {
+                indexToRemove = i;
+                break;
+            }
+        }
+        
+        // 如果找不到指定标题的歌曲，抛出异常
+        if (indexToRemove == -1) {
+            throw new ResourceNotFoundException("Song with title '" + title + "' not found in playlist: " + playlistId);
+        }
+        
+        // 删除歌曲并持久化
+        playlist.removeSong(indexToRemove);
         repository.save(playlist);
     }
 }
