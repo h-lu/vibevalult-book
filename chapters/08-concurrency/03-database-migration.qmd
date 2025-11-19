@@ -349,6 +349,15 @@ public class VibeVaultApplication {
 
 ### 思考与练习
 
-1.  **编码练习**: 我们在`Song`实体中为`id`字段使用了`@GeneratedValue(strategy = GenerationType.IDENTITY)`。JPA还支持其他几种主键生成策略，如`SEQUENCE`, `TABLE`, `AUTO`。请使用AI或查阅文档，解释`IDENTITY`和`SEQUENCE`策略的核心区别是什么？它们各自适用于哪些场景？
-2.  **破坏性实验**: 尝试将`Playlist.java`中`@OneToMany`注解的`cascade = CascadeType.ALL`去掉，然后重新运行应用。当你调用`POST` API添加新歌时，会发生什么？为什么？这个实验会让你深刻理解级联操作的重要性。
-3.  **AI协同与扩展**: "请解释Spring Data JPA中的‘派生查询方法’（Derived Query Methods）是什么？请为我现在的`PlaylistRepository`接口，添加一个可以根据`artist`名来查找所有`Song`实体的派生查询方法签名。我应该如何修改我的代码才能使用它？" 
+1.  **编码练习**: 我们在`Song`实体中为`id`字段使用了`@GeneratedValue(strategy = GenerationType.IDENTITY)`。JPA还支持其他几种主键生成策略,如`SEQUENCE`, `TABLE`, `AUTO`。请使用AI或查阅文档,解释`IDENTITY`和`SEQUENCE`策略的核心区别是什么？它们各自适用于哪些场景？
+2.  **破坏性实验**: 尝试将`Playlist.java`中`@OneToMany`注解的`cascade = CascadeType.ALL`去掉,然后重新运行应用。当你调用`POST` API添加新歌时,会发生什么？为什么？这个实验会让你深刻理解级联操作的重要性。
+3.  **AI协同与扩展**: "请解释Spring Data JPA中的'派生查询方法'（Derived Query Methods）是什么？请为我现在的`PlaylistRepository`接口,添加一个可以根据`artist`名来查找所有`Song`实体的派生查询方法签名。我应该如何修改我的代码才能使用它？"
+4.  **实战练习 - 创建新歌单**: 目前我们的API只能向已存在的歌单添加歌曲,但不能创建新的歌单。请实现一个`POST /api/playlists`端点,允许用户创建新的歌单。你需要:
+（1）在`PlaylistService`接口中添加一个`createPlaylist(String playlistName)`方法;
+（2）在`PlaylistServiceImpl`中实现这个方法;
+（3）在`PlaylistController`中添加对应的`@PostMapping`端点。使用Postman或curl测试你的实现,确保能成功创建新歌单并通过GET API查看。
+5.  **实战练习 - 从歌单删除歌曲**: 当前我们只能添加歌曲,但无法删除。请实现一个`DELETE /api/playlists/{playlistId}/songs/{songId}`端点,允许用户从指定歌单中删除指定歌曲。你需要:
+（1）在`PlaylistService`接口中添加一个`removeSongFromPlaylist(String playlistId, Long songId)`方法;
+（2）在`PlaylistServiceImpl`中实现这个方法（提示:需要先通过`songId`找到`Song`对象,再调用`playlist.removeSong(song)`);
+（3）在`PlaylistController`中添加对应的`@DeleteMapping`端点;
+（4）别忘了添加`@Transactional`注解。测试时,先添加几首歌,然后尝试删除其中一首,最后验证该歌曲是否从数据库中完全消失。
