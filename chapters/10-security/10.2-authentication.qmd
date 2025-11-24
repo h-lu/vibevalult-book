@@ -1,0 +1,67 @@
+# 10.2 身份：建立登录入口
+
+守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。
+这就需要：**用户 (User)** 和 **登录 (Login)**。
+
+## 第一步：定义用户 (User)
+
+我们需要一个地方存用户的账号密码。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请在 `com.vibevault.model` 包下创建一个 `User` 实体。
+要求：
+1.  表名 `users`。
+2.  字段：`id` (Long), `username` (String, unique), `password` (String)。
+3.  使用 JPA 注解。"
+:::
+
+以及对应的 `UserRepository`。
+
+## 第二步：密码加密 (BCrypt)
+
+**绝对不要存储明文密码！**
+在 `SecurityConfig` 中添加加密器：
+
+```java
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+```
+
+## 第三步：注册接口 (Sign Up)
+
+我们需要一个接口让用户注册。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请创建 `AuthController`，实现 `POST /api/auth/signup`。
+逻辑：
+1.  接收 username, password。
+2.  查重：如果 username 存在，抛异常。
+3.  **加密**：使用 `passwordEncoder.encode(password)`。
+4.  保存 User。"
+:::
+
+## 第四步：登录接口 (Login) - 关键一步
+
+这是前端对接的核心。虽然我们还没发 JWT，但我们要先打通登录流程。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请在 `AuthController` 中添加 `login` 方法 (`POST /api/auth/login`)。
+逻辑：
+1.  接收 username, password。
+2.  查用户：不存在则抛异常。
+3.  **验密**：使用 `passwordEncoder.matches(raw, encoded)`。
+4.  如果成功，返回字符串 'Login Success'。"
+:::
+
+## Vibe Check
+
+1.  **注册**: 用 curl 发送 POST 请求到 `/signup`。
+2.  **登录**: 用 curl 发送 POST 请求到 `/login`。
+3.  **验证**: 确保登录成功返回 200 OK。
+
+现在，后端已经准备好迎接前端的登录请求了。下一步，我们将把 "Login Success" 换成真正的数字护照——JWT。

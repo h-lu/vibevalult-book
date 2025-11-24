@@ -18,8 +18,13 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.data.jpa)
     runtimeOnly(libs.postgresql)
-    
+    implementation(libs.spring.boot.starter.security)
+
     testImplementation(libs.spring.boot.starter.test)
+
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
 }
 
 application {

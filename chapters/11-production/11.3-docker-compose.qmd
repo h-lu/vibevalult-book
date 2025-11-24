@@ -1,0 +1,127 @@
+# 11.3 容器交响乐：docker-compose
+
+一个现代应用很少是独角戏。通常，它需要数据库、缓存、消息队列等配角。
+虽然我们可以手动启动每一个容器，但这就像指挥一个交响乐团，却要一个个去敲门叫醒乐手。
+
+我们需要一位指挥家：**Docker Compose**。
+
+## 架构蓝图
+
+我们的目标架构如下：
+
+```{mermaid}
+graph LR
+    subgraph Docker Network
+        App[Spring Boot App] -- JDBC:5432 --> DB[(PostgreSQL)]
+    end
+    User((User)) -- HTTP:8080 --> App
+    DB -- Mount --> Vol[Data Volume]
+    
+    style App fill:#6db33f,stroke:#333,color:white
+    style DB fill:#336791,stroke:#333,color:white
+    style Vol fill:#f9f,stroke:#333
+```
+
+## 编写乐谱 (docker-compose.yml)
+
+在 `chapter-code/ch08` 根目录下，创建 `docker-compose.yml`。
+我们将详细解读每一个部分：
+
+```yaml
+version: '3.8'  # Compose文件版本
+
+services:
+  # --- 服务1: 我们的Spring Boot应用 ---
+  app:
+    image: vibevault-backend:v1  # 使用我们刚才构建的镜像
+    # 或者，你可以让Compose自动构建：
+    # build: . 
+    ports:
+      - "8080:8080"  # 端口映射: 宿主机端口:容器端口
+    environment:
+      # 关键：覆盖application.properties中的配置
+      # 注意URL中的 'db'，这是下面定义的数据库服务名
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/vibevault
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+    depends_on:
+      - db  # 告诉Compose：先启动db，再启动app
+    networks:
+      - vibe-net
+
+  # --- 服务2: PostgreSQL数据库 ---
+  db:
+    image: postgres:15-alpine  # 使用官方镜像
+    environment:
+      - POSTGRES_DB=vibevault
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # 数据持久化！
+    ports:
+      - "5432:5432"  # 可选：如果你想用本地DBeaver连接它
+    networks:
+      - vibe-net
+
+# --- 定义卷 (持久化存储) ---
+volumes:
+  postgres_data:  # Docker会自动管理这个卷
+
+# --- 定义网络 ---
+networks:
+  vibe-net:
+```
+
+## 核心概念解析
+
+### 1. 服务发现 (Service Discovery)
+你注意到了吗？我们在 `SPRING_DATASOURCE_URL` 中写的是 `jdbc:postgresql://db:5432...`。
+这里的 `db` 不是IP地址，而是**服务名**。
+Docker Compose会自动创建一个内部DNS，当你访问 `db` 时，它会自动解析到数据库容器的内部IP。这意味着你永远不需要关心容器的IP变来变去。
+
+### 2. 数据卷 (Volumes)
+容器是**易失的**（Ephemeral）。当你删除容器时，容器里的文件也会消失。
+对于数据库来说，这是灾难。
+通过 `volumes`，我们将容器内的 `/var/lib/postgresql/data` 目录映射到了宿主机的一个受保护区域（Docker Volume）。
+即使你删除了 `db` 容器，下次再启动一个新的 `db` 容器挂载同一个卷，数据依然还在。
+
+## 演奏开始
+
+1.  **启动**:
+
+    ```bash
+    docker-compose up -d
+    ```
+    *   `-d`: Detached mode（后台运行）。
+
+2.  **查看状态**:
+
+    ```bash
+    docker-compose ps
+    ```
+
+3.  **查看日志**:
+
+    ```bash
+    docker-compose logs -f app
+    ```
+    这是排错的神器。
+
+4.  **停止并移除**:
+
+    ```bash
+    docker-compose down
+    ```
+    注意：这会移除容器和网络，但**不会**移除卷（数据是安全的）。
+
+## Vibe Check
+
+1.  **破坏性实验**:
+    *   启动应用，通过API创建一个歌单。
+    *   运行 `docker-compose down` 销毁容器。
+    *   再次运行 `docker-compose up -d`。
+    *   查询API。歌单还在吗？（应该在，因为有Volume）。
+    
+2.  **彻底毁灭**:
+    *   运行 `docker-compose down -v` (注意这个 `-v`)。
+    *   这会连同Volume一起删除。再次启动，数据就真的没了。

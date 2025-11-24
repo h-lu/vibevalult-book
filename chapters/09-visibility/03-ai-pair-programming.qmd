@@ -1,0 +1,187 @@
+# 9.3 与AI结对编程：生成你的第一个VibeVault前端
+
+现在，我们将进入最激动人心的部分。我们将不再逐行手写代码，而是**指挥AI**为我们编写代码。
+
+我们将构建一个独立的React前端应用，并让它连接到你第八章完成的Spring Boot后端。
+
+## 第零步：安装 Node.js (国内环境指南)
+
+在开始之前，你需要安装 Node.js 环境。
+
+1.  **检查是否已安装**:
+    打开终端，输入 `node -v`。如果显示版本号（如 `v18.x.x` 或更高），则可以跳过安装。
+
+2.  **安装 Node.js**:
+    *   访问 [Node.js 官网](https://nodejs.org/) 下载 LTS (长期支持) 版本安装包。
+    *   或者使用国内镜像下载：[Node.js 淘宝镜像](https://npmmirror.com/mirrors/node/)。
+
+3.  **配置国内镜像源 (关键)**:
+    npm 的默认源在国外，国内访问可能很慢。强烈建议切换到淘宝镜像源：
+
+    ```bash
+    npm config set registry https://registry.npmmirror.com
+    ```
+    验证是否配置成功：
+    ```bash
+    npm config get registry
+    # 应该输出: https://registry.npmmirror.com/
+    ```
+
+## 第一步：初始化并启动项目
+
+我们需要一个工具来快速搭建React项目的脚手架。我们选择**Vite**（法语意为“快”）。
+
+1.  打开终端，进入你的 `chapter-code` 目录（注意：**不要**在 `ch08` 文件夹里面，要在它的旁边）。
+2.  运行以下命令创建项目：
+
+    ```bash
+    npm create vite@latest vibevault-frontend -- --template react
+    ```
+
+3.  **关键**：命令执行完成后，终端会提示你运行几行命令（`cd`, `npm install`, `npm run dev`）。**请照做**：
+
+    ```bash
+    cd vibevault-frontend
+    npm install
+    npm run dev
+    ```
+
+如果一切顺利，你应该能看到终端提示 `Local: http://localhost:5173/`。在浏览器打开这个地址，你应该能看到Vite + React的欢迎页面。
+
+## 第二步：启动后端
+
+确保你第八章的后端代码正在运行！
+
+1.  打开一个新的终端窗口。
+2.  进入 `chapter-code/ch08` 目录。
+3.  运行 `./gradlew bootRun`。
+4.  确保 `http://localhost:8080/api/playlists` 可以访问。
+
+## 第三步：编写Prompt (提示词)
+
+现在，打开你的AI助手（ChatGPT, Claude, 或其他LLM）。我们将使用**Prompt Engineering**（提示工程）来生成代码。
+
+复制以下Prompt，发送给AI：
+
+> **Prompt**:
+>
+> 我有一个正在运行的Spring Boot后端API，地址是 `http://localhost:8080`。
+> 它有一个接口 `GET /api/playlists`，返回的数据格式如下（JSON数组）：
+> [{"id":1,"name":"my-favorites","songs":[{"title":"Bohemian Rhapsody","artist":"Queen"},{"title":"Stairway to Heaven","artist":"Led Zeppelin"}]},{"id":2,"name":"sunny-drive","songs":[{"title":"Drive","artist":"The Cars"},{"title":"Send Me On My Way","artist":"Rusted Root"}]}]
+>
+> 请帮我用React编写一个名为 `PlaylistList` 的组件。要求如下：
+>
+> 1. 使用 `fetch` API 调用后端接口获取数据。
+> 2. 使用 `useState` 管理数据状态、加载状态（loading）和错误状态（error）。
+> 3. 使用 `useEffect` 在组件挂载时触发API调用。
+> 4. 界面上：如果正在加载，显示“加载中...”；如果出错，显示红色错误信息；如果成功，用无序列表 `<ul>` 显示播放列表的名称。
+> 5. 请提供完整的代码，并告诉我应该把它放在哪个文件中，以及如何在 `App.jsx` 中使用它。
+
+## 第四步：审查与运行
+
+AI会生成一段代码。**不要盲目复制**。请检查它是否包含了以下关键点：
+
+*   ✅ 是否引入了 `useState` 和 `useEffect`？
+*   ✅ `fetch` 的URL是否是 `http://localhost:8080/api/playlists`？
+*   ✅ 是否有 `try-catch` 块来处理错误？
+
+按照AI的指示，创建 `src/PlaylistList.jsx` 文件（或类似名字），把代码粘贴进去。然后在 `src/App.jsx` 中引入并使用它。
+
+回到浏览器 `http://localhost:5173`。
+
+### 遭遇CORS危机！
+
+你很可能会看到页面显示“加载失败”或者控制台报错：
+`Access to fetch at ... from origin 'http://localhost:5173' has been blocked by CORS policy`。
+
+这是**跨域资源共享 (CORS)** 错误。浏览器出于安全考虑，默认禁止前端（端口5173）去请求不同端口的后端（端口8080）。
+
+## 第五步：解决CORS问题
+
+我们需要在**后端**允许这种跨域请求。
+
+1.  回到你的Spring Boot后端代码 (`chapter-code/ch08`)。
+2.  找到 `PlaylistController.java`。
+3.  在类上添加注解 `@CrossOrigin(origins = "http://localhost:5173")`。
+
+```java
+@RestController
+@RequestMapping("/api/playlists")
+@CrossOrigin(origins = "http://localhost:5173") // 允许来自前端的请求
+public class PlaylistController {
+    // ...
+}
+```
+
+4.  **重启后端应用**。
+
+再次刷新前端页面。你应该能看到你数据库里的播放列表神奇地出现在了页面上！
+
+## 第六步：AI 调试指南 (当代码跑不通时)
+
+在 AI 辅助编程中，遇到报错是常态。**不要慌张，也不要自己瞎改。**
+学会把错误“喂”给 AI，是 Vibe Coding 的核心技能。
+
+### 场景 1：页面白屏或报错
+1.  **打开控制台**：右键 -> 检查 -> Console。
+2.  **复制红色报错**：比如 `Uncaught TypeError: Cannot read properties of undefined (reading 'map')`。
+3.  **喂给 AI**：
+
+    > "我的页面报错了，错误信息是：[粘贴错误信息]。
+    > 这是我的 `PlaylistList.jsx` 代码：[粘贴代码]。
+    > 请帮我分析原因并修复。"
+
+### 场景 2：样式错乱
+1.  **截图**：用截图工具框选错乱的区域。
+2.  **喂给 AI** (如果你的 AI 支持图片)：
+
+    > "如图所示，我的卡片排列乱了，我希望它们横向排列。这是我的 CSS 代码..."
+3.  **描述** (如果不支持图片)：
+
+    > "我的卡片现在是垂直排列的，但我希望它们在宽屏幕上是横向排列的（Flexbox），请帮我修改 CSS。"
+
+## 第七步：迭代 Prompt 技巧 (从 60 分到 100 分)
+
+AI 第一次生成的代码通常只能打 60 分（能跑，但不好看，也没处理边缘情况）。
+你需要通过**追问**，把它打磨到 100 分。
+
+**Round 1 (功能)**:
+
+> "写一个 React 组件显示播放列表。" (AI: 生成了最基础的列表)
+
+**Round 2 (健壮性)**:
+
+> "刚才的代码在网络慢的时候没有反应。请添加 `loading` 状态显示'加载中...'，如果请求失败，显示红色的错误信息。" (AI: 添加了 try-catch 和状态管理)
+
+**Round 3 (交互)**:
+
+> "现在列表太长了。请添加一个搜索框，可以根据歌单名字实时过滤列表。" (AI: 添加了过滤逻辑)
+
+**Round 4 (美感)**:
+
+> "现在的界面太丑了。请使用 CSS Grid 把它变成响应式的卡片布局，鼠标悬停时要有阴影效果。" (AI: 添加了 CSS 样式)
+
+::: {.callout-note}
+**记住：好代码是聊出来的，不是一次生成的。**
+:::
+
+## Vibe Check: 挑战全栈
+
+现在的页面比较简单，只能显示歌单名字。让我们通过AI把它变成一个功能完整的应用。
+请尝试向AI发出以下指令（Prompt），一步步升级你的应用。
+
+> **⚠️ 全栈提示**: 在执行以下步骤时，如果前端请求报错（如 404 Not Found），说明你的Spring Boot后端可能缺少对应的API。你需要回到Java代码中 (`PlaylistController`)，添加对应的接口。这也是全栈开发的乐趣所在！
+
+1.  **交互升级：查看详情**
+
+    > "修改代码：当用户点击某个播放列表的名字时，在下方展开显示该列表包含的所有歌曲信息（歌名、歌手）。再次点击则收起。"
+
+2.  **歌曲管理：增删歌曲**
+
+    > "添加功能：在展开的歌单详情中，每一首歌后面加一个'删除'按钮。底部加一个'添加歌曲'的表单（输入歌名和歌手）。点击按钮后分别调用后端API更新数据。"
+
+3.  **列表管理：增删歌单**
+
+    > "添加功能：在页面顶部添加'新建歌单'按钮，每一行歌单后面添加'删除'按钮。实现创建和删除歌单的功能，并自动刷新列表。"
+
+4.  **思考**: 为什么我们需要在后端配置CORS，而不是在前端配置？（提示：这是浏览器的安全策略，谁拥有数据，谁才有权决定是否分享数据。）

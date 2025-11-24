@@ -16,7 +16,7 @@ public class Song {
 
     // --- 5. 定义多对一关系 ---
     @ManyToOne(fetch = FetchType.LAZY) // LAZY: 懒加载，只有在实际访问playlist时才从数据库加载
-    @JoinColumn(name = "playlist_name") // 定义外键列的列名为'playlist_name'
+    @JoinColumn(name = "playlist_id", referencedColumnName = "id") // 定义外键列的列名为'playlist_id'
     private Playlist playlist;
     
     // --- 构造函数和方法 ---

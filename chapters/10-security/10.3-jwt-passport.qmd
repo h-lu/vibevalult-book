@@ -1,0 +1,83 @@
+# 10.3 护照：JWT 黑盒组件
+
+"Login Success" 这句话虽然好听，但它不能当饭吃。
+我们需要给用户发一张**数字护照 (JWT)**，用户下次来的时候，亮出护照，我们就知道他是谁了。
+
+## 什么是 JWT？
+
+JSON Web Token (JWT) 就像一张**防伪的身份证**。
+*   **Header**: 证件类型。
+*   **Payload**: 个人信息（我是 vibecoder）。
+*   **Signature**: 防伪印章（只有服务器能盖章）。
+
+## 第一步：引入依赖
+
+为了生成和解析 Token，我们需要引入 JJWT 库。
+
+在 `gradle/libs.versions.toml` 中添加：
+
+```toml
+[versions]
+jjwt = "0.12.6"
+
+[libraries]
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
+```
+
+在 `build.gradle.kts` 中添加：
+
+```kotlin
+implementation(libs.jjwt.api)
+runtimeOnly(libs.jjwt.impl)
+runtimeOnly(libs.jjwt.jackson)
+```
+
+## 黑盒组件 (Black Box Components)
+
+实现 JWT 需要写很多加密代码。**不要手写。** 把它当作现成的零件。
+
+### 零件 1：JwtService (签发器)
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请生成 `JwtService` 类 (使用 jjwt 库)。
+包含：
+1. `generateToken(username)`: 生成 24小时有效的 Token。
+2. `extractUsername(token)`: 解析用户名。
+3. `isTokenValid(token, userDetails)`: 验签。"
+:::
+
+### 零件 2：JwtFilter (安检员)
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请生成 `JwtAuthenticationFilter` (继承 OncePerRequestFilter)。
+逻辑：
+1. 从 Header 获取 `Authorization: Bearer xxx`。
+2. 验证 Token。
+3. 如果有效，将用户放入 `SecurityContextHolder` (放行)。"
+:::
+
+### 零件 3：组装
+
+回到 `SecurityConfig`，让 AI 把 `JwtFilter` 插在 `UsernamePasswordAuthenticationFilter` 之前。
+
+## 升级登录接口
+
+回到 `AuthController`，修改 `login` 方法：
+
+```java
+// 旧代码
+return "Login Success";
+
+// 新代码
+return jwtService.generateToken(user.getUsername());
+```
+
+## Vibe Check
+
+再次调用 `/login` 接口。
+这次你应该能看到一串长长的字符：`eyJhbGciOiJIUzI1Ni...`。
+这就是你的**数字护照**。保存好它，下一章我们要用它来行使权力。

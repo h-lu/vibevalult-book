@@ -8,8 +8,12 @@ import java.util.List;
 @Table(name = "playlists") // <--- 2. 映射到数据库的'playlists'表
 public class Playlist {
 
-    @Id // <--- 3. 标记主键
-    private String name; // 我们继续使用播放列表的名字作为主键
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String name;
 
     // --- 4. 定义一对多关系 ---
     @OneToMany(
@@ -19,13 +23,21 @@ public class Playlist {
     )
     private List<Song> songs = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User owner; // 这是一个新的字段：所有者
+
     // --- 构造函数和方法 ---
     public Playlist(String name) {
         this.name = name;
     }
 
     // JPA需要一个无参的构造函数
-    protected Playlist() {}
+    public Playlist() {}
+
+    public Long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -33,6 +45,10 @@ public class Playlist {
 
     public List<Song> getSongs() {
         return songs;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void addSong(Song song) {
@@ -44,4 +60,8 @@ public class Playlist {
         songs.remove(song);
         song.setPlaylist(null);
     }
+
+    // Getter/Setter
+    public User getOwner() { return owner; }
+    public void setOwner(User owner) { this.owner = owner; }
 }

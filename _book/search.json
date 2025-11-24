@@ -1624,86 +1624,969 @@
   {
     "objectID": "chapters/09-visibility/index.html",
     "href": "chapters/09-visibility/index.html",
-    "title": "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
+    "title": "第九章：对抗“隐形”：AI驱动的前端快速入门",
     "section": "",
-    "text": "本章危机\n我们的API功能强大、性能可靠，但对普通用户来说，它就像空气一样，“隐形”地存在着。没有一个可见的界面，它的价值就无法被大众所感知。它就像一台拥有V12引擎的超级跑车，却没有驾驶舱和方向盘，只能在车库里轰鸣。",
+    "text": "本章危机：隐形的巨人\n你已经完成了第八章的代码（位于 chapter-code/ch08），拥有了一个功能强大的后端API和数据库。 但是，对普通用户来说，它依然是“隐形”的。没有界面的程序，就像没有身体的灵魂，无法被感知和交互。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/index.html#本章顿悟",
-    "href": "chapters/09-visibility/index.html#本章顿悟",
-    "title": "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-    "section": "本章顿悟",
-    "text": "本章顿悟\n我们需要一个“客户端”来消费我们的API，将数据显示给用户，并接收用户的操作。我们需要为这台强大的引擎，打造一个同样优雅和高效的“驾驶舱”——一个现代化的用户界面（UI）。\n在本章中，我们将踏入前端开发的世界，完成从后端工程师到全栈工程师的关键一跃。我们将：",
+    "objectID": "chapters/09-visibility/index.html#本章危机隐形的巨人",
+    "href": "chapters/09-visibility/index.html#本章危机隐形的巨人",
+    "title": "第九章：对抗“隐形”：AI驱动的前端快速入门",
+    "section": "本章危机：隐形的巨人",
+    "text": "本章危机：隐形的巨人\n你已经完成了第八章的代码（位于 chapter-code/ch08），拥有了一个功能强大的后端API和数据库。 但是，对普通用户来说，它依然是“隐形”的。没有界面的程序，就像没有身体的灵魂，无法被感知和交互。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/index.html#本章学习路径",
-    "href": "chapters/09-visibility/index.html#本章学习路径",
-    "title": "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-    "section": "本章学习路径",
-    "text": "本章学习路径\n\n为何需要前后端分离: 从第一性原理出发，探讨为何现代Web应用普遍采用前后端分离的架构。我们将揭示这种分离的本质是职责分离，它如何带来了并行开发、技术栈解耦和更好的用户体验等根本性的工程优势。\n为何选择React: 深入理解React的“声明式UI”思想如何将我们从繁琐的DOM操作中解放出来。\nReact前置：现代JavaScript速成: 为Java开发者准备的JavaScript核心概念快速通道，扫清学习React前的语言障碍。\nReact的核心魔法：什么是Hook: 顿悟React Hooks（如useState和useEffect）的本质，理解它们如何让我们在函数组件中“钩入”状态和生命周期等React核心特性。\n构建你的第一个React组件: 亲自动手，使用现代化的工具Vite快速搭建一个React项目，并通过fetch API从我们的Java后端获取数据，最终将前后端完美地连接起来，让数据第一次真正地“活”在用户眼前。\n\n这一章将为你打开一扇通往全新世界的大门，让你掌握构建完整、现代化Web应用所需的关键技能。",
+    "objectID": "chapters/09-visibility/index.html#本章顿悟ai结对编程",
+    "href": "chapters/09-visibility/index.html#本章顿悟ai结对编程",
+    "title": "第九章：对抗“隐形”：AI驱动的前端快速入门",
+    "section": "本章顿悟：AI结对编程",
+    "text": "本章顿悟：AI结对编程\n在过去，学习前端开发需要掌握HTML、CSS、JavaScript、React、Webpack等一系列复杂的工具链。 但在AI时代，我们不需要从头手写每一行代码。\n本章的核心理念是：理解思想 &gt; 记忆语法。\n我们将学习如何与AI结对编程，通过Prompt工程，快速构建出连接我们后端的漂亮界面。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/01-why-frontend-backend-separation.html",
-    "href": "chapters/09-visibility/01-why-frontend-backend-separation.html",
-    "title": "9.1 - 为何需要前后端分离？",
+    "objectID": "chapters/09-visibility/index.html#本章目标",
+    "href": "chapters/09-visibility/index.html#本章目标",
+    "title": "第九章：对抗“隐形”：AI驱动的前端快速入门",
+    "section": "本章目标",
+    "text": "本章目标\n\n理解架构: 明白前后端分离的意义。\nReact核心: 掌握声明式UI、组件化思想。\nAI实战: 指挥AI生成一个能与你的Java后端对话的React应用。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/01-why-frontend.html",
+    "href": "chapters/09-visibility/01-why-frontend.html",
+    "title": "9.1 为何需要前端？从API到UI的跨越",
     "section": "",
-    "text": "“真正的解耦，是让专业的人做专业的事。”\n\n在上一章，我们成功构建了一个坚实可靠的Java后端API。它就像一个拥有强大能力的“引擎”，能够管理我们的播放列表数据。但现在，这台引擎正静静地躺在机房里，无人问津。为什么？因为它缺少一个“驾驶舱”——一个用户可以直接触摸和操作的界面。\n我们完全可以在Java后端直接生成HTML页面，就像JSP（JavaServer Pages）或Thymeleaf模板引擎所做的那样。这是一种传统的、曾经非常流行的技术。但为何现代Web应用，尤其是复杂的单页应用（SPA），几乎无一例外地选择了另一条路：前后端分离？\n答案，源于一个核心的软件工程原则：职责分离 (Separation of Concerns)。\n\n痛点：后端渲染的“大泥球”\n想象一下，如果我们的VibeVault项目不采用前后端分离，会是怎样一番景象：\n\n前端开发者：他们需要修改页面布局、调整CSS样式，甚至只是换一个按钮的颜色。但他们不能直接修改。他们必须在一个混合着Java代码、HTML标签、CSS和JavaScript的*.jsp或*.html文件里小心翼翼地工作。他们甚至需要在自己的电脑上搭建一个完整的Java开发环境（JDK, Maven/Gradle, Tomcat/Jetty…），仅仅是为了看看一个CSS的改动效果。\n后端开发者：他们正在专注地优化数据库查询，或者重构业务逻辑。但他们常常被打断，因为前端需要一个新的数据字段，他们必须去修改对应的视图模板，将这个字段塞进HTML的某个角落。更糟糕的是，模板里的一个小小改动，都可能需要整个后端应用重新编译、打包和部署。\n\n这种模式下，前后端的界限变得模糊，团队成员的工作相互耦合，互相等待，开发效率低下。整个项目就像一个“大泥球”，牵一发而动全身。\n\n\n顿悟：分离带来的自由\n前后端分离，就是将这个“大泥球”清晰地切分开来。\n\n前端（Frontend）: 专门负责“呈现”，也就是用户能看到和交互的一切。它是一个独立的“客户端”应用（通常运行在用户的浏览器里），它的唯一目标就是提供最佳的用户体验。它使用自己的技术栈（HTML, CSS, JavaScript框架如React, Vue, Angular）。\n后端（Backend）: 专门负责“业务逻辑”和“数据”。它提供一系列API接口（就像我们之前用Spring Boot构建的），让前端可以查询数据、提交操作。它对前端“长什么样”一无所知，也毫不关心。\n\n这种分离，带来了革命性的工程优势：\n\n并行开发 (Parallel Development): 一旦API契约（接口定义）被确定下来，前后端团队就可以像两条并行的生产线一样同时开工，互不干扰。前端甚至可以用模拟数据（Mock Data）来独立开发和测试，完全无需等待后端。\n技术栈解耦 (Technology Stack Decoupling): 前端可以选择最适合UI开发的React，后端可以坚持使用稳定强大的Java和Spring Boot。任何一方的技术升级或更换，都不会强制另一方做出改变。后端想从MySQL迁移到PostgreSQL？前端毫无感觉。前端想用最新的CSS框架？后端也无需关心。\n多端复用 (Multi-client Reusability): 同一个后端API，可以同时为Web浏览器、手机App（iOS, Android）、桌面应用甚至其他服务器提供服务。我们只需为不同的“端”开发不同的“壳”，而核心的业务逻辑完全复用，极大地降低了开发成本。\n更好的用户体验 (Better User Experience): 前后端分离的架构催生了“单页应用”（SPA）。页面切换不再需要重新请求整个HTML，而是在客户端内部完成，只通过API获取必要的数据进行局部更新。这使得网页应用感觉起来像桌面应用一样流畅和快速。\n\n\n\n结论\n选择前后端分离，并非跟风，而是对软件开发复杂性深刻洞察后的必然选择。它通过清晰的职责划分，将复杂的问题分解，让不同的团队可以专注在自己最擅长的领域，最终实现更快的开发速度、更灵活的系统架构和更卓越的用户体验。\n这正是我们要为VibeVault选择的道路。接下来，我们将踏入前端的世界，看看如何为我们的API引擎，打造一个华丽而强大的“驾驶舱”。\n\n\nVibe Check (思考与练习)\n\n思考: 如果前后端不分离，当后端团队需要修改数据库结构时，前端团队是否也必须等待后端完成并部署后才能开始工作？前后端分离如何解决了这个问题？\nAI协同: 询问你的AI伙伴：“请对比传统的MVC（Model-View-Controller）架构（后端渲染视图）和现代前后端分离架构的优缺点。从‘开发效率’、’部署灵活性’和‘用户体验’三个角度进行分析。”\n案例分析: 你日常使用的哪些网站或应用，你认为它们是前后端分离的？你从哪些现象可以判断出来？（例如，页面加载速度、部分内容刷新等）。",
+    "text": "本章危机：隐形的功能\n恭喜你！经过前八章的努力，你已经构建了一个功能强大的后端系统。 你有一个能存储数据的PostgreSQL数据库，有一个能处理业务逻辑的Spring Boot应用，还有一系列RESTful API。\n但是，请尝试把你的作品展示给你的朋友看。 你打开终端，运行：\n屏幕上跳出一串冰冷的JSON数据：\n你的朋友可能会困惑地看着你：“这就完了？这有什么用？”\n危机：对于普通用户来说，没有图形界面（GUI）的软件，就像是隐形的空气。无论你的后端写得多么优雅，如果用户无法直观地使用它，它的价值就无法被感知。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-      "<span class='chapter-number'>35</span>  <span class='chapter-title'>9.1 - 为何需要前后端分离？</span>"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>9.1 为何需要前端？从API到UI的跨越</span>"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/02-why-react.html",
-    "href": "chapters/09-visibility/02-why-react.html",
-    "title": "9.2 - 为何选择React？声明式的UI革命",
+    "objectID": "chapters/09-visibility/01-why-frontend.html#本章危机隐形的功能",
+    "href": "chapters/09-visibility/01-why-frontend.html#本章危机隐形的功能",
+    "title": "9.1 为何需要前端？从API到UI的跨越",
     "section": "",
-    "text": "“我思，故我在。” (Cogito, ergo sum) - 勒内·笛卡尔 (René Descartes) 在React的世界里，我们可以说：“我声明，故UI在。” (I declare, therefore the UI is.)\n\n在确定了前后端分离的道路后，我们面临下一个关键选择：用什么工具来构建我们的前端“驾驶舱”？\n我们可以直接使用原生JavaScript，通过document.getElementById()、element.appendChild()等API来一步步地创建、修改、删除HTML元素（DOM节点）。这种方式非常直接，我们称之为命令式（Imperative）编程。\n这就像是你告诉一个厨师：“先走到冰箱，打开门，拿出鸡蛋，拿出面粉，…，最后把蛋糕放到烤箱里。” 你需要精确地描述每一步动作。\n// 命令式代码示例：手动操作DOM\n// 隐藏错误信息，显示加载动画，禁用按钮...\n// 每一步都需要我们亲自指挥\nfunction handleFormSubmit(e) {\n  e.preventDefault();\n  \n  // 指挥UI：禁用输入框和按钮\n  document.getElementById('textarea').disabled = true;\n  document.getElementById('button').disabled = true;\n\n  // 指挥UI：显示“加载中”\n  document.getElementById('loading').style.display = 'block';\n  document.getElementById('error').style.display = 'none';\n\n  // ... 提交表单 ...\n}\n对于非常简单的页面，这种方式是可行的。但当我们的VibeVault应用变得复杂时——比如，当播放列表可以动态添加/删除歌曲，用户可以实时评论，界面上有多个相互关联的状态时——这种命令式的“微观管理”会迅速变成一场噩梦：\n\n代码冗长且脆弱: 代码充斥着大量的DOM操作指令，状态和UI的对应关系散落在各处的事件处理器中，难以追踪。修改一个小的UI行为，可能需要改动多个地方，极易出错。\n状态管理混乱: 我们的应用状态（比如当前播放的歌曲、播放列表数据、用户登录状态）与UI状态（哪个按钮被禁用、哪个div是可见的）紧密耦合在一起，难以维护。\n性能瓶颈: 频繁且不加优化的直接DOM操作，是导致浏览器页面卡顿的主要原因之一。\n\n\n顿悟：从“怎么做”到“是什么”\nReact，以及类似的现代前端框架，带来了一场革命性的思想转变：从命令式转向声明式（Declarative）。\n你不再告诉厨师一步步怎么做，你只是给他一张蛋糕的最终设计图，并告诉他：“我想要一个长这样的蛋糕。” 厨师会自己搞定所有细节。\n在React中，你不再写“怎么去操作DOM”的代码，你只用一种名为JSX（JavaScript XML）的特殊语法来“声明”你的UI应该是什么样子。\n// 声明式代码示例：使用React\n// 我们只声明UI应该有的样子，至于如何变成这样，React会搞定\nfunction MyFormComponent({ status }) {\n  if (status === 'success') {\n    return &lt;h1&gt;That's right!&lt;/h1&gt;\n  }\n\n  const isSubmitting = status === 'submitting';\n\n  return (\n    &lt;form&gt;\n      &lt;textarea disabled={isSubmitting} /&gt;\n      &lt;button disabled={isSubmitting || status === 'empty'}&gt;\n        Submit\n      &lt;/button&gt;\n      {status === 'error' && &lt;p&gt;Something went wrong!&lt;/p&gt;}\n    &lt;/form&gt;\n  );\n}\n看到区别了吗？我们只是在描述不同status下，这个组件“长什么样”。我们没有写任何document.getElementById或.style.display。我们把“怎么做”的细节，完全交给了React。\n\n\nReact的魔法：虚拟DOM\nReact是如何做到这一点的呢？它主要依赖于两个核心概念：\n\n组件（Components）: 你可以将UI拆分成一个个独立的、可复用的部分，称为组件。比如一个按钮、一个输入框、一个播放列表，都可以是一个组件。每个组件都有自己的逻辑和外观。\n虚拟DOM（Virtual DOM）: 这是React性能奇迹的核心。你可以把它想象成一个存在于内存中的、轻量级的真实DOM的“设计蓝图”。\n\n当你改变组件的状态（比如status从'typing'变成了'submitting'）时，React会根据新的状态，重新计算出一个新的虚拟DOM“蓝图”。\n然后，React会使用一个高效的Diffing（差异对比）算法，比较新旧两个虚拟DOM蓝图的区别。\n最后，React会找出所有差异，然后一次性地、以最小的代价将这些变化更新到真实的浏览器DOM上。\n\n\n想象一下，你的播放列表有1000首歌，你只是给其中一首歌点了个赞。如果用命令式的方式，你可能需要手动找到那个DOM节点然后更新它。而使用React，你只是改变了那首歌在数据中的状态（isLiked: true），React会通过虚拟DOM的比对，精确地只更新页面上那一个小小的红心图标，而不会去动其他999首歌的DOM节点。\n\n\n结论\n选择React，意味着我们选择了一种更高级、更抽象、更关注于“业务逻辑”而非“UI琐事”的开发模式。它让我们能够：\n\n编写更可预测的代码: UI完全由状态驱动，状态决定了UI的样子。\n构建可复用的组件: 像搭积木一样构建复杂应用。\n获得卓越的性能: 虚拟DOM为我们抹平了手动操作DOM的性能差异，让我们默认就拥有了“最优实践”。\n\n现在，我们已经理解了“为什么”要选择React。在正式编写第一个组件之前，我们还需要完成一些准备工作：搭建前端开发环境，并理解我们所使用的工具。\n\n\n准备工作（一）：安装Node.js与npm\n要开始任何现代前端开发，我们都需要一个名为Node.js的JavaScript运行环境。\n你可能会感到困惑：Node.js不是通常用来在服务器上运行JavaScript的吗？我们不是要在浏览器里运行React吗？\n这是一个非常好的问题！答案是：我们虽然最终的代码是运行在浏览器中，但我们在“开发过程”中需要借助大量的“工具”来帮助我们，例如：\n\n包管理器 (Package Manager): 用来下载和管理我们项目所依赖的第三方库（比如React本身）。npm (Node Package Manager)就是最流行的包管理器，它会随着Node.js一起被安装。\n开发服务器 (Development Server): 一个能在我们本地电脑上运行的小型服务器，它能托管我们的代码，并且在我们修改文件时自动刷新浏览器，大大提高开发效率。\n构建工具 (Build Tool): 用来将我们编写的现代JavaScript代码（包括JSX）、CSS等，转换和打包成浏览器能够理解和高效运行的最终文件。\n\n而所有这些工具，几乎都是用Node.js编写的。因此，安装Node.js是我们进入现代前端世界的第一张门票。\n\n在Windows上安装\n\n访问官网: 打开浏览器，访问 Node.js官方网站。\n下载LTS版本: 网站首页会推荐两个版本：“LTS” (Long Term Support，长期支持版) 和 “Current” (最新版)。对于初学者和生产环境，永远优先选择LTS版本，因为它更稳定。点击LTS版本的下载按钮，会下载一个.msi安装包。\n运行安装程序: 双击下载的.msi文件，启动安装向导。\n一路“Next”: 在安装过程中，你只需要保持默认选项，不断点击“Next”即可。请确保勾选了“Add to PATH”选项（通常是默认勾选的），这会将node和npm命令添加到系统的环境变量中，让我们可以在任何终端窗口中使用它们。\n验证安装: 安装完成后，打开你的终端（可以是CMD、PowerShell或Windows Terminal），输入以下两个命令，如果它们分别显示出版本号，则代表安装成功： bash     node -v     npm -v\n\n\n\n在macOS上安装\n在macOS上安装Node.js最简单的方式是使用Homebrew，一个广受欢迎的包管理器。\n\n安装Homebrew (如果尚未安装): 打开“终端” (Terminal) 应用，粘贴并执行以下命令： bash     /bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\" 按照终端提示完成安装。\n使用Homebrew安装Node.js: 在终端中执行以下命令： bash     brew install node Homebrew会自动为你安装最新版本的Node.js（通常就是LTS版本）并配置好一切。\n验证安装: 在终端中输入以下两个命令，检查是否安装成功： bash     node -v     npm -v\n\n\n\n\n准备工作（二）：理解我们的构建工具Vite\n有了Node.js和npm，我们就可以选择一个“构建工具”来创建我们的React项目了。过去，一个名为create-react-app的工具是官方推荐的标配，但它现在已经不再被积极维护。\n取而代之的，是新一代的前端构建工具，其中最耀眼的明星就是Vite (发音类似 /vit/，法语中“快”的意思)。\n\n为什么不用create-react-app了？\ncreate-react-app最大的问题就是“慢”。在一个中大型项目中，启动开发服务器可能需要几十秒甚至几分钟，每次修改代码后的热更新（Hot Module Replacement, HMR）也会有明显的延迟。这是因为它在启动时需要将我们项目所有的JavaScript代码提前“打包（bundle）”成一个或几个大文件。\n\n\nVite为何如此之快？\nVite则采取了一种截然不同的、更聪明的方式。\n\n利用原生ES模块 (Native ES Modules): 现代浏览器本身已经支持了JavaScript的模块系统（import/export语法）。Vite在开发模式下，不会提前打包所有代码。相反，它会直接利用浏览器的这个能力。当浏览器请求某个文件时，Vite会按需、即时地转换并提供这个文件。这意味着，你的项目无论有多大，启动开发服务器几乎是瞬间完成的。\n高效的热更新: 当你修改一个文件时，Vite只需要精确地让与这个文件相关的模块失效并重新请求，而不需要重新计算整个项目的打包结果。这使得热更新的速度非常快，无论项目规模如何，都能保持毫秒级的响应。\n基于esbuild的预构建: 对于第三方库（比如react, react-dom），Vite会使用一个用Go语言编写的、速度极快的打包器esbuild，将它们提前打包一次并缓存起来。这极大地减少了浏览器需要处理的模块请求数量，进一步提升了性能。\n\n简单来说，Vite通过充分利用现代浏览器的能力和更高效的工具，从根本上解决了传统构建工具的性能瓶颈，为我们提供了极致流畅的开发体验。选择Vite，就是选择了一个更快速、更现代、更高效的开发工作流。\n现在，我们已经理解了“为什么”要选择React，并完成了所有的准备工作。在下一节中，我们将亲自动手，使用Vite创建我们的第一个React项目，并让它与我们的Java后端真正地“连接”起来。\n\n\n\nVibe Check (思考与练习)\n\n思考: 如果你有一个包含1000个列表项的页面，每次只更新其中一个列表项，直接操作DOM和使用虚拟DOM，哪种方式的性能会更好？为什么？\nAI协同: 询问AI：“请解释一下React的‘单向数据流’（Unidirectional Data Flow）是什么？它如何帮助React应用保持可预测性和易于调试？”\n对比: 除了React，你还知道哪些流行的前端框架（如Vue, Angular）？它们在设计理念上与React有何异同？",
+    "text": "curl http://localhost:8080/api/playlists\n\n[{\"id\":1,\"name\":\"my-favorites\",\"songs\":[{\"title\":\"Bohemian Rhapsody\",\"artist\":\"Queen\"},{\"title\":\"Stairway to Heaven\",\"artist\":\"Led Zeppelin\"}]}]",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 - 为何选择React？声明式的UI革命</span>"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>9.1 为何需要前端？从API到UI的跨越</span>"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/02a-js-primer-for-react.html",
-    "href": "chapters/09-visibility/02a-js-primer-for-react.html",
-    "title": "9.3 - React前的必修课：现代JavaScript语法速成",
-    "section": "",
-    "text": "“在建造高楼之前，必须先有坚实的地基。”\n\n欢迎来到前端开发的世界！在深入React的海洋之前，我们必须先掌握它的通用语言——JavaScript。\n你可能在其他地方接触过JavaScript，但现代前端框架（如React）大量使用了一些近几年才被广泛应用的“现代”语法特性。这些新语法让代码更简洁、更强大，但也可能让初学者感到困惑。\n本节课的目的，就是为你扫清这些语法障碍。我们将从第一性原理出发，为你讲解在React中最常遇到的几个现代JavaScript核心概念。把这里当成你进入React世界前的“新手村”，确保你装备精良。\n\n变量声明：let 与 const\n在旧的JavaScript中，你可能只见过来声明变量。但在现代JS中，我们几乎只使用let和const。\n\nconst (常量 - Constant): 用来声明一个不会被重新赋值的变量。一旦声明，它的值就不能再改变。这是我们的首选，因为它可以防止我们意外地修改了不该修改的变量，让代码更可预测、更安全。\n// 声明一个API地址，这个地址不应该在程序中被改变\nconst apiUrl = \"http://localhost:8080/api/playlists\";\n\n// 尝试重新赋值会直接报错，这是好事！\n// apiUrl = \"http://google.com\"; // TypeError: Assignment to constant variable.\nlet (变量 - Variable): 用来声明一个可能会被重新赋值的变量。当你明确知道某个变量的值未来需要改变时，就使用let。\nlet userScore = 100;\n// ... 用户完成了一个任务 ...\nuserScore = 150; // 这是允许的\n\n第一性原理: 默认使用const，除非你确定需要改变它。这是一种“最小权限”原则，能有效减少bug。\n\n\n函数的“新”写法：箭头函数 (Arrow Functions)\n你可能熟悉这样定义一个函数：\nfunction add(a, b) {\n  return a + b;\n}\n现代JS引入了一种更简洁的写法——箭头函数：\n// (参数) =&gt; {函数体}\nconst add = (a, b) =&gt; {\n  return a + b;\n};\n\n// 如果函数体只有一行并且是返回值，可以省略{}和return\nconst subtract = (a, b) =&gt; a - b;\n\n// 如果只有一个参数，甚至可以省略()\nconst square = x =&gt; x * x;\n在React组件中，你将无处不在地看到箭头函数，因为它非常简洁。例如，在处理列表渲染时：\n// 你在之后会看到的React代码\nplaylists.map(playlist =&gt; (\n  &lt;li key={playlist.id}&gt;{playlist.name}&lt;/li&gt;\n));\n这里的 playlist =&gt; (...) 就是一个箭头函数。\n第一性原理: 箭头函数提供了一种更短、更清晰的方式来书写函数，尤其适用于那些“用完即丢”的匿名函数（如回调函数）。\n\n\n数据提取的艺术：解构赋值 (Destructuring)\n想象一下，你有一个代表用户的对象：\nconst user = {\n  id: 1,\n  name: \"Alice\",\n  email: \"alice@example.com\",\n};\n如果你想分别获取name和email，你可能会这样做：\nconst userName = user.name;\nconst userEmail = user.email;\n解构赋值让这个过程变得极其优雅：\n// 从user对象中，直接“提取”出name和email两个变量\nconst { name, email } = user;\n\nconsole.log(name);  // \"Alice\"\nconsole.log(email); // \"alice@example.com\"\n这种语法同样适用于数组。在React中，useState Hook的用法就是解构赋值最经典的例子：\n// useState返回一个数组：[当前状态, 更新函数]\nconst [playlists, setPlaylists] = useState([]);\n我们直接从返回的数组中“解构”出了playlists和setPlaylists两个变量。\n第一性原理: 解构赋值让我们能以一种更声明式、更直观的方式，从复杂的数据结构（对象或数组）中提取出我们需要的部分。\n\n\n应对“等待”：async/await\n在前端，我们经常需要等待一些耗时的操作完成，比如从后端API获取数据。这种操作是异步（Asynchronous）的，因为它不会阻塞程序的其他部分运行。\n过去，我们使用回调函数或者.then()链来处理异步操作，这很容易形成“回调地狱（Callback Hell）”，代码难以阅读：\nfetch(apiUrl)\n  .then(response =&gt; {\n    // ...处理响应...\n    return response.json();\n  })\n  .then(data =&gt; {\n    // ...处理数据...\n  })\n  .catch(error =&gt; {\n    // ...处理错误...\n  });\nasync/await是建立在Promise（.then()的基础）之上的“语法糖”，它让我们能用一种看起来像“同步”代码的方式，来书写异步逻辑：\n// 1. 在函数前加上`async`关键字，表明这是一个异步函数\nasync function fetchPlaylists() {\n  try {\n    // 2. 在耗时操作（如fetch）前加上`await`关键字\n    //    代码会在这里“暂停”，直到fetch完成，然后将结果赋给response\n    const response = await fetch(apiUrl);\n    \n    // 3. 继续“暂停”，直到JSON解析完成\n    const data = await response.json();\n    \n    // 现在我们可以直接使用data了\n    console.log(data);\n\n  } catch (error) {\n    // 如果任何一个await的步骤出错了，都会被这里的catch捕获\n    console.error(\"Failed to fetch playlists:\", error);\n  }\n}\n看到区别了吗？async/await的代码几乎像普通的、从上到下执行的代码一样，逻辑清晰，易于理解和维护。\n第一性原理: async/await将复杂的异步流程，转换成了符合人类直觉的、线性的代码结构，极大地提高了异步代码的可读性。\n掌握了const/let、箭头函数、解构赋值和async/await这四个“神器”，你就已经拥有了阅读和编写绝大部分现代React代码所需的核心JavaScript知识。现在，你可以更有信心地进入下一节，去理解React中一个同样重要的核心概念——Hooks。",
+    "objectID": "chapters/09-visibility/01-why-frontend.html#本章顿悟我们需要一张脸",
+    "href": "chapters/09-visibility/01-why-frontend.html#本章顿悟我们需要一张脸",
+    "title": "9.1 为何需要前端？从API到UI的跨越",
+    "section": "本章顿悟：我们需要一张“脸”",
+    "text": "本章顿悟：我们需要一张“脸”\n我们需要构建一个用户界面（User Interface, UI）。 在Web开发的世界里，这被称为前端（Frontend）。\n\n为什么不直接在后端生成HTML？\n在Java Web开发的早期（JSP时代），我们确实是在后端直接生成HTML页面的。但现代Web开发普遍采用了前后端分离（Frontend-Backend Separation）的架构。\n为什么？\n\n关注点分离 (Separation of Concerns):\n\n后端 (Backend): 专注数据、逻辑、安全、性能。它是“大脑”。\n前端 (Frontend): 专注展示、交互、动画、用户体验。它是“脸面”。\n让专业的后端工程师做后端，专业的前端工程师做前端，效率更高。\n\n多端复用 (Multi-platform):\n\n你的后端API不仅可以服务于Web网页，未来还可以服务于iOS App、Android App、甚至智能手表。\n如果后端直接返回HTML，这些非浏览器客户端就无法使用了。返回JSON数据，则通用性极强。\n\n\n\n\n前端的职责\n在一个前后端分离的架构中，前端主要负责三件事：\n\n展示数据 (Display): 从后端API获取JSON数据，把它变成漂亮的卡片、列表、图表。\n收集输入 (Input): 提供表单、按钮，让用户输入数据，然后通过API发送给后端。\n路由导航 (Routing): 控制用户在不同页面（视图）之间的跳转，而不需要每次都刷新整个页面（单页应用 SPA）。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 - React前的必修课：现代JavaScript语法速成</span>"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>9.1 为何需要前端？从API到UI的跨越</span>"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/02b-what-is-a-hook.html",
-    "href": "chapters/09-visibility/02b-what-is-a-hook.html",
-    "title": "9.4 - React的核心魔法：到底什么是Hook？",
-    "section": "",
-    "text": "“给我一个支点，我就能撬动地球。” —— 阿基米德\n在React中，Hooks就是那个“支点”，它让我们能“撬动”函数组件的状态和生命周期。\n\n在上一节，我们掌握了现代JavaScript的语法。现在，我们来揭开React中最强大、也是最独特的概念——Hooks。\n如果你去查阅官方文档，它会告诉你：“Hook是一些可以让你在函数组件里‘钩入’ React state 及生命周期等特性的函数。”\n这个定义非常精确，但对于初学者来说，可能还是有点抽象。让我们用一个更生动的比喻来理解它。\n\n“无状态”的函数组件：一个健忘的厨师\n想象一下，一个React的函数组件（Function Component）就是一个厨师。\n你每次调用这个函数（也就是“渲染”这个组件），就等于给了这个厨师一张菜谱（你的JSX代码），然后他会严格按照菜谱，为你做出一道菜（渲染出UI）。\n// 一个简单的“厨师”函数\nfunction Greeting() {\n  // 菜谱：返回一个&lt;h1&gt;\n  return &lt;h1&gt;Hello, world!&lt;/h1&gt;;\n}\n\n// 每次调用Greeting()，他都严格地返回同样的一道菜。\n这个厨师有一个巨大的特点：他毫无记忆力。\n每次你让他做菜，他都是一个全新的、失忆的他。他完全不记得自己上次做了什么，也不记得厨房里发生了什么。你让他做多少次，他就严格按照菜谱做多少次一模一样的菜。\n在UI的世界里，这种“健忘”在很多时候是好事，它保证了UI的可预测性：相同的输入（Props），得到相同的输出（UI）。\n但问题来了：如果我们想让UI动起来，怎么办？\n比如，我们想做一个计数器，用户每点一次按钮，数字就加一。\nfunction Counter() {\n  let count = 0; // 厨师定义了一个局部变量\n\n  const handleClick = () =&gt; {\n    count = count + 1; // 点击时，变量加一\n    // 问题：厨师该如何通知React，“嘿，我的count变了，请你重新做一下菜！”\n    // 更大的问题：即使重新做菜（重新调用Counter函数），\n    // `let count = 0` 会被再次执行，count又变回0了！\n    // 厨师的记忆被重置了！\n  };\n\n  return (\n    &lt;div&gt;\n      &lt;p&gt;You clicked {count} times&lt;/p&gt;\n      &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;\n    &lt;/div&gt;\n  );\n}\n这就是传统函数组件的困境：它们是“无状态的（Stateless）”。它们自己无法记住任何信息，也无法在信息变化时，触发UI的更新。\n\n\nHooks：给厨师的神奇“小背包”\n为了解决这个问题，React团队发明了Hooks。\n你可以把Hooks想象成一个挂在厨师身后的神奇小背包。这个小背包不属于厨师本人，而是由React掌管的。它非常特殊：\n\n记忆存储: 厨师可以把需要“记住”的东西（比如count的值）放进这个小背包里。\n身份绑定: 这个小背包与厨师的“位置”（即组件在UI树中的位置）是绑定的。即使厨师本人“失忆”了（函数重新执行），只要组件还在那个位置，React就能保证他拿回的是同一个小背包。\n内置“对讲机”: 当厨师想更新背包里的东西时，他不能直接伸手进去改。他必须使用背包上附带的一个专用“对讲机”来告诉React：“嘿，React，请帮我把‘count’更新成新值！” React收到指令后，不仅会更新背包里的值，还会立刻命令这个“健忘的”厨师用新的菜谱（新的count值）重新做一遍菜。\n\n现在，让我们看看使用了Hooks（具体来说是useState Hook）的Counter组件是如何工作的：\nimport { useState } from 'react'; // 首先，导入这个神奇的Hook\n\nfunction Counter() {\n  // 这就是关键！\n  // 我们在调用`useState`，这就像在问React：\n  // “React，请为我掌管一个叫‘count’的状态，它的初始值是0。”\n  // React会在它的“小背包”里创建一个格子，存入0。\n  // 然后，它递给我们两样东西，我们用解构赋值接住：\n  // 1. count: 当前背包里那个格子的值。\n  // 2. setCount: 一个专用的“对讲机”函数，用来给React下指令更新这个值。\n  const [count, setCount] = useState(0);\n\n  const handleClick = () =&gt; {\n    // 我们不再直接修改count！\n    // 我们使用“对讲机”setCount来通知React\n    setCount(count + 1); // “React，请把count的值设为当前值+1”\n  };\n  // 当setCount被调用后，React会：\n  // 1. 更新它小背包里count的值。\n  // 2. 重新调用Counter()函数，让厨师重新做菜。\n  // 3. 在新的这一次执行中，`useState(0)`再次被调用，但React很聪明，\n  //    它知道这个位置的组件已经有一个“小背包”了，所以它会把背包里\n  //    最新的值（比如1）递给我们，而不是初始值0。\n\n  return (\n    &lt;div&gt;\n      &lt;p&gt;You clicked {count} times&lt;/p&gt;\n      &lt;button onClick={handleClick}&gt;Click me&lt;/button&gt;\n    &lt;/div&gt;\n  );\n}\n\n\n结论：Hooks是什么？\n从第一性原理出发，Hooks就是一种让“无状态”的函数组件能够连接到React底层状态管理和生命周期机制的“契约”或“桥梁”。\n它们是一些以use开头的特殊函数（如useState, useEffect），它们允许我们这些开发者，在不编写class（一种旧的、更复杂的组件形式）的情况下，使用状态、副作用等React核心功能。\n\nuseState: 是让我们拥有“记忆”（状态）的Hook。\nuseEffect: 是让我们处理“与外界交互”（副作用，如API请求）的Hook。\n\n理解了Hooks是为解决函数组件“健忘”问题而生的“记忆背包”和“交互工具”后，你就能更好地理解在下一节中，我们为何以及如何使用useState和useEffect来构建我们的第一个真正动态的React组件了。",
+    "objectID": "chapters/09-visibility/01-why-frontend.html#vibe-check",
+    "href": "chapters/09-visibility/01-why-frontend.html#vibe-check",
+    "title": "9.1 为何需要前端？从API到UI的跨越",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n观察: 打开你常用的视频网站（如Bilibili或YouTube）。按 F12 打开开发者工具，切换到 Network (网络) 标签页。刷新页面。\n\n观察加载了多少图片、CSS文件？\n尝试点击“Fetch/XHR”过滤器，看看有没有JSON格式的数据请求？这些就是前端在向后端要数据。\n\nAI协同: 询问你的AI伙伴：\n\n“请解释前后端分离架构中，前端和后端各自的职责边界。如果我要开发一个手机App，前后端分离架构有什么好处？”",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-      "<span class='chapter-number'>38</span>  <span class='chapter-title'>9.4 - React的核心魔法：到底什么是Hook？</span>"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>35</span>  <span class='chapter-title'>9.1 为何需要前端？从API到UI的跨越</span>"
     ]
   },
   {
-    "objectID": "chapters/09-visibility/03-first-component.html",
-    "href": "chapters/09-visibility/03-first-component.html",
-    "title": "9.5 - 实战：构建你的第一个React组件",
+    "objectID": "chapters/09-visibility/02-react-core.html",
+    "href": "chapters/09-visibility/02-react-core.html",
+    "title": "9.2 React核心思想：声明式UI的革命",
     "section": "",
-    "text": "“纸上得来终觉浅，绝知此事要躬行。” —— 陆游\n\n理论和准备工作已经全部就绪，现在是时候卷起袖子，将我们的前后端世界连接起来了。在本节中，我们将像拼装乐高一样，一步一步、一个概念一个概念地构建出我们的第一个React组件。\n最终，我们将完成以下目标：\n\n初始化一个Vite + React项目。\n理解React组件和JSX的基本语法。\n学习并使用useState Hook来管理我们组件的内部状态。\n学习并使用useEffect Hook来处理从后端API获取数据这类“副作用”。\n将获取到的播放列表数据，动态地渲染到页面上。\n\n这会是整个系统从后端到前端的第一次“握手”，也是最激动人心的时刻。\n\n步骤一：初始化React前端项目\n打开你的终端，确保你当前位于VibeVault-Book这个项目的根目录，然后严格按照以下命令执行：\n# 首先，进入第九章的代码目录\ncd chapter-code/ch09\n\n# 使用Vite创建一个名为frontend的React项目\n# 注意：后面的 -- --template react 是必须的，它告诉Vite我们想要一个React模板\nnpm create vite@latest frontend -- --template react\n\n# 进入新创建的前端项目目录\ncd frontend\n\n# 安装项目所需的依赖包\n# npm会读取package.json文件，并下载所有需要的库（如react, react-dom）\nnpm install\n执行完毕后，Vite会为你生成一个结构清晰、配置好的React项目。让我们花点时间了解一下其中最重要的几个文件和目录：\nfrontend/\n├── index.html      # 整个单页应用的入口HTML文件，React应用会被注入到这里。\n├── package.json    # 项目的配置文件，定义了项目名称、依赖库、执行脚本等。\n└── src/            # 这是我们99%的代码将要编写的地方 (Source Code)。\n    ├── App.jsx     # 一个默认的、最顶层的React组件。\n    ├── main.jsx    # 项目的JavaScript入口文件，它负责将App组件渲染到index.html中。\n    └── ...         # 其他一些默认的资源文件，如CSS和logo。\n\n\n步骤二：清理并准备我们的“画布”\nVite生成的默认项目包含了一些我们不需要的示例代码和样式。为了保持清晰，让我们先清理一下。\n\n清空 App.jsx: 打开 src/App.jsx 文件，删除里面的所有内容，替换为以下最基础的组件框架：\n// src/App.jsx\nfunction App() {\n  return (\n    &lt;div&gt;\n      &lt;h1&gt;VibeVault&lt;/h1&gt;\n    &lt;/div&gt;\n  );\n}\n\nexport default App;\n这是一个最简单的React组件，它是一个返回了一些类似HTML代码的JavaScript函数。这种在JS中写HTML的语法，就是JSX。它让我们可以用声明式的方式直观地描述UI。\n清空 App.css: 打开 src/App.css，删除里面的所有CSS规则。\n启动开发服务器: 现在，在你的终端里（确保仍然在frontend目录下），运行以下命令来启动开发服务器： bash     npm run dev Vite会启动一个开发服务器，通常在 http://localhost:5173。在浏览器中打开这个地址，你现在应该只能看到一个非常干净的页面，上面只有一个标题“VibeVault”。这就是我们接下来要挥洒创意的“画布”。\n\n\n\n步骤三：引入第一个Hook - useState\n在获取真实数据之前，让我们先用“假数据”来学习React最重要的一个概念：状态（State）。\n状态，是组件自己内部的、随时间变化的数据。当状态改变时，React会自动“重新渲染（re-render）”组件，以保证UI和数据的一致性。管理状态的工具，就是useState Hook。\n让我们修改App.jsx，用useState来管理一个假的播放列表：\n// src/App.jsx\n\n// 从react库中导入useState\nimport { useState } from 'react';\n\nfunction App() {\n  // 调用useState，传入初始状态（一个包含两个假播放列表的数组）\n  // 它返回一个数组，包含：\n  // 1. 当前的状态值 (playlists)\n  // 2. 一个用来更新这个状态的函数 (setPlaylists)\n  const [playlists, setPlaylists] = useState([\n    { name: 'Chill Vibes (Fake)' },\n    { name: 'Workout Mix (Fake)' },\n  ]);\n\n  return (\n    &lt;div&gt;\n      &lt;h1&gt;VibeVault Playlists&lt;/h1&gt;\n      &lt;ul&gt;\n        {/* \n          这里是JSX的魔法：我们可以在{}中嵌入任何JavaScript表达式。\n          我们使用.map()方法遍历playlists数组，为每个播放列表对象\n          生成一个&lt;li&gt;元素。\n          `key`是一个特殊的、必须的prop，React用它来识别列表中的每个元素，\n          以便在列表更新时进行高效的DOM操作。\n        */}\n        {playlists.map(playlist =&gt; (\n          &lt;li key={playlist.name}&gt;{playlist.name}&lt;/li&gt;\n        ))}\n      &lt;/ul&gt;\n    &lt;/div&gt;\n  );\n}\n\nexport default App;\n保存文件。你的浏览器应该会立刻刷新，显示出我们定义的两个假的播放列表。\n通过这个练习，我们掌握了： 1. 如何用useState来声明和初始化组件的状态。 2. 如何使用.map()方法，根据数组状态动态地渲染出一个列表。这是构建动态UI最核心的模式之一。\n\n\n步骤四：第二个Hook - useEffect 与数据获取\n现在，是时候丢掉假数据，去获取真实的后端数据了。\n在React组件的渲染过程中，直接去请求API、操作DOM或者设置定时器等行为，都被称为副作用（Side Effects），因为它们会影响到组件之外的东西。React规定，所有的副作用都必须在useEffect Hook中执行。\nuseEffect告诉React：“请在组件渲染到屏幕之后，再执行这段代码。”\n让我们来构建最终版本的App.jsx：\n// src/App.jsx\nimport { useState, useEffect } from 'react';\n\nfunction App() {\n  // 1. 定义三个状态，覆盖所有UI场景\n  const [playlists, setPlaylists] = useState([]); // 初始为空数组\n  const [loading, setLoading] = useState(true);   // 初始为true，因为一开始就要加载\n  const [error, setError] = useState(null);       // 初始为null，因为还没有错误\n\n  // 2. 使用useEffect来执行获取数据的副作用\n  useEffect(() =&gt; {\n    // 定义一个异步函数来获取数据，这样我们就可以在内部使用await\n    async function fetchPlaylists() {\n      try {\n        // 后端API的地址\n        // 注意, 这里需要先添加 api/playlists (获取所有播放列表)到你的后端服务中\n        const apiUrl = 'http://localhost:8080/api/playlists';\n        const response = await fetch(apiUrl);\n\n        // 如果响应状态码不是2xx (e.g., 404, 500)，则它不是一个成功的请求\n        if (!response.ok) {\n          throw new Error(`HTTP error! status: ${response.status}`);\n        }\n        \n        const data = await response.json();\n        setPlaylists(data); // 成功，用获取的数据更新状态\n        setError(null);     // 清除之前的错误\n      } catch (err) {\n        // 如果在fetch或解析过程中发生任何错误\n        setError(err.message); // 将错误信息存入状态\n        setPlaylists([]);      // 清空数据\n      } finally {\n        // 无论成功还是失败，这个代码块都会执行\n        setLoading(false); // 加载过程结束\n      }\n    }\n\n    fetchPlaylists(); // 调用我们定义的异步函数\n\n  }, []); // &lt;-- 注意这个空的依赖数组！\n\n  // 3. 根据状态，进行条件渲染\n  \n  // 场景一：正在加载\n  if (loading) {\n    return &lt;div&gt;Loading playlists...&lt;/div&gt;;\n  }\n\n  // 场景二：发生错误\n  if (error) {\n    return &lt;div style={{ color: 'red' }}&gt;Error: {error}&lt;/div&gt;;\n  }\n\n  // 场景三：成功获取数据\n  return (\n    &lt;div&gt;\n      &lt;h1&gt;My Vibe Vault Playlists&lt;/h1&gt;\n      &lt;ul&gt;\n        {playlists.map(playlist =&gt; (\n          &lt;li key={playlist.name}&gt;\n            {playlist.name}\n          &lt;/li&gt;\n        ))}\n      &lt;/ul&gt;\n    &lt;/div&gt;\n  );\n}\n\nexport default App;\n\n\n代码终极解析\n\n启动后端服务: 在动手尝试前，请务必确保你的Java Spring Boot后端服务正在运行！你需要打开另一个终端窗口，进入ch09目录，然后运行 ./gradlew :app:bootRun。\nuseEffect的依赖数组: useEffect的第二个参数是一个“依赖数组”。\n\n当我们传入一个空数组 [] 时，我们是在告诉React：“这个effect只在组件第一次挂载（mount）时运行一次，之后就再也不要运行了。” 这对于“初始化数据获取”这样的场景是完美的。\n如果数组中包含变量（如[userId]），那么只有当userId改变时，effect才会重新运行。\n如果不传第二个参数（不推荐），则effect会在每次组件渲染后都运行。\n\n条件渲染 (Conditional Rendering): 注意我们是如何通过if (loading)和if (error)来提前返回不同UI的。这种模式让我们的代码逻辑非常清晰：先处理加载和错误这两种“边缘情况”，最后才处理“成功”的主体UI。这比将所有逻辑都混在一个return语句里要易于阅读和维护得多。\n\n\n\n最终结果\n现在，保存你的App.jsx文件。回到浏览器，你应该会先短暂地看到“Loading playlists…”，然后（如果你的后端正在运行）这个消息会消失，取而代之的是从你的Java API中获取到的播放列表！\n恭喜！你已经真正地从零开始，一步步地理解并构建了一个完整的全栈功能。你现在掌握了React中最核心的两个Hook——useState和useEffect——并用它们解决了真实世界中的问题。\n\n\nVibe Check (思考与练习)\n\n编码练习: 在我们现有的代码基础上，为每个播放列表显示其中的歌曲数量。你需要修改后端API返回的数据结构（让它包含一个songCount字段），并在前端组件中渲染它。\n破坏性实验: 故意将fetch请求的URL写错（例如，改成/api/playlistss)，或者在你的Java Controller中手动throw new RuntimeException()让后端API返回一个错误状态码（例如500）。观察前端页面会发生什么？你写的错误处理逻辑是否正确地捕获并显示了错误信息？\nAI协同与重构: 询问AI：“请帮我将一个简单的HTML表单（包含一个输入框和一个提交按钮）转换为一个React组件，并使用useState来管理输入框的值。” 尝试将这个表单组件添加到你的App.jsx中，为未来实现“创建新播放列表”的功能做准备。\n组件拆分: 当前我们所有的逻辑都在App.jsx中。尝试创建一个新的组件文件PlaylistList.jsx，将所有与列表相关的逻辑（useState, useEffect, 渲染逻辑）都移动到这个新组件中，然后在App.jsx中导入并使用&lt;PlaylistList /&gt;。这是组件化思维的关键一步。",
+    "text": "声明式 vs 命令式 (Declarative vs Imperative)\n在开始写代码之前，我们需要理解现代前端开发霸主——React的核心哲学。\n这是React最根本的思想。",
     "crumbs": [
-      "第九章：对抗“隐形”：为你的API穿上华丽的外衣",
-      "<span class='chapter-number'>39</span>  <span class='chapter-title'>9.5 - 实战：构建你的第一个React组件</span>"
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 React核心思想：声明式UI的革命</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/02-react-core.html#声明式-vs-命令式-declarative-vs-imperative",
+    "href": "chapters/09-visibility/02-react-core.html#声明式-vs-命令式-declarative-vs-imperative",
+    "title": "9.2 React核心思想：声明式UI的革命",
+    "section": "",
+    "text": "命令式 (Imperative): 像一个不放心的微操大师，一步步告诉计算机怎么做。\n\n例子 (jQuery): “找到id为box的元素 -&gt; 把它的背景变红 -&gt; 再把它的文字改成Hello”。\n\n声明式 (Declarative): 像一个建筑师，只告诉计算机想要什么结果。\n\n例子 (React): “我想要一个红色的、写着Hello的盒子”。React会自己想办法把它画出来。\n\n\n\n比喻:\n\n命令式: 打车时告诉司机：“前面左转，然后直走500米，再右转…”\n声明式: 打车时告诉司机：“我要去天安门。”",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 React核心思想：声明式UI的革命</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/02-react-core.html#组件化-component-based",
+    "href": "chapters/09-visibility/02-react-core.html#组件化-component-based",
+    "title": "9.2 React核心思想：声明式UI的革命",
+    "section": "组件化 (Component-Based)",
+    "text": "组件化 (Component-Based)\n在React眼中，UI不是一个巨大的HTML文件，而是由一个个独立的组件 (Component) 拼装而成的。\n\n一个按钮是一个组件 &lt;Button /&gt;\n一个导航栏是一个组件 &lt;Navbar /&gt;\n一个歌曲卡片是一个组件 &lt;SongCard /&gt;\n\n组件就像乐高积木。你可以编写一次 SongCard 组件，然后在页面上使用100次，展示100首不同的歌。\n\n最小示例\n这就是一个React组件的样子（它看起来很像HTML，但其实是JavaScript，称为JSX）：\n// 定义一个组件\nfunction SongCard({ title, artist }) {\n  return (\n    &lt;div className=\"song-card\"&gt;\n      &lt;h3&gt;{title}&lt;/h3&gt;\n      &lt;p&gt;{artist}&lt;/p&gt;\n      &lt;button&gt;Play&lt;/button&gt;\n    &lt;/div&gt;\n  );\n}\n\n// 使用组件\nfunction App() {\n  return (\n    &lt;div&gt;\n      &lt;h1&gt;My Playlist&lt;/h1&gt;\n      &lt;SongCard title=\"Yellow\" artist=\"Coldplay\" /&gt;\n      &lt;SongCard title=\"Bohemian Rhapsody\" artist=\"Queen\" /&gt;\n    &lt;/div&gt;\n  );\n}\n\n\n组件树可视化\n想象一下，你的页面结构就像一棵倒立的树：\n\n\n\n\n\ngraph TD\n    App[\"App (根组件)\"] --&gt; Header[Header]\n    App --&gt; PlaylistList[PlaylistList]\n    App --&gt; Player[Player]\n    PlaylistList --&gt; PlaylistCard1[PlaylistCard]\n    PlaylistList --&gt; PlaylistCard2[PlaylistCard]\n    PlaylistList --&gt; PlaylistCard3[PlaylistCard]\n    \n    style App fill:#f9f,stroke:#333,stroke-width:2px\n    style PlaylistList fill:#ccf,stroke:#333\n    style PlaylistCard1 fill:#cfc,stroke:#333",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 React核心思想：声明式UI的革命</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/02-react-core.html#单向数据流-unidirectional-data-flow",
+    "href": "chapters/09-visibility/02-react-core.html#单向数据流-unidirectional-data-flow",
+    "title": "9.2 React核心思想：声明式UI的革命",
+    "section": "单向数据流 (Unidirectional Data Flow)",
+    "text": "单向数据流 (Unidirectional Data Flow)\n数据在React中像瀑布一样，只能从上往下流。\n\n父组件通过 Props (属性) 把数据传递给 子组件。\n子组件不能直接修改父组件的数据。\n如果子组件想要改变什么（比如点击了“播放”按钮），它必须通过事件通知父组件，让父组件去修改数据。\n\n\n\n\n\n\nsequenceDiagram\n    participant Parent as \"父组件 (App)\"\n    participant Child as \"子组件 (SongCard)\"\n    \n    Parent-&gt;&gt;Child: 1. 传递 Props (song=\"Yellow\")\n    Note right of Child: 子组件渲染 UI\n    Child--&gt;&gt;Parent: 2. 触发事件 (onClick=\"Play\")\n    Note left of Parent: 父组件处理逻辑 (播放音乐)\n    Parent-&gt;&gt;Child: 3. (可选) 更新 Props\n\n\n\n\n\n\n这种限制虽然看起来麻烦，但它保证了数据流向的清晰。当程序出Bug时，你很容易知道数据是从哪里来的。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 React核心思想：声明式UI的革命</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/02-react-core.html#vibe-check",
+    "href": "chapters/09-visibility/02-react-core.html#vibe-check",
+    "title": "9.2 React核心思想：声明式UI的革命",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\nAI协同: 复制上面的 SongCard 代码给AI，然后问它：\n\n“请用jQuery（命令式）的方式实现同样的功能，即创建两个包含标题、艺术家和按钮的div，并添加到页面中。对比一下React代码和jQuery代码，哪种更易读？”\n\n思考: 为什么像Instagram、Facebook这样极其复杂的应用，都选择使用React？（提示：当UI状态变得非常多时，声明式编程能减少多少维护成本？）",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>36</span>  <span class='chapter-title'>9.2 React核心思想：声明式UI的革命</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "",
+    "text": "第零步：安装 Node.js (国内环境指南)\n现在，我们将进入最激动人心的部分。我们将不再逐行手写代码，而是指挥AI为我们编写代码。\n我们将构建一个独立的React前端应用，并让它连接到你第八章完成的Spring Boot后端。\n在开始之前，你需要安装 Node.js 环境。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第零步安装-node.js-国内环境指南",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第零步安装-node.js-国内环境指南",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "",
+    "text": "检查是否已安装: 打开终端，输入 node -v。如果显示版本号（如 v18.x.x 或更高），则可以跳过安装。\n安装 Node.js:\n\n访问 Node.js 官网 下载 LTS (长期支持) 版本安装包。\n或者使用国内镜像下载：Node.js 淘宝镜像。\n\n配置国内镜像源 (关键): npm 的默认源在国外，国内访问可能很慢。强烈建议切换到淘宝镜像源：\nnpm config set registry https://registry.npmmirror.com\n验证是否配置成功：\nnpm config get registry\n# 应该输出: https://registry.npmmirror.com/",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第一步初始化并启动项目",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第一步初始化并启动项目",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第一步：初始化并启动项目",
+    "text": "第一步：初始化并启动项目\n我们需要一个工具来快速搭建React项目的脚手架。我们选择Vite（法语意为“快”）。\n\n打开终端，进入你的 chapter-code 目录（注意：不要在 ch08 文件夹里面，要在它的旁边）。\n运行以下命令创建项目：\nnpm create vite@latest vibevault-frontend -- --template react\n关键：命令执行完成后，终端会提示你运行几行命令（cd, npm install, npm run dev）。请照做：\ncd vibevault-frontend\nnpm install\nnpm run dev\n\n如果一切顺利，你应该能看到终端提示 Local: http://localhost:5173/。在浏览器打开这个地址，你应该能看到Vite + React的欢迎页面。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第二步启动后端",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第二步启动后端",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第二步：启动后端",
+    "text": "第二步：启动后端\n确保你第八章的后端代码正在运行！\n\n打开一个新的终端窗口。\n进入 chapter-code/ch08 目录。\n运行 ./gradlew bootRun。\n确保 http://localhost:8080/api/playlists 可以访问。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第三步编写prompt-提示词",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第三步编写prompt-提示词",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第三步：编写Prompt (提示词)",
+    "text": "第三步：编写Prompt (提示词)\n现在，打开你的AI助手（ChatGPT, Claude, 或其他LLM）。我们将使用Prompt Engineering（提示工程）来生成代码。\n复制以下Prompt，发送给AI：\n\nPrompt:\n我有一个正在运行的Spring Boot后端API，地址是 http://localhost:8080。 它有一个接口 GET /api/playlists，返回的数据格式如下（JSON数组）： [{“id”:1,“name”:“my-favorites”,“songs”:[{“title”:“Bohemian Rhapsody”,“artist”:“Queen”},{“title”:“Stairway to Heaven”,“artist”:“Led Zeppelin”}]},{“id”:2,“name”:“sunny-drive”,“songs”:[{“title”:“Drive”,“artist”:“The Cars”},{“title”:“Send Me On My Way”,“artist”:“Rusted Root”}]}]\n请帮我用React编写一个名为 PlaylistList 的组件。要求如下：\n\n使用 fetch API 调用后端接口获取数据。\n使用 useState 管理数据状态、加载状态（loading）和错误状态（error）。\n使用 useEffect 在组件挂载时触发API调用。\n界面上：如果正在加载，显示“加载中…”；如果出错，显示红色错误信息；如果成功，用无序列表 &lt;ul&gt; 显示播放列表的名称。\n请提供完整的代码，并告诉我应该把它放在哪个文件中，以及如何在 App.jsx 中使用它。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第四步审查与运行",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第四步审查与运行",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第四步：审查与运行",
+    "text": "第四步：审查与运行\nAI会生成一段代码。不要盲目复制。请检查它是否包含了以下关键点：\n\n✅ 是否引入了 useState 和 useEffect？\n✅ fetch 的URL是否是 http://localhost:8080/api/playlists？\n✅ 是否有 try-catch 块来处理错误？\n\n按照AI的指示，创建 src/PlaylistList.jsx 文件（或类似名字），把代码粘贴进去。然后在 src/App.jsx 中引入并使用它。\n回到浏览器 http://localhost:5173。\n\n遭遇CORS危机！\n你很可能会看到页面显示“加载失败”或者控制台报错： Access to fetch at ... from origin 'http://localhost:5173' has been blocked by CORS policy。\n这是跨域资源共享 (CORS) 错误。浏览器出于安全考虑，默认禁止前端（端口5173）去请求不同端口的后端（端口8080）。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第五步解决cors问题",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第五步解决cors问题",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第五步：解决CORS问题",
+    "text": "第五步：解决CORS问题\n我们需要在后端允许这种跨域请求。\n\n回到你的Spring Boot后端代码 (chapter-code/ch08)。\n找到 PlaylistController.java。\n在类上添加注解 @CrossOrigin(origins = \"http://localhost:5173\")。\n\n@RestController\n@RequestMapping(\"/api/playlists\")\n@CrossOrigin(origins = \"http://localhost:5173\") // 允许来自前端的请求\npublic class PlaylistController {\n    // ...\n}\n\n重启后端应用。\n\n再次刷新前端页面。你应该能看到你数据库里的播放列表神奇地出现在了页面上！",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第六步ai-调试指南-当代码跑不通时",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第六步ai-调试指南-当代码跑不通时",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第六步：AI 调试指南 (当代码跑不通时)",
+    "text": "第六步：AI 调试指南 (当代码跑不通时)\n在 AI 辅助编程中，遇到报错是常态。不要慌张，也不要自己瞎改。 学会把错误“喂”给 AI，是 Vibe Coding 的核心技能。\n\n场景 1：页面白屏或报错\n\n打开控制台：右键 -&gt; 检查 -&gt; Console。\n复制红色报错：比如 Uncaught TypeError: Cannot read properties of undefined (reading 'map')。\n喂给 AI：\n\n“我的页面报错了，错误信息是：[粘贴错误信息]。 这是我的 PlaylistList.jsx 代码：[粘贴代码]。 请帮我分析原因并修复。”\n\n\n\n\n场景 2：样式错乱\n\n截图：用截图工具框选错乱的区域。\n喂给 AI (如果你的 AI 支持图片)：\n\n“如图所示，我的卡片排列乱了，我希望它们横向排列。这是我的 CSS 代码…”\n\n描述 (如果不支持图片)：\n\n“我的卡片现在是垂直排列的，但我希望它们在宽屏幕上是横向排列的（Flexbox），请帮我修改 CSS。”",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#第七步迭代-prompt-技巧-从-60-分到-100-分",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#第七步迭代-prompt-技巧-从-60-分到-100-分",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "第七步：迭代 Prompt 技巧 (从 60 分到 100 分)",
+    "text": "第七步：迭代 Prompt 技巧 (从 60 分到 100 分)\nAI 第一次生成的代码通常只能打 60 分（能跑，但不好看，也没处理边缘情况）。 你需要通过追问，把它打磨到 100 分。\nRound 1 (功能):\n\n“写一个 React 组件显示播放列表。” (AI: 生成了最基础的列表)\n\nRound 2 (健壮性):\n\n“刚才的代码在网络慢的时候没有反应。请添加 loading 状态显示’加载中…’，如果请求失败，显示红色的错误信息。” (AI: 添加了 try-catch 和状态管理)\n\nRound 3 (交互):\n\n“现在列表太长了。请添加一个搜索框，可以根据歌单名字实时过滤列表。” (AI: 添加了过滤逻辑)\n\nRound 4 (美感):\n\n“现在的界面太丑了。请使用 CSS Grid 把它变成响应式的卡片布局，鼠标悬停时要有阴影效果。” (AI: 添加了 CSS 样式)\n\n\n\n\n\n\n\nNote\n\n\n\n记住：好代码是聊出来的，不是一次生成的。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/03-ai-pair-programming.html#vibe-check-挑战全栈",
+    "href": "chapters/09-visibility/03-ai-pair-programming.html#vibe-check-挑战全栈",
+    "title": "9.3 与AI结对编程：生成你的第一个VibeVault前端",
+    "section": "Vibe Check: 挑战全栈",
+    "text": "Vibe Check: 挑战全栈\n现在的页面比较简单，只能显示歌单名字。让我们通过AI把它变成一个功能完整的应用。 请尝试向AI发出以下指令（Prompt），一步步升级你的应用。\n\n⚠️ 全栈提示: 在执行以下步骤时，如果前端请求报错（如 404 Not Found），说明你的Spring Boot后端可能缺少对应的API。你需要回到Java代码中 (PlaylistController)，添加对应的接口。这也是全栈开发的乐趣所在！\n\n\n交互升级：查看详情\n\n“修改代码：当用户点击某个播放列表的名字时，在下方展开显示该列表包含的所有歌曲信息（歌名、歌手）。再次点击则收起。”\n\n歌曲管理：增删歌曲\n\n“添加功能：在展开的歌单详情中，每一首歌后面加一个’删除’按钮。底部加一个’添加歌曲’的表单（输入歌名和歌手）。点击按钮后分别调用后端API更新数据。”\n\n列表管理：增删歌单\n\n“添加功能：在页面顶部添加’新建歌单’按钮，每一行歌单后面添加’删除’按钮。实现创建和删除歌单的功能，并自动刷新列表。”\n\n思考: 为什么我们需要在后端配置CORS，而不是在前端配置？（提示：这是浏览器的安全策略，谁拥有数据，谁才有权决定是否分享数据。）",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>37</span>  <span class='chapter-title'>9.3 与AI结对编程：生成你的第一个VibeVault前端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/04-styling.html",
+    "href": "chapters/09-visibility/04-styling.html",
+    "title": "9.4 让它 Vibe 起来：AI 辅助样式设计",
+    "section": "",
+    "text": "核心理念：只描述，不手写\n现在的页面虽然能跑，但看起来像 90 年代的网站。 作为 Vibe Coder，我们不能容忍丑陋。\n但是，手写 CSS 是极其痛苦的。调 margin，调 padding，调 flex… 简直是折磨。 好消息是：AI 是写 CSS 的神。\n你不需要知道 display: flex; justify-content: center; align-items: center; 怎么写。 你只需要告诉 AI：“把这个东西居中”。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>9.4 让它 Vibe 起来：AI 辅助样式设计</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/04-styling.html#实战spotify-风格卡片",
+    "href": "chapters/09-visibility/04-styling.html#实战spotify-风格卡片",
+    "title": "9.4 让它 Vibe 起来：AI 辅助样式设计",
+    "section": "实战：Spotify 风格卡片",
+    "text": "实战：Spotify 风格卡片\n让我们把那个简陋的列表变成像 Spotify 一样的精美卡片网格。\n\nStep 1: 准备 Prompt\n打开你的 AI，输入以下 Prompt（配合你的代码）：\n\nPrompt:\n“我现在有一个 React 组件 PlaylistList，它渲染了一个 &lt;ul&gt; 列表。 我希望把它改成一个响应式的网格布局，风格参考 Spotify。\n具体要求：\n\n深色模式：背景深灰，文字白色。\n卡片样式：每个播放列表是一个卡片，有圆角、深色背景（比页面背景稍亮）。\n悬停效果：鼠标悬停时，卡片轻微上浮，并出现阴影。\n布局：使用 CSS Grid。大屏幕一行 4 个，中屏幕一行 3 个，手机一行 1 个。\n请直接给我修改后的 CSS 代码（或者使用 Tailwind CSS 如果你推荐的话）。”\n\n\n\n\nStep 2: 审查 AI 的设计\nAI 可能会给你一段 CSS，或者建议你安装 Tailwind CSS。 为了简单起见，我们假设它给了你一段 CSS。\n你需要检查：\n\n✅ 是否使用了 display: grid？\n✅ 是否有 @media 查询来处理响应式（手机/电脑不同布局）？\n✅ 颜色对比度是否足够（深色背景配白字）？\n\n\n\nStep 3: 注入灵魂 (Micro-Interactions)\nVibe 的关键在于细节。让我们加一点“微交互”。\n\nPrompt:\n“给卡片添加一个 transition 动画，让悬停时的上浮效果更平滑（0.3s ease）。 另外，把标题的字体改成更现代的无衬线字体（如 Inter 或 System UI）。”",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>9.4 让它 Vibe 起来：AI 辅助样式设计</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/04-styling.html#进阶使用组件库-shadcnui-chakra-ui",
+    "href": "chapters/09-visibility/04-styling.html#进阶使用组件库-shadcnui-chakra-ui",
+    "title": "9.4 让它 Vibe 起来：AI 辅助样式设计",
+    "section": "进阶：使用组件库 (Shadcn/UI, Chakra UI)",
+    "text": "进阶：使用组件库 (Shadcn/UI, Chakra UI)\n如果你不想写任何 CSS，可以直接让 AI 使用组件库。\n\nPrompt:\n“请帮我用 Tailwind CSS 重构这个组件。把原生的 &lt;button&gt; 换成一个带有渐变背景的漂亮按钮。”",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>9.4 让它 Vibe 起来：AI 辅助样式设计</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/04-styling.html#vibe-check",
+    "href": "chapters/09-visibility/04-styling.html#vibe-check",
+    "title": "9.4 让它 Vibe 起来：AI 辅助样式设计",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n视觉测试: 缩放浏览器窗口，看看卡片会不会自动调整列数？（响应式检查）\n审美测试: 把它展示给你的朋友看，问他们：“这像不像是专业 App？”\n思考: 以前写这一套 CSS 可能需要 1 小时，现在用了多久？（5 分钟？）\n\n\n\n\n\n\n\nNote结论\n\n\n\n在 Vibe Coding 时代，审美能力比 CSS 记忆力更重要。你负责定义“美”，AI 负责实现“美”。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>38</span>  <span class='chapter-title'>9.4 让它 Vibe 起来：AI 辅助样式设计</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/05-frontend-future.html",
+    "href": "chapters/09-visibility/05-frontend-future.html",
+    "title": "9.5 前端的未来：从手写到AI生成",
+    "section": "",
+    "text": "AI时代的开发范式\n恭喜！你刚刚完成了一个现代全栈工程师的里程碑：你亲手搭建了一个前后端分离的应用，并成功让它们对话了。\n在这一章，你可能发现我们并没有花太多时间去死记硬背React的语法（比如 useEffect 的依赖数组到底怎么写）。 因为在AI时代，这些细节可以由AI辅助完成。\n新的核心能力不再是“默写代码”，而是：",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>39</span>  <span class='chapter-title'>9.5 前端的未来：从手写到AI生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/05-frontend-future.html#ai时代的开发范式",
+    "href": "chapters/09-visibility/05-frontend-future.html#ai时代的开发范式",
+    "title": "9.5 前端的未来：从手写到AI生成",
+    "section": "",
+    "text": "架构理解: 知道需要一个前端、一个后端，知道它们通过API交互，知道CORS是什么。\nPrompt工程: 能够清晰、准确地向AI描述你的需求（输入/输出/约束条件）。\n代码审查 (Code Review): 能够看懂AI生成的代码，判断它是否安全、高效，并能修复AI的小错误。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>39</span>  <span class='chapter-title'>9.5 前端的未来：从手写到AI生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/05-frontend-future.html#能力清单-checklist",
+    "href": "chapters/09-visibility/05-frontend-future.html#能力清单-checklist",
+    "title": "9.5 前端的未来：从手写到AI生成",
+    "section": "能力清单 Checklist",
+    "text": "能力清单 Checklist\n在进入下一章之前，请确保你已经掌握了以下技能：\n\n理解架构: 能画出前端（浏览器）、后端（Spring Boot）、数据库（PostgreSQL）三者交互的草图。\n环境搭建: 能使用 npm create vite 快速初始化一个React项目。\nAI协作: 能编写Prompt，让AI生成调用后端API的React组件。\n解决问题: 遇到CORS错误时，知道去后端添加 @CrossOrigin 配置。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>39</span>  <span class='chapter-title'>9.5 前端的未来：从手写到AI生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-visibility/05-frontend-future.html#下一章预告",
+    "href": "chapters/09-visibility/05-frontend-future.html#下一章预告",
+    "title": "9.5 前端的未来：从手写到AI生成",
+    "section": "下一章预告",
+    "text": "下一章预告\n我们的应用现在有了漂亮的界面，但它还有一个巨大的安全隐患：它是完全开放的。 任何人都可以看到所有人的播放列表，任何人都可以删除任何数据。\n在第十章，我们将回到后端，构建一座坚固的堡垒。我们将引入认证 (Authentication) 和 授权 (Authorization)，并学习如何使用 JWT 来管理用户的身份。",
+    "crumbs": [
+      "第九章：对抗“隐形”：AI驱动的前端快速入门",
+      "<span class='chapter-number'>39</span>  <span class='chapter-title'>9.5 前端的未来：从手写到AI生成</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html",
+    "href": "chapters/10-security/index.html",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "",
+    "text": "本章危机：裸奔的系统\n打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：它是完全开放的。 想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#本章危机裸奔的系统",
+    "href": "chapters/10-security/index.html#本章危机裸奔的系统",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "",
+    "text": "匿名危机: 谁在敲门？不知道。\n越界危机: 张三可以随意把李四的歌单删得干干净净。\n失忆危机: 即使你问了他是谁，下一秒你就忘了。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#本章目标",
+    "href": "chapters/10-security/index.html#本章目标",
+    "title": "第十章：构建安全堡垒：从认证到授权的完整旅程",
+    "section": "本章目标",
+    "text": "本章目标\n我们将一步步地，为这个裸奔的系统穿上盔甲。我们将构建一套完整的企业级安全体系：\n\n认证 (Authentication): 回答“你是谁”。\nJWT (JSON Web Token): 解决“如何记住你”。\n授权 (Authorization): 回答“你能做什么”。\n\n准备好了吗？让我们开始吧。\n\n\n\n\n\n\nTip🛡️ Vibe Security 宣言\n\n\n\n在本章中，我们将采用 “AI 托管配置” 的策略。 安全配置非常繁琐且容易出错，我们将学习如何指挥 AI 生成标准的配置代码，而我们自己则专注于制定安全策略。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html",
+    "href": "chapters/10-security/10.1-security-crisis.html",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "",
+    "text": "第一步：引入依赖\n在解决“谁能进”的问题之前，我们首先要解决“怎么拦”的问题。 Spring Security 是 Java 世界最强大的守门人，但它的配置之复杂也是出了名的。\nVibe Coding 策略：不要试图去记忆那些晦涩的 Filter 链配置。把钥匙交给 AI。\n在 gradle/libs.versions.toml 的 [libraries] 区域添加：\n然后在 build.gradle.kts 的 dependencies 块中添加：\n当你重启应用后，你会发现：所有接口都访问不了了。 这是 Spring Security 的默认行为：宁可错杀三千，绝不放过一个。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#危机分析-crisis-analysis",
+    "href": "chapters/10-security/10.1-security-crisis.html#危机分析-crisis-analysis",
+    "title": "10.1 安全危机：匿名的世界",
+    "section": "",
+    "text": "匿名访问 (Anonymous Access): 我们无法知道是谁在调用API。是合法的用户？还是恶意的爬虫？\n数据篡改 (Data Tampering): 任何人都可以发送 DELETE /api/playlists/1，删掉别人的心血。\n身份伪造 (Identity Spoofing): 即使我们在前端做了登录界面，黑客可以直接绕过前端，直接向后端发送请求。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 安全危机：匿名的世界</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#守门人的工作原理",
+    "href": "chapters/10-security/10.1-security-crisis.html#守门人的工作原理",
+    "title": "10.1 安全危机：匿名的世界",
+    "section": "守门人的工作原理",
+    "text": "守门人的工作原理\nSpring Security 的核心是一系列的过滤器 (Filters)。每一个请求在到达你的 Controller 之前，都要经过层层盘查。\n\n\n\n\n\ngraph LR\n    User[用户请求] --&gt; F1[Filter 1: 身份认证?]\n    F1 -- No --&gt; 401[401 Unauthorized]\n    F1 -- Yes --&gt; F2[Filter 2: 权限足够?]\n    F2 -- No --&gt; 403[403 Forbidden]\n    F2 -- Yes --&gt; Controller[你的 Controller]\n    \n    style 401 fill:#ffcccc,stroke:#333\n    style 403 fill:#ffcccc,stroke:#333\n    style Controller fill:#ccffcc,stroke:#333",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 安全危机：匿名的世界</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第一步引入依赖",
+    "href": "chapters/10-security/10.1-security-crisis.html#第一步引入依赖",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "",
+    "text": "spring-boot-starter-security = { module = \"org.springframework.boot:spring-boot-starter-security\" }\n\nimplementation(libs.spring.boot.starter.security)",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第二步体验默认安全",
+    "href": "chapters/10-security/10.1-security-crisis.html#第二步体验默认安全",
+    "title": "10.1 安全危机：匿名的世界",
+    "section": "第二步：体验“默认安全”",
+    "text": "第二步：体验“默认安全”\n现在，重新启动你的Spring Boot应用 (./gradlew bootRun)。 尝试访问 http://localhost:8080/api/playlists。\n发生了什么？ 你应该会看到一个 401 Unauthorized 错误，或者浏览器弹出一个默认的登录框。\n这就是Spring Security的默认安全 (Secure by Default) 原则。\n\n默认行为: 锁住所有的门。\n哲学: 宁可错杀三千，绝不放过一个。如果不配置，默认就是“拒绝所有访问”。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 安全危机：匿名的世界</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第三步配置安保规则",
+    "href": "chapters/10-security/10.1-security-crisis.html#第三步配置安保规则",
+    "title": "10.1 安全危机：匿名的世界",
+    "section": "第三步：配置安保规则",
+    "text": "第三步：配置安保规则\n为了开发方便，我们需要制定一套规则，告诉守门人哪些人可以进，哪些人不能进。\nVibe Coding 思路：不要死记硬背配置类的写法。告诉 AI 你的规则。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请在 com.vibevault.config 包下创建 SecurityConfig 类。 要求：\n\n使用 @EnableWebSecurity 和 @Configuration。\n配置 SecurityFilterChain Bean。\n禁用 CSRF (因为我们是无状态 API)。\n授权规则：\n\n允许 /api/playlists/** 匿名访问 (permitAll)。\n其他所有请求都需要认证 (authenticated)。”\n\n\n\n\nAI 生成的代码应该类似下面这样（重点检查 csrf 和 authorizeHttpRequests）：\n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\n        http\n            .csrf(AbstractHttpConfigurer::disable) // 1. 禁用CSRF\n            .authorizeHttpRequests(auth -&gt; auth\n                .requestMatchers(\"/api/playlists/**\").permitAll() // 2. 临时放行\n                .anyRequest().authenticated() // 3. 其他全挡住\n            );\n        return http.build();\n    }\n\n代码深度解析\n\n@EnableWebSecurity: 这是一个开关，告诉Spring Boot：“我要自己接管安全配置，不要用你默认的那一套了。”\nSecurityFilterChain: 这是安全过滤链的定义。我们通过链式调用 (Fluent API) 来配置各种规则。\ncsrf(...): CSRF 是一种攻击方式，通常针对基于 Session 的网页应用。因为我们要构建的是基于 Token 的无状态 API，所以可以安全地禁用它，否则 POST 请求会被拦截。\nauthorizeHttpRequests(...): 这是核心。我们定义了 URL 的访问权限。\n\npermitAll(): 所有人都可以访问（包括未登录用户）。\nauthenticated(): 只有登录用户才能访问。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 安全危机：匿名的世界</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#vibe-check",
+    "href": "chapters/10-security/10.1-security-crisis.html#vibe-check",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n尝试访问 GET /api/playlists。 * 预期: 200 OK (因为我们加了白名单)。 尝试访问 DELETE /api/playlists/1。 * 预期: 403 Forbidden (因为默认拒绝)。\n守门人已经就位。下一步，我们需要给好人发身份证。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html",
+    "href": "chapters/10-security/10.2-authentication.html",
+    "title": "10.2 身份：建立登录入口",
+    "section": "",
+    "text": "第一步：定义用户 (User)\n守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。 这就需要：用户 (User) 和 登录 (Login)。\n我们需要一个地方存用户的账号密码。\n以及对应的 UserRepository。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第一步定义用户-user",
+    "href": "chapters/10-security/10.2-authentication.html#第一步定义用户-user",
+    "title": "10.2 身份：建立登录入口",
+    "section": "",
+    "text": "Tip🤖 AI Prompt\n\n\n\n“请在 com.vibevault.model 包下创建一个 User 实体。 要求： 1. 表名 users。 2. 字段：id (Long), username (String, unique), password (String)。 3. 使用 JPA 注解。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第二步数据访问-repository",
+    "href": "chapters/10-security/10.2-authentication.html#第二步数据访问-repository",
+    "title": "10.2 第一道防线：认证",
+    "section": "第二步：数据访问 (Repository)",
+    "text": "第二步：数据访问 (Repository)\n同样的，让 AI 帮你生成 Repository。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请在 com.vibevault.repository 包下创建 UserRepository 接口，继承 JpaRepository。 添加两个方法： 1. findByUsername: 用于登录查询。 2. existsByUsername: 用于注册查重。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第三步密码加密-bcrypt",
+    "href": "chapters/10-security/10.2-authentication.html#第三步密码加密-bcrypt",
+    "title": "10.2 第一道防线：认证",
+    "section": "第三步：密码加密 (BCrypt)",
+    "text": "第三步：密码加密 (BCrypt)\n绝对不要存储明文密码！ 这是安全领域的铁律。如果数据库泄露，明文密码意味着用户的其他账户（银行、邮箱）也可能不保。\n我们将使用 BCrypt 算法。它不仅加密，还会自动“加盐”（Salt），使得相同的密码每次加密后的结果都不同。\n\n\n\n\n\n\nNote💡 Vibe Deep Dive: 为什么 BCrypt 这么慢？\n\n\n\n你可能会发现，BCrypt 加密比 MD5 慢得多。这是故意的！ BCrypt 有一个“工作因子”（Work Factor），决定了计算哈希需要多少次迭代。 * 慢是特性，不是Bug：如果加密太快，黑客就可以用 GPU 进行每秒亿次的暴力破解。 * 时间成本：BCrypt 迫使黑客破解一个密码需要几百毫秒，而不是几纳秒。这让暴力破解变得在经济上不可行。\n\n\n\n注册流程图解\n在写代码之前，先看懂数据是怎么流转的：\n\n\n\n\n\nsequenceDiagram\n    participant Client\n    participant Controller\n    participant Service\n    participant BCrypt\n    participant Database\n\n    Client-&gt;&gt;Controller: POST /signup (username, password)\n    Controller-&gt;&gt;Service: 注册请求\n    Service-&gt;&gt;Database: 检查用户名是否存在?\n    alt 用户名已存在\n        Database--&gt;&gt;Service: 是\n        Service--&gt;&gt;Controller: 抛出异常\n        Controller--&gt;&gt;Client: 400 Bad Request\n    else 用户名可用\n        Service-&gt;&gt;BCrypt: 加密(password)\n        BCrypt--&gt;&gt;Service: 返回 encodedPassword\n        Service-&gt;&gt;Database: 保存(username, encodedPassword)\n        Database--&gt;&gt;Service: 保存成功\n        Service--&gt;&gt;Controller: 返回成功\n        Controller--&gt;&gt;Client: 200 OK\n    end\n\n\n\n\n\n\n在 SecurityConfig.java 中添加一个 Bean：\n    @Bean\n    public PasswordEncoder passwordEncoder() {\n        return new BCryptPasswordEncoder();\n    }",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第四步注册接口-sign-up",
+    "href": "chapters/10-security/10.2-authentication.html#第四步注册接口-sign-up",
+    "title": "10.2 第一道防线：认证",
+    "section": "第四步：注册接口 (Sign Up)",
+    "text": "第四步：注册接口 (Sign Up)\n现在，我们需要一个接口让用户注册。这个逻辑稍微有点复杂，我们需要 AI 帮我们处理“查重”和“加密”这两个关键点。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建 com.vibevault.controller.AuthController。 实现 POST /api/auth/signup 接口。 逻辑如下： 1. 接收 username 和 password (使用 Record DTO)。 2. 检查用户名是否存在，如果存在抛出异常。 3. 关键：使用 PasswordEncoder 对密码进行加密。 4. 保存用户到数据库。 5. 返回成功信息。”\n\n\n检查 AI 生成的代码，确保它调用了 passwordEncoder.encode(request.password())。如果没有加密直接保存，那就是严重的漏洞！\n\n\n\n\n\n\nImportant🚨 关键配置更新 (AI 托管)\n\n\n\n你刚刚添加了新的接口 /api/auth/signup，但默认情况下 Spring Security 会拦截它。 不要手动修改配置类。 让 AI 来更新规则。\nPrompt: &gt; “我刚刚添加了 /api/auth/signup 接口。请更新 SecurityConfig，允许 /api/auth/** 下的所有路径匿名访问 (permitAll)。保持其他规则不变。”\nAI 会给出一个更新后的 SecurityFilterChain Bean。复制并覆盖原来的代码。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第五步验证-vibe-check",
+    "href": "chapters/10-security/10.2-authentication.html#第五步验证-vibe-check",
+    "title": "10.2 第一道防线：认证",
+    "section": "第五步：验证 (Vibe Check)",
+    "text": "第五步：验证 (Vibe Check)\n现在，让我们来验证注册功能。你可以选择使用 curl (Linux/Mac) 或 PowerShell (Windows)。\n\n方式一：使用 curl (Mac/Linux)\n打开终端，运行以下命令：\ncurl -X POST http://localhost:8080/api/auth/signup \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"password123\"}'\n如果成功，你应该看到输出：User registered successfully。\n\n\n方式二：使用 PowerShell (Windows 11)\n打开 PowerShell，运行以下命令：\n$body = @{\n    username = \"vibecoder\"\n    password = \"password123\"\n} | ConvertTo-Json\n\nInvoke-RestMethod -Method Post -Uri \"http://localhost:8080/api/auth/signup\" `\n  -ContentType \"application/json\" `\n  -Body $body\n\n\n验证数据库\n现在去查看你的数据库。 你会发现 users 表中多了一条记录，但 password 字段是一串看不懂的乱码（如 $2a$10$...）。 这就是 BCrypt 哈希。即使数据库管理员也无法直接看出用户的原始密码是什么。这是安全的基石。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html",
+    "href": "chapters/10-security/10.3-jwt-passport.html",
+    "title": "10.3 护照：JWT 黑盒组件",
+    "section": "",
+    "text": "什么是 JWT？\n“Login Success” 这句话虽然好听，但它不能当饭吃。 我们需要给用户发一张数字护照 (JWT)，用户下次来的时候，亮出护照，我们就知道他是谁了。\nJSON Web Token (JWT) 就像一张防伪的身份证。 * Header: 证件类型。 * Payload: 个人信息（我是 vibecoder）。 * Signature: 防伪印章（只有服务器能盖章）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第一步引入jwt依赖",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第一步引入jwt依赖",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "",
+    "text": "jjwt = \"0.11.5\"\n\njjwt-api = { module = \"io.jsonwebtoken:jjwt-api\", version.ref = \"jjwt\" }\njjwt-impl = { module = \"io.jsonwebtoken:jjwt-impl\", version.ref = \"jjwt\" }\njjwt-jackson = { module = \"io.jsonwebtoken:jjwt-jackson\", version.ref = \"jjwt\" }\n\nimplementation(libs.jjwt.api)\nruntimeOnly(libs.jjwt.impl)\nruntimeOnly(libs.jjwt.jackson)",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第一步引入jwt依赖-1",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第一步引入jwt依赖-1",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第一步：引入JWT依赖",
+    "text": "第一步：引入JWT依赖\n（保持不变，这是配置项，必须精确）",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第二步理解-jwt-json-web-token",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第二步理解-jwt-json-web-token",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第二步：理解 JWT (JSON Web Token)",
+    "text": "第二步：理解 JWT (JSON Web Token)\n在写代码之前，先问问 AI：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请解释一下 JWT 的结构，以及为什么它适合用于无状态认证？”\n\n\n简单来说，JWT 就像一张数字护照。它包含三个部分： 1. Header: 护照类型（我是JWT）。 2. Payload: 护照信息（我是谁，什么时候过期）。 3. Signature: 防伪印章（只有服务器能盖章，防止篡改）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第三步生成-jwtservice",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第三步生成-jwtservice",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第三步：生成 JwtService",
+    "text": "第三步：生成 JwtService\n我们需要一个服务来签发（盖章）和查验（验章）这张护照。\n\nJWT 验证流程图解\n当一个请求到达时，发生了什么？\n\n\n\n\n\nsequenceDiagram\n    participant Client\n    participant Filter as JwtFilter\n    participant Service as JwtService\n    participant Context as SecurityContext\n    participant Controller\n\n    Client-&gt;&gt;Filter: GET /api/playlists (Header: Bearer xyz...)\n    Filter-&gt;&gt;Filter: 检查 Header 是否存在?\n    alt 无 Token\n        Filter-&gt;&gt;Controller: 放行 (匿名访问)\n    else 有 Token\n        Filter-&gt;&gt;Service: extractUsername(token)\n        Service--&gt;&gt;Filter: 返回 username\n        Filter-&gt;&gt;Service: isTokenValid(token)?\n        alt Token 有效\n            Service--&gt;&gt;Filter: true\n            Filter-&gt;&gt;Context: 设置 Authentication (登录成功)\n        else Token 无效/过期\n            Service--&gt;&gt;Filter: false\n            Filter-&gt;&gt;Context: 不做任何事\n        end\n        Filter-&gt;&gt;Controller: 放行 (进入后续鉴权)\n    end\n\n\n\n\n\n\n\n\n\n\n\n\nTip💡 Vibe Pro Tip: Token 存哪里？\n\n\n\n这是一个经典的面试题，也是实战中的大坑。 1. LocalStorage: 最简单。前端 localStorage.setItem('token', ...)。 * 优点: 方便，JS 随时能读。 * 缺点: 容易被 XSS 攻击（如果黑客能在你页面运行 JS，就能偷走 Token）。 2. HttpOnly Cookie: 更安全。 * 优点: JS 读不到，防 XSS。 * 缺点: 容易被 CSRF 攻击（需要额外防护），且跨域处理麻烦。\nVibe 建议: 对于初学者和大多数非金融类应用，LocalStorage 是可以接受的起步方案。但在生产环境中，配合 HTTPS 和严格的 CSP (Content Security Policy) 是必须的。\n\n\n这部分代码涉及大量的加密算法调用，手写非常容易出错。\nVibe Coding 时刻：让 AI 来写。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建一个 JwtService 类。 功能要求： 1. generateToken(String username): 生成 Token，有效期 24 小时。 2. extractUsername(String token): 从 Token 中解析用户名。 3. isTokenValid(String token, String username): 验证 Token 是否合法且未过期。 4. 使用 io.jsonwebtoken 库。 5. 重要：使用 HMAC SHA256 算法，密钥请生成一个安全的随机字符串作为常量。”\n\n\nAI 生成后，重点检查： * 是否使用了 Jwts.builder() 和 Jwts.parserBuilder()。 * 密钥 (SECRET_KEY) 是否足够长（至少 256-bit）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第四步拦截器-jwtauthenticationfilter",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第四步拦截器-jwtauthenticationfilter",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第四步：拦截器 (JwtAuthenticationFilter)",
+    "text": "第四步：拦截器 (JwtAuthenticationFilter)\n这是最关键的一步。我们需要一个“安检员”（Filter），拦截每一个请求，检查它有没有带“护照”。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建一个 JwtAuthenticationFilter，继承 OncePerRequestFilter。 逻辑如下： 1. 从请求头 Authorization 中获取 Token (格式为 Bearer &lt;token&gt;)。 2. 如果没有 Token，直接放行（交给后面的过滤器处理）。 3. 如果有 Token，调用 JwtService 解析用户名。 4. 如果用户名有效且当前 SecurityContext 没有认证信息： - 创建 UsernamePasswordAuthenticationToken。 - 设置到 SecurityContextHolder 中。 5. 最后调用 filterChain.doFilter 放行。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第五步配置安全链-securityconfig",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第五步配置安全链-securityconfig",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第五步：配置安全链 (SecurityConfig)",
+    "text": "第五步：配置安全链 (SecurityConfig)\n最后，我们要把这个“安检员”安排到安检通道（Security Filter Chain）的正确位置。\n回到 SecurityConfig.java，做两件事： 1. 注入 JwtAuthenticationFilter。 2. 把它加到 UsernamePasswordAuthenticationFilter 之前。\n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\n        http\n            // ... 其他配置 ...\n            .sessionManagement(session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 关键：无状态\n            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // ⬅️ 插队\n            \n        return http.build();\n    }\n现在，你的 API 已经固若金汤。只有携带有效 JWT 的请求才能通过。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html",
+    "href": "chapters/10-security/10.4-authorization.html",
+    "title": "10.4 规矩：我的地盘我做主",
+    "section": "",
+    "text": "业务语义优先\n有了护照，你就能进门了。但这不代表你可以为所欲为。 比如：你不能删别人的歌单。\n这就是 授权 (Authorization)。\n传统的授权代码充斥着 if (user.getId() == playlist.getUserId()) 这种逻辑。 Vibe Coding 提倡：用注解表达业务规则。\n我们希望写出这样的代码：",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第一步所有权概念-ownership",
+    "href": "chapters/10-security/10.4-authorization.html#第一步所有权概念-ownership",
+    "title": "10.4 第二道防线：授权",
+    "section": "",
+    "text": "Tip🤖 AI Prompt\n\n\n\n“请修改 Playlist 实体，添加一个 owner 字段，关联到 User 实体。 关系是 @ManyToOne (一个用户可以有多个歌单)。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 第二道防线：授权</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第二步自动绑定主人",
+    "href": "chapters/10-security/10.4-authorization.html#第二步自动绑定主人",
+    "title": "10.4 第二道防线：授权",
+    "section": "第二步：自动绑定主人",
+    "text": "第二步：自动绑定主人\n当用户创建歌单时，我们不能让他手动输入“我是谁”，而应该自动从当前的登录信息中获取。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请修改 PlaylistService 的 createPlaylist 方法。 入参增加 String username。 逻辑： 1. 根据 username 查找 User。 2. 创建 Playlist 时设置 owner。 3. 保存。”\n\n\n然后，在 Controller 层，我们需要从 Principal 中提取用户名传给 Service。\n    @PostMapping\n    public PlaylistDTO createPlaylist(@RequestBody PlaylistDTO playlistDTO, Principal principal) {\n        // Principal## 第三步：声明式授权 (Declarative Authorization)\n\n现在，我们不需要写复杂的 `if (user == owner)` 代码。\n我们只需要用一句“人话”来描述规则。\n\n### 业务规则翻译\n\n*   **业务规则**: \"只有歌单的主人，才能删除这个歌单。\"\n*   **代码翻译**: `@PreAuthorize(\"@securityUtils.isOwner(#id, authentication.name)\")`\n\n### 编写 SecurityUtils (AI 辅助)\n\n我们需要一个助手来帮我们查数据库。复制以下 Prompt 给 AI：\n\n::: {.callout-tip}\n## 🤖 AI Prompt\n\"请帮我生成一个 `SecurityUtils` 组件 (`@Component`)。\n它需要注入 `PlaylistRepository`。\n包含一个方法 `boolean isOwner(Long playlistId, String username)`：\n1.  根据 ID 查歌单。\n2.  如果歌单不存在，返回 false。\n3.  如果歌单存在，判断其 `user.username` 是否等于传入的 `username`。\"\n:::\n\n### 在 Controller 中使用\n\n现在，回到 `PlaylistController`，给删除接口加上这行注解：\n\n```java\n    @DeleteMapping(\"/{id}\")\n    @PreAuthorize(\"@securityUtils.isOwner(#id, authentication.name)\") // 👈 核心代码\n    public void deletePlaylist(@PathVariable Long id) {\n        playlistRepository.deleteById(id);\n    }\n这句话翻译过来就是：在执行这个方法之前，先问问 securityUtils，这个 id 的歌单是不是属于当前登录用户 (authentication.name)？如果是，才放行。\n\n授权拦截流程图解\n\n\n\n\n\nsequenceDiagram\n    participant Client\n    participant FilterChain\n    participant MethodSecurity as @PreAuthorize\n    participant SecurityUtils\n    participant Controller\n\n    Client-&gt;&gt;FilterChain: DELETE /api/playlists/1\n    FilterChain-&gt;&gt;MethodSecurity: 准备进入 Controller 方法\n    MethodSecurity-&gt;&gt;SecurityUtils: isOwner(1, \"zhangsan\")\n    SecurityUtils-&gt;&gt;SecurityUtils: 查库: 歌单1的主人是?\n    alt 主人是 zhangsan\n        SecurityUtils--&gt;&gt;MethodSecurity: true\n        MethodSecurity-&gt;&gt;Controller: 放行 -&gt; deletePlaylist(1)\n        Controller--&gt;&gt;Client: 200 OK\n    else 主人是 lisi\n        SecurityUtils--&gt;&gt;MethodSecurity: false\n        MethodSecurity--&gt;&gt;Client: 403 Forbidden (抛出 AccessDeniedException)\n    end\n\n\n\n\n\n\n\n\n\n\n\n\nNote💡 Vibe Deep Dive: RBAC vs ABAC\n\n\n\n你可能听说过 RBAC (基于角色的访问控制)，比如 hasRole('ADMIN')。 但我们这里用的是 ABAC (基于属性的访问控制)。 * RBAC: “只有管理员能删歌单”。简单，但不够细。 * ABAC: “只有这个歌单的主人能删这个歌单”。更灵活，更符合现实业务。 Spring Security 的 @PreAuthorize 强大之处就在于它能轻松混合使用这两种模式。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 第二道防线：授权</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第三步声明式授权-preauthorize",
+    "href": "chapters/10-security/10.4-authorization.html#第三步声明式授权-preauthorize",
+    "title": "10.4 第二道防线：授权",
+    "section": "第三步：声明式授权 (@PreAuthorize)",
+    "text": "第三步：声明式授权 (@PreAuthorize)\n这是 Spring Security 最优雅的功能之一。我们可以像写注释一样写安全规则。\n我们想实现：只有歌单的主人才能删除歌单。\n首先，开启这个魔法： 在 SecurityConfig 类上添加 @EnableMethodSecurity。\n然后，我们需要一个逻辑来判断“是不是主人”。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建一个 SecurityUtils 组件 (Bean)。 提供一个方法 boolean isOwner(Long playlistId, String username)。 逻辑： 1. 查库获取 Playlist。 2. 比较 Playlist 的 owner.username 和传入的 username 是否一致。”\n\n\n最后，在删除接口上加上这行魔法注解：\n    @DeleteMapping(\"/{id}\")\n    @PreAuthorize(\"@securityUtils.isOwner(#id, authentication.name)\") // ⬅️ 核心\n    public void deletePlaylist(@PathVariable Long id) {\n        playlistService.deletePlaylist(id);\n    }\n这句话翻译过来就是：在执行这个方法之前，先问问 securityUtils，这个 id 的歌单是不是属于当前登录用户 (authentication.name)？如果是，才放行。\n\n授权拦截流程图解\n\n\n\n\n\nsequenceDiagram\n    participant Client\n    participant FilterChain\n    participant MethodSecurity as @PreAuthorize\n    participant SecurityUtils\n    participant Controller\n\n    Client-&gt;&gt;FilterChain: DELETE /api/playlists/1\n    FilterChain-&gt;&gt;MethodSecurity: 准备进入 Controller 方法\n    MethodSecurity-&gt;&gt;SecurityUtils: isOwner(1, \"zhangsan\")\n    SecurityUtils-&gt;&gt;SecurityUtils: 查库: 歌单1的主人是?\n    alt 主人是 zhangsan\n        SecurityUtils--&gt;&gt;MethodSecurity: true\n        MethodSecurity-&gt;&gt;Controller: 放行 -&gt; deletePlaylist(1)\n        Controller--&gt;&gt;Client: 200 OK\n    else 主人是 lisi\n        SecurityUtils--&gt;&gt;MethodSecurity: false\n        MethodSecurity--&gt;&gt;Client: 403 Forbidden (抛出 AccessDeniedException)\n    end\n\n\n\n\n\n\n\n\n\n\n\n\nNote💡 Vibe Deep Dive: RBAC vs ABAC\n\n\n\n你可能听说过 RBAC (基于角色的访问控制)，比如 hasRole('ADMIN')。 但我们这里用的是 ABAC (基于属性的访问控制)。 * RBAC: “只有管理员能删歌单”。简单，但不够细。 * ABAC: “只有这个歌单的主人能删这个歌单”。更灵活，更符合现实业务。 Spring Security 的 @PreAuthorize 强大之处就在于它能轻松混合使用这两种模式。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 第二道防线：授权</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#vibe-check",
+    "href": "chapters/10-security/10.4-authorization.html#vibe-check",
+    "title": "10.4 规矩：我的地盘我做主",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n登录用户 A，获取 Token A。\n登录用户 B，创建歌单 B。\n尝试用 Token A 删除歌单 B。\n\n预期: 403 Forbidden。\n\n\n这就是规矩。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html",
+    "href": "chapters/10-security/10.5-security-testing.html",
+    "title": "10.5 握手：全栈大一统",
+    "section": "",
+    "text": "第一步：打造登录页 (Login.jsx)\n后端已经固若金汤。现在，是时候让第9章的前端应用接入这个安全体系了。 这才是全栈开发的高光时刻。\n回到前端项目。我们需要一个登录界面。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#编写集成测试",
+    "href": "chapters/10-security/10.5-security-testing.html#编写集成测试",
+    "title": "10.5 验证安全：集成测试",
+    "section": "",
+    "text": "Tip🤖 AI Prompt\n\n\n\n“请在 src/test/java/com/vibevault 下创建 SecurityIntegrationTest。 要求： 1. 使用 @SpringBootTest 和 @AutoConfigureMockMvc。 2. 注入 MockMvc 和 JwtService。 3. 测试用例 1: unauthenticated_request_should_fail - 访问 GET /api/playlists - 预期状态: 403 Forbidden 4. 测试用例 2: authenticated_request_should_succeed - 使用 jwtService 生成一个测试 Token (username=”testuser”)。 - 访问 GET /api/playlists，带上 Authorization: Bearer &lt;token&gt; 头。 - 预期状态: 200 OK”\n\n\n\n    @Test\n    void authenticated_request_should_succeed() throws Exception {\n        // 1. 生成一个合法的Token (注意：这里假设\"testuser\"不需要真实存在于数据库，只要Token签名正确即可通过Filter)\n        String token = jwtService.generateToken(\"testuser\");\n\n        // 2. 带着Token去访问\n        mockMvc.perform(get(\"/api/playlists\")\n                .header(\"Authorization\", \"Bearer \" + token))\n            .andExpect(status().isOk());\n    }",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 验证安全：集成测试</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#浏览器实战黑客控制台-vibe-check",
+    "href": "chapters/10-security/10.5-security-testing.html#浏览器实战黑客控制台-vibe-check",
+    "title": "10.5 验证安全：集成测试",
+    "section": "浏览器实战：黑客控制台 (Vibe Check)",
+    "text": "浏览器实战：黑客控制台 (Vibe Check)\n虽然代码测试通过了，但你可能还是觉得不够直观。我们来做一个简单的 HTML 页面，模拟“黑客”如何与你的 API 交互。\n在项目根目录下创建一个 security-check.html 文件，复制以下代码：\n&lt;!DOCTYPE html&gt;\n&lt;html lang=\"zh\"&gt;\n&lt;head&gt;\n    &lt;meta charset=\"UTF-8\"&gt;\n    &lt;title&gt;VibeVault Security Check&lt;/title&gt;\n    &lt;style&gt;\n        body { font-family: 'Courier New', monospace; background: #0d1117; color: #c9d1d9; padding: 20px; }\n        .container { max-width: 800px; margin: 0 auto; }\n        .card { background: #161b22; padding: 20px; border: 1px solid #30363d; border-radius: 6px; margin-bottom: 20px; }\n        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; background: #0d1117; border: 1px solid #30363d; color: #c9d1d9; }\n        button { background: #238636; color: white; cursor: pointer; font-weight: bold; }\n        button:hover { background: #2ea043; }\n        button.danger { background: #da3633; }\n        pre { background: #0d1117; padding: 10px; border-radius: 4px; overflow-x: auto; border: 1px solid #30363d; }\n        .token-display { color: #58a6ff; word-break: break-all; }\n        h2 { border-bottom: 1px solid #30363d; padding-bottom: 10px; }\n    &lt;/style&gt;\n&lt;/head&gt;\n&lt;body&gt;\n&lt;div class=\"container\"&gt;\n    &lt;h1&gt;🔐 VibeVault 黑客控制台&lt;/h1&gt;\n    \n    &lt;div class=\"card\"&gt;\n        &lt;h2&gt;1. 登录 (获取 Token)&lt;/h2&gt;\n        &lt;input type=\"text\" id=\"username\" placeholder=\"Username\" value=\"vibecoder\"&gt;\n        &lt;input type=\"password\" id=\"password\" placeholder=\"Password\" value=\"password123\"&gt;\n        &lt;button onclick=\"login()\"&gt;Login & Get Token&lt;/button&gt;\n        &lt;div id=\"loginResult\"&gt;&lt;/div&gt;\n    &lt;/div&gt;\n\n    &lt;div class=\"card\"&gt;\n        &lt;h2&gt;2. 你的数字护照 (JWT)&lt;/h2&gt;\n        &lt;p class=\"token-display\" id=\"jwtDisplay\"&gt;Not logged in&lt;/p&gt;\n    &lt;/div&gt;\n\n    &lt;div class=\"card\"&gt;\n        &lt;h2&gt;3. 访问受保护资源&lt;/h2&gt;\n        &lt;button onclick=\"getPlaylists()\"&gt;GET /api/playlists&lt;/button&gt;\n        &lt;pre id=\"apiResult\"&gt;Waiting for request...&lt;/pre&gt;\n    &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;script&gt;\n    let token = '';\n\n    async function login() {\n        const username = document.getElementById('username').value;\n        const password = document.getElementById('password').value;\n        \n        // 1. 先注册 (为了方便测试，如果用户不存在就注册)\n        try {\n            await fetch('http://localhost:8080/api/auth/signup', {\n                method: 'POST',\n                headers: { 'Content-Type': 'application/json' },\n                body: JSON.stringify({ username, password })\n            });\n        } catch (e) { console.log(\"User might already exist, proceeding to login...\"); }\n\n        // 2. 再登录 (这里我们需要在后端实现登录接口，或者复用注册逻辑如果注册返回Token的话)\n        // 注意：目前的后端代码只实现了 /signup。为了演示，我们假设你已经实现了 /login \n        // 或者我们可以临时用 signup 的返回结果如果它返回Token的话。\n        // 但根据 10.2 的代码，signup 只返回 String。\n        // 🚨 练习：请在 AuthController 中实现 login 接口，签发 Token！\n        \n        // 为了让这个页面能跑通，我们需要你完成一个小挑战：\n        // 在 AuthController 中添加 login 方法，返回 JWT Token。\n        \n        const response = await fetch('http://localhost:8080/api/auth/login', {\n            method: 'POST',\n            headers: { 'Content-Type': 'application/json' },\n            body: JSON.stringify({ username, password })\n        });\n        \n        if (response.ok) {\n            token = await response.text(); // 假设直接返回 Token 字符串\n            document.getElementById('jwtDisplay').innerText = token;\n            document.getElementById('loginResult').innerText = '✅ Login Success!';\n        } else {\n            document.getElementById('loginResult').innerText = '❌ Login Failed';\n        }\n    }\n\n    async function getPlaylists() {\n        if (!token) {\n            alert(\"请先登录获取 Token！\");\n            return;\n        }\n        const response = await fetch('http://localhost:8080/api/playlists', {\n            method: 'GET',\n            headers: { \n                'Authorization': 'Bearer ' + token \n            }\n        });\n        const data = await response.json();\n        document.getElementById('apiResult').innerText = JSON.stringify(data, null, 2);\n    }\n&lt;/script&gt;\n&lt;/body&gt;\n&lt;/html&gt;\n\n挑战：填补最后一块拼图\n你会发现上面的 HTML 中，登录按钮依赖于 /api/auth/login 接口。但我们在 10.2 中只写了 /signup。\n这是留给你的最后一道思考题： 请模仿 signup 方法，在 AuthController 中实现 login 方法。 1. 接收用户名和密码。 2. 使用 AuthenticationManager 验证用户名密码（或者手动对比密码，注意要用 passwordEncoder.matches）。 3. 如果验证通过，调用 jwtService.generateToken(username)。 4. 返回 Token。\n一旦你完成了这个接口，打开 security-check.html，你就能亲眼看到 JWT 的魔力了！",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 验证安全：集成测试</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#本章总结",
+    "href": "chapters/10-security/10.5-security-testing.html#本章总结",
+    "title": "10.5 验证安全：集成测试",
+    "section": "本章总结",
+    "text": "本章总结\n恭喜！你已经成功地把一个裸奔的系统变成了一个固若金汤的堡垒。 现在，我们的应用既漂亮（第9章）又安全（第10章）。 只差最后一步：把它发布给全世界。 下一章，我们将学习如何把这个堡垒打包，并发射到云端。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 验证安全：集成测试</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/index.html",
+    "href": "chapters/11-production/index.html",
+    "title": "第十一章：迈向生产：容器化与云端部署",
+    "section": "",
+    "text": "本章危机：环境地狱\n你的VibeVault应用在你的电脑上跑得很欢。 但是，如果我让你把它部署到我的电脑上，或者一台全新的Linux服务器上，你需要做多少工作？\n这就是环境一致性问题。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/index.html#本章危机环境地狱",
+    "href": "chapters/11-production/index.html#本章危机环境地狱",
+    "title": "第十一章：迈向生产：容器化与云端部署",
+    "section": "",
+    "text": "安装JDK 21？\n安装PostgreSQL？\n配置环境变量？\n如果我的JDK版本是17怎么办？如果我的PostgreSQL端口被占用了怎么办？",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/index.html#本章顿悟集装箱",
+    "href": "chapters/11-production/index.html#本章顿悟集装箱",
+    "title": "第十一章：迈向生产：容器化与云端部署",
+    "section": "本章顿悟：集装箱",
+    "text": "本章顿悟：集装箱\n航运业通过发明标准化的“集装箱”，解决了货物在船、车、港口之间流转的难题。 软件业也发明了自己的集装箱——Docker容器。\n我们将把你的代码、JDK、数据库配置全部打包进一个“盒子”里。无论在哪里打开这个盒子，它都能完美运行。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/index.html#本章目标",
+    "href": "chapters/11-production/index.html#本章目标",
+    "title": "第十一章：迈向生产：容器化与云端部署",
+    "section": "本章目标",
+    "text": "本章目标\n\nDockerfile: 编写应用的基因蓝图。\nDocker Compose: 编排应用和数据库的交响乐。\n云部署: 在真实的云服务器上上线你的应用。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.1-production-crisis.html",
+    "href": "chapters/11-production/11.1-production-crisis.html",
+    "title": "11.1 生产危机：“在我电脑上能跑”",
+    "section": "",
+    "text": "环境地狱 (Dependency Hell)\n在软件开发的世界里，最经典（也最让人抓狂）的一句话莫过于：“但在我的电脑上是可以运行的啊！” (It works on my machine.)\n想象一下，你写了一个完美的Java应用。\n当你把代码部署上去时，它崩溃了。 可能是因为Java版本不兼容，可能是因为数据库驱动太新，也可能是因为少了一个系统级的动态链接库。\n这就是环境漂移 (Environment Drift)。代码只是冰山一角，冰山下面是庞大的操作系统、运行时环境、依赖库和配置。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>45</span>  <span class='chapter-title'>11.1 生产危机：“在我电脑上能跑”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.1-production-crisis.html#环境地狱-dependency-hell",
+    "href": "chapters/11-production/11.1-production-crisis.html#环境地狱-dependency-hell",
+    "title": "11.1 生产危机：“在我电脑上能跑”",
+    "section": "",
+    "text": "开发环境 (Dev): MacBook Pro, Java 21, PostgreSQL 15 (Homebrew安装), 环境变量配置在 .zshrc。\n生产环境 (Prod): 阿里云 CentOS 7, Java 17 (运维只装了这个), PostgreSQL 12 (旧项目遗留), 环境变量…忘了配。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>45</span>  <span class='chapter-title'>11.1 生产危机：“在我电脑上能跑”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.1-production-crisis.html#救世主容器化-containerization",
+    "href": "chapters/11-production/11.1-production-crisis.html#救世主容器化-containerization",
+    "title": "11.1 生产危机：“在我电脑上能跑”",
+    "section": "救世主：容器化 (Containerization)",
+    "text": "救世主：容器化 (Containerization)\n为了解决这个问题，人类发明了虚拟机 (Virtual Machine)，后来又进化出了容器 (Container)。\n\n虚拟机 vs 容器\n让我们用一个比喻：\n\n虚拟机 (VM): 像是一栋独立的别墅。\n\n它有自己的地基（Guest OS）、水电设施（Kernel）。\n优点: 隔离性极强，完全独立。\n缺点: 太重了。建一栋别墅需要很久（启动慢），而且很占地（占用大量内存和磁盘）。\n\n容器 (Docker): 像是一间公寓。\n\n它共享大楼的地基和水电（Host OS Kernel），但每间公寓有独立的门窗和装修（User Space）。\n优点: 极轻。装修一间公寓很快（启动秒级），而且不占用地基（资源利用率高）。\n\n\n\n\n\n\n\ngraph TD\n    subgraph VM [虚拟机架构]\n        A1[App A] --&gt; L1[Libs/Bins]\n        L1 --&gt; G1[Guest OS]\n        G1 --&gt; H1[Hypervisor]\n        H1 --&gt; HO1[Host OS]\n        HO1 --&gt; HW1[Hardware]\n    end\n\n    subgraph Docker [容器架构]\n        A2[App A] --&gt; L2[Libs/Bins]\n        A2 --&gt; D[Docker Engine]\n        D --&gt; HO2[Host OS]\n        HO2 --&gt; HW2[Hardware]\n    end\n\n    style VM fill:#f9f,stroke:#333,stroke-width:2px\n    style Docker fill:#ccf,stroke:#333,stroke-width:2px",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>45</span>  <span class='chapter-title'>11.1 生产危机：“在我电脑上能跑”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.1-production-crisis.html#docker的承诺",
+    "href": "chapters/11-production/11.1-production-crisis.html#docker的承诺",
+    "title": "11.1 生产危机：“在我电脑上能跑”",
+    "section": "Docker的承诺",
+    "text": "Docker的承诺\nDocker的口号是：Build once, Run anywhere. (一次构建，到处运行)。\n它不再只打包代码（Jar包），而是把代码 + JDK + 操作系统库 + 配置文件 全部打包进一个镜像 (Image) 里。\n这个镜像，在你的Mac上能跑，在Linux服务器上能跑，在Windows上也能跑。行为完全一致。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>45</span>  <span class='chapter-title'>11.1 生产危机：“在我电脑上能跑”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.1-production-crisis.html#vibe-check",
+    "href": "chapters/11-production/11.1-production-crisis.html#vibe-check",
+    "title": "11.1 生产危机：“在我电脑上能跑”",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n思考: 为什么说Docker是“进程级的隔离”，而虚拟机是“系统级的隔离”？\n类比: 如果你的应用是一条金鱼，Docker就是把鱼缸（水、水草、氧气泵）一起端走，而不是只把鱼捞出来放到另一个未知的环境里。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>45</span>  <span class='chapter-title'>11.1 生产危机：“在我电脑上能跑”</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.2-dockerfile.html",
+    "href": "chapters/11-production/11.2-dockerfile.html",
+    "title": "11.2 打包应用：编写Dockerfile",
+    "section": "",
+    "text": "编写你的第一份食谱\n如果说Docker镜像（Image）是一道菜，那么Dockerfile就是这道菜的食谱 (Recipe)。 它告诉Docker引擎：先放什么料，再煮多久，最后怎么装盘。\n在 chapter-code/ch08 根目录下（与 build.gradle.kts 同级），创建一个名为 Dockerfile 的文件（注意：没有后缀名，首字母大写）。\n我们将逐行解析这份食谱：",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>46</span>  <span class='chapter-title'>11.2 打包应用：编写Dockerfile</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.2-dockerfile.html#编写你的第一份食谱",
+    "href": "chapters/11-production/11.2-dockerfile.html#编写你的第一份食谱",
+    "title": "11.2 打包应用：编写Dockerfile",
+    "section": "",
+    "text": "# 1. 基础镜像 (Base Image)\n# 就像做菜需要底料。我们选择基于Alpine Linux的JDK 21。\n# Alpine是一个极简的Linux发行版，体积只有5MB左右。\nFROM eclipse-temurin:21-jdk-alpine\n\n# 2. 维护者信息 (可选)\nLABEL maintainer=\"vibecoder@example.com\"\n\n# 3. 设置工作目录 (Work Directory)\n# 相当于在容器内部执行了 `cd /app`。后续命令都在这个目录下执行。\nWORKDIR /app\n\n# 4. 复制文件 (Copy)\n# 将宿主机 build/libs 目录下的 jar 包复制到容器内的 /app 目录下，并重命名为 app.jar\n# 注意：这需要你先在宿主机运行 ./gradlew bootJar\nCOPY build/libs/*.jar app.jar\n\n# 5. 暴露端口 (Expose)\n# 告诉使用者，这个容器里的应用会监听8080端口。\n# 这只是一个声明，不会自动映射端口。\nEXPOSE 8080\n\n# 6. 启动命令 (Entrypoint)\n# 容器启动时执行的命令。\n# 相当于在终端输入 java -jar app.jar\nENTRYPOINT [\"java\", \"-jar\", \"app.jar\"]",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>46</span>  <span class='chapter-title'>11.2 打包应用：编写Dockerfile</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.2-dockerfile.html#深入理解镜像分层-layer-caching",
+    "href": "chapters/11-production/11.2-dockerfile.html#深入理解镜像分层-layer-caching",
+    "title": "11.2 打包应用：编写Dockerfile",
+    "section": "深入理解：镜像分层 (Layer Caching)",
+    "text": "深入理解：镜像分层 (Layer Caching)\nDocker构建镜像时，不是一整块，而是像千层饼一样，一层层叠加的。 Dockerfile中的每一行指令，都会创建一个新的层（Layer）。\n为什么这很重要？ 因为缓存。\n当你再次构建镜像时，Docker会检查每一层：\n\n如果这一行的指令没变，且它依赖的文件也没变 -&gt; 直接使用缓存（极快）。\n如果变了 -&gt; 重新构建这一层及其之后的所有层。\n\n\n优化建议\n在实际项目中，我们通常会把“不常变的东西”放在前面，把“常变的东西”放在后面。\n\n不常变: 操作系统、JDK、第三方依赖库。\n常变: 你的业务代码。\n\n(进阶技巧：可以使用多阶段构建 Multi-stage Build 来进一步减小体积和利用缓存，这里暂不展开，先掌握基础。)",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>46</span>  <span class='chapter-title'>11.2 打包应用：编写Dockerfile</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.2-dockerfile.html#实战演练",
+    "href": "chapters/11-production/11.2-dockerfile.html#实战演练",
+    "title": "11.2 打包应用：编写Dockerfile",
+    "section": "实战演练",
+    "text": "实战演练\n\n构建Jar包:\n./gradlew bootJar\n(确保看到了 BUILD SUCCESSFUL)\n构建镜像:\ndocker build -t vibevault-backend:v1 .\n\n-t: Tag，给镜像起名和打标签。\n.: Context，告诉Docker在当前目录下寻找文件（包括Dockerfile和要COPY的文件）。\n\n查看成果:\ndocker images\n你应该能看到 vibevault-backend 出现在列表中，大小可能在300MB左右（JDK本身比较大）。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>46</span>  <span class='chapter-title'>11.2 打包应用：编写Dockerfile</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.2-dockerfile.html#vibe-check",
+    "href": "chapters/11-production/11.2-dockerfile.html#vibe-check",
+    "title": "11.2 打包应用：编写Dockerfile",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n实验: 修改你的Java代码（比如在Controller里改个日志），重新运行 bootJar，然后重新 docker build。观察终端输出。\n\n你会发现 FROM, WORKDIR 等步骤显示 Using cache。\n只有 COPY 和 ENTRYPOINT 步骤重新执行了。这就是分层缓存的魔力。\n\n思考: 为什么我们不把源代码 (src/) 复制进去，然后在容器里运行 gradle build？\n\n(提示：生产环境需要Gradle吗？需要源代码吗？镜像越小越安全。)",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>46</span>  <span class='chapter-title'>11.2 打包应用：编写Dockerfile</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.3-docker-compose.html",
+    "href": "chapters/11-production/11.3-docker-compose.html",
+    "title": "11.3 容器交响乐：docker-compose",
+    "section": "",
+    "text": "架构蓝图\n一个现代应用很少是独角戏。通常，它需要数据库、缓存、消息队列等配角。 虽然我们可以手动启动每一个容器，但这就像指挥一个交响乐团，却要一个个去敲门叫醒乐手。\n我们需要一位指挥家：Docker Compose。\n我们的目标架构如下：\ngraph LR\n    subgraph Docker Network\n        App[Spring Boot App] -- JDBC:5432 --&gt; DB[(PostgreSQL)]\n    end\n    User((User)) -- HTTP:8080 --&gt; App\n    DB -- Mount --&gt; Vol[Data Volume]\n    \n    style App fill:#6db33f,stroke:#333,color:white\n    style DB fill:#336791,stroke:#333,color:white\n    style Vol fill:#f9f,stroke:#333",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>47</span>  <span class='chapter-title'>11.3 容器交响乐：docker-compose</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.3-docker-compose.html#编写乐谱-docker-compose.yml",
+    "href": "chapters/11-production/11.3-docker-compose.html#编写乐谱-docker-compose.yml",
+    "title": "11.3 容器交响乐：docker-compose",
+    "section": "编写乐谱 (docker-compose.yml)",
+    "text": "编写乐谱 (docker-compose.yml)\n在 chapter-code/ch08 根目录下，创建 docker-compose.yml。 我们将详细解读每一个部分：\nversion: '3.8'  # Compose文件版本\n\nservices:\n  # --- 服务1: 我们的Spring Boot应用 ---\n  app:\n    image: vibevault-backend:v1  # 使用我们刚才构建的镜像\n    # 或者，你可以让Compose自动构建：\n    # build: . \n    ports:\n      - \"8080:8080\"  # 端口映射: 宿主机端口:容器端口\n    environment:\n      # 关键：覆盖application.properties中的配置\n      # 注意URL中的 'db'，这是下面定义的数据库服务名\n      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/vibevault\n      - SPRING_DATASOURCE_USERNAME=postgres\n      - SPRING_DATASOURCE_PASSWORD=password\n    depends_on:\n      - db  # 告诉Compose：先启动db，再启动app\n    networks:\n      - vibe-net\n\n  # --- 服务2: PostgreSQL数据库 ---\n  db:\n    image: postgres:15-alpine  # 使用官方镜像\n    environment:\n      - POSTGRES_DB=vibevault\n      - POSTGRES_USER=postgres\n      - POSTGRES_PASSWORD=password\n    volumes:\n      - postgres_data:/var/lib/postgresql/data  # 数据持久化！\n    ports:\n      - \"5432:5432\"  # 可选：如果你想用本地DBeaver连接它\n    networks:\n      - vibe-net\n\n# --- 定义卷 (持久化存储) ---\nvolumes:\n  postgres_data:  # Docker会自动管理这个卷\n\n# --- 定义网络 ---\nnetworks:\n  vibe-net:",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>47</span>  <span class='chapter-title'>11.3 容器交响乐：docker-compose</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.3-docker-compose.html#核心概念解析",
+    "href": "chapters/11-production/11.3-docker-compose.html#核心概念解析",
+    "title": "11.3 容器交响乐：docker-compose",
+    "section": "核心概念解析",
+    "text": "核心概念解析\n\n1. 服务发现 (Service Discovery)\n你注意到了吗？我们在 SPRING_DATASOURCE_URL 中写的是 jdbc:postgresql://db:5432...。 这里的 db 不是IP地址，而是服务名。 Docker Compose会自动创建一个内部DNS，当你访问 db 时，它会自动解析到数据库容器的内部IP。这意味着你永远不需要关心容器的IP变来变去。\n\n\n2. 数据卷 (Volumes)\n容器是易失的（Ephemeral）。当你删除容器时，容器里的文件也会消失。 对于数据库来说，这是灾难。 通过 volumes，我们将容器内的 /var/lib/postgresql/data 目录映射到了宿主机的一个受保护区域（Docker Volume）。 即使你删除了 db 容器，下次再启动一个新的 db 容器挂载同一个卷，数据依然还在。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>47</span>  <span class='chapter-title'>11.3 容器交响乐：docker-compose</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.3-docker-compose.html#演奏开始",
+    "href": "chapters/11-production/11.3-docker-compose.html#演奏开始",
+    "title": "11.3 容器交响乐：docker-compose",
+    "section": "演奏开始",
+    "text": "演奏开始\n\n启动:\ndocker-compose up -d\n\n-d: Detached mode（后台运行）。\n\n查看状态:\ndocker-compose ps\n查看日志:\ndocker-compose logs -f app\n这是排错的神器。\n停止并移除:\ndocker-compose down\n注意：这会移除容器和网络，但不会移除卷（数据是安全的）。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>47</span>  <span class='chapter-title'>11.3 容器交响乐：docker-compose</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.3-docker-compose.html#vibe-check",
+    "href": "chapters/11-production/11.3-docker-compose.html#vibe-check",
+    "title": "11.3 容器交响乐：docker-compose",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n破坏性实验:\n\n启动应用，通过API创建一个歌单。\n运行 docker-compose down 销毁容器。\n再次运行 docker-compose up -d。\n查询API。歌单还在吗？（应该在，因为有Volume）。\n\n彻底毁灭:\n\n运行 docker-compose down -v (注意这个 -v)。\n这会连同Volume一起删除。再次启动，数据就真的没了。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>47</span>  <span class='chapter-title'>11.3 容器交响乐：docker-compose</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.4-cloud-deployment.html",
+    "href": "chapters/11-production/11.4-cloud-deployment.html",
+    "title": "11.4 部署到云端",
+    "section": "",
+    "text": "部署流程\n现在，你的应用已经打包好了，并且可以在本地通过 docker-compose 完美运行。 是时候让全世界看到它了。我们将把它部署到一台真实的云服务器上。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>11.4 部署到云端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.4-cloud-deployment.html#部署流程",
+    "href": "chapters/11-production/11.4-cloud-deployment.html#部署流程",
+    "title": "11.4 部署到云端",
+    "section": "",
+    "text": "第一步：拥有一台服务器\n你需要一台云服务器（VPS）。阿里云、腾讯云、AWS、DigitalOcean 都可以。\n\n系统: 推荐 Ubuntu 22.04 LTS 或 Debian 11。\n配置: 2核 4G 内存足矣（Java比较吃内存，1G可能会OOM）。\n\n\n\n第二步：安装 Docker\nSSH 登录到你的服务器，执行以下命令（以Ubuntu为例）：\n# 更新软件源\nsudo apt update\n\n# 安装 Docker 和 Docker Compose\nsudo apt install -y docker.io docker-compose\n\n\n第三步：传输文件\n你需要把 docker-compose.yml 和 Dockerfile（如果选择在服务器构建）传上去。 最简单的方法是使用 scp 命令（在你的本地终端执行）：\n# 将当前目录下的文件复制到服务器的 /root/vibevault 目录\nscp -r . root@&lt;服务器IP&gt;:/root/vibevault\n或者，更推荐的方式是使用 Git：\n\n把代码推送到 GitHub/Gitee。\n在服务器上 git clone 下来。\n\n\n\n第四步：配置管理 (Configuration Management)\n千万不要把密码写死在代码里！ 在生产环境，我们应该使用环境变量来传递敏感信息。\n修改你的 docker-compose.yml，不要直接写 password，而是引用环境变量：\n    environment:\n      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}\n然后在服务器上创建一个 .env 文件：\nDB_PASSWORD=MySuperSecretPassword123!\nDocker Compose 会自动读取同目录下的 .env 文件。\n\n\n第五步：启动！\n在服务器上：\ncd /root/vibevault\ndocker-compose up -d --build\n\n--build: 强制重新构建镜像（如果你修改了代码）。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>11.4 部署到云端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.4-cloud-deployment.html#验证",
+    "href": "chapters/11-production/11.4-cloud-deployment.html#验证",
+    "title": "11.4 部署到云端",
+    "section": "验证",
+    "text": "验证\n打开浏览器，访问 http://&lt;服务器IP&gt;:8080/api/playlists。 如果你看到了那个熟悉的JSON数组，恭喜你！你的应用已经上线了！",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>11.4 部署到云端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.4-cloud-deployment.html#future-vibe-下一步是什么",
+    "href": "chapters/11-production/11.4-cloud-deployment.html#future-vibe-下一步是什么",
+    "title": "11.4 部署到云端",
+    "section": "Future Vibe: 下一步是什么？",
+    "text": "Future Vibe: 下一步是什么？\n这只是生产环境的起点。在真实的企业级开发中，我们还会引入：\n\nCI/CD (持续集成/持续部署):\n\n你不再手动SSH到服务器去 git pull。\n你只要 git push 到 GitHub，GitHub Actions 就会自动运行测试、构建镜像、推送到镜像仓库，并通知服务器更新。\n\n反向代理 (Nginx):\n\n用户不应该输入 :8080。\nNginx 监听 80/443 端口，配置域名（如 api.vibevault.com），并转发流量到 8080。\n配置 SSL 证书（HTTPS）。\n\nKubernetes (K8s):\n\n当你的一台服务器撑不住了，需要100台服务器时，Docker Compose就不够用了。\nK8s 是容器编排的终极BOSS。\n\n\n但现在，请为自己鼓掌。你已经走完了从 Hello World 到 Cloud Deployment 的完整旅程。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>48</span>  <span class='chapter-title'>11.4 部署到云端</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.5-epilogue.html",
+    "href": "chapters/11-production/11.5-epilogue.html",
+    "title": "11.5 旅程的终点，亦是起点",
+    "section": "",
+    "text": "回顾旅程\n恭喜你！你已经完成了《VibeVault：Java全栈开发之旅》。\n让我们回头看看我们走过的路：",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>49</span>  <span class='chapter-title'>11.5 旅程的终点，亦是起点</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.5-epilogue.html#回顾旅程",
+    "href": "chapters/11-production/11.5-epilogue.html#回顾旅程",
+    "title": "11.5 旅程的终点，亦是起点",
+    "section": "",
+    "text": "创世纪 (Ch1-2): 我们从零开始，用 record 定义了第一首歌，用 ArrayList 建立了第一个歌单。\n连接与持久化 (Ch3-8): 我们引入了Spring Boot，建立了REST API，连接了PostgreSQL数据库，处理了并发和异常。\n可见性 (Ch9): 我们用AI辅助生成了React前端，让应用有了脸面。\n安全 (Ch10): 我们构建了认证和授权体系，保护了用户的数据。\n生产 (Ch11): 我们用Docker打包了应用，让它可以在云端自由翱翔。",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>49</span>  <span class='chapter-title'>11.5 旅程的终点，亦是起点</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-production/11.5-epilogue.html#工程师思维",
+    "href": "chapters/11-production/11.5-epilogue.html#工程师思维",
+    "title": "11.5 旅程的终点，亦是起点",
+    "section": "工程师思维",
+    "text": "工程师思维\n这门课教的不只是Java语法，更是工程师思维：\n\n关注点分离: 前端管展示，后端管逻辑。\n防御性编程: 永远不要相信用户的输入（验证、加密）。\n自动化: 用CI/CD和容器化代替手动操作。\nAI协作: 把AI当作结对编程的伙伴，而不是作弊工具。\n\n未来的路还很长。微服务、分布式事务、高并发优化… Java的世界浩瀚无垠。 但你已经掌握了最核心的钥匙。\n去创造吧，Vibe Coder！",
+    "crumbs": [
+      "第十一章：迈向生产：容器化与云端部署",
+      "<span class='chapter-number'>49</span>  <span class='chapter-title'>11.5 旅程的终点，亦是起点</span>"
     ]
   },
   {
@@ -1759,6 +2642,258 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>A</span>  <span class='chapter-title'>附录：第一性原理——驾驭AI的思考引擎</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第三步ai-托管配置-ai-managed-configuration",
+    "href": "chapters/10-security/10.1-security-crisis.html#第三步ai-托管配置-ai-managed-configuration",
+    "title": "10.1 安全危机：匿名的世界",
+    "section": "第三步：AI 托管配置 (AI-Managed Configuration)",
+    "text": "第三步：AI 托管配置 (AI-Managed Configuration)\nSpring Security 的配置代码非常繁琐，而且版本更新极快（写法经常变）。 不要死记硬背。 把它交给 AI 托管。\n我们只需要告诉 AI 我们的安全策略，剩下的让它去写。\n\nOne-Shot Prompt (一键配置)\n复制以下 Prompt 给 AI：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“我正在使用 Spring Boot 3 和 Spring Security。 请帮我生成一个 SecurityConfig 配置类，要求如下：\n\n无状态 (Stateless): 因为是 REST API，请禁用 CSRF，并把 Session 策略设置为 STATELESS。\n白名单 (Allowlist): 允许 /api/auth/** (登录注册) 和 /api/playlists (GET请求) 匿名访问。\n默认拒绝: 除了白名单以外的所有请求，都必须经过认证 (Authenticated)。\n输出: 请直接给出 SecurityFilterChain 的 Bean 代码。”\n\n\n\n\n\n审查 AI 的作业\nAI 生成的代码应该包含以下关键词，请检查：\n\n✅ .csrf(csrf -&gt; csrf.disable()) (禁用 CSRF)\n✅ .sessionManagement(...) (无状态)\n✅ .requestMatchers(...).permitAll() (白名单)\n✅ .anyRequest().authenticated() (默认拒绝)\n\n把 AI 生成的代码复制到 com.vibevault.config.SecurityConfig 中。\n这就够了。 你不需要理解每一个方法调用的底层原理，你只需要确认它执行了你的策略。\n\n@EnableWebSecurity: 这是一个开关，告诉Spring Boot：“我要自己接管安全配置，不要用你默认的那一套了。”\nSecurityFilterChain: 这是安全过滤链的定义。我们通过链式调用 (Fluent API) 来配置各种规则。\ncsrf(...): CSRF 是一种攻击方式，通常针对基于 Session 的网页应用。因为我们要构建的是基于 Token 的无状态 API，所以可以安全地禁用它，否则 POST 请求会被拦截。\nauthorizeHttpRequests(...): 这是核心。我们定义了 URL 的访问权限。\n\npermitAll(): 所有人都可以访问（包括未登录用户）。\nauthenticated(): 只有登录用户才能访问。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 安全危机：匿名的世界</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第三步黑盒组件-black-box-components",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第三步黑盒组件-black-box-components",
+    "title": "10.3 数字护照：JWT无状态认证",
+    "section": "第三步：黑盒组件 (Black Box Components)",
+    "text": "第三步：黑盒组件 (Black Box Components)\nJWT 的签发（Service）和查验（Filter）涉及大量的样板代码。 这些代码是工业标准品，不需要你亲手打磨。\n我们将采用 “黑盒模式”：把它们当作现成的零件插进你的系统。\n\n零件 1：JwtService (签发器)\n复制以下 Prompt 给 AI：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我生成一个 JwtService 类。 要求： 1. 使用 io.jsonwebtoken (JJWT) 库。 2. 包含 generateToken(String username) 方法：生成有效期 24 小时的 Token。 3. 包含 extractUsername(String token) 方法：从 Token 中解析用户名。 4. 包含 isTokenValid(String token, UserDetails userDetails) 方法：验证 Token 是否有效。 5. 注意：请生成一个随机的 SECRET_KEY 常量在代码中（仅供学习使用）。”\n\n\n把 AI 生成的代码复制到 com.vibevault.service.JwtService。\n\n\n零件 2：JwtAuthenticationFilter (安检员)\n复制以下 Prompt 给 AI：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我生成一个 JwtAuthenticationFilter 类，继承自 OncePerRequestFilter。 逻辑如下： 1. 从请求头 Authorization 中获取 Token (Bearer xxx)。 2. 如果 Token 存在且有效： - 解析出用户名。 - 从 UserDetailsService 加载用户信息。 - 构建 UsernamePasswordAuthenticationToken 并放入 SecurityContextHolder。 3. 最后调用 filterChain.doFilter 放行。”\n\n\n把 AI 生成的代码复制到 com.vibevault.config.JwtAuthenticationFilter。\n恭喜！ 你已经拥有了全套的 JWT 基础设施。现在只需要把它们“插”到 SecurityConfig 里（回到 10.1 的 Prompt 让 AI 更新一下配置即可）。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建一个 JwtService 类。 功能要求： 1. generateToken(String username): 生成 Token，有效期 24 小时。 2. extractUsername(String token): 从 Token 中解析用户名。 3. isTokenValid(String token, String username): 验证 Token 是否合法且未过期。 4. 使用 io.jsonwebtoken 库。 5. 重要：使用 HMAC SHA256 算法，密钥请生成一个安全的随机字符串作为常量。”\n\n\nAI 生成后，重点检查： * 是否使用了 Jwts.builder() 和 Jwts.parserBuilder()。 * 密钥 (SECRET_KEY) 是否足够长（至少 256-bit）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 数字护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第五步登录接口-login",
+    "href": "chapters/10-security/10.2-authentication.html#第五步登录接口-login",
+    "title": "10.2 第一道防线：认证",
+    "section": "第五步：登录接口 (Login)",
+    "text": "第五步：登录接口 (Login)\n注册只是第一步，用户还需要能登录并拿到“通行证”（Token）。 虽然我们在 10.3 才会正式引入 JWT，但我们需要先准备好登录接口的骨架。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请在 AuthController 中添加 login 方法。 实现 POST /api/auth/login 接口。 逻辑如下： 1. 接收 username 和 password。 2. 使用 UserRepository 查找用户。 3. 如果用户不存在，抛出异常。 4. 关键：使用 passwordEncoder.matches(raw, encoded) 验证密码。 5. 如果验证通过，返回字符串”Login Success” (我们将在下一节把它改成返回 Token)。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第六步验证-vibe-check",
+    "href": "chapters/10-security/10.2-authentication.html#第六步验证-vibe-check",
+    "title": "10.2 第一道防线：认证",
+    "section": "第六步：验证 (Vibe Check)",
+    "text": "第六步：验证 (Vibe Check)\n现在，让我们来验证注册和登录功能。\n\n方式一：使用 curl (Mac/Linux)\n1. 注册:\ncurl -X POST http://localhost:8080/api/auth/signup \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"password123\"}'\n2. 登录:\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"password123\"}'\n如果成功，你应该分别看到 User registered successfully 和 Login Success。\n\n\n验证数据库\n去查看你的数据库 users 表。你会发现密码是一串看不懂的乱码（如 $2a$10$...）。这就是 BCrypt 哈希。即使数据库管理员也无法直接看出用户的原始密码是什么。这是安全的基石。",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 第一道防线：认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第一步打造登录页面",
+    "href": "chapters/10-security/10.5-security-testing.html#第一步打造登录页面",
+    "title": "10.5 完成闭环：前端对接 (Frontend Integration)",
+    "section": "",
+    "text": "Tip🤖 AI Prompt\n\n\n\n“请帮我创建一个 Login.jsx 组件。 要求： 1. UI: 包含用户名、密码输入框和一个登录按钮。使用深色模式，风格要酷 (Vibe)。 2. 逻辑: - 点击登录时，发送 POST 请求到 http://localhost:8080/api/auth/login。 - 如果成功 (200 OK)，获取返回的 Token。 - 关键: 将 Token 保存到 localStorage.setItem('token', ...)。 - 跳转到主页 (假设路由是 /)。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：从认证到授权的完整旅程",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 完成闭环：前端对接 (Frontend Integration)</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第二步携带令牌-bearer-token",
+    "href": "chapters/10-security/10.5-security-testing.html#第二步携带令牌-bearer-token",
+    "title": "10.5 握手：全栈大一统",
+    "section": "第二步：携带令牌 (Bearer Token)",
+    "text": "第二步：携带令牌 (Bearer Token)\n前端有了 Token，但发请求时得带上。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请修改 PlaylistList.jsx 的 fetch 请求。 在 Headers 中添加：Authorization: Bearer &lt;token&gt; (从 localStorage 取)。 如果遇到 401/403 错误，自动跳转回登录页。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第三步终极验证-the-final-vibe-check",
+    "href": "chapters/10-security/10.5-security-testing.html#第三步终极验证-the-final-vibe-check",
+    "title": "10.5 握手：全栈大一统",
+    "section": "第三步：终极验证 (The Final Vibe Check)",
+    "text": "第三步：终极验证 (The Final Vibe Check)\n\n打开浏览器，访问前端。\n你应该被踢到登录页。\n输入账号密码登录。\n见证奇迹：歌单列表加载成功！\n尝试删除一个不属于你的歌单 -&gt; 报错 (403)。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#恭喜",
+    "href": "chapters/10-security/10.5-security-testing.html#恭喜",
+    "title": "10.5 握手：全栈大一统",
+    "section": "恭喜！",
+    "text": "恭喜！\n你已经完成了一个真正的全栈应用。 它有数据库、有后端 API、有前端界面、有认证、有授权。 你不再是一个只会写玩具代码的学生，你已经掌握了构建现代 Web 应用的核心骨架。\n下一章，我们将把这个应用打包，发射到云端。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#全栈安全五部曲",
+    "href": "chapters/10-security/index.html#全栈安全五部曲",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "全栈安全五部曲",
+    "text": "全栈安全五部曲\n本章将打破传统的“后端自嗨”模式，带你完成一次真正的全栈安全闭环：\n\n10.1 守门人 (The Gatekeeper): 使用 AI 托管配置，5分钟内锁住所有的门。\n10.2 身份 (The Identity): 建立用户档案，并开启登录入口。\n10.3 护照 (The Passport): 引入 JWT，让用户拥有“数字护照”。\n10.4 规矩 (The Rules): 用业务语言定义权限（“只有主人能删歌单”）。\n10.5 握手 (The Handshake): [重磅] 回到前端，实现登录页面，打通全栈任督二脉。\n\n\n\n\n\n\n\nTip🛡️ Vibe Security 宣言\n\n\n\n在本章中，我们将采用 “AI 托管配置” 的策略。 安全配置非常繁琐且容易出错，我们将学习如何指挥 AI 生成标准的配置代码，而我们自己则专注于制定安全策略。\n\n\n\n\n\n\n\n\nNote🛠️ 工具链升级：Context7 MCP 与 现代编辑器\n\n\n\nSpring Security 的版本迭代极快（例如从 5.x 到 6.x 的巨大破坏性变更），而通用 LLM 的训练数据往往滞后（常生成已废弃的 WebSecurityConfigurerAdapter）。\n为了确保 AI 生成的代码是最新且可用的，强烈建议升级你的工具链：\n\n使用 Context7 MCP:\n\n这是一个为 LLM 提供实时文档的工具。\n在 Prompt 中加上 use context7，它会自动拉取最新的 Spring Security 官方文档，彻底解决“幻觉”问题。\n例子: “配置 Spring Security 6.1 的 SecurityFilterChain。 use context7”\n\n使用现代 AI 编辑器:\n\nCursor / Trae: 这些编辑器原生集成了 MCP 和上下文感知能力。\n它们能读取你的 pom.xml，知道你用的是 Spring Boot 3.x，从而避免生成 2.x 的旧代码。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第二步ai-托管配置-ai-managed-configuration",
+    "href": "chapters/10-security/10.1-security-crisis.html#第二步ai-托管配置-ai-managed-configuration",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "第二步：AI 托管配置 (AI-Managed Configuration)",
+    "text": "第二步：AI 托管配置 (AI-Managed Configuration)\n我们需要告诉守门人我们的规则。\n我们的规则：\n\n无状态: 我们做的是 REST API，不需要 Session。\n白名单: 登录、注册接口 (/api/auth/**) 允许所有人访问。\n默认拒绝: 其他所有接口，必须有“通行证”才能进。\n\n复制以下 Prompt 给 AI：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“我正在使用 Spring Boot 3 和 Spring Security。 请帮我生成一个 SecurityConfig 配置类，要求如下：\n\n无状态 (Stateless): 禁用 CSRF，Session 策略设为 STATELESS。\n白名单: 允许 /api/auth/** (登录注册) 和 /api/playlists (GET请求) 匿名访问。\n默认拒绝: 其他所有请求必须认证 (authenticated)。\n输出: 请直接给出 SecurityFilterChain 的 Bean 代码。”\n\n\n\n\n\n\n\n\n\nNote💡 Vibe Deep Dive: 那些难懂的黑话\n\n\n\n\nCSRF (跨站请求伪造):\n\n比喻: 坏人偷了你的饼干 (Cookie)，冒充你去银行取钱。\n为什么禁用: 因为我们用的是 Token (放在 Header 里)，而不是 Cookie。坏人偷不到 Header，所以我们不需要防 Cookie 被偷。\n\nStateless (无状态):\n\n比喻: 每次进门都要查身份证，保安不记脸。\n好处: 服务器不用死记硬背谁登录了，省内存，而且方便扩展（加服务器）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第三步审查-ai-的作业",
+    "href": "chapters/10-security/10.1-security-crisis.html#第三步审查-ai-的作业",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "第三步：审查 AI 的作业",
+    "text": "第三步：审查 AI 的作业\nAI 生成的代码应该包含以下关键词，请检查：\n\n✅ .csrf(csrf -&gt; csrf.disable()) (禁用 CSRF)\n✅ .sessionManagement(...) (无状态)\n✅ .requestMatchers(...).permitAll() (白名单)\n✅ .anyRequest().authenticated() (默认拒绝)\n\n把代码复制到 com.vibevault.config.SecurityConfig 中。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第二步密码加密-bcrypt",
+    "href": "chapters/10-security/10.2-authentication.html#第二步密码加密-bcrypt",
+    "title": "10.2 身份：建立登录入口",
+    "section": "第二步：密码加密 (BCrypt)",
+    "text": "第二步：密码加密 (BCrypt)\n绝对不要存储明文密码！ 在 SecurityConfig 中添加加密器：\n@Bean\npublic PasswordEncoder passwordEncoder() {\n    return new BCryptPasswordEncoder();\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第三步注册接口-sign-up",
+    "href": "chapters/10-security/10.2-authentication.html#第三步注册接口-sign-up",
+    "title": "10.2 身份：建立登录入口",
+    "section": "第三步：注册接口 (Sign Up)",
+    "text": "第三步：注册接口 (Sign Up)\n我们需要一个接口让用户注册。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请创建 AuthController，实现 POST /api/auth/signup。 逻辑： 1. 接收 username, password。 2. 查重：如果 username 存在，抛异常。 3. 加密：使用 passwordEncoder.encode(password)。 4. 保存 User。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第四步登录接口-login---关键一步",
+    "href": "chapters/10-security/10.2-authentication.html#第四步登录接口-login---关键一步",
+    "title": "10.2 身份：建立登录入口",
+    "section": "第四步：登录接口 (Login) - 关键一步",
+    "text": "第四步：登录接口 (Login) - 关键一步\n这是前端对接的核心。虽然我们还没发 JWT，但我们要先打通登录流程。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请在 AuthController 中添加 login 方法 (POST /api/auth/login)。 逻辑： 1. 接收 username, password。 2. 查用户：不存在则抛异常。 3. 验密：使用 passwordEncoder.matches(raw, encoded)。 4. 如果成功，返回字符串 ‘Login Success’。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#vibe-check",
+    "href": "chapters/10-security/10.2-authentication.html#vibe-check",
+    "title": "10.2 身份：建立登录入口",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n\n注册: 用 curl 发送 POST 请求到 /signup。\n登录: 用 curl 发送 POST 请求到 /login。\n验证: 确保登录成功返回 200 OK。\n\n现在，后端已经准备好迎接前端的登录请求了。下一步，我们将把 “Login Success” 换成真正的数字护照——JWT。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#黑盒组件-black-box-components",
+    "href": "chapters/10-security/10.3-jwt-passport.html#黑盒组件-black-box-components",
+    "title": "10.3 护照：JWT 黑盒组件",
+    "section": "黑盒组件 (Black Box Components)",
+    "text": "黑盒组件 (Black Box Components)\n实现 JWT 需要写很多加密代码。不要手写。 把它当作现成的零件。\n\n零件 1：JwtService (签发器)\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请生成 JwtService 类 (使用 jjwt 库)。 包含： 1. generateToken(username): 生成 24小时有效的 Token。 2. extractUsername(token): 解析用户名。 3. isTokenValid(token, userDetails): 验签。”\n\n\n\n\n零件 2：JwtFilter (安检员)\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请生成 JwtAuthenticationFilter (继承 OncePerRequestFilter)。 逻辑： 1. 从 Header 获取 Authorization: Bearer xxx。 2. 验证 Token。 3. 如果有效，将用户放入 SecurityContextHolder (放行)。”\n\n\n\n\n零件 3：组装\n回到 SecurityConfig，让 AI 把 JwtFilter 插在 UsernamePasswordAuthenticationFilter 之前。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#升级登录接口",
+    "href": "chapters/10-security/10.3-jwt-passport.html#升级登录接口",
+    "title": "10.3 护照：JWT 黑盒组件",
+    "section": "升级登录接口",
+    "text": "升级登录接口\n回到 AuthController，修改 login 方法：\n// 旧代码\nreturn \"Login Success\";\n\n// 新代码\nreturn jwtService.generateToken(user.getUsername());",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#vibe-check",
+    "href": "chapters/10-security/10.3-jwt-passport.html#vibe-check",
+    "title": "10.3 护照：JWT 黑盒组件",
+    "section": "Vibe Check",
+    "text": "Vibe Check\n再次调用 /login 接口。 这次你应该能看到一串长长的字符：eyJhbGciOiJIUzI1Ni...。 这就是你的数字护照。保存好它，下一章我们要用它来行使权力。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#业务语义优先",
+    "href": "chapters/10-security/10.4-authorization.html#业务语义优先",
+    "title": "10.4 规矩：我的地盘我做主",
+    "section": "",
+    "text": "@PreAuthorize(\"是这个歌单的主人\")\npublic void deletePlaylist(...)",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#实现-securityutils",
+    "href": "chapters/10-security/10.4-authorization.html#实现-securityutils",
+    "title": "10.4 规矩：我的地盘我做主",
+    "section": "实现 SecurityUtils",
+    "text": "实现 SecurityUtils\n我们需要一个翻译官，把“是这个歌单的主人”翻译成 Java 代码。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请生成 SecurityUtils 组件。 包含方法 boolean isOwner(Long id, String username)。 逻辑：查数据库，判断歌单的 owner 是否等于 username。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#开启魔法",
+    "href": "chapters/10-security/10.4-authorization.html#开启魔法",
+    "title": "10.4 规矩：我的地盘我做主",
+    "section": "开启魔法",
+    "text": "开启魔法\n\n在 SecurityConfig 上添加 @EnableMethodSecurity。\n在 Controller 上使用：\n\n@DeleteMapping(\"/{id}\")\n@PreAuthorize(\"@securityUtils.isOwner(#id, authentication.name)\")\npublic void deletePlaylist(@PathVariable Long id) {\n    repository.deleteById(id);\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第一步打造登录页-login.jsx",
+    "href": "chapters/10-security/10.5-security-testing.html#第一步打造登录页-login.jsx",
+    "title": "10.5 握手：全栈大一统",
+    "section": "",
+    "text": "Tip🤖 AI Prompt\n\n\n\n“请帮我创建一个 Login.jsx 组件。 UI: 深色模式，用户名/密码输入框，登录按钮。 逻辑: 1. POST /api/auth/login。 2. 成功后，将返回的 Token 存入 localStorage。 3. 跳转到主页。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第一步引入依赖",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第一步引入依赖",
+    "title": "10.3 护照：JWT 黑盒组件",
+    "section": "第一步：引入依赖",
+    "text": "第一步：引入依赖\n为了生成和解析 Token，我们需要引入 JJWT 库。\n在 gradle/libs.versions.toml 中添加：\n[versions]\njjwt = \"0.12.6\"\n\n[libraries]\njjwt-api = { module = \"io.jsonwebtoken:jjwt-api\", version.ref = \"jjwt\" }\njjwt-impl = { module = \"io.jsonwebtoken:jjwt-impl\", version.ref = \"jjwt\" }\njjwt-jackson = { module = \"io.jsonwebtoken:jjwt-jackson\", version.ref = \"jjwt\" }\n在 build.gradle.kts 中添加：\nimplementation(libs.jjwt.api)\nruntimeOnly(libs.jjwt.impl)\nruntimeOnly(libs.jjwt.jackson)",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
     ]
   }
 ]

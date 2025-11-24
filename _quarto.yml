@@ -73,13 +73,28 @@ book:
         
     - part: chapters/09-visibility/index.qmd
       chapters:
-        - chapters/09-visibility/01-why-frontend-backend-separation.qmd
-        - chapters/09-visibility/02-why-react.qmd
-        - chapters/09-visibility/02a-js-primer-for-react.qmd
-        - chapters/09-visibility/02b-what-is-a-hook.qmd
-        - chapters/09-visibility/03-first-component.qmd
+        - chapters/09-visibility/01-why-frontend.qmd
+        - chapters/09-visibility/02-react-core.qmd
+        - chapters/09-visibility/03-ai-pair-programming.qmd
+        - chapters/09-visibility/04-styling.qmd
+        - chapters/09-visibility/05-frontend-future.qmd
         
-
+    - part: chapters/10-security/index.qmd
+      chapters:
+        - chapters/10-security/10.1-security-crisis.qmd
+        - chapters/10-security/10.2-authentication.qmd
+        - chapters/10-security/10.3-jwt-passport.qmd
+        - chapters/10-security/10.4-authorization.qmd
+        - chapters/10-security/10.5-security-testing.qmd
+        
+    - part: chapters/11-production/index.qmd
+      chapters:
+        - chapters/11-production/11.1-production-crisis.qmd
+        - chapters/11-production/11.2-dockerfile.qmd
+        - chapters/11-production/11.3-docker-compose.qmd
+        - chapters/11-production/11.4-cloud-deployment.qmd
+        - chapters/11-production/11.5-epilogue.qmd
+        
         
   appendices:
     - appendices/first-principles.qmd

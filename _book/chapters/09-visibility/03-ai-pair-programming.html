@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.14">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9.3 与AI结对编程：生成你的第一个VibeVault前端 – VibeVault: 一场现代Java全栈之旅</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/09-visibility/04-styling.html" rel="next">
+<link href="../../chapters/09-visibility/02-react-core.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-b7ec80faf2f76fb0b865d1103a6b470c.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e4f0b921bea972c06d94a524d5d8c001.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+/* ChatGPT 风格变量 */
+:root {
+  --chatgpt-primary: #000000;
+  --chatgpt-secondary: #6b7280;
+  --chatgpt-background: #ffffff;
+  --chatgpt-surface: #f7f7f8;
+  --chatgpt-border: #e5e5e5;
+  --chatgpt-accent: #10a37f;
+}
+</style>
+
+
+</head>
+
+<body class="nav-sidebar floating fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/09-visibility/index.html">第九章：对抗“隐形”：AI驱动的前端快速入门</a></li><li class="breadcrumb-item"><a href="../../chapters/09-visibility/03-ai-pair-programming.html"><span class="chapter-title">9.3 与AI结对编程：生成你的第一个VibeVault前端</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">VibeVault: 一场现代Java全栈之旅</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">VibeVault: 一场现代Java全栈之旅</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">第零章：欢迎来到Vibe Coding的世界</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/00-welcome/01-the-vibe-shift.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">0.1 - Vibe的转变：什么是Vibe Coding？</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/00-welcome/02-the-70-percent-problem.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">0.2 - 70%难题：AI的机遇与陷阱</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/00-welcome/03-how-to-thrive.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">0.3 - 初学者如何在AI时代茁壮成长：黄金法则</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/00-welcome/04-the-ultimate-showdown.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">0.4 - 附录：终极对决——为什么是Java？</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/01-genesis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第一章：从“无”到“有”：创造你的第一个“数字原子”</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/01-genesis/01-why-tools.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1.1 - 思想的铸币厂：为何需要语言、IDE与构建工具？</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/01-genesis/02-setup.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1.2 - 搭建工坊：配置你的现代化开发环境</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/01-genesis/03-project-init.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1.3 - 绘制蓝图：初始化你的Gradle项目</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/01-genesis/04-atomic-design.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">1.4 - 铸造第一个原子：定义Song Record</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/02-aggregation/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第二章：从“一”到“多”：构建第一个“分子结构”</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/02-aggregation/00-git.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2.0 - Git 入门：代码的时光机</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/02-aggregation/01-why-encapsulation.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2.1 - 为何要封装？从数据集合到业务对象</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/02-aggregation/02-molecular-design.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2.2 - 设计播放列表“分子”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/02-aggregation/03-collection-choice.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">2.3 - 选择容器：为何是ArrayList？</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/03-interaction/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第三章：从“静”到“动”：赋予创造物与世界对话的能力</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/03-interaction/01-why-interactive.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3.1 - 为何需要交互？批处理 vs.&nbsp;事件循环</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/03-interaction/02-dialogue-channel.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3.2 - 建立对话通道：主循环与用户输入</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/03-interaction/03-command-protocol.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3.3 - 定义沟通协议：Switch与方法调用</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/04-persistence/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第四章：从“瞬间”到“永恒”：赋予创造物记忆</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/04-persistence/01-why-persistence.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4.1 - 为何需要持久化？RAM vs.&nbsp;Disk</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/04-persistence/02-serialization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4.2 - 序列化：将对象翻译成文字</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/04-persistence/03-resilience.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">4.3 - 代码的韧性：文件IO与异常处理</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/05-trust/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第五章：从“能跑”到“可靠”：为代码建立信任</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/05-trust/01-why-test.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5.1 - 信任危机与安全网</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/05-trust/02-setup-lab.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5.2 - 搭建测试实验室：JUnit 5初体验</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/05-trust/03-assertion-language.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5.3 - 精确的断言：AssertJ的流畅表达</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/05-trust/04-faking-reality.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5.4 - 伪造现实：Mockito的when-thenReturn</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/05-trust/05-verifying-actions.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">5.5 - 验证行为：Mockito的verify</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/06-order/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第六章：对抗“混沌”：为代码建立秩序</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/06-order/01-why-architecture.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6.1 - 为何需要架构？对抗软件的熵增</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/06-order/02-separation-of-concerns.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6.2 - 关注点分离：三层架构</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/06-order/03-refactoring.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">6.3 - 重构！建立新秩序</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/07-connection/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第七章：对抗“孤立”：打开通往世界的大门</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/07-connection/01-why-api.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7.1 - 为何需要API？应用程序的“外交协议”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/07-connection/02-why-spring-boot.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7.2 - 为何选择Spring Boot？站在巨人的肩膀上</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/07-connection/03-first-api.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">7.3 - 构建你的第一个API</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/08-concurrency/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第八章：对抗“无序”：驯服并发访问的猛兽</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/01-why-database.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.1 - 为何需要数据库？ACID的四大守护</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/02-why-orm.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.2 - 为何需要ORM？跨越对象与关系的鸿沟</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/03-database-migration.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.3 - 迁移到PostgreSQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/08-concurrency/04-psql-guide.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">8.4 - PostgreSQL 实战指南：连接与操作</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/09-visibility/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第九章：对抗“隐形”：AI驱动的前端快速入门</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/01-why-frontend.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9.1 为何需要前端？从API到UI的跨越</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/02-react-core.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9.2 React核心思想：声明式UI的革命</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/03-ai-pair-programming.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">9.3 与AI结对编程：生成你的第一个VibeVault前端</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/04-styling.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9.4 让它 Vibe 起来：AI 辅助样式设计</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/09-visibility/05-frontend-future.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">9.4 前端的未来：从手写到AI生成</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/10-security/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第十章：构建安全堡垒：从认证到授权的完整旅程</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10-security/10.1-security-crisis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.1 安全危机：匿名的世界</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.2 第一道防线：认证</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.3 数字护照：JWT无状态认证</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 第二道防线：授权</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 验证安全：集成测试</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../chapters/11-production/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">第十一章：迈向生产：容器化与云端部署</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11-production/11.1-production-crisis.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11.1 生产危机：“在我电脑上能跑”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11-production/11.2-dockerfile.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11.2 打包应用：编写Dockerfile</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11-production/11.3-docker-compose.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11.3 容器交响乐：docker-compose</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11-production/11.4-cloud-deployment.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11.4 部署到云端</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/11-production/11.5-epilogue.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">11.5 旅程的终点，亦是起点</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/first-principles.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">附录：第一性原理——驾驭AI的思考引擎</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/09-visibility/index.html">第九章：对抗“隐形”：AI驱动的前端快速入门</a></li><li class="breadcrumb-item"><a href="../../chapters/09-visibility/03-ai-pair-programming.html"><span class="chapter-title">9.3 与AI结对编程：生成你的第一个VibeVault前端</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">9.3 与AI结对编程：生成你的第一个VibeVault前端</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>现在，我们将进入最激动人心的部分。我们将不再逐行手写代码，而是<strong>指挥AI</strong>为我们编写代码。</p>
+<p>我们将构建一个独立的React前端应用，并让它连接到你第八章完成的Spring Boot后端。</p>
+<section id="第零步安装-node.js-国内环境指南" class="level2">
+<h2 class="anchored" data-anchor-id="第零步安装-node.js-国内环境指南">第零步：安装 Node.js (国内环境指南)</h2>
+<p>在开始之前，你需要安装 Node.js 环境。</p>
+<ol type="1">
+<li><p><strong>检查是否已安装</strong>: 打开终端，输入 <code>node -v</code>。如果显示版本号（如 <code>v18.x.x</code> 或更高），则可以跳过安装。</p></li>
+<li><p><strong>安装 Node.js</strong>:</p>
+<ul>
+<li>访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载 LTS (长期支持) 版本安装包。</li>
+<li>或者使用国内镜像下载：<a href="https://npmmirror.com/mirrors/node/">Node.js 淘宝镜像</a>。</li>
+</ul></li>
+<li><p><strong>配置国内镜像源 (关键)</strong>: npm 的默认源在国外，国内访问可能很慢。强烈建议切换到淘宝镜像源：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> config set registry https://registry.npmmirror.com</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>验证是否配置成功：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> config get registry</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 应该输出: https://registry.npmmirror.com/</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+</section>
+<section id="第一步初始化并启动项目" class="level2">
+<h2 class="anchored" data-anchor-id="第一步初始化并启动项目">第一步：初始化并启动项目</h2>
+<p>我们需要一个工具来快速搭建React项目的脚手架。我们选择<strong>Vite</strong>（法语意为“快”）。</p>
+<ol type="1">
+<li><p>打开终端，进入你的 <code>chapter-code</code> 目录（注意：<strong>不要</strong>在 <code>ch08</code> 文件夹里面，要在它的旁边）。</p></li>
+<li><p>运行以下命令创建项目：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> create vite@latest vibevault-frontend <span class="at">--</span> <span class="at">--template</span> react</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>关键</strong>：命令执行完成后，终端会提示你运行几行命令（<code>cd</code>, <code>npm install</code>, <code>npm run dev</code>）。<strong>请照做</strong>：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> vibevault-frontend</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> run dev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p>如果一切顺利，你应该能看到终端提示 <code>Local: http://localhost:5173/</code>。在浏览器打开这个地址，你应该能看到Vite + React的欢迎页面。</p>
+</section>
+<section id="第二步启动后端" class="level2">
+<h2 class="anchored" data-anchor-id="第二步启动后端">第二步：启动后端</h2>
+<p>确保你第八章的后端代码正在运行！</p>
+<ol type="1">
+<li>打开一个新的终端窗口。</li>
+<li>进入 <code>chapter-code/ch08</code> 目录。</li>
+<li>运行 <code>./gradlew bootRun</code>。</li>
+<li>确保 <code>http://localhost:8080/api/playlists</code> 可以访问。</li>
+</ol>
+</section>
+<section id="第三步编写prompt-提示词" class="level2">
+<h2 class="anchored" data-anchor-id="第三步编写prompt-提示词">第三步：编写Prompt (提示词)</h2>
+<p>现在，打开你的AI助手（ChatGPT, Claude, 或其他LLM）。我们将使用<strong>Prompt Engineering</strong>（提示工程）来生成代码。</p>
+<p>复制以下Prompt，发送给AI：</p>
+<blockquote class="blockquote">
+<p><strong>Prompt</strong>:</p>
+<p>我有一个正在运行的Spring Boot后端API，地址是 <code>http://localhost:8080</code>。 它有一个接口 <code>GET /api/playlists</code>，返回的数据格式如下（JSON数组）： [{“id”:1,“name”:“my-favorites”,“songs”:[{“title”:“Bohemian Rhapsody”,“artist”:“Queen”},{“title”:“Stairway to Heaven”,“artist”:“Led Zeppelin”}]},{“id”:2,“name”:“sunny-drive”,“songs”:[{“title”:“Drive”,“artist”:“The Cars”},{“title”:“Send Me On My Way”,“artist”:“Rusted Root”}]}]</p>
+<p>请帮我用React编写一个名为 <code>PlaylistList</code> 的组件。要求如下：</p>
+<ol type="1">
+<li>使用 <code>fetch</code> API 调用后端接口获取数据。</li>
+<li>使用 <code>useState</code> 管理数据状态、加载状态（loading）和错误状态（error）。</li>
+<li>使用 <code>useEffect</code> 在组件挂载时触发API调用。</li>
+<li>界面上：如果正在加载，显示“加载中…”；如果出错，显示红色错误信息；如果成功，用无序列表 <code>&lt;ul&gt;</code> 显示播放列表的名称。</li>
+<li>请提供完整的代码，并告诉我应该把它放在哪个文件中，以及如何在 <code>App.jsx</code> 中使用它。</li>
+</ol>
+</blockquote>
+</section>
+<section id="第四步审查与运行" class="level2">
+<h2 class="anchored" data-anchor-id="第四步审查与运行">第四步：审查与运行</h2>
+<p>AI会生成一段代码。<strong>不要盲目复制</strong>。请检查它是否包含了以下关键点：</p>
+<ul>
+<li>✅ 是否引入了 <code>useState</code> 和 <code>useEffect</code>？</li>
+<li>✅ <code>fetch</code> 的URL是否是 <code>http://localhost:8080/api/playlists</code>？</li>
+<li>✅ 是否有 <code>try-catch</code> 块来处理错误？</li>
+</ul>
+<p>按照AI的指示，创建 <code>src/PlaylistList.jsx</code> 文件（或类似名字），把代码粘贴进去。然后在 <code>src/App.jsx</code> 中引入并使用它。</p>
+<p>回到浏览器 <code>http://localhost:5173</code>。</p>
+<section id="遭遇cors危机" class="level3">
+<h3 class="anchored" data-anchor-id="遭遇cors危机">遭遇CORS危机！</h3>
+<p>你很可能会看到页面显示“加载失败”或者控制台报错： <code>Access to fetch at ... from origin 'http://localhost:5173' has been blocked by CORS policy</code>。</p>
+<p>这是<strong>跨域资源共享 (CORS)</strong> 错误。浏览器出于安全考虑，默认禁止前端（端口5173）去请求不同端口的后端（端口8080）。</p>
+</section>
+</section>
+<section id="第五步解决cors问题" class="level2">
+<h2 class="anchored" data-anchor-id="第五步解决cors问题">第五步：解决CORS问题</h2>
+<p>我们需要在<strong>后端</strong>允许这种跨域请求。</p>
+<ol type="1">
+<li>回到你的Spring Boot后端代码 (<code>chapter-code/ch08</code>)。</li>
+<li>找到 <code>PlaylistController.java</code>。</li>
+<li>在类上添加注解 <code>@CrossOrigin(origins = "http://localhost:5173")</code>。</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="at">@RestController</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="at">@RequestMapping</span><span class="op">(</span><span class="st">"/api/playlists"</span><span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="at">@CrossOrigin</span><span class="op">(</span>origins <span class="op">=</span> <span class="st">"http://localhost:5173"</span><span class="op">)</span> <span class="co">// 允许来自前端的请求</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol start="4" type="1">
+<li><strong>重启后端应用</strong>。</li>
+</ol>
+<p>再次刷新前端页面。你应该能看到你数据库里的播放列表神奇地出现在了页面上！</p>
+</section>
+<section id="第六步ai-调试指南-当代码跑不通时" class="level2">
+<h2 class="anchored" data-anchor-id="第六步ai-调试指南-当代码跑不通时">第六步：AI 调试指南 (当代码跑不通时)</h2>
+<p>在 AI 辅助编程中，遇到报错是常态。<strong>不要慌张，也不要自己瞎改。</strong> 学会把错误“喂”给 AI，是 Vibe Coding 的核心技能。</p>
+<section id="场景-1页面白屏或报错" class="level3">
+<h3 class="anchored" data-anchor-id="场景-1页面白屏或报错">场景 1：页面白屏或报错</h3>
+<ol type="1">
+<li><p><strong>打开控制台</strong>：右键 -&gt; 检查 -&gt; Console。</p></li>
+<li><p><strong>复制红色报错</strong>：比如 <code>Uncaught TypeError: Cannot read properties of undefined (reading 'map')</code>。</p></li>
+<li><p><strong>喂给 AI</strong>：</p>
+<blockquote class="blockquote">
+<p>“我的页面报错了，错误信息是：[粘贴错误信息]。 这是我的 <code>PlaylistList.jsx</code> 代码：[粘贴代码]。 请帮我分析原因并修复。”</p>
+</blockquote></li>
+</ol>
+</section>
+<section id="场景-2样式错乱" class="level3">
+<h3 class="anchored" data-anchor-id="场景-2样式错乱">场景 2：样式错乱</h3>
+<ol type="1">
+<li><p><strong>截图</strong>：用截图工具框选错乱的区域。</p></li>
+<li><p><strong>喂给 AI</strong> (如果你的 AI 支持图片)：</p>
+<blockquote class="blockquote">
+<p>“如图所示，我的卡片排列乱了，我希望它们横向排列。这是我的 CSS 代码…”</p>
+</blockquote></li>
+<li><p><strong>描述</strong> (如果不支持图片)：</p>
+<blockquote class="blockquote">
+<p>“我的卡片现在是垂直排列的，但我希望它们在宽屏幕上是横向排列的（Flexbox），请帮我修改 CSS。”</p>
+</blockquote></li>
+</ol>
+</section>
+</section>
+<section id="第七步迭代-prompt-技巧-从-60-分到-100-分" class="level2">
+<h2 class="anchored" data-anchor-id="第七步迭代-prompt-技巧-从-60-分到-100-分">第七步：迭代 Prompt 技巧 (从 60 分到 100 分)</h2>
+<p>AI 第一次生成的代码通常只能打 60 分（能跑，但不好看，也没处理边缘情况）。 你需要通过<strong>追问</strong>，把它打磨到 100 分。</p>
+<p><strong>Round 1 (功能)</strong>:</p>
+<blockquote class="blockquote">
+<p>“写一个 React 组件显示播放列表。” (AI: 生成了最基础的列表)</p>
+</blockquote>
+<p><strong>Round 2 (健壮性)</strong>:</p>
+<blockquote class="blockquote">
+<p>“刚才的代码在网络慢的时候没有反应。请添加 <code>loading</code> 状态显示’加载中…’，如果请求失败，显示红色的错误信息。” (AI: 添加了 try-catch 和状态管理)</p>
+</blockquote>
+<p><strong>Round 3 (交互)</strong>:</p>
+<blockquote class="blockquote">
+<p>“现在列表太长了。请添加一个搜索框，可以根据歌单名字实时过滤列表。” (AI: 添加了过滤逻辑)</p>
+</blockquote>
+<p><strong>Round 4 (美感)</strong>:</p>
+<blockquote class="blockquote">
+<p>“现在的界面太丑了。请使用 CSS Grid 把它变成响应式的卡片布局，鼠标悬停时要有阴影效果。” (AI: 添加了 CSS 样式)</p>
+</blockquote>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>记住：好代码是聊出来的，不是一次生成的。</strong></p>
+</div>
+</div>
+</section>
+<section id="vibe-check-挑战全栈" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-check-挑战全栈">Vibe Check: 挑战全栈</h2>
+<p>现在的页面比较简单，只能显示歌单名字。让我们通过AI把它变成一个功能完整的应用。 请尝试向AI发出以下指令（Prompt），一步步升级你的应用。</p>
+<blockquote class="blockquote">
+<p><strong>⚠️ 全栈提示</strong>: 在执行以下步骤时，如果前端请求报错（如 404 Not Found），说明你的Spring Boot后端可能缺少对应的API。你需要回到Java代码中 (<code>PlaylistController</code>)，添加对应的接口。这也是全栈开发的乐趣所在！</p>
+</blockquote>
+<ol type="1">
+<li><p><strong>交互升级：查看详情</strong></p>
+<blockquote class="blockquote">
+<p>“修改代码：当用户点击某个播放列表的名字时，在下方展开显示该列表包含的所有歌曲信息（歌名、歌手）。再次点击则收起。”</p>
+</blockquote></li>
+<li><p><strong>歌曲管理：增删歌曲</strong></p>
+<blockquote class="blockquote">
+<p>“添加功能：在展开的歌单详情中，每一首歌后面加一个’删除’按钮。底部加一个’添加歌曲’的表单（输入歌名和歌手）。点击按钮后分别调用后端API更新数据。”</p>
+</blockquote></li>
+<li><p><strong>列表管理：增删歌单</strong></p>
+<blockquote class="blockquote">
+<p>“添加功能：在页面顶部添加’新建歌单’按钮，每一行歌单后面添加’删除’按钮。实现创建和删除歌单的功能，并自动刷新列表。”</p>
+</blockquote></li>
+<li><p><strong>思考</strong>: 为什么我们需要在后端配置CORS，而不是在前端配置？（提示：这是浏览器的安全策略，谁拥有数据，谁才有权决定是否分享数据。）</p></li>
+</ol>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/09-visibility/02-react-core.html" class="pagination-link" aria-label="9.2 React核心思想：声明式UI的革命">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">9.2 React核心思想：声明式UI的革命</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/09-visibility/04-styling.html" class="pagination-link" aria-label="9.4 让它 Vibe 起来：AI 辅助样式设计">
+        <span class="nav-page-text"><span class="chapter-title">9.4 让它 Vibe 起来：AI 辅助样式设计</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 9.3 与AI结对编程：生成你的第一个VibeVault前端</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>现在，我们将进入最激动人心的部分。我们将不再逐行手写代码，而是**指挥AI**为我们编写代码。</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>我们将构建一个独立的React前端应用，并让它连接到你第八章完成的Spring Boot后端。</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第零步：安装 Node.js (国内环境指南)</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>在开始之前，你需要安装 Node.js 环境。</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**检查是否已安装**:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    打开终端，输入 <span class="in">`node -v`</span>。如果显示版本号（如 <span class="in">`v18.x.x`</span> 或更高），则可以跳过安装。</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**安装 Node.js**:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>访问 <span class="co">[</span><span class="ot">Node.js 官网</span><span class="co">](https://nodejs.org/)</span> 下载 LTS (长期支持) 版本安装包。</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>或者使用国内镜像下载：<span class="co">[</span><span class="ot">Node.js 淘宝镜像</span><span class="co">](https://npmmirror.com/mirrors/node/)</span>。</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**配置国内镜像源 (关键)**:</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    npm 的默认源在国外，国内访问可能很慢。强烈建议切换到淘宝镜像源：</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> config set registry https://registry.npmmirror.com</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    验证是否配置成功：</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> config get registry</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 应该输出: https://registry.npmmirror.com/</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：初始化并启动项目</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>我们需要一个工具来快速搭建React项目的脚手架。我们选择**Vite**（法语意为“快”）。</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>打开终端，进入你的 <span class="in">`chapter-code`</span> 目录（注意：**不要**在 <span class="in">`ch08`</span> 文件夹里面，要在它的旁边）。</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>运行以下命令创建项目：</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> create vite@latest vibevault-frontend <span class="at">--</span> <span class="at">--template</span> react</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**关键**：命令执行完成后，终端会提示你运行几行命令（`cd`, `npm install`, `npm run dev`）。**请照做**：</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">cd</span> vibevault-frontend</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> install</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    <span class="ex">npm</span> run dev</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>如果一切顺利，你应该能看到终端提示 <span class="in">`Local: http://localhost:5173/`</span>。在浏览器打开这个地址，你应该能看到Vite + React的欢迎页面。</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：启动后端</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>确保你第八章的后端代码正在运行！</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>打开一个新的终端窗口。</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>进入 <span class="in">`chapter-code/ch08`</span> 目录。</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>运行 <span class="in">`./gradlew bootRun`</span>。</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>确保 <span class="in">`http://localhost:8080/api/playlists`</span> 可以访问。</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：编写Prompt (提示词)</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>现在，打开你的AI助手（ChatGPT, Claude, 或其他LLM）。我们将使用**Prompt Engineering**（提示工程）来生成代码。</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>复制以下Prompt，发送给AI：</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **Prompt**:</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 我有一个正在运行的Spring Boot后端API，地址是 </span><span class="in">`http://localhost:8080`</span><span class="at">。</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 它有一个接口 </span><span class="in">`GET /api/playlists`</span><span class="at">，返回的数据格式如下（JSON数组）：</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="co">[</span><span class="ot">{"id":1,"name":"my-favorites","songs":[{"title":"Bohemian Rhapsody","artist":"Queen"},{"title":"Stairway to Heaven","artist":"Led Zeppelin"}]},{"id":2,"name":"sunny-drive","songs":[{"title":"Drive","artist":"The Cars"},{"title":"Send Me On My Way","artist":"Rusted Root"}]}</span><span class="co">]</span></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 请帮我用React编写一个名为 </span><span class="in">`PlaylistList`</span><span class="at"> 的组件。要求如下：</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="at">&gt;</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 1. 使用 </span><span class="in">`fetch`</span><span class="at"> API 调用后端接口获取数据。</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 2. 使用 </span><span class="in">`useState`</span><span class="at"> 管理数据状态、加载状态（loading）和错误状态（error）。</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 3. 使用 </span><span class="in">`useEffect`</span><span class="at"> 在组件挂载时触发API调用。</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 4. 界面上：如果正在加载，显示“加载中...”；如果出错，显示红色错误信息；如果成功，用无序列表 </span><span class="in">`&lt;ul&gt;`</span><span class="at"> 显示播放列表的名称。</span></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 5. 请提供完整的代码，并告诉我应该把它放在哪个文件中，以及如何在 </span><span class="in">`App.jsx`</span><span class="at"> 中使用它。</span></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：审查与运行</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>AI会生成一段代码。**不要盲目复制**。请检查它是否包含了以下关键点：</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否引入了 <span class="in">`useState`</span> 和 <span class="in">`useEffect`</span>？</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ <span class="in">`fetch`</span> 的URL是否是 <span class="in">`http://localhost:8080/api/playlists`</span>？</span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否有 <span class="in">`try-catch`</span> 块来处理错误？</span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>按照AI的指示，创建 <span class="in">`src/PlaylistList.jsx`</span> 文件（或类似名字），把代码粘贴进去。然后在 <span class="in">`src/App.jsx`</span> 中引入并使用它。</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>回到浏览器 <span class="in">`http://localhost:5173`</span>。</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### 遭遇CORS危机！</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>你很可能会看到页面显示“加载失败”或者控制台报错：</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a><span class="in">`Access to fetch at ... from origin 'http://localhost:5173' has been blocked by CORS policy`</span>。</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>这是**跨域资源共享 (CORS)** 错误。浏览器出于安全考虑，默认禁止前端（端口5173）去请求不同端口的后端（端口8080）。</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：解决CORS问题</span></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>我们需要在**后端**允许这种跨域请求。</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>回到你的Spring Boot后端代码 (<span class="in">`chapter-code/ch08`</span>)。</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>找到 <span class="in">`PlaylistController.java`</span>。</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>在类上添加注解 <span class="in">`@CrossOrigin(origins = "http://localhost:5173")`</span>。</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a><span class="at">@RestController</span></span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a><span class="at">@RequestMapping</span><span class="op">(</span><span class="st">"/api/playlists"</span><span class="op">)</span></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a><span class="at">@CrossOrigin</span><span class="op">(</span>origins <span class="op">=</span> <span class="st">"http://localhost:5173"</span><span class="op">)</span> <span class="co">// 允许来自前端的请求</span></span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> PlaylistController <span class="op">{</span></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**重启后端应用**。</span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>再次刷新前端页面。你应该能看到你数据库里的播放列表神奇地出现在了页面上！</span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第六步：AI 调试指南 (当代码跑不通时)</span></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>在 AI 辅助编程中，遇到报错是常态。**不要慌张，也不要自己瞎改。**</span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>学会把错误“喂”给 AI，是 Vibe Coding 的核心技能。</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a><span class="fu">### 场景 1：页面白屏或报错</span></span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**打开控制台**：右键 -&gt; 检查 -&gt; Console。</span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**复制红色报错**：比如 <span class="in">`Uncaught TypeError: Cannot read properties of undefined (reading 'map')`</span>。</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**喂给 AI**：</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "我的页面报错了，错误信息是：</span><span class="co">[</span><span class="ot">粘贴错误信息</span><span class="co">]</span><span class="at">。</span></span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 这是我的 </span><span class="in">`PlaylistList.jsx`</span><span class="at"> 代码：</span><span class="co">[</span><span class="ot">粘贴代码</span><span class="co">]</span><span class="at">。</span></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; 请帮我分析原因并修复。"</span></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a><span class="fu">### 场景 2：样式错乱</span></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**截图**：用截图工具框选错乱的区域。</span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**喂给 AI** (如果你的 AI 支持图片)：</span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "如图所示，我的卡片排列乱了，我希望它们横向排列。这是我的 CSS 代码..."</span></span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**描述** (如果不支持图片)：</span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "我的卡片现在是垂直排列的，但我希望它们在宽屏幕上是横向排列的（Flexbox），请帮我修改 CSS。"</span></span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第七步：迭代 Prompt 技巧 (从 60 分到 100 分)</span></span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>AI 第一次生成的代码通常只能打 60 分（能跑，但不好看，也没处理边缘情况）。</span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>你需要通过**追问**，把它打磨到 100 分。</span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>**Round 1 (功能)**:</span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "写一个 React 组件显示播放列表。" (AI: 生成了最基础的列表)</span></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a>**Round 2 (健壮性)**:</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "刚才的代码在网络慢的时候没有反应。请添加 </span><span class="in">`loading`</span><span class="at"> 状态显示'加载中...'，如果请求失败，显示红色的错误信息。" (AI: 添加了 try-catch 和状态管理)</span></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>**Round 3 (交互)**:</span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "现在列表太长了。请添加一个搜索框，可以根据歌单名字实时过滤列表。" (AI: 添加了过滤逻辑)</span></span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a>**Round 4 (美感)**:</span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "现在的界面太丑了。请使用 CSS Grid 把它变成响应式的卡片布局，鼠标悬停时要有阴影效果。" (AI: 添加了 CSS 样式)</span></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>**记住：好代码是聊出来的，不是一次生成的。**</span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check: 挑战全栈</span></span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a>现在的页面比较简单，只能显示歌单名字。让我们通过AI把它变成一个功能完整的应用。</span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a>请尝试向AI发出以下指令（Prompt），一步步升级你的应用。</span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **⚠️ 全栈提示**: 在执行以下步骤时，如果前端请求报错（如 404 Not Found），说明你的Spring Boot后端可能缺少对应的API。你需要回到Java代码中 (</span><span class="in">`PlaylistController`</span><span class="at">)，添加对应的接口。这也是全栈开发的乐趣所在！</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**交互升级：查看详情**</span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "修改代码：当用户点击某个播放列表的名字时，在下方展开显示该列表包含的所有歌曲信息（歌名、歌手）。再次点击则收起。"</span></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**歌曲管理：增删歌曲**</span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "添加功能：在展开的歌单详情中，每一首歌后面加一个'删除'按钮。底部加一个'添加歌曲'的表单（输入歌名和歌手）。点击按钮后分别调用后端API更新数据。"</span></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**列表管理：增删歌单**</span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "添加功能：在页面顶部添加'新建歌单'按钮，每一行歌单后面添加'删除'按钮。实现创建和删除歌单的功能，并自动刷新列表。"</span></span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**思考**: 为什么我们需要在后端配置CORS，而不是在前端配置？（提示：这是浏览器的安全策略，谁拥有数据，谁才有权决定是否分享数据。）</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -7,8 +7,11 @@ import com.vibevault.dto.SongDTO;
 import com.vibevault.model.Playlist;
 import com.vibevault.model.Song;
 import com.vibevault.exception.ResourceNotFoundException;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 public class PlaylistServiceImpl implements PlaylistService {
@@ -17,15 +20,33 @@ public class PlaylistServiceImpl implements PlaylistService {
     public PlaylistServiceImpl(PlaylistRepository repository) {
         this.repository = repository;
     }
-    
+
     @Override
-    public PlaylistDTO getPlaylistById(String id) {
+    public List<PlaylistDTO> getAllPlaylists() {
+        return repository.findAll().stream()
+            .map(playlist -> {
+                Long playlistId = Objects.requireNonNull(playlist.getId(), "Playlist id should not be null");
+                return new PlaylistDTO(
+                    playlistId,
+                    playlist.getName(),
+                    playlist.getSongs().stream()
+                        .map(song -> new SongDTO(song.getTitle(), song.getArtist()))
+                        .collect(Collectors.toList())
+                );
+            })
+            .collect(Collectors.toList());
+    }
+
+    @Override
+    public PlaylistDTO getPlaylistById(long id) {
         // 调用repository，如果返回的Optional为空，则立即抛出我们自定义的异常
         Playlist playlist = repository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + id));
 
         // [模型转换] 将内部的Playlist领域模型，安全地转换为外部的PlaylistDTO
+        Long playlistId = Objects.requireNonNull(playlist.getId(), "Playlist id should not be null");
         return new PlaylistDTO(
+            playlistId,
             playlist.getName(),
             playlist.getSongs().stream()
                 .map(song -> new SongDTO(song.getTitle(), song.getArtist())) // 只取需要暴露的字段
@@ -35,7 +56,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     @Transactional // <--- 关键注解：将整个方法包裹在一个数据库事务中
-    public void addSongToPlaylist(String playlistId, SongDTO songDTO) {
+    public void addSongToPlaylist(long playlistId, SongDTO songDTO) {
         // 先加载播放列表，如果不存在则同样会抛出404异常，确保操作的有效性
         Playlist playlist = repository.findById(playlistId)
             .orElseThrow(() -> new ResourceNotFoundException("Playlist not found with id: " + playlistId));

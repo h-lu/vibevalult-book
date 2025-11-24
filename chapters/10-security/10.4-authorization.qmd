@@ -1,0 +1,51 @@
+# 10.4 规矩：我的地盘我做主
+
+有了护照，你就能进门了。但这不代表你可以为所欲为。
+比如：**你不能删别人的歌单。**
+
+这就是 **授权 (Authorization)**。
+
+## 业务语义优先
+
+传统的授权代码充斥着 `if (user.getId() == playlist.getUserId())` 这种逻辑。
+Vibe Coding 提倡：**用注解表达业务规则**。
+
+我们希望写出这样的代码：
+
+```java
+@PreAuthorize("是这个歌单的主人")
+public void deletePlaylist(...)
+```
+
+## 实现 SecurityUtils
+
+我们需要一个翻译官，把“是这个歌单的主人”翻译成 Java 代码。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请生成 `SecurityUtils` 组件。
+包含方法 `boolean isOwner(Long id, String username)`。
+逻辑：查数据库，判断歌单的 owner 是否等于 username。"
+:::
+
+## 开启魔法
+
+1.  在 `SecurityConfig` 上添加 `@EnableMethodSecurity`。
+2.  在 Controller 上使用：
+
+```java
+@DeleteMapping("/{id}")
+@PreAuthorize("@securityUtils.isOwner(#id, authentication.name)")
+public void deletePlaylist(@PathVariable Long id) {
+    repository.deleteById(id);
+}
+```
+
+## Vibe Check
+
+1.  **登录用户 A**，获取 Token A。
+2.  **登录用户 B**，创建歌单 B。
+3.  **尝试用 Token A 删除歌单 B**。
+    *   **预期**: 403 Forbidden。
+
+这就是**规矩**。
