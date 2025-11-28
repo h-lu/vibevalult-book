@@ -478,22 +478,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.2 身份：建立登录入口</span></a>
+  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.3 护照：JWT 黑盒组件</span></a>
+  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.3 护照：JWT无状态认证</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 规矩：我的地盘我做主</span></a>
+  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 规矩：基于所有权的授权控制</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 握手：全栈大一统</span></a>
+  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 握手：全栈安全大一统</span></a>
   </div>
 </li>
       </ul>
@@ -581,65 +581,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <blockquote class="blockquote">
 <p>“你的，才是你的。不是你的，你不能碰。” —— 安全的第一法则</p>
 </blockquote>
-<section id="本章危机裸奔的系统" class="level2">
-<h2 class="anchored" data-anchor-id="本章危机裸奔的系统">本章危机：裸奔的系统</h2>
-<p>打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：<strong>它是完全开放的</strong>。 想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统。</p>
+<section id="本章危机" class="level2">
+<h2 class="anchored" data-anchor-id="本章危机">本章危机</h2>
+<p>打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：<strong>它是完全开放的</strong>。</p>
+<p>想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统：</p>
 <ul>
-<li><strong>匿名危机</strong>: 谁在敲门？不知道。</li>
+<li><strong>匿名危机</strong>: 谁在敲门？不知道。任何人都可以访问所有API。</li>
 <li><strong>越界危机</strong>: 张三可以随意把李四的歌单删得干干净净。</li>
-<li><strong>失忆危机</strong>: 即使你问了他是谁，下一秒你就忘了。</li>
+<li><strong>失忆危机</strong>: 即使验证了身份，下一秒就忘了，每次请求都要重新验证。</li>
 </ul>
+<p>在Web的世界里，<strong>“默认信任”是致命的</strong>。我们面临的危机是：如何建立一套完整的安全体系，既能识别”谁是谁”（认证），又能控制”谁能做什么”（授权），还要让用户体验足够流畅（无需每次请求都输入密码）？</p>
 </section>
-<section id="全栈安全五部曲" class="level2">
-<h2 class="anchored" data-anchor-id="全栈安全五部曲">全栈安全五部曲</h2>
-<p>本章将打破传统的“后端自嗨”模式，带你完成一次真正的<strong>全栈安全闭环</strong>：</p>
+<section id="本章顿悟" class="level2">
+<h2 class="anchored" data-anchor-id="本章顿悟">本章顿悟</h2>
+<p>要保护我们的应用，我们需要构建一个<strong>五层防护体系</strong>，从”锁门”到”发护照”，从”定规矩”到”前后端握手”。</p>
+<p>这不是后端的独角戏。真正的安全，是<strong>全栈的安全闭环</strong>。</p>
+<p>在本章中，我们将采用<strong>“AI托管配置”</strong>策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：</p>
 <ul>
-<li><strong>10.1 守门人 (The Gatekeeper)</strong>: 使用 AI 托管配置，5分钟内锁住所有的门。</li>
-<li><strong>10.2 身份 (The Identity)</strong>: 建立用户档案，并开启<strong>登录入口</strong>。</li>
-<li><strong>10.3 护照 (The Passport)</strong>: 引入 JWT，让用户拥有“数字护照”。</li>
-<li><strong>10.4 规矩 (The Rules)</strong>: 用业务语言定义权限（“只有主人能删歌单”）。</li>
-<li><strong>10.5 握手 (The Handshake)</strong>: <strong>[重磅]</strong> 回到前端，实现登录页面，打通全栈任督二脉。</li>
+<li>用业务语言定义安全策略</li>
+<li>指挥AI生成符合最新标准的配置代码（使用Context7 MCP）</li>
+<li>专注于理解核心概念，而非记忆API细节</li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>🛡️ Vibe Security 宣言
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>在本章中，我们将采用 <strong>“AI 托管配置”</strong> 的策略。 安全配置非常繁琐且容易出错，我们将学习如何指挥 AI 生成标准的配置代码，而我们自己则专注于制定<strong>安全策略</strong>。</p>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>🛠️ 工具链升级：Context7 MCP 与 现代编辑器
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Spring Security 的版本迭代极快（例如从 5.x 到 6.x 的巨大破坏性变更），而通用 LLM 的训练数据往往滞后（常生成已废弃的 <code>WebSecurityConfigurerAdapter</code>）。</p>
-<p>为了确保 AI 生成的代码是<strong>最新且可用</strong>的，强烈建议升级你的工具链：</p>
+<p>通过本章，你将完成：</p>
 <ol type="1">
-<li><strong>使用 <a href="https://github.com/upstash/context7">Context7 MCP</a></strong>:
-<ul>
-<li>这是一个为 LLM 提供实时文档的工具。</li>
-<li>在 Prompt 中加上 <code>use context7</code>，它会自动拉取最新的 Spring Security 官方文档，彻底解决“幻觉”问题。</li>
-<li><em>例子</em>: “配置 Spring Security 6.1 的 SecurityFilterChain。 use context7”</li>
-</ul></li>
-<li><strong>使用现代 AI 编辑器</strong>:
-<ul>
-<li><strong>Cursor</strong> / <strong>Trae</strong>: 这些编辑器原生集成了 MCP 和上下文感知能力。</li>
-<li>它们能读取你的 <code>pom.xml</code>，知道你用的是 Spring Boot 3.x，从而避免生成 2.x 的旧代码。</li>
-</ul></li>
+<li><strong><a href="../../chapters/10-security/10.1-security-crisis.html">守门人：Spring Security</a></strong>: 配置”默认拒绝”策略，锁住所有未认证请求。理解CSRF和Stateless的本质。</li>
+<li><strong><a href="../../chapters/10-security/10.2-authentication.html">身份：用户认证</a></strong>: 创建User实体，使用BCrypt加密密码，实现注册和登录。学习真实世界的密码安全事件。</li>
+<li><strong><a href="../../chapters/10-security/10.3-jwt-passport.html">护照：JWT无状态认证</a></strong>: 引入JWT Token，让用户登录一次后24小时内”免检通行”。理解JWT vs Session的权衡。</li>
+<li><strong><a href="../../chapters/10-security/10.4-authorization.html">规矩：授权控制</a></strong>: 实现”只有主人能删自己歌单”的业务规则。使用@PreAuthorize注解声明式授权。</li>
+<li><strong><a href="../../chapters/10-security/10.5-security-testing.html">握手：全栈集成</a></strong>: <strong>[重磅]</strong> 创建React登录组件，实现Token管理，打通前后端安全闭环。</li>
 </ol>
-</div>
-</div>
+<p>完成本章后，你的VibeVault将拥有一套生产级的安全体系，从后端的Spring Security到前端的Login界面，从密码加密到Token管理，从认证到授权——这是一个真正可以上线的Web应用的安全基础。</p>
 
 
 <!-- -->
@@ -1113,46 +1084,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "你的，才是你的。不是你的，你不能碰。" —— 安全的第一法则</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本章危机：裸奔的系统</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本章危机</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：**它是完全开放的**。</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统。</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**匿名危机**: 谁在敲门？不知道。</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**越界危机**: 张三可以随意把李四的歌单删得干干净净。</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**失忆危机**: 即使你问了他是谁，下一秒你就忘了。</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## 全栈安全五部曲</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>本章将打破传统的“后端自嗨”模式，带你完成一次真正的**全栈安全闭环**：</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**10.1 守门人 (The Gatekeeper)**: 使用 AI 托管配置，5分钟内锁住所有的门。</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**10.2 身份 (The Identity)**: 建立用户档案，并开启**登录入口**。</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**10.3 护照 (The Passport)**: 引入 JWT，让用户拥有“数字护照”。</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**10.4 规矩 (The Rules)**: 用业务语言定义权限（“只有主人能删歌单”）。</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**10.5 握手 (The Handshake)**: **[重磅]** 回到前端，实现登录页面，打通全栈任督二脉。</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🛡️ Vibe Security 宣言</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>在本章中，我们将采用 **"AI 托管配置"** 的策略。</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>安全配置非常繁琐且容易出错，我们将学习如何指挥 AI 生成标准的配置代码，而我们自己则专注于制定**安全策略**。</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🛠️ 工具链升级：Context7 MCP 与 现代编辑器</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Spring Security 的版本迭代极快（例如从 5.x 到 6.x 的巨大破坏性变更），而通用 LLM 的训练数据往往滞后（常生成已废弃的 <span class="in">`WebSecurityConfigurerAdapter`</span>）。</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>为了确保 AI 生成的代码是**最新且可用**的，强烈建议升级你的工具链：</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**使用 [Context7 MCP](https://github.com/upstash/context7)**:</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>这是一个为 LLM 提供实时文档的工具。</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在 Prompt 中加上 <span class="in">`use context7`</span>，它会自动拉取最新的 Spring Security 官方文档，彻底解决“幻觉”问题。</span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>*例子*: "配置 Spring Security 6.1 的 SecurityFilterChain。 use context7"</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**使用现代 AI 编辑器**:</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**Cursor** / **Trae**: 这些编辑器原生集成了 MCP 和上下文感知能力。</span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>它们能读取你的 <span class="in">`pom.xml`</span>，知道你用的是 Spring Boot 3.x，从而避免生成 2.x 的旧代码。</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统：</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**匿名危机**: 谁在敲门？不知道。任何人都可以访问所有API。</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**越界危机**: 张三可以随意把李四的歌单删得干干净净。</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**失忆危机**: 即使验证了身份，下一秒就忘了，每次请求都要重新验证。</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>在Web的世界里，**"默认信任"是致命的**。我们面临的危机是：如何建立一套完整的安全体系，既能识别"谁是谁"（认证），又能控制"谁能做什么"（授权），还要让用户体验足够流畅（无需每次请求都输入密码）？</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本章顿悟</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>要保护我们的应用，我们需要构建一个**五层防护体系**，从"锁门"到"发护照"，从"定规矩"到"前后端握手"。</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>这不是后端的独角戏。真正的安全，是**全栈的安全闭环**。</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>在本章中，我们将采用**"AI托管配置"**策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用业务语言定义安全策略</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>指挥AI生成符合最新标准的配置代码（使用Context7 MCP）</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>专注于理解核心概念，而非记忆API细节</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>通过本章，你将完成：</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[守门人：Spring Security](./10.1-security-crisis.qmd)**: 配置"默认拒绝"策略，锁住所有未认证请求。理解CSRF和Stateless的本质。</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[身份：用户认证](./10.2-authentication.qmd)**: 创建User实体，使用BCrypt加密密码，实现注册和登录。学习真实世界的密码安全事件。</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[护照：JWT无状态认证](./10.3-jwt-passport.qmd)**: 引入JWT Token，让用户登录一次后24小时内"免检通行"。理解JWT vs Session的权衡。</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[规矩：授权控制](./10.4-authorization.qmd)**: 实现"只有主人能删自己歌单"的业务规则。使用@PreAuthorize注解声明式授权。</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**[握手：全栈集成](./10.5-security-testing.qmd)**: **[重磅]** 创建React登录组件，实现Token管理，打通前后端安全闭环。</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>完成本章后，你的VibeVault将拥有一套生产级的安全体系，从后端的Spring Security到前端的Login界面，从密码加密到Token管理，从认证到授权——这是一个真正可以上线的Web应用的安全基础。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10.3 护照：JWT 黑盒组件 – VibeVault: 一场现代Java全栈之旅</title>
+<title>10.3 护照：JWT无状态认证 – VibeVault: 一场现代Java全栈之旅</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.3-jwt-passport.html"><span class="chapter-title">10.3 护照：JWT 黑盒组件</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.3-jwt-passport.html"><span class="chapter-title">10.3 护照：JWT无状态认证</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -478,22 +478,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.2 身份：建立登录入口</span></a>
+  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">10.3 护照：JWT 黑盒组件</span></a>
+  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">10.3 护照：JWT无状态认证</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 规矩：我的地盘我做主</span></a>
+  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 规矩：基于所有权的授权控制</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 握手：全栈大一统</span></a>
+  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 握手：全栈安全大一统</span></a>
   </div>
 </li>
       </ul>
@@ -559,9 +559,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.3-jwt-passport.html"><span class="chapter-title">10.3 护照：JWT 黑盒组件</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.3-jwt-passport.html"><span class="chapter-title">10.3 护照：JWT无状态认证</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">10.3 护照：JWT 黑盒组件</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">10.3 护照：JWT无状态认证</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -578,32 +578,131 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>“Login Success” 这句话虽然好听，但它不能当饭吃。 我们需要给用户发一张<strong>数字护照 (JWT)</strong>，用户下次来的时候，亮出护照，我们就知道他是谁了。</p>
-<section id="什么是-jwt" class="level2">
-<h2 class="anchored" data-anchor-id="什么是-jwt">什么是 JWT？</h2>
-<p>JSON Web Token (JWT) 就像一张<strong>防伪的身份证</strong>。 * <strong>Header</strong>: 证件类型。 * <strong>Payload</strong>: 个人信息（我是 vibecoder）。 * <strong>Signature</strong>: 防伪印章（只有服务器能盖章）。</p>
+<blockquote class="blockquote">
+<p>“好的凭证，让你一次登录，处处通行。” —— JWT的承诺</p>
+</blockquote>
+<section id="本节危机每次敲门都要重新验证身份" class="level2">
+<h2 class="anchored" data-anchor-id="本节危机每次敲门都要重新验证身份">本节危机：每次敲门都要重新验证身份？</h2>
+<p>在上一节，我们成功实现了登录功能。用户提交用户名和密码，系统验证后返回”登录成功”。</p>
+<p>但这里有个致命的问题：<strong>这个”成功”只维持了一瞬间。</strong></p>
+<p>想象你去政府办事：</p>
+<ol type="1">
+<li>你在A窗口办完一件事，工作人员说”好的，您的身份验证通过了”。</li>
+<li>你走到B窗口办下一件事，工作人员说：“先生，请出示您的身份证。”</li>
+<li>你去C窗口、D窗口…每次都要重新验证身份。</li>
+</ol>
+<p>这就是我们当前的系统状态。每次用户访问<code>/api/playlists</code>、<code>/api/songs</code>等受保护接口时，都需要重新发送用户名和密码。这显然是荒谬的：</p>
+<ul>
+<li><strong>用户体验极差</strong>：没人愿意每个操作都输入密码。</li>
+<li><strong>安全风险</strong>：密码在网络中频繁传输，增加被截获的风险。</li>
+<li><strong>性能低下</strong>：每次请求都要查数据库验证密码，效率低。</li>
+</ul>
+<p><strong>我们需要一种机制：用户登录一次后，获得一个”通行证”，凭这个通行证在一段时间内（如24小时）自动通过所有安检，无需重复验证身份。</strong></p>
 </section>
-<section id="第一步引入依赖" class="level2">
-<h2 class="anchored" data-anchor-id="第一步引入依赖">第一步：引入依赖</h2>
-<p>为了生成和解析 Token，我们需要引入 JJWT 库。</p>
-<p>在 <code>gradle/libs.versions.toml</code> 中添加：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[versions]</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt</span> <span class="op">=</span> <span class="st">"0.12.6"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[libraries]</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-api</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-api"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-impl</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-impl"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-jackson</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-jackson"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>在 <code>build.gradle.kts</code> 中添加：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>implementation<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>api<span class="op">)</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>runtimeOnly<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>impl<span class="op">)</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>runtimeOnly<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>jackson<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="本节顿悟jwt可验证的数字护照" class="level2">
+<h2 class="anchored" data-anchor-id="本节顿悟jwt可验证的数字护照">本节顿悟：JWT——可验证的数字护照</h2>
+<p><strong>JWT (JSON Web Token)</strong> 就是这张”数字护照”。它是一个自包含的、可验证的字符串，包含了：</p>
+<ul>
+<li><strong>用户是谁</strong>（例如：username = “vibecoder”）</li>
+<li><strong>护照有效期</strong>（例如：24小时后过期）</li>
+<li><strong>防伪签名</strong>（只有服务器能生成和验证）</li>
+</ul>
+<section id="jwt的结构三段式防伪证件" class="level3">
+<h3 class="anchored" data-anchor-id="jwt的结构三段式防伪证件">JWT的结构：三段式防伪证件</h3>
+<p>一个JWT长这样：</p>
+<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...KziYm9haTvVJ0</code></pre>
+<p>它由三部分组成（用<code>.分隔</code>）：</p>
+<section id="header证件类型" class="level4">
+<h4 class="anchored" data-anchor-id="header证件类型">1. Header（证件类型）</h4>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"alg"</span><span class="fu">:</span> <span class="st">"HS256"</span><span class="fu">,</span>  <span class="er">//</span> <span class="er">使用的签名算法</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"typ"</span><span class="fu">:</span> <span class="st">"JWT"</span>     <span class="er">//</span> <span class="er">令牌类型</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Base64编码后：<code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</code></p>
 </section>
-<section id="黑盒组件-black-box-components" class="level2">
-<h2 class="anchored" data-anchor-id="黑盒组件-black-box-components">黑盒组件 (Black Box Components)</h2>
-<p>实现 JWT 需要写很多加密代码。<strong>不要手写。</strong> 把它当作现成的零件。</p>
-<section id="零件-1jwtservice-签发器" class="level3">
-<h3 class="anchored" data-anchor-id="零件-1jwtservice-签发器">零件 1：JwtService (签发器)</h3>
+<section id="payload个人信息" class="level4">
+<h4 class="anchored" data-anchor-id="payload个人信息">2. Payload（个人信息）</h4>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"sub"</span><span class="fu">:</span> <span class="st">"vibecoder"</span><span class="fu">,</span>           <span class="er">//</span> <span class="er">subject：用户名</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"iat"</span><span class="fu">:</span> <span class="dv">1699900000</span><span class="fu">,</span>            <span class="er">//</span> <span class="er">issued</span> <span class="er">at：签发时间</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"exp"</span><span class="fu">:</span> <span class="dv">1699986400</span>             <span class="er">//</span> <span class="er">expiration：过期时间（</span><span class="dv">24</span><span class="er">小时后）</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Base64编码后：<code>eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...</code></p>
+</section>
+<section id="signature防伪印章" class="level4">
+<h4 class="anchored" data-anchor-id="signature防伪印章">3. Signature（防伪印章）</h4>
+<pre><code>HMACSHA256(
+  base64(header) + "." + base64(payload),
+  secret_key  // 只有服务器知道的密钥
+)</code></pre>
+<p><strong>关键点</strong>：任何人都可以<strong>读取</strong>JWT的内容（因为只是Base64编码，不是加密）。但只有拥有密钥的服务器才能<strong>生成和验证</strong>签名。</p>
+<p><strong>比喻</strong>：就像护照上的防伪水印。你可以看到护照上的所有信息（姓名、国籍、照片），但你无法伪造那个只有政府才能制作的防伪水印。</p>
+</section>
+</section>
+<section id="jwt-vs-session为什么选择无状态" class="level3">
+<h3 class="anchored" data-anchor-id="jwt-vs-session为什么选择无状态">JWT vs Session：为什么选择无状态？</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>特性</th>
+<th>Session（有状态）</th>
+<th>JWT（无状态）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>存储位置</strong></td>
+<td>服务器内存/Redis</td>
+<td>客户端（浏览器）</td>
+</tr>
+<tr class="even">
+<td><strong>可扩展性</strong></td>
+<td>需要Session共享机制</td>
+<td>天然支持多服务器</td>
+</tr>
+<tr class="odd">
+<td><strong>网络传输</strong></td>
+<td>只传递Session ID（小）</td>
+<td>每次都传递完整Token（略大）</td>
+</tr>
+<tr class="even">
+<td><strong>注销机制</strong></td>
+<td>直接删除Session</td>
+<td>需要黑名单机制（复杂）</td>
+</tr>
+<tr class="odd">
+<td><strong>适用场景</strong></td>
+<td>传统Web应用</td>
+<td>REST API、微服务</td>
+</tr>
+</tbody>
+</table>
+<p>对于我们的REST API，JWT是更好的选择。</p>
+<hr>
+</section>
+</section>
+<section id="第一步引入jjwt库" class="level2">
+<h2 class="anchored" data-anchor-id="第一步引入jjwt库">第一步：引入JJWT库</h2>
+<p>在<code>gradle/libs.versions.toml</code>中添加：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode toml code-with-copy"><code class="sourceCode toml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[versions]</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt</span> <span class="op">=</span> <span class="st">"0.12.6"</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="kw">[libraries]</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-api</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-api"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-impl</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-impl"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="dt">jjwt-jackson</span> <span class="op">=</span> <span class="op">{ </span><span class="dt">module</span><span class="op"> =</span> <span class="st">"io.jsonwebtoken:jjwt-jackson"</span><span class="op">, </span><span class="dt">version.ref</span><span class="op"> =</span> <span class="st">"jjwt"</span><span class="op"> }</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>在<code>build.gradle.kts</code>中添加：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode kotlin code-with-copy"><code class="sourceCode kotlin"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>dependencies <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... 其他依赖</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    implementation<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>api<span class="op">)</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    runtimeOnly<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>impl<span class="op">)</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    runtimeOnly<span class="op">(</span>libs<span class="op">.</span>jjwt<span class="op">.</span>jackson<span class="op">)</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="第二步实现jwtservice签发和验证护照" class="level2">
+<h2 class="anchored" data-anchor-id="第二步实现jwtservice签发和验证护照">第二步：实现JwtService（签发和验证护照）</h2>
+<p>创建一个专门处理JWT的服务类。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -614,12 +713,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“请生成 <code>JwtService</code> 类 (使用 jjwt 库)。 包含： 1. <code>generateToken(username)</code>: 生成 24小时有效的 Token。 2. <code>extractUsername(token)</code>: 解析用户名。 3. <code>isTokenValid(token, userDetails)</code>: 验签。”</p>
+<p>“创建一个 <code>JwtService</code> 类，使用 <code>jjwt</code> 库。 功能要求： 1. <code>generateToken(username)</code>: 生成Token，有效期24小时。 2. <code>extractUsername(token)</code>: 从Token提取用户名。 3. <code>isTokenValid(token, username)</code>: 验证Token有效性。 注意：使用 <code>@Value</code> 注入密钥，不要硬编码。”</p>
 </div>
 </div>
+<section id="代码要点" class="level3">
+<h3 class="anchored" data-anchor-id="代码要点">代码要点</h3>
+<ul>
+<li><strong>密钥管理</strong>：使用<code>@Value</code>从配置文件读取。生产环境中，应使用环境变量或密钥管理服务（如AWS Secrets Manager）。</li>
+<li><strong>密钥长度</strong>：HS256算法要求密钥至少256位（32字节）。示例密钥长度足够，但真实项目应使用随机生成的强密钥。</li>
+<li><strong>过期机制</strong>：设置24小时有效期，过期后Token自动失效。</li>
+<li><strong>异常处理</strong>：任何解析异常（签名不匹配、格式错误、已过期）都返回<code>false</code>。</li>
+</ul>
+<hr>
 </section>
-<section id="零件-2jwtfilter-安检员" class="level3">
-<h3 class="anchored" data-anchor-id="零件-2jwtfilter-安检员">零件 2：JwtFilter (安检员)</h3>
+</section>
+<section id="第三步实现jwtauthenticationfilter安检员" class="level2">
+<h2 class="anchored" data-anchor-id="第三步实现jwtauthenticationfilter安检员">第三步：实现JwtAuthenticationFilter（安检员）</h2>
+<p>现在我们有了签发和验证Token的能力，但Spring Security还不知道如何使用它。我们需要创建一个<strong>过滤器（Filter）</strong>，在每个请求到达Controller之前，先检查JWT。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -630,27 +740,154 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“请生成 <code>JwtAuthenticationFilter</code> (继承 OncePerRequestFilter)。 逻辑： 1. 从 Header 获取 <code>Authorization: Bearer xxx</code>。 2. 验证 Token。 3. 如果有效，将用户放入 <code>SecurityContextHolder</code> (放行)。”</p>
+<p>“创建一个 <code>JwtAuthenticationFilter</code>，继承自 <code>OncePerRequestFilter</code>。 逻辑如下： 1. 从Header获取 <code>Authorization</code>。 2. 如果是 <code>Bearer</code> 开头，提取Token。 3. 使用 <code>JwtService</code> 验证Token。 4. 如果有效，创建 <code>UsernamePasswordAuthenticationToken</code> 并放入 <code>SecurityContextHolder</code>。”</p>
 </div>
 </div>
+<section id="过滤器执行流程" class="level3">
+<h3 class="anchored" data-anchor-id="过滤器执行流程">过滤器执行流程</h3>
+<pre><code>HTTP请求 
+  → JwtAuthenticationFilter（检查Token，设置认证）
+  → Spring Security其他过滤器
+  → Controller方法
+  → 返回响应</code></pre>
+<p><strong>关键逻辑</strong>： 1. 提取<code>Authorization: Bearer &lt;token&gt;</code> 2. 解析Token，提取用户名 3. 验证Token（签名、有效期） 4. 如果有效，创建<code>Authentication</code>对象并放入<code>SecurityContext</code> 5. Spring Security看到SecurityContext中有认证对象，就认为用户已登录，放行请求</p>
+<hr>
 </section>
-<section id="零件-3组装" class="level3">
-<h3 class="anchored" data-anchor-id="零件-3组装">零件 3：组装</h3>
-<p>回到 <code>SecurityConfig</code>，让 AI 把 <code>JwtFilter</code> 插在 <code>UsernamePasswordAuthenticationFilter</code> 之前。</p>
+</section>
+<section id="第四步将jwtfilter集成到security配置" class="level2">
+<h2 class="anchored" data-anchor-id="第四步将jwtfilter集成到security配置">第四步：将JwtFilter集成到Security配置</h2>
+<p>修改<code>SecurityConfig</code>，让JWT过滤器在Spring Security的过滤器链中生效。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“修改 <code>SecurityConfig</code>： 1. 注入 <code>JwtAuthenticationFilter</code>。 2. 使用 <code>.addFilterBefore()</code> 将其添加到 <code>UsernamePasswordAuthenticationFilter</code> 之前。”</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="第五步升级登录接口返回jwt" class="level2">
+<h2 class="anchored" data-anchor-id="第五步升级登录接口返回jwt">第五步：升级登录接口，返回JWT</h2>
+<p>修改<code>AuthController</code>的<code>login</code>方法，返回真正的JWT而非简单字符串。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“修改 <code>AuthController</code> 的 <code>/login</code> 接口： 1. 注入 <code>JwtService</code>。 2. 认证成功后，调用 <code>jwtService.generateToken(username)</code>。 3. 返回包含 Token 的 JSON 响应。”</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="第六步验证完整流程vibe-check" class="level2">
+<h2 class="anchored" data-anchor-id="第六步验证完整流程vibe-check">第六步：验证完整流程（Vibe Check）</h2>
+<section id="测试一登录获取token" class="level3">
+<h3 class="anchored" data-anchor-id="测试一登录获取token">测试一：登录获取Token</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期输出</strong>：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"token"</span><span class="fu">:</span> <span class="st">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJpYXQiOjE2OTk5MDAwMDAsImV4cCI6MTY5OTk4NjQwMH0.KziYm9haTvVJ0..."</span><span class="fu">,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"username"</span><span class="fu">:</span> <span class="st">"vibecoder"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>复制这个Token</strong>，待用。</p>
+</section>
+<section id="测试二不带token访问受保护资源应该失败" class="level3">
+<h3 class="anchored" data-anchor-id="测试二不带token访问受保护资源应该失败">测试二：不带Token访问受保护资源（应该失败）</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/my-favorites</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期结果</strong>：403 Forbidden</p>
+</section>
+<section id="测试三携带token访问受保护资源应该成功" class="level3">
+<h3 class="anchored" data-anchor-id="测试三携带token访问受保护资源应该成功">测试三：携带Token访问受保护资源（应该成功）</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> GET http://localhost:8080/api/playlists <span class="dt">\</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer YOUR_TOKEN_HERE"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>将<code>YOUR_TOKEN_HERE</code>替换为测试一中获取的Token。</p>
+<p><strong>预期结果</strong>：200 OK，返回播放列表数据。</p>
+<p><strong>关键</strong>：注意Header格式必须严格为 <code>Authorization: Bearer &lt;token&gt;</code>，<code>Bearer</code>和Token之间有一个空格。</p>
+</section>
+<section id="测试四使用伪造的token应该失败" class="level3">
+<h3 class="anchored" data-anchor-id="测试四使用伪造的token应该失败">测试四：使用伪造的Token（应该失败）</h3>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> GET http://localhost:8080/api/playlists <span class="dt">\</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer fake.token.here"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期结果</strong>：403 Forbidden（因为签名验证失败）</p>
+<hr>
 </section>
 </section>
-<section id="升级登录接口" class="level2">
-<h2 class="anchored" data-anchor-id="升级登录接口">升级登录接口</h2>
-<p>回到 <code>AuthController</code>，修改 <code>login</code> 方法：</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 旧代码</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="st">"Login Success"</span><span class="op">;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">// 新代码</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> jwtService<span class="op">.</span><span class="fu">generateToken</span><span class="op">(</span>user<span class="op">.</span><span class="fu">getUsername</span><span class="op">());</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="vibe-deep-divejwt的安全边界" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-deep-divejwt的安全边界">Vibe Deep Dive：JWT的安全边界</h2>
+<section id="jwt能防御什么" class="level3">
+<h3 class="anchored" data-anchor-id="jwt能防御什么">JWT能防御什么？</h3>
+<ul>
+<li>✅ <strong>CSRF攻击</strong>：Token在Header中，浏览器不会自动携带。</li>
+<li>✅ <strong>Session劫持</strong>：没有Session，无法劫持。</li>
+<li>✅ <strong>篡改攻击</strong>：任何对Payload的修改都会导致签名失效。</li>
+</ul>
 </section>
-<section id="vibe-check" class="level2">
-<h2 class="anchored" data-anchor-id="vibe-check">Vibe Check</h2>
-<p>再次调用 <code>/login</code> 接口。 这次你应该能看到一串长长的字符：<code>eyJhbGciOiJIUzI1Ni...</code>。 这就是你的<strong>数字护照</strong>。保存好它，下一章我们要用它来行使权力。</p>
+<section id="jwt不能防御什么" class="level3">
+<h3 class="anchored" data-anchor-id="jwt不能防御什么">JWT不能防御什么？</h3>
+<ul>
+<li>❌ <strong>XSS攻击</strong>：如果Token存储在<code>localStorage</code>，恶意脚本可窃取。
+<ul>
+<li>缓解：使用<code>httpOnly</code> Cookie存储（但需重新启用CSRF保护）。</li>
+</ul></li>
+<li>❌ <strong>Token泄露</strong>：如果Token在网络传输中被截获（需HTTPS）。</li>
+<li>❌ <strong>Token无法主动失效</strong>：JWT生成后，在过期前无法撤销。
+<ul>
+<li>缓解：实现Token黑名单（需额外存储）或缩短过期时间。</li>
+</ul></li>
+</ul>
+</section>
+<section id="生产环境的最佳实践" class="level3">
+<h3 class="anchored" data-anchor-id="生产环境的最佳实践">生产环境的最佳实践</h3>
+<ol type="1">
+<li><strong>密钥管理</strong>：使用强随机密钥，存储在环境变量或密钥管理服务中，绝不提交到Git。</li>
+<li><strong>HTTPS强制</strong>：Token在HTTP传输（明文）中容易被截获。</li>
+<li><strong>短期Token + Refresh Token</strong>：主Token有效期设为1小时，配合Refresh Token实现长期登录。</li>
+<li><strong>添加更多Claims</strong>：如<code>iss</code>（签发者）、<code>aud</code>（受众）增强验证。</li>
+</ol>
+<hr>
+</section>
+</section>
+<section id="vibe-check动手与思考" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-check动手与思考">Vibe Check（动手与思考）</h2>
+<ol type="1">
+<li><p><strong>核心练习</strong>：</p>
+<ul>
+<li>完成上述四个测试，确保JWT完整流程正常工作。</li>
+<li>尝试解码你的Token（访问 <a href="https://jwt.io/">jwt.io</a>，粘贴Token），观察Payload中的内容。</li>
+</ul></li>
+<li><p><strong>编码练习</strong>：</p>
+<ul>
+<li>修改<code>JwtService</code>，使Token有效期缩短为5分钟。重新登录获取Token，等待6分钟后再次使用该Token，验证是否返回403。</li>
+<li>在<code>LoginResponse</code>中添加<code>expiresIn</code>字段，告诉前端Token将在多少秒后过期。</li>
+</ul></li>
+<li><p><strong>安全思考</strong>：</p>
+<ul>
+<li>为什么JWT不适合存储敏感信息（如信用卡号）？</li>
+<li>如果用户修改了密码，旧的JWT仍然有效（直到过期）。这是否是安全隐患？如何解决？</li>
+</ul></li>
+<li><p><strong>AI协同</strong>：</p>
+<blockquote class="blockquote">
+<p>“请解释HS256和RS256两种JWT签名算法的区别。什么场景下应该用RS256？”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“请解释Refresh Token机制。如果主Token有效期1小时，Refresh Token有效期7天，完整的刷新流程是怎样的？”</p>
+</blockquote></li>
+</ol>
+<hr>
+<p><strong>恭喜！</strong> 你的应用现在拥有了一套完整的无状态认证体系。用户登录一次，就能获得24小时的”免检通行证”。但是，“能进门”不代表”能删别人东西”——下一节，我们将实现细粒度的<strong>授权控制</strong>。</p>
 
 
 <!-- -->
@@ -1110,99 +1347,313 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../../chapters/10-security/10.2-authentication.html" class="pagination-link" aria-label="10.2 身份：建立登录入口">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">10.2 身份：建立登录入口</span></span>
+      <a href="../../chapters/10-security/10.2-authentication.html" class="pagination-link" aria-label="10.2 身份：建立用户体系与登录入口">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../chapters/10-security/10.4-authorization.html" class="pagination-link" aria-label="10.4 规矩：我的地盘我做主">
-        <span class="nav-page-text"><span class="chapter-title">10.4 规矩：我的地盘我做主</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../chapters/10-security/10.4-authorization.html" class="pagination-link" aria-label="10.4 规矩：基于所有权的授权控制">
+        <span class="nav-page-text"><span class="chapter-title">10.4 规矩：基于所有权的授权控制</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.3 护照：JWT 黑盒组件</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>"Login Success" 这句话虽然好听，但它不能当饭吃。</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>我们需要给用户发一张**数字护照 (JWT)**，用户下次来的时候，亮出护照，我们就知道他是谁了。</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 什么是 JWT？</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>JSON Web Token (JWT) 就像一张**防伪的身份证**。</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Header**: 证件类型。</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Payload**: 个人信息（我是 vibecoder）。</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Signature**: 防伪印章（只有服务器能盖章）。</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：引入依赖</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>为了生成和解析 Token，我们需要引入 JJWT 库。</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>在 <span class="in">`gradle/libs.versions.toml`</span> 中添加：</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="in">```toml</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="in">[versions]</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt = "0.12.6"</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="in">[libraries]</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }</span></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>在 <span class="in">`build.gradle.kts`</span> 中添加：</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="in">```kotlin</span></span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="in">implementation(libs.jjwt.api)</span></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="in">runtimeOnly(libs.jjwt.impl)</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="in">runtimeOnly(libs.jjwt.jackson)</span></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## 黑盒组件 (Black Box Components)</span></span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>实现 JWT 需要写很多加密代码。**不要手写。** 把它当作现成的零件。</span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="fu">### 零件 1：JwtService (签发器)</span></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>"请生成 <span class="in">`JwtService`</span> 类 (使用 jjwt 库)。</span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>包含：</span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`generateToken(username)`</span>: 生成 24小时有效的 Token。</span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`extractUsername(token)`</span>: 解析用户名。</span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`isTokenValid(token, userDetails)`</span>: 验签。"</span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="fu">### 零件 2：JwtFilter (安检员)</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>"请生成 <span class="in">`JwtAuthenticationFilter`</span> (继承 OncePerRequestFilter)。</span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>逻辑：</span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>从 Header 获取 <span class="in">`Authorization: Bearer xxx`</span>。</span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>验证 Token。</span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>如果有效，将用户放入 <span class="in">`SecurityContextHolder`</span> (放行)。"</span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="fu">### 零件 3：组装</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>回到 <span class="in">`SecurityConfig`</span>，让 AI 把 <span class="in">`JwtFilter`</span> 插在 <span class="in">`UsernamePasswordAuthenticationFilter`</span> 之前。</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## 升级登录接口</span></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>回到 <span class="in">`AuthController`</span>，修改 <span class="in">`login`</span> 方法：</span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="co">// 旧代码</span></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> <span class="st">"Login Success"</span><span class="op">;</span></span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a><span class="co">// 新代码</span></span>
-<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a><span class="cf">return</span> jwtService<span class="op">.</span><span class="fu">generateToken</span><span class="op">(</span>user<span class="op">.</span><span class="fu">getUsername</span><span class="op">());</span></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check</span></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a>再次调用 <span class="in">`/login`</span> 接口。</span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a>这次你应该能看到一串长长的字符：<span class="in">`eyJhbGciOiJIUzI1Ni...`</span>。</span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a>这就是你的**数字护照**。保存好它，下一章我们要用它来行使权力。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.3 护照：JWT无状态认证</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "好的凭证，让你一次登录，处处通行。" —— JWT的承诺</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：每次敲门都要重新验证身份？</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>在上一节，我们成功实现了登录功能。用户提交用户名和密码，系统验证后返回"登录成功"。</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>但这里有个致命的问题：**这个"成功"只维持了一瞬间。**</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>想象你去政府办事：</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>你在A窗口办完一件事，工作人员说"好的，您的身份验证通过了"。</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>你走到B窗口办下一件事，工作人员说："先生，请出示您的身份证。"</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>你去C窗口、D窗口...每次都要重新验证身份。</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>这就是我们当前的系统状态。每次用户访问<span class="in">`/api/playlists`</span>、<span class="in">`/api/songs`</span>等受保护接口时，都需要重新发送用户名和密码。这显然是荒谬的：</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**用户体验极差**：没人愿意每个操作都输入密码。</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**安全风险**：密码在网络中频繁传输，增加被截获的风险。</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**性能低下**：每次请求都要查数据库验证密码，效率低。</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>**我们需要一种机制：用户登录一次后，获得一个"通行证"，凭这个通行证在一段时间内（如24小时）自动通过所有安检，无需重复验证身份。**</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：JWT——可验证的数字护照</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>**JWT (JSON Web Token)** 就是这张"数字护照"。它是一个自包含的、可验证的字符串，包含了：</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**用户是谁**（例如：username = "vibecoder"）</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**护照有效期**（例如：24小时后过期）</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**防伪签名**（只有服务器能生成和验证）</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="fu">### JWT的结构：三段式防伪证件</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>一个JWT长这样：</span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="in">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...KziYm9haTvVJ0</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>它由三部分组成（用<span class="in">`.分隔`</span>）：</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 1. Header（证件类型）</span></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  <span class="st">"alg"</span><span class="op">:</span> <span class="st">"HS256"</span><span class="op">,</span>  <span class="co">// 使用的签名算法</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>  <span class="st">"typ"</span><span class="op">:</span> <span class="st">"JWT"</span>     <span class="co">// 令牌类型</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>Base64编码后：<span class="in">`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`</span></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 2. Payload（个人信息）</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>  <span class="st">"sub"</span><span class="op">:</span> <span class="st">"vibecoder"</span><span class="op">,</span>           <span class="co">// subject：用户名</span></span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>  <span class="st">"iat"</span><span class="op">:</span> <span class="dv">1699900000</span><span class="op">,</span>            <span class="co">// issued at：签发时间</span></span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>  <span class="st">"exp"</span><span class="op">:</span> <span class="dv">1699986400</span>             <span class="co">// expiration：过期时间（24小时后）</span></span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a>Base64编码后：<span class="in">`eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...`</span></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a><span class="fu">#### 3. Signature（防伪印章）</span></span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="in">HMACSHA256(</span></span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="in">  base64(header) + "." + base64(payload),</span></span>
+<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a><span class="in">  secret_key  // 只有服务器知道的密钥</span></span>
+<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-69"><a href="#cb13-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-70"><a href="#cb13-70" aria-hidden="true" tabindex="-1"></a>**关键点**：任何人都可以**读取**JWT的内容（因为只是Base64编码，不是加密）。但只有拥有密钥的服务器才能**生成和验证**签名。</span>
+<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>**比喻**：就像护照上的防伪水印。你可以看到护照上的所有信息（姓名、国籍、照片），但你无法伪造那个只有政府才能制作的防伪水印。</span>
+<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a><span class="fu">### JWT vs Session：为什么选择无状态？</span></span>
+<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 特性 <span class="pp">|</span> Session（有状态） <span class="pp">|</span> JWT（无状态） <span class="pp">|</span></span>
+<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a><span class="pp">|------|------------------|--------------|</span></span>
+<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **存储位置** <span class="pp">|</span> 服务器内存/Redis <span class="pp">|</span> 客户端（浏览器） <span class="pp">|</span></span>
+<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **可扩展性** <span class="pp">|</span> 需要Session共享机制 <span class="pp">|</span> 天然支持多服务器 <span class="pp">|</span></span>
+<span id="cb13-80"><a href="#cb13-80" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **网络传输** <span class="pp">|</span> 只传递Session ID（小） <span class="pp">|</span> 每次都传递完整Token（略大） <span class="pp">|</span></span>
+<span id="cb13-81"><a href="#cb13-81" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **注销机制** <span class="pp">|</span> 直接删除Session <span class="pp">|</span> 需要黑名单机制（复杂） <span class="pp">|</span></span>
+<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **适用场景** <span class="pp">|</span> 传统Web应用 <span class="pp">|</span> REST API、微服务 <span class="pp">|</span></span>
+<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>对于我们的REST API，JWT是更好的选择。</span>
+<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-87"><a href="#cb13-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-88"><a href="#cb13-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：引入JJWT库</span></span>
+<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>在<span class="in">`gradle/libs.versions.toml`</span>中添加：</span>
+<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="in">```toml</span></span>
+<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a><span class="in">[versions]</span></span>
+<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt = "0.12.6"</span></span>
+<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-96"><a href="#cb13-96" aria-hidden="true" tabindex="-1"></a><span class="in">[libraries]</span></span>
+<span id="cb13-97"><a href="#cb13-97" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }</span></span>
+<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }</span></span>
+<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a><span class="in">jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }</span></span>
+<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>在<span class="in">`build.gradle.kts`</span>中添加：</span>
+<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a><span class="in">```kotlin</span></span>
+<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a><span class="in">dependencies {</span></span>
+<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a><span class="in">    // ... 其他依赖</span></span>
+<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a><span class="in">    implementation(libs.jjwt.api)</span></span>
+<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a><span class="in">    runtimeOnly(libs.jjwt.impl)</span></span>
+<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a><span class="in">    runtimeOnly(libs.jjwt.jackson)</span></span>
+<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：实现JwtService（签发和验证护照）</span></span>
+<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>创建一个专门处理JWT的服务类。</span>
+<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`JwtService`</span> 类，使用 <span class="in">`jjwt`</span> 库。</span>
+<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a>功能要求：</span>
+<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`generateToken(username)`</span>: 生成Token，有效期24小时。</span>
+<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`extractUsername(token)`</span>: 从Token提取用户名。</span>
+<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span><span class="in">`isTokenValid(token, username)`</span>: 验证Token有效性。</span>
+<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>注意：使用 <span class="in">`@Value`</span> 注入密钥，不要硬编码。"</span>
+<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码要点</span></span>
+<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**密钥管理**：使用<span class="in">`@Value`</span>从配置文件读取。生产环境中，应使用环境变量或密钥管理服务（如AWS Secrets Manager）。</span>
+<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**密钥长度**：HS256算法要求密钥至少256位（32字节）。示例密钥长度足够，但真实项目应使用随机生成的强密钥。</span>
+<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**过期机制**：设置24小时有效期，过期后Token自动失效。</span>
+<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**异常处理**：任何解析异常（签名不匹配、格式错误、已过期）都返回<span class="in">`false`</span>。</span>
+<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：实现JwtAuthenticationFilter（安检员）</span></span>
+<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>现在我们有了签发和验证Token的能力，但Spring Security还不知道如何使用它。我们需要创建一个**过滤器（Filter）**，在每个请求到达Controller之前，先检查JWT。</span>
+<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`JwtAuthenticationFilter`</span>，继承自 <span class="in">`OncePerRequestFilter`</span>。</span>
+<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a>逻辑如下：</span>
+<span id="cb13-146"><a href="#cb13-146" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>从Header获取 <span class="in">`Authorization`</span>。</span>
+<span id="cb13-147"><a href="#cb13-147" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>如果是 <span class="in">`Bearer `</span> 开头，提取Token。</span>
+<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>使用 <span class="in">`JwtService`</span> 验证Token。</span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>如果有效，创建 <span class="in">`UsernamePasswordAuthenticationToken`</span> 并放入 <span class="in">`SecurityContextHolder`</span>。"</span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a><span class="fu">### 过滤器执行流程</span></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a><span class="in">HTTP请求 </span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a><span class="in">  → JwtAuthenticationFilter（检查Token，设置认证）</span></span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a><span class="in">  → Spring Security其他过滤器</span></span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a><span class="in">  → Controller方法</span></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a><span class="in">  → 返回响应</span></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a>**关键逻辑**：</span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>提取<span class="in">`Authorization: Bearer &lt;token&gt;`</span></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>解析Token，提取用户名</span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>验证Token（签名、有效期）</span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>如果有效，创建<span class="in">`Authentication`</span>对象并放入<span class="in">`SecurityContext`</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>Spring Security看到SecurityContext中有认证对象，就认为用户已登录，放行请求</span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：将JwtFilter集成到Security配置</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`SecurityConfig`</span>，让JWT过滤器在Spring Security的过滤器链中生效。</span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span>：</span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>注入 <span class="in">`JwtAuthenticationFilter`</span>。</span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>使用 <span class="in">`.addFilterBefore()`</span> 将其添加到 <span class="in">`UsernamePasswordAuthenticationFilter`</span> 之前。"</span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：升级登录接口，返回JWT</span></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`AuthController`</span>的<span class="in">`login`</span>方法，返回真正的JWT而非简单字符串。</span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`AuthController`</span> 的 <span class="in">`/login`</span> 接口：</span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>注入 <span class="in">`JwtService`</span>。</span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>认证成功后，调用 <span class="in">`jwtService.generateToken(username)`</span>。</span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>返回包含 Token 的 JSON 响应。"</span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第六步：验证完整流程（Vibe Check）</span></span>
+<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：登录获取Token</span></span>
+<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span>
+<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>**预期输出**：</span>
+<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a><span class="in">```json</span></span>
+<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>  <span class="st">"token"</span><span class="op">:</span> <span class="st">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJpYXQiOjE2OTk5MDAwMDAsImV4cCI6MTY5OTk4NjQwMH0.KziYm9haTvVJ0..."</span><span class="op">,</span></span>
+<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a>  <span class="st">"username"</span><span class="op">:</span> <span class="st">"vibecoder"</span></span>
+<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>**复制这个Token**，待用。</span>
+<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：不带Token访问受保护资源（应该失败）</span></span>
+<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/my-favorites</span>
+<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden</span>
+<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：携带Token访问受保护资源（应该成功）</span></span>
+<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb13-229"><a href="#cb13-229" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> GET http://localhost:8080/api/playlists <span class="dt">\</span></span>
+<span id="cb13-230"><a href="#cb13-230" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer YOUR_TOKEN_HERE"</span></span>
+<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a>将<span class="in">`YOUR_TOKEN_HERE`</span>替换为测试一中获取的Token。</span>
+<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a>**预期结果**：200 OK，返回播放列表数据。</span>
+<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a>**关键**：注意Header格式必须严格为 <span class="in">`Authorization: Bearer &lt;token&gt;`</span>，<span class="in">`Bearer`</span>和Token之间有一个空格。</span>
+<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试四：使用伪造的Token（应该失败）</span></span>
+<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> GET http://localhost:8080/api/playlists <span class="dt">\</span></span>
+<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer fake.token.here"</span></span>
+<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden（因为签名验证失败）</span>
+<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：JWT的安全边界</span></span>
+<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a><span class="fu">### JWT能防御什么？</span></span>
+<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **CSRF攻击**：Token在Header中，浏览器不会自动携带。</span>
+<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **Session劫持**：没有Session，无法劫持。</span>
+<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **篡改攻击**：任何对Payload的修改都会导致签名失效。</span>
+<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a><span class="fu">### JWT不能防御什么？</span></span>
+<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>❌ **XSS攻击**：如果Token存储在<span class="in">`localStorage`</span>，恶意脚本可窃取。</span>
+<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>缓解：使用<span class="in">`httpOnly`</span> Cookie存储（但需重新启用CSRF保护）。</span>
+<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>❌ **Token泄露**：如果Token在网络传输中被截获（需HTTPS）。</span>
+<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>❌ **Token无法主动失效**：JWT生成后，在过期前无法撤销。</span>
+<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>缓解：实现Token黑名单（需额外存储）或缩短过期时间。</span>
+<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a><span class="fu">### 生产环境的最佳实践</span></span>
+<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-268"><a href="#cb13-268" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**密钥管理**：使用强随机密钥，存储在环境变量或密钥管理服务中，绝不提交到Git。</span>
+<span id="cb13-269"><a href="#cb13-269" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**HTTPS强制**：Token在HTTP传输（明文）中容易被截获。</span>
+<span id="cb13-270"><a href="#cb13-270" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**短期Token + Refresh Token**：主Token有效期设为1小时，配合Refresh Token实现长期登录。</span>
+<span id="cb13-271"><a href="#cb13-271" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**添加更多Claims**：如<span class="in">`iss`</span>（签发者）、<span class="in">`aud`</span>（受众）增强验证。</span>
+<span id="cb13-272"><a href="#cb13-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-273"><a href="#cb13-273" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-274"><a href="#cb13-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-275"><a href="#cb13-275" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb13-276"><a href="#cb13-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-277"><a href="#cb13-277" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
+<span id="cb13-278"><a href="#cb13-278" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述四个测试，确保JWT完整流程正常工作。</span>
+<span id="cb13-279"><a href="#cb13-279" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>尝试解码你的Token（访问 <span class="co">[</span><span class="ot">jwt.io</span><span class="co">](https://jwt.io/)</span>，粘贴Token），观察Payload中的内容。</span>
+<span id="cb13-280"><a href="#cb13-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-281"><a href="#cb13-281" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
+<span id="cb13-282"><a href="#cb13-282" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>修改<span class="in">`JwtService`</span>，使Token有效期缩短为5分钟。重新登录获取Token，等待6分钟后再次使用该Token，验证是否返回403。</span>
+<span id="cb13-283"><a href="#cb13-283" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>在<span class="in">`LoginResponse`</span>中添加<span class="in">`expiresIn`</span>字段，告诉前端Token将在多少秒后过期。</span>
+<span id="cb13-284"><a href="#cb13-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-285"><a href="#cb13-285" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
+<span id="cb13-286"><a href="#cb13-286" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为什么JWT不适合存储敏感信息（如信用卡号）？</span>
+<span id="cb13-287"><a href="#cb13-287" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果用户修改了密码，旧的JWT仍然有效（直到过期）。这是否是安全隐患？如何解决？</span>
+<span id="cb13-288"><a href="#cb13-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-289"><a href="#cb13-289" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
+<span id="cb13-290"><a href="#cb13-290" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-291"><a href="#cb13-291" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释HS256和RS256两种JWT签名算法的区别。什么场景下应该用RS256？"</span></span>
+<span id="cb13-292"><a href="#cb13-292" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb13-293"><a href="#cb13-293" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释Refresh Token机制。如果主Token有效期1小时，Refresh Token有效期7天，完整的刷新流程是怎样的？"</span></span>
+<span id="cb13-294"><a href="#cb13-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-295"><a href="#cb13-295" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-296"><a href="#cb13-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-297"><a href="#cb13-297" aria-hidden="true" tabindex="-1"></a>**恭喜！** 你的应用现在拥有了一套完整的无状态认证体系。用户登录一次，就能获得24小时的"免检通行证"。但是，"能进门"不代表"能删别人东西"——下一节，我们将实现细粒度的**授权控制**。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

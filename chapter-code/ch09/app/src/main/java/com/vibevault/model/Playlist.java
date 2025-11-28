@@ -23,17 +23,13 @@ public class Playlist {
     )
     private List<Song> songs = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User owner; // 这是一个新的字段：所有者
-
     // --- 构造函数和方法 ---
     public Playlist(String name) {
         this.name = name;
     }
 
     // JPA需要一个无参的构造函数
-    public Playlist() {}
+    protected Playlist() {}
 
     public Long getId() {
         return id;
@@ -47,10 +43,6 @@ public class Playlist {
         return songs;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void addSong(Song song) {
         songs.add(song);
         song.setPlaylist(this); // 关键：维护双向关系
@@ -60,8 +52,4 @@ public class Playlist {
         songs.remove(song);
         song.setPlaylist(null);
     }
-
-    // Getter/Setter
-    public User getOwner() { return owner; }
-    public void setOwner(User owner) { this.owner = owner; }
 }

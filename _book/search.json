@@ -1963,7 +1963,7 @@
     "href": "chapters/10-security/index.html",
     "title": "第十章：构建安全堡垒：全栈安全五部曲",
     "section": "",
-    "text": "本章危机：裸奔的系统\n打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：它是完全开放的。 想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统。",
+    "text": "本章危机\n打开你第八章完成的代码。虽然它功能完善，但它有一个致命的缺陷：它是完全开放的。\n想象一下，你把家里的钥匙挂在门把手上，然后去上班了。这就是我们现在的系统：\n在Web的世界里，“默认信任”是致命的。我们面临的危机是：如何建立一套完整的安全体系，既能识别”谁是谁”（认证），又能控制”谁能做什么”（授权），还要让用户体验足够流畅（无需每次请求都输入密码）？",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲"
     ]
@@ -1973,7 +1973,7 @@
     "href": "chapters/10-security/index.html#本章危机裸奔的系统",
     "title": "第十章：构建安全堡垒：全栈安全五部曲",
     "section": "",
-    "text": "匿名危机: 谁在敲门？不知道。\n越界危机: 张三可以随意把李四的歌单删得干干净净。\n失忆危机: 即使你问了他是谁，下一秒你就忘了。",
+    "text": "匿名危机: 谁在敲门？不知道。任何人都可以访问所有API。\n越界危机: 张三可以随意把李四的歌单删得干干净净。\n失忆危机: 即使验证了身份，下一秒就忘了，每次请求都要重新验证。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲"
     ]
@@ -1993,7 +1993,7 @@
     "href": "chapters/10-security/10.1-security-crisis.html",
     "title": "10.1 守门人：AI 托管的安全配置",
     "section": "",
-    "text": "第一步：引入依赖\n在解决“谁能进”的问题之前，我们首先要解决“怎么拦”的问题。 Spring Security 是 Java 世界最强大的守门人，但它的配置之复杂也是出了名的。\nVibe Coding 策略：不要试图去记忆那些晦涩的 Filter 链配置。把钥匙交给 AI。\n在 gradle/libs.versions.toml 的 [libraries] 区域添加：\n然后在 build.gradle.kts 的 dependencies 块中添加：\n当你重启应用后，你会发现：所有接口都访问不了了。 这是 Spring Security 的默认行为：宁可错杀三千，绝不放过一个。",
+    "text": "本节危机：裸奔的系统，看不见的威胁\n打开你第八章完成的代码。运行它，访问 http://localhost:8080/api/playlists。一切正常，数据返回了。\n现在，想象一个场景：\n这就是我们现在的处境：一个毫无防备的系统，就像一栋没有门锁的房子，大门敞开，欢迎所有人进来搬走任何东西。\n我们面临的根本问题是：在Web的世界里，“默认信任”是致命的。我们需要一个守门人，一个能够识别”谁在敲门”、“他是否有权进入”的机制。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
       "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
@@ -2059,7 +2059,7 @@
     "href": "chapters/10-security/10.1-security-crisis.html#vibe-check",
     "title": "10.1 守门人：AI 托管的安全配置",
     "section": "Vibe Check",
-    "text": "Vibe Check\n尝试访问 GET /api/playlists。 * 预期: 200 OK (因为我们加了白名单)。 尝试访问 DELETE /api/playlists/1。 * 预期: 403 Forbidden (因为默认拒绝)。\n守门人已经就位。下一步，我们需要给好人发身份证。",
+    "text": "Vibe Check\n尝试访问 GET /api/playlists。\n\n预期: 200 OK (因为我们加了白名单)。 尝试访问 DELETE /api/playlists/1。\n预期: 403 Forbidden (因为默认拒绝)。\n\n守门人已经就位。下一步，我们需要给好人发身份证。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
       "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
@@ -2068,12 +2068,12 @@
   {
     "objectID": "chapters/10-security/10.2-authentication.html",
     "href": "chapters/10-security/10.2-authentication.html",
-    "title": "10.2 身份：建立登录入口",
+    "title": "10.2 身份：建立用户体系与登录入口",
     "section": "",
-    "text": "第一步：定义用户 (User)\n守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。 这就需要：用户 (User) 和 登录 (Login)。\n我们需要一个地方存用户的账号密码。\n以及对应的 UserRepository。",
+    "text": "本节危机：守门人说”不”，但谁是”好人”？\n在上一节,我们成功配置了Spring Security，它现在像一个尽职的保安，拦住了所有陌生人。但问题来了：\n它只会说”不”，却不知道谁是”好人”。\n想象你每天上班，公司保安天天拦住你：“你谁啊？”你说：“我是员工啊！”保安说：“你怎么证明？”这时，你拿出工牌，保安看了一眼，放行。\n在Web应用中，这个”工牌”就是用户身份（User Identity），“给保安看工牌”的过程就是认证（Authentication）。\n我们现在面临的危机是： 1. 系统中没有”用户”的概念，无法区分张三和李四。 2. 没有”登录”机制，守门人Spring Security无从验证身份。 3. 即使用户提供了用户名和密码，我们也没有地方存储和验证。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
-      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立登录入口</span>"
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
     ]
   },
   {
@@ -2134,12 +2134,12 @@
   {
     "objectID": "chapters/10-security/10.3-jwt-passport.html",
     "href": "chapters/10-security/10.3-jwt-passport.html",
-    "title": "10.3 护照：JWT 黑盒组件",
+    "title": "10.3 护照：JWT无状态认证",
     "section": "",
-    "text": "什么是 JWT？\n“Login Success” 这句话虽然好听，但它不能当饭吃。 我们需要给用户发一张数字护照 (JWT)，用户下次来的时候，亮出护照，我们就知道他是谁了。\nJSON Web Token (JWT) 就像一张防伪的身份证。 * Header: 证件类型。 * Payload: 个人信息（我是 vibecoder）。 * Signature: 防伪印章（只有服务器能盖章）。",
+    "text": "本节危机：每次敲门都要重新验证身份？\n在上一节，我们成功实现了登录功能。用户提交用户名和密码，系统验证后返回”登录成功”。\n但这里有个致命的问题：这个”成功”只维持了一瞬间。\n想象你去政府办事：\n这就是我们当前的系统状态。每次用户访问/api/playlists、/api/songs等受保护接口时，都需要重新发送用户名和密码。这显然是荒谬的：\n我们需要一种机制：用户登录一次后，获得一个”通行证”，凭这个通行证在一段时间内（如24小时）自动通过所有安检，无需重复验证身份。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
-      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
     ]
   },
   {
@@ -2211,12 +2211,12 @@
   {
     "objectID": "chapters/10-security/10.4-authorization.html",
     "href": "chapters/10-security/10.4-authorization.html",
-    "title": "10.4 规矩：我的地盘我做主",
+    "title": "10.4 规矩：基于所有权的授权控制",
     "section": "",
-    "text": "业务语义优先\n有了护照，你就能进门了。但这不代表你可以为所欲为。 比如：你不能删别人的歌单。\n这就是 授权 (Authorization)。\n传统的授权代码充斥着 if (user.getId() == playlist.getUserId()) 这种逻辑。 Vibe Coding 提倡：用注解表达业务规则。\n我们希望写出这样的代码：",
+    "text": "本节危机：认证≠授权\n在上一节，我们完成了完整的认证（Authentication）体系。现在，任何持有有效JWT Token的用户都能访问受保护的API。\n但这里隐藏着一个严重的安全隐患：\n场景重现： 1. 用户A（vibecoder）登录，创建了一个歌单”My Precious Playlist”。 2. 用户B（eviluser）也登录了，拿到了自己的JWT Token。 3. 用户B发送请求：DELETE /api/playlists/my-precious-playlist，携带他自己的Token。 4. 因为B的Token是有效的，系统认为他”已认证”，直接执行删除。 5. A的歌单被B删除了。\n问题的本质：我们实现了认证但没有授权。\n我们的系统目前状态：知道用户是谁，但不检查他是否有权执行操作。这就像公司保安看了你的工牌放你进门，但不检查你是否有权进入财务室。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
-      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：我的地盘我做主</span>"
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
     ]
   },
   {
@@ -2266,12 +2266,12 @@
   {
     "objectID": "chapters/10-security/10.5-security-testing.html",
     "href": "chapters/10-security/10.5-security-testing.html",
-    "title": "10.5 握手：全栈大一统",
+    "title": "10.5 握手：全栈安全大一统",
     "section": "",
-    "text": "第一步：打造登录页 (Login.jsx)\n后端已经固若金汤。现在，是时候让第9章的前端应用接入这个安全体系了。 这才是全栈开发的高光时刻。\n回到前端项目。我们需要一个登录界面。",
+    "text": "本节危机：后端固若金汤，前端无从下手\n恭喜！经过前四节的努力，你的后端已经建立了一套完整的安全体系：\n但现在有个问题：你的第9章React前端完全不知道这一切的存在。\n当前状态： * 前端尝试访问GET /api/playlists（需要Token） → 403 Forbidden * 前端想添加歌曲 → 403 Forbidden * 前端甚至不知道如何让用户”登录”\n我们面临的挑战： 1. 前端需要一个登录页面，让用户输入用户名和密码。 2. 登录成功后，前端需要保存JWT Token。 3. 所有后续API请求，前端都要在HTTP Header中携带Token。 4. 如果Token过期或无效，前端要能优雅地处理（如跳转回登录页）。\n这一节，我们将完成全栈应用的最后一环：让React前端和Spring Boot后端，通过JWT实现安全握手。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
-      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈大一统</span>"
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
     ]
   },
   {
@@ -2737,7 +2737,7 @@
     "href": "chapters/10-security/index.html#全栈安全五部曲",
     "title": "第十章：构建安全堡垒：全栈安全五部曲",
     "section": "全栈安全五部曲",
-    "text": "全栈安全五部曲\n本章将打破传统的“后端自嗨”模式，带你完成一次真正的全栈安全闭环：\n\n10.1 守门人 (The Gatekeeper): 使用 AI 托管配置，5分钟内锁住所有的门。\n10.2 身份 (The Identity): 建立用户档案，并开启登录入口。\n10.3 护照 (The Passport): 引入 JWT，让用户拥有“数字护照”。\n10.4 规矩 (The Rules): 用业务语言定义权限（“只有主人能删歌单”）。\n10.5 握手 (The Handshake): [重磅] 回到前端，实现登录页面，打通全栈任督二脉。\n\n\n\n\n\n\n\nTip🛡️ Vibe Security 宣言\n\n\n\n在本章中，我们将采用 “AI 托管配置” 的策略。 安全配置非常繁琐且容易出错，我们将学习如何指挥 AI 生成标准的配置代码，而我们自己则专注于制定安全策略。\n\n\n\n\n\n\n\n\nNote🛠️ 工具链升级：Context7 MCP 与 现代编辑器\n\n\n\nSpring Security 的版本迭代极快（例如从 5.x 到 6.x 的巨大破坏性变更），而通用 LLM 的训练数据往往滞后（常生成已废弃的 WebSecurityConfigurerAdapter）。\n为了确保 AI 生成的代码是最新且可用的，强烈建议升级你的工具链：\n\n使用 Context7 MCP:\n\n这是一个为 LLM 提供实时文档的工具。\n在 Prompt 中加上 use context7，它会自动拉取最新的 Spring Security 官方文档，彻底解决“幻觉”问题。\n例子: “配置 Spring Security 6.1 的 SecurityFilterChain。 use context7”\n\n使用现代 AI 编辑器:\n\nCursor / Trae: 这些编辑器原生集成了 MCP 和上下文感知能力。\n它们能读取你的 pom.xml，知道你用的是 Spring Boot 3.x，从而避免生成 2.x 的旧代码。",
+    "text": "全栈安全五部曲\n本章将打破传统的”后端自嗨”模式，带你完成一次真正的全栈安全闭环。我们将按照以下顺序，一步步构建现代Web应用的安全防线：\n\n10.1 守门人 (The Gatekeeper)\n核心问题: 如何拦住所有未经授权的访问？\n使用Spring Security建立”默认拒绝”的安全策略。你将学会：\n\n配置SecurityFilterChain（Spring Security 6.x最新方式）\n理解CSRF保护和Stateless会话管理\n使用AI托管复杂的安全配置\n\n关键收获: 一行代码锁住所有门，明确指定谁能进。\n\n\n\n10.2 身份 (The Identity)\n核心问题: 系统如何知道”你是谁”？\n建立用户体系和认证机制。你将学会：\n\n创建User实体并关联数据库\n使用BCrypt加密密码（永远不存明文！）\n实现注册和登录接口\n理解真实世界的密码泄露事件（LinkedIn、Adobe、Facebook）\n\n关键收获: 从”匿名系统”进化为”实名系统”。\n\n\n\n10.3 护照 (The Passport)\n核心问题: 用户不可能每次请求都输入密码，怎么办？\n引入JWT（JSON Web Token）无状态认证。你将学会：\n\nJWT的三段式结构（Header + Payload + Signature）\n使用jjwt库生成和验证Token\n实现JwtAuthenticationFilter自动验证身份\n对比JWT vs Session的优劣\n\n关键收获: 登录一次，24小时内自动”免检通行”。\n\n\n\n10.4 规矩 (The Rules)\n核心问题: 能进门，不代表能乱动。谁能删除谁的歌单？\n实现基于所有权的授权控制。你将学会：\n\n区分认证（Authentication）和授权（Authorization）\n建立Playlist-User关联关系\n使用@PreAuthorize注解声明式授权\n对比RBAC、ABAC和Resource-Based三种授权模式\n\n关键收获: 从”能进门”到”只能动自己的东西”。\n\n\n\n10.5 握手 (The Handshake)\n核心问题: 后端安全了，前端怎么对接？\n[重磅章节] 将第9章的React前端接入安全体系。你将学会：\n\n创建Login组件（美观的渐变卡片UI）\n实现Token存储和管理（localStorage）\n在所有API请求中携带JWT\n优雅处理Token过期和401/403错误\n完整的端到端测试流程\n\n关键收获: 打通全栈任督二脉，实现真正的”安全闭环”。",
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲"
     ]
@@ -2894,6 +2894,616 @@
     "crumbs": [
       "第十章：构建安全堡垒：全栈安全五部曲",
       "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT 黑盒组件</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#本节危机裸奔的系统看不见的威胁",
+    "href": "chapters/10-security/10.1-security-crisis.html#本节危机裸奔的系统看不见的威胁",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "",
+    "text": "场景一：恶意删除\n一个陌生人，在地球的另一端，在他的电脑上打开终端，输入：\ncurl -X DELETE http://your-server.com/api/playlists/my-precious-playlist\n你的心血，瞬间消失。\n场景二：数据泄露\n你的应用存储了用户的私人歌单。但因为没有任何保护，任何人都可以通过简单的GET请求，获取所有用户的隐私数据。\n场景三：DDoS攻击\n没有任何限流机制，攻击者可以每秒发送数万次请求，耗尽你的服务器资源，导致合法用户无法访问。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#本节顿悟spring-security默认拒绝的守护者",
+    "href": "chapters/10-security/10.1-security-crisis.html#本节顿悟spring-security默认拒绝的守护者",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "本节顿悟：Spring Security——“默认拒绝”的守护者",
+    "text": "本节顿悟：Spring Security——“默认拒绝”的守护者\nSpring Security是Java生态中最强大、最成熟的安全框架。它的核心哲学是：默认拒绝一切，明确允许部分。\n这与我们之前”默认开放”的开发方式截然相反。在Spring Security的世界观里：\n\n默认状态：所有HTTP请求都被视为”可疑”，一律拦截。\n白名单机制：我们需要明确告诉它：“这些路径（如登录接口）可以让任何人访问。”\n认证要求：对于其他所有路径，必须证明身份（Authentication）才能通过。\n授权检查：即使身份合法，也要检查是否有权限（Authorization）执行特定操作。\n\n这种”零信任”的设计，虽然初期配置略显繁琐，但它为我们的应用筑起了一道坚实的防线。\n\nVibe Coding策略：AI托管配置\nSpring Security的配置代码充斥着各种过滤器链（Filter Chain）、适配器（Adapter）、认证管理器（Authentication Manager）。这些概念抽象且晦涩，而且版本迭代极快。\n例如，Spring Security 5.x 广泛使用的 WebSecurityConfigurerAdapter 在6.x中已被废弃，改用基于Lambda的 SecurityFilterChain。如果你的AI助手训练数据过时，它可能会生成大量无法编译的旧代码。\n我们的策略：\n\n我们负责定义策略：明确说明”哪些路径开放”、“哪些路径需要认证”。\nAI负责生成配置：让AI基于最新文档（通过Context7 MCP）生成符合Spring Security 6.x规范的标准代码。\n我们负责审查：检查关键配置是否符合预期，而不是逐行理解每个API调用。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第一步引入spring-security依赖",
+    "href": "chapters/10-security/10.1-security-crisis.html#第一步引入spring-security依赖",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "第一步：引入Spring Security依赖",
+    "text": "第一步：引入Spring Security依赖\n在gradle/libs.versions.toml的[libraries]区域添加：\n[libraries]\n# ... 其他依赖\nspring-boot-starter-security = { module = \"org.springframework.boot:spring-boot-starter-security\" }\n然后在build.gradle.kts的dependencies块中添加：\ndependencies {\n    // ... 其他依赖\n    implementation(libs.spring.boot.starter.security)\n}\n\n重启应用：见证”默认拒绝”\n保存文件，重启你的Spring Boot应用。然后再次访问 http://localhost:8080/api/playlists。\n惊喜来了：你看到的不再是熟悉的JSON数据，而是一个401 Unauthorized错误页面，或者浏览器弹出一个登录对话框。\n这不是Bug，这是Spring Security的默认行为。它已经自动为你的应用安装了一套完整的安全机制：\n\n默认拦截：所有路径都需要认证。\n自动登录页：Spring自动生成了一个基本的登录表单。\n默认用户：控制台日志中会打印一个随机密码（用户名是user）。\n\n虽然这个默认配置不适合我们的REST API场景（我们需要的是JWT，而不是表单登录），但它清晰地展示了Spring Security的理念：先锁门，再定规矩。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第二步ai托管配置定义我们的安全策略",
+    "href": "chapters/10-security/10.1-security-crisis.html#第二步ai托管配置定义我们的安全策略",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "第二步：AI托管配置——定义我们的安全策略",
+    "text": "第二步：AI托管配置——定义我们的安全策略\n现在，我们需要”驯服”这个过于严格的守门人，让它理解我们的业务规则。\n\n我们的安全策略\n在开始之前，让我们明确定义我们的需求（这是与AI沟通的关键）：\n\n无状态（Stateless）：我们构建的是REST API，不使用Session，所有认证信息通过Token传递。\n白名单路径：\n\n/api/auth/signup 和 /api/auth/login：任何人都可以注册和登录，无需认证。\n暂时允许 /api/playlists（GET请求）匿名访问，方便我们测试。\n\n默认拒绝：除白名单外的所有请求，都必须提供有效的认证凭证。\n禁用CSRF：因为我们使用Token（放在Header），而不是Cookie，所以不需要CSRF保护。\n\n\n\n使用AI生成SecurityConfig\n现在，复制以下Prompt给你的AI助手（如果你使用支持MCP的编辑器，记得添加use context7）：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“我正在使用 Spring Boot 3.2 和 Spring Security 6.x。\n请帮我生成一个完整的 SecurityConfig 配置类，要求如下：\n\n包路径：com.vibevault.config\n无状态（Stateless）：\n\n禁用CSRF保护（因为我们使用Token而非Cookie）\nSession策略设为 STATELESS\n\n白名单：\n\n允许 /api/auth/**（所有认证相关接口）匿名访问\n允许 /api/playlists（仅GET请求）匿名访问\n\n默认拒绝：所有其他请求必须认证（authenticated）\n代码风格：\n\n使用 SecurityFilterChain Bean（不要使用已废弃的 WebSecurityConfigurerAdapter）\n使用Lambda DSL配置风格\n添加详细的中文注释\n\n\n请直接给出完整的Java代码。\nuse context7”\n\n\n\n\n审查AI的输出\nAI应该生成类似以下的代码。请创建文件 com/vibevault/config/SecurityConfig.java，并粘贴AI生成的代码。\n\n\n\n\n\n\nImportant\n\n\n\n不要直接复制下面的代码。Spring Security版本更新极快，API经常变动。请务必使用AI生成的、针对你当前版本的代码。下面的代码仅供参考，用于理解核心配置项。\n\n\n// 参考代码：SecurityConfig的核心结构\n@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n\n    @Bean\n    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {\n        http\n            // 1. 禁用CSRF（因为我们使用Token）\n            .csrf(csrf -&gt; csrf.disable())\n            \n            // 2. 设置无状态Session（不保存用户状态）\n            .sessionManagement(session -&gt; session\n                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)\n            )\n            \n            // 3. 定义白名单和拦截规则\n            .authorizeHttpRequests(auth -&gt; auth\n                .requestMatchers(\"/api/auth/**\").permitAll() // 允许注册/登录\n                .requestMatchers(HttpMethod.GET, \"/api/playlists\").permitAll() // 临时允许查看歌单\n                .anyRequest().authenticated() // 其他所有请求都需要认证\n            );\n\n        return http.build();\n    }\n}\n\n\n代码审查清单\n在使用AI生成的代码前，请务必检查以下关键点：\n\n✅ 是否使用了 SecurityFilterChain Bean，而非废弃的 WebSecurityConfigurerAdapter？\n✅ 是否使用Lambda DSL（auth -&gt; auth...），而非旧式的链式调用？\n✅ 是否包含 .csrf(csrf -&gt; csrf.disable())？\n✅ 是否配置了 SessionCreationPolicy.STATELESS？\n✅ 白名单路径是否正确（/api/auth/** 和 GET /api/playlists）？\n✅ 是否有 .anyRequest().authenticated()作为兜底规则？\n\n如果以上都通过，恭喜！你已经成功配置了Spring Security的第一道防线。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#第三步验证配置vibe-check",
+    "href": "chapters/10-security/10.1-security-crisis.html#第三步验证配置vibe-check",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "第三步：验证配置（Vibe Check）",
+    "text": "第三步：验证配置（Vibe Check）\n重启应用，让我们验证守门人是否按照我们的规则工作。\n\n测试一：白名单路径（应该通过）\n打开浏览器或使用curl，访问：\ncurl http://localhost:8080/api/playlists\n预期结果：200 OK，返回播放列表的JSON数据。（因为我们将GET /api/playlists加入了白名单）\n\n\n测试二：受保护的路径（应该被拦截）\n尝试删除一个播放列表：\ncurl -X DELETE http://localhost:8080/api/playlists/my-favorites\n预期结果：403 Forbidden（禁止访问）。因为DELETE请求不在白名单中，且我们没有提供认证凭证。\n\n\n测试三：检查Session行为\n在浏览器的开发者工具中（F12 → Network），访问API，检查响应头中是否没有 Set-Cookie 字段。\n预期结果：没有Cookie被设置，证明我们的STATELESS配置生效了。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#vibe-deep-dive深入理解核心概念",
+    "href": "chapters/10-security/10.1-security-crisis.html#vibe-deep-dive深入理解核心概念",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "Vibe Deep Dive：深入理解核心概念",
+    "text": "Vibe Deep Dive：深入理解核心概念\n\nCSRF（跨站请求伪造）：为什么我们可以禁用？\n攻击场景（传统Session方式）：\n\n你登录了银行网站A，浏览器存储了Session Cookie。\n你访问了恶意网站B。\n网站B的页面中隐藏了一个表单，自动向银行网站A发送转账请求。\n因为浏览器会自动携带银行网站A的Cookie，请求看起来像是你发出的，攻击成功。\n\n为什么我们不需要CSRF保护？\n我们使用的是Token认证（后续章节会实现），Token存储在localStorage或前端变量中，放在HTTP Header的Authorization字段里发送。浏览器不会自动携带Header，恶意网站无法伪造这个Token。\n例外情况：如果你未来改用Cookie存储Token（不推荐），那么必须重新启用CSRF保护。\n\n\nStateless（无状态）：为什么它是REST API的标配？\n有状态（Stateful）方式的问题：\n\n服务器需要在内存中存储每个用户的登录状态（Session）。\n用户量大时，Session占用大量内存。\n如果你有多台服务器（负载均衡），Session需要在服务器间共享（Session复制或Redis存储），增加复杂度。\n\n无状态（Stateless）的优势：\n\n服务器不存储任何用户状态，每个请求都携带完整的认证信息（JWT Token）。\n服务器可以随意扩展（Scale Out），任何一台服务器都能处理任何一个请求。\n符合REST架构的无状态约束，天然支持分布式部署。\n\n代价：每个请求都要携带Token，网络传输量略微增加（通常几百字节，可以接受）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.1-security-crisis.html#vibe-check动手与思考",
+    "href": "chapters/10-security/10.1-security-crisis.html#vibe-check动手与思考",
+    "title": "10.1 守门人：AI 托管的安全配置",
+    "section": "Vibe Check（动手与思考）",
+    "text": "Vibe Check（动手与思考）\n\n核心练习：\n\n完成上述三个测试，确保白名单和默认拒绝都按预期工作。\n尝试访问一个不存在的路径（如/api/unknown），观察返回的状态码。\n\n编码练习：\n\n如果你希望暂时开放所有/api/playlists/**路径（包括POST、DELETE）用于测试，应该如何修改SecurityConfig？（提示：调整requestMatchers的参数）\n完成后记得改回来，保持安全意识。\n\n思考练习：\n\n如果不禁用CSRF，但又想使用Token认证，Spring Security提供了什么机制？（提示：查阅CookieCsrfTokenRepository）\n为什么生产环境中，白名单路径应该尽可能少？\n\nAI协同：\n\n“请解释Spring Security中@EnableWebSecurity注解的作用。如果不加这个注解，会发生什么？”\n\n\n“Spring Security 6.x相比5.x，在配置方式上有哪些重大变化？请列举至少3个废弃的API和它们的替代方案。”\n\n\n\n守门人已就位。 但他现在只能说”不”，还不能识别”好人”。在下一节，我们将教会他识别身份——建立用户系统和登录机制。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>40</span>  <span class='chapter-title'>10.1 守门人：AI 托管的安全配置</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#本节顿悟构建用户体系身份的数字化",
+    "href": "chapters/10-security/10.2-authentication.html#本节顿悟构建用户体系身份的数字化",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "本节顿悟：构建用户体系=身份的数字化",
+    "text": "本节顿悟：构建用户体系=身份的数字化\n要让守门人能够识别”好人”，我们需要做三件事：\n\n定义”用户”：创建User实体，存储用户的账号密码。\n加密密码：绝不能明文存储密码（这是安全的铁律）。\n提供登录入口：创建API接口，让用户提交身份credentials，系统验证后”放行”。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#为什么绝对不能明文存储密码",
+    "href": "chapters/10-security/10.2-authentication.html#为什么绝对不能明文存储密码",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "为什么绝对不能明文存储密码？",
+    "text": "为什么绝对不能明文存储密码？\n在开始编码前，必须先建立一个安全意识：明文存储密码是编程界的原罪。\n\n真实的灾难案例\n\n2012年LinkedIn数据泄露：650万用户密码被盗，因为使用了不加盐的简单哈希。\n2013年Adobe泄露：1.5亿用户数据泄露，密码虽然加密但方式过时，被迅速破解。\n2019年Facebook事件：数亿用户密码以明文形式存储在内部日志中。\n\n后果： * 用户会在多个网站使用相同密码。一个 网站泄露，攻击者会用这些密码尝试登录银行、邮箱等其他服务（撞库攻击）。 * 公司声誉毁灭性打击，面临巨额罚款（GDPR等法规）。 * 开发者可能承担法律责任。\n\n\n正确的做法：单向加密（哈希）\n我们使用BCrypt算法，它具有以下特点：\n\n单向性：无法从加密后的字符串还原原始密码（即使公司CEO也不知道你的密码）。\n加盐（Salt）：即使两个用户密码相同，存储的加密字符串也不同。\n自适应成本：可以调整计算复杂度，对抗日益强大的暴力破解。\n\n验证流程： 1. 用户注册时：原始密码 → BCrypt加密 → $2a$10$N9qo8...（存入数据库） 2. 用户登录时：提交密码 → BCrypt加密 → 与数据库中的字符串比对 → 匹配则通过",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第一步定义user实体",
+    "href": "chapters/10-security/10.2-authentication.html#第一步定义user实体",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "第一步：定义User实体",
+    "text": "第一步：定义User实体\n我们需要一个地方来存储用户信息。在com.vibevault.model包下创建User.java。\n// 参考代码：User实体的关键部分\n@Entity\n@Table(name = \"users\")\npublic class User {\n    // ... id, username\n\n    @Column(nullable = false)\n    private String password; // ⚠️ 必须存储加密后的哈希值！\n\n    // ... constructors, getters\n}\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我创建一个 JPA 实体 User，包含 id, username (唯一), password 字段。 注意： 1. 表名设为 users。 2. 添加必要的注解、构造函数和 Getter。”\n\n\n\n代码要点\n\n@Table(name = \"users\")：指定表名为users，避免与某些数据库的保留关键字user冲突。\n@Column(unique = true)：确保用户名唯一，数据库层面强制约束。\npassword字段：虽然名为password，但实际存储的是加密后的哈希值（例如60个字符的BCrypt字符串）。\n\n\n\n创建UserRepository\n按照第八章学到的Spring Data JPA模式，创建Repository接口：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“创建一个 UserRepository 接口，继承自 JpaRepository。 添加两个方法： 1. findByUsername：用于登录查找。 2. existsByUsername：用于注册查重。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第二步配置密码加密器",
+    "href": "chapters/10-security/10.2-authentication.html#第二步配置密码加密器",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "第二步：配置密码加密器",
+    "text": "第二步：配置密码加密器\n在SecurityConfig中添加PasswordEncoder Bean。Spring Security会在整个应用中自动使用它。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 SecurityConfig 类，添加一个 PasswordEncoder Bean。 请使用 BCryptPasswordEncoder 作为实现。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第三步实现注册接口sign-up",
+    "href": "chapters/10-security/10.2-authentication.html#第三步实现注册接口sign-up",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "第三步：实现注册接口（Sign Up）",
+    "text": "第三步：实现注册接口（Sign Up）\n创建AuthController，提供注册和登录两个核心接口。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“创建一个 AuthController，处理 /api/auth 路径的请求。 实现 /signup (POST) 接口： 1. 接收用户名和密码。 2. 检查用户名是否存在。 3. 关键：使用 passwordEncoder 加密密码。 4. 保存新用户到数据库。”\n\n\n\n[!NOTE] 这里的关键是加密。请确保AI生成的代码中调用了 passwordEncoder.encode()。\n\n\n安全要点\n\n查重：existsByUsername防止重复注册。\n加密：passwordEncoder.encode()将明文密码转为BCrypt哈希。\n错误处理：使用ResponseStatusException返回409 Conflict（资源冲突）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第四步实现登录接口login",
+    "href": "chapters/10-security/10.2-authentication.html#第四步实现登录接口login",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "第四步：实现登录接口（Login）",
+    "text": "第四步：实现登录接口（Login）\n现在添加登录逻辑。虽然我们还没发放JWT（将在10.3实现），但先打通登录流程。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“在 AuthController 中添加 /login (POST) 接口： 1. 接收用户名和密码。 2. 根据用户名查找用户。 3. 关键：使用 passwordEncoder.matches() 验证密码。 4. 如果成功，返回欢迎消息；如果失败，抛出401异常。”\n\n\n\n关键方法：passwordEncoder.matches()\n\nmatches(rawPassword, encodedPassword)会：\n\n对rawPassword（用户提交的明文密码）执行BCrypt加密\n将结果与数据库中存储的encodedPassword比对\n返回true/false\n\n\n安全设计：无论是”用户不存在”还是”密码错误”，都返回相同的错误消息”用户名或密码错误”。这防止攻击者通过错误消息猜测哪些用户名是有效的（用户名枚举攻击）。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#第五步验证注册与登录vibe-check",
+    "href": "chapters/10-security/10.2-authentication.html#第五步验证注册与登录vibe-check",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "第五步：验证注册与登录（Vibe Check）",
+    "text": "第五步：验证注册与登录（Vibe Check）\n\n测试一：注册新用户\n使用curl或Postman发送POST请求：\ncurl -X POST http://localhost:8080/api/auth/signup \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"secret123\"}'\n预期结果：201 Created，返回”注册成功！用户名: vibecoder”\n\n\n测试二：重复注册（应该失败）\n再次执行上面的命令。\n预期结果：409 Conflict，返回”用户名已被注册”\n\n\n测试三：登录成功\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"secret123\"}'\n预期结果：200 OK，返回”登录成功！欢迎回来，vibecoder”\n\n\n测试四：密码错误（应该失败）\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"wrongpassword\"}'\n预期结果：401 Unauthorized，返回”用户名或密码错误”\n\n\n数据库验证\n打开你的PostgreSQL客户端（参考第八章配置），执行：\nSELECT * FROM users;\n你应该能看到： - id: 自动生成的主键 - username: “vibecoder” - password: 类似$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy的加密字符串\n关键观察：密码字段绝不是”secret123”！它是一个60字符的BCrypt哈希。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#vibe-deep-divebcrypt的魔力",
+    "href": "chapters/10-security/10.2-authentication.html#vibe-deep-divebcrypt的魔力",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "Vibe Deep Dive：BCrypt的魔力",
+    "text": "Vibe Deep Dive：BCrypt的魔力\n\nBCrypt字符串解析\n以$2a$10$N9qo8uLOickgx2ZMRZoMye...为例：\n\n$2a$：BCrypt算法版本标识\n10：成本因子（Cost Factor），表示2^10=1024次哈希迭代\nN9qo8uLOickgx2ZMRZoMye：22字符的盐值（Salt），随机生成\n后面38字符：实际的哈希值\n\n\n\n为什么相同密码每次加密结果不同？\n因为盐值是随机的。即使两个用户密码都是”123456”，存储的哈希字符串也完全不同。这防止了：\n\n彩虹表攻击：攻击者无法预先计算常见密码的哈希值。\n批量破解：即使破解了一个用户的密码，其他用户的哈希仍然安全。\n\n\n\n成本因子的权衡\n\n值越大：计算越慢，越安全（攻击者暴力破解成本更高），但用户登录也会变慢。\n建议值：10-12（现代硬件下，每次加密约100-300ms，可接受）。\n未来调整：随着计算能力提升，可以gradual increase成本因子。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.2-authentication.html#vibe-check动手与思考",
+    "href": "chapters/10-security/10.2-authentication.html#vibe-check动手与思考",
+    "title": "10.2 身份：建立用户体系与登录入口",
+    "section": "Vibe Check（动手与思考）",
+    "text": "Vibe Check（动手与思考）\n\n核心练习：\n\n完成上述四个测试，确保注册和登录功能正常运行。\n使用数据库客户端查看users表，验证密码确实是加密存储的。\n\n编码练习：\n\n添加输入验证：用户名长度应在3-20之间，密码至少8位。（提示：可以使用Jakarta Validation的@Size注解，或在Controller中手动检查）\n改进错误信息：如果用户名或密码为空，返回400 Bad Request而非500 Internal Server Error。\n\n安全思考：\n\n为什么我们在登录失败时不应该明确说”用户名不存在”或”密码错误”？\n如果攻击者每秒尝试1000次登录（暴力破解），应该如何防御？（提示：搜索”Rate Limiting”）\n\nAI协同：\n\n“请解释BCrypt、Argon2和PBKDF2三种密码哈希算法的优缺点。为什么Spring Security默认选择BCrypt？”\n\n\n“如果我想实现’找回密码’功能，在不知道原密码的情况下，应该采用什么流程？（提示：不能告诉用户原密码，只能重置密码）”\n\n\n\n恭喜！ 你的应用现在有了”记忆”——它知道谁是谁了。但是，每次请求都要输入用户名密码吗？当然不。下一节，我们将引入JWT（数字护照），让用户登录一次后，在一段时间内自动”免检通行”。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>41</span>  <span class='chapter-title'>10.2 身份：建立用户体系与登录入口</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#本节危机每次敲门都要重新验证身份",
+    "href": "chapters/10-security/10.3-jwt-passport.html#本节危机每次敲门都要重新验证身份",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "",
+    "text": "你在A窗口办完一件事，工作人员说”好的，您的身份验证通过了”。\n你走到B窗口办下一件事，工作人员说：“先生，请出示您的身份证。”\n你去C窗口、D窗口…每次都要重新验证身份。\n\n\n\n用户体验极差：没人愿意每个操作都输入密码。\n安全风险：密码在网络中频繁传输，增加被截获的风险。\n性能低下：每次请求都要查数据库验证密码，效率低。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#本节顿悟jwt可验证的数字护照",
+    "href": "chapters/10-security/10.3-jwt-passport.html#本节顿悟jwt可验证的数字护照",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "本节顿悟：JWT——可验证的数字护照",
+    "text": "本节顿悟：JWT——可验证的数字护照\nJWT (JSON Web Token) 就是这张”数字护照”。它是一个自包含的、可验证的字符串，包含了：\n\n用户是谁（例如：username = “vibecoder”）\n护照有效期（例如：24小时后过期）\n防伪签名（只有服务器能生成和验证）\n\n\nJWT的结构：三段式防伪证件\n一个JWT长这样：\neyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...KziYm9haTvVJ0\n它由三部分组成（用.分隔）：\n\n1. Header（证件类型）\n{\n  \"alg\": \"HS256\",  // 使用的签名算法\n  \"typ\": \"JWT\"     // 令牌类型\n}\nBase64编码后：eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\n\n\n2. Payload（个人信息）\n{\n  \"sub\": \"vibecoder\",           // subject：用户名\n  \"iat\": 1699900000,            // issued at：签发时间\n  \"exp\": 1699986400             // expiration：过期时间（24小时后）\n}\nBase64编码后：eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...\n\n\n3. Signature（防伪印章）\nHMACSHA256(\n  base64(header) + \".\" + base64(payload),\n  secret_key  // 只有服务器知道的密钥\n)\n关键点：任何人都可以读取JWT的内容（因为只是Base64编码，不是加密）。但只有拥有密钥的服务器才能生成和验证签名。\n比喻：就像护照上的防伪水印。你可以看到护照上的所有信息（姓名、国籍、照片），但你无法伪造那个只有政府才能制作的防伪水印。\n\n\n\nJWT vs Session：为什么选择无状态？\n\n\n\n特性\nSession（有状态）\nJWT（无状态）\n\n\n\n\n存储位置\n服务器内存/Redis\n客户端（浏览器）\n\n\n可扩展性\n需要Session共享机制\n天然支持多服务器\n\n\n网络传输\n只传递Session ID（小）\n每次都传递完整Token（略大）\n\n\n注销机制\n直接删除Session\n需要黑名单机制（复杂）\n\n\n适用场景\n传统Web应用\nREST API、微服务\n\n\n\n对于我们的REST API，JWT是更好的选择。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第一步引入jjwt库",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第一步引入jjwt库",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第一步：引入JJWT库",
+    "text": "第一步：引入JJWT库\n在gradle/libs.versions.toml中添加：\n[versions]\njjwt = \"0.12.6\"\n\n[libraries]\njjwt-api = { module = \"io.jsonwebtoken:jjwt-api\", version.ref = \"jjwt\" }\njjwt-impl = { module = \"io.jsonwebtoken:jjwt-impl\", version.ref = \"jjwt\" }\njjwt-jackson = { module = \"io.jsonwebtoken:jjwt-jackson\", version.ref = \"jjwt\" }\n在build.gradle.kts中添加：\ndependencies {\n    // ... 其他依赖\n    implementation(libs.jjwt.api)\n    runtimeOnly(libs.jjwt.impl)\n    runtimeOnly(libs.jjwt.jackson)\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第二步实现jwtservice签发和验证护照",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第二步实现jwtservice签发和验证护照",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第二步：实现JwtService（签发和验证护照）",
+    "text": "第二步：实现JwtService（签发和验证护照）\n创建一个专门处理JWT的服务类。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“创建一个 JwtService 类，使用 jjwt 库。 功能要求： 1. generateToken(username): 生成Token，有效期24小时。 2. extractUsername(token): 从Token提取用户名。 3. isTokenValid(token, username): 验证Token有效性。 注意：使用 @Value 注入密钥，不要硬编码。”\n\n\n\n代码要点\n\n密钥管理：使用@Value从配置文件读取。生产环境中，应使用环境变量或密钥管理服务（如AWS Secrets Manager）。\n密钥长度：HS256算法要求密钥至少256位（32字节）。示例密钥长度足够，但真实项目应使用随机生成的强密钥。\n过期机制：设置24小时有效期，过期后Token自动失效。\n异常处理：任何解析异常（签名不匹配、格式错误、已过期）都返回false。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第三步实现jwtauthenticationfilter安检员",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第三步实现jwtauthenticationfilter安检员",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第三步：实现JwtAuthenticationFilter（安检员）",
+    "text": "第三步：实现JwtAuthenticationFilter（安检员）\n现在我们有了签发和验证Token的能力，但Spring Security还不知道如何使用它。我们需要创建一个过滤器（Filter），在每个请求到达Controller之前，先检查JWT。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“创建一个 JwtAuthenticationFilter，继承自 OncePerRequestFilter。 逻辑如下： 1. 从Header获取 Authorization。 2. 如果是 Bearer 开头，提取Token。 3. 使用 JwtService 验证Token。 4. 如果有效，创建 UsernamePasswordAuthenticationToken 并放入 SecurityContextHolder。”\n\n\n\n过滤器执行流程\nHTTP请求 \n  → JwtAuthenticationFilter（检查Token，设置认证）\n  → Spring Security其他过滤器\n  → Controller方法\n  → 返回响应\n关键逻辑： 1. 提取Authorization: Bearer &lt;token&gt; 2. 解析Token，提取用户名 3. 验证Token（签名、有效期） 4. 如果有效，创建Authentication对象并放入SecurityContext 5. Spring Security看到SecurityContext中有认证对象，就认为用户已登录，放行请求",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第四步将jwtfilter集成到security配置",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第四步将jwtfilter集成到security配置",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第四步：将JwtFilter集成到Security配置",
+    "text": "第四步：将JwtFilter集成到Security配置\n修改SecurityConfig，让JWT过滤器在Spring Security的过滤器链中生效。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 SecurityConfig： 1. 注入 JwtAuthenticationFilter。 2. 使用 .addFilterBefore() 将其添加到 UsernamePasswordAuthenticationFilter 之前。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第五步升级登录接口返回jwt",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第五步升级登录接口返回jwt",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第五步：升级登录接口，返回JWT",
+    "text": "第五步：升级登录接口，返回JWT\n修改AuthController的login方法，返回真正的JWT而非简单字符串。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 AuthController 的 /login 接口： 1. 注入 JwtService。 2. 认证成功后，调用 jwtService.generateToken(username)。 3. 返回包含 Token 的 JSON 响应。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#第六步验证完整流程vibe-check",
+    "href": "chapters/10-security/10.3-jwt-passport.html#第六步验证完整流程vibe-check",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "第六步：验证完整流程（Vibe Check）",
+    "text": "第六步：验证完整流程（Vibe Check）\n\n测试一：登录获取Token\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"secret123\"}'\n预期输出：\n{\n  \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJpYXQiOjE2OTk5MDAwMDAsImV4cCI6MTY5OTk4NjQwMH0.KziYm9haTvVJ0...\",\n  \"username\": \"vibecoder\"\n}\n复制这个Token，待用。\n\n\n测试二：不带Token访问受保护资源（应该失败）\ncurl -X DELETE http://localhost:8080/api/playlists/my-favorites\n预期结果：403 Forbidden\n\n\n测试三：携带Token访问受保护资源（应该成功）\ncurl -X GET http://localhost:8080/api/playlists \\\n  -H \"Authorization: Bearer YOUR_TOKEN_HERE\"\n将YOUR_TOKEN_HERE替换为测试一中获取的Token。\n预期结果：200 OK，返回播放列表数据。\n关键：注意Header格式必须严格为 Authorization: Bearer &lt;token&gt;，Bearer和Token之间有一个空格。\n\n\n测试四：使用伪造的Token（应该失败）\ncurl -X GET http://localhost:8080/api/playlists \\\n  -H \"Authorization: Bearer fake.token.here\"\n预期结果：403 Forbidden（因为签名验证失败）",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#vibe-deep-divejwt的安全边界",
+    "href": "chapters/10-security/10.3-jwt-passport.html#vibe-deep-divejwt的安全边界",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "Vibe Deep Dive：JWT的安全边界",
+    "text": "Vibe Deep Dive：JWT的安全边界\n\nJWT能防御什么？\n\n✅ CSRF攻击：Token在Header中，浏览器不会自动携带。\n✅ Session劫持：没有Session，无法劫持。\n✅ 篡改攻击：任何对Payload的修改都会导致签名失效。\n\n\n\nJWT不能防御什么？\n\n❌ XSS攻击：如果Token存储在localStorage，恶意脚本可窃取。\n\n缓解：使用httpOnly Cookie存储（但需重新启用CSRF保护）。\n\n❌ Token泄露：如果Token在网络传输中被截获（需HTTPS）。\n❌ Token无法主动失效：JWT生成后，在过期前无法撤销。\n\n缓解：实现Token黑名单（需额外存储）或缩短过期时间。\n\n\n\n\n生产环境的最佳实践\n\n密钥管理：使用强随机密钥，存储在环境变量或密钥管理服务中，绝不提交到Git。\nHTTPS强制：Token在HTTP传输（明文）中容易被截获。\n短期Token + Refresh Token：主Token有效期设为1小时，配合Refresh Token实现长期登录。\n添加更多Claims：如iss（签发者）、aud（受众）增强验证。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.3-jwt-passport.html#vibe-check动手与思考",
+    "href": "chapters/10-security/10.3-jwt-passport.html#vibe-check动手与思考",
+    "title": "10.3 护照：JWT无状态认证",
+    "section": "Vibe Check（动手与思考）",
+    "text": "Vibe Check（动手与思考）\n\n核心练习：\n\n完成上述四个测试，确保JWT完整流程正常工作。\n尝试解码你的Token（访问 jwt.io，粘贴Token），观察Payload中的内容。\n\n编码练习：\n\n修改JwtService，使Token有效期缩短为5分钟。重新登录获取Token，等待6分钟后再次使用该Token，验证是否返回403。\n在LoginResponse中添加expiresIn字段，告诉前端Token将在多少秒后过期。\n\n安全思考：\n\n为什么JWT不适合存储敏感信息（如信用卡号）？\n如果用户修改了密码，旧的JWT仍然有效（直到过期）。这是否是安全隐患？如何解决？\n\nAI协同：\n\n“请解释HS256和RS256两种JWT签名算法的区别。什么场景下应该用RS256？”\n\n\n“请解释Refresh Token机制。如果主Token有效期1小时，Refresh Token有效期7天，完整的刷新流程是怎样的？”\n\n\n\n恭喜！ 你的应用现在拥有了一套完整的无状态认证体系。用户登录一次，就能获得24小时的”免检通行证”。但是，“能进门”不代表”能删别人东西”——下一节，我们将实现细粒度的授权控制。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>42</span>  <span class='chapter-title'>10.3 护照：JWT无状态认证</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#本节危机认证授权",
+    "href": "chapters/10-security/10.4-authorization.html#本节危机认证授权",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "",
+    "text": "认证（Authentication）：证明”你是谁”（Who are you?）\n授权（Authorization）：证明”你能做什么”（What can you do?）",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#本节顿悟业务规则驱动的授权",
+    "href": "chapters/10-security/10.4-authorization.html#本节顿悟业务规则驱动的授权",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "本节顿悟：业务规则驱动的授权",
+    "text": "本节顿悟：业务规则驱动的授权\n对于VibeVault应用，核心业务规则很简单：\n\n用户只能修改或删除他自己创建的歌单。\n\n这是一种基于资源所有权的授权模式。我们需要：\n\n建立关联：Playlist实体需要记录”谁是主人”（owner）。\n在Controller层检查：在删除/修改操作前，验证currentUser == playlist.owner。\n用声明式注解：使用Spring Security的@PreAuthorize，让授权逻辑清晰可读。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第一步重构playlist实体添加所有权关联",
+    "href": "chapters/10-security/10.4-authorization.html#第一步重构playlist实体添加所有权关联",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "第一步：重构Playlist实体，添加所有权关联",
+    "text": "第一步：重构Playlist实体，添加所有权关联\n修改Playlist实体，添加@ManyToOne关联到User。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 Playlist 实体： 1. 添加 @ManyToOne 关联到 User，字段名为 owner。 2. 更新构造函数，要求创建歌单时必须传入 owner。”\n\n\n\n代码要点\n\n@ManyToOne：多个歌单可以属于一个用户。\nFetchType.LAZY：延迟加载owner信息（只有在实际访问playlist.getOwner()时才查询数据库）。\n@JoinColumn(name = \"owner_id\")：数据库中会创建owner_id外键列。\n\n\n\n数据库迁移提示\n这个修改会导致数据库表结构变化。如果你使用Spring Boot的自动DDL（spring.jpa.hibernate.ddl-auto=update），重启应用后Hibernate会自动添加owner_id列。\n但注意：现有的歌单数据（如果有）的owner_id会是NULL，导致违反nullable = false约束。\n两种处理方式： 1. 清空数据重新开始（开发阶段推荐）：删除data目录下的所有.csv文件，或直接DROP TABLE playlists CASCADE; 2. 手动迁移：先将列设为nullable，插入数据后再改为not null。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第二步修改service层传递owner信息",
+    "href": "chapters/10-security/10.4-authorization.html#第二步修改service层传递owner信息",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "第二步：修改Service层，传递Owner信息",
+    "text": "第二步：修改Service层，传递Owner信息\n修改PlaylistService，在创建歌单时需要传入所有者。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 PlaylistService： 1. createPlaylist 方法增加 ownerUsername 参数，根据用户名查找 User 并关联。 2. deletePlaylist 和 addSongToPlaylist 方法增加 currentUsername 参数。 3. 在执行删除或添加歌曲前，检查 playlist.getOwner().getUsername() 是否等于 currentUsername。如果不等，抛出 403 Forbidden 异常。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第三步在controller中获取当前用户",
+    "href": "chapters/10-security/10.4-authorization.html#第三步在controller中获取当前用户",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "第三步：在Controller中获取当前用户",
+    "text": "第三步：在Controller中获取当前用户\n我们需要从JWT Token中提取当前用户信息。Spring Security提供了便捷的方式：通过Authentication对象。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 PlaylistController： 1. 在方法参数中添加 Authentication authentication。 2. 使用 authentication.getName() 获取当前登录的用户名。 3. 将用户名传递给 Service 层的方法。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第四步进阶使用preauthorize注解",
+    "href": "chapters/10-security/10.4-authorization.html#第四步进阶使用preauthorize注解",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "第四步（进阶）：使用@PreAuthorize注解",
+    "text": "第四步（进阶）：使用@PreAuthorize注解\n虽然上面的实现已经工作，但授权逻辑和业务逻辑混在一起。更优雅的方式是使用Spring Security的Method Security。\n\n启用Method Security\n修改SecurityConfig，添加@EnableMethodSecurity注解。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 SecurityConfig，添加 @EnableMethodSecurity 注解，启用方法级安全控制。”\n\n\n\n\n创建授权检查工具类\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“创建一个 SecurityUtils Bean。 实现 isPlaylistOwner(playlistId, username) 方法： 查询数据库，检查指定歌单的 owner 是否与 username 匹配。”\n\n\n\n\n使用@PreAuthorize注解\n现在可以在Controller方法上使用注解：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“在 PlaylistController 的 deletePlaylist 方法上添加注解： @PreAuthorize(\"@securityUtils.isPlaylistOwner(#id, authentication.name)\") 这样只有歌单主人才能调用此接口。”\n\n\nSpEL表达式解析： * @securityUtils：引用Spring容器中的securityUtils Bean * #id：引用方法参数id * authentication.name：当前认证用户的用户名\n优势： * 授权逻辑与业务逻辑分离 * 声明式，易于阅读和维护 * 自动返回403 Forbidden，无需手动抛异常",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#第五步验证授权逻辑vibe-check",
+    "href": "chapters/10-security/10.4-authorization.html#第五步验证授权逻辑vibe-check",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "第五步：验证授权逻辑（Vibe Check）",
+    "text": "第五步：验证授权逻辑（Vibe Check）\n\n测试一：创建用户A的歌单\n# 1. 用户A登录\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"vibecoder\", \"password\": \"secret123\"}'\n\n# 复制返回的token，记为TOKEN_A\n\n# 2. 创建歌单\ncurl -X POST http://localhost:8080/api/playlists \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer TOKEN_A\" \\\n  -d '{\"name\": \"My Private Playlist\"}'\n\n# 返回的响应中应该有歌单ID，假设是1\n\n\n测试二：用户B尝试删除A的歌单（应该失败）\n# 1. 注册并登录用户B\ncurl -X POST http://localhost:8080/api/auth/signup \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"eviluser\", \"password\": \"password123\"}'\n\ncurl -X POST http://localhost:8080/api/auth/login \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"username\": \"eviluser\", \"password\": \"password123\"}'\n\n# 复制返回的token，记为TOKEN_B\n\n# 2. 尝试删除用户A的歌单\ncurl -X DELETE http://localhost:8080/api/playlists/1 \\\n  -H \"Authorization: Bearer TOKEN_B\"\n预期结果：403 Forbidden，返回”您无权删除此歌单”\n\n\n测试三：用户A删除自己的歌单（应该成功）\ncurl -X DELETE http://localhost:8080/api/playlists/1 \\\n  -H \"Authorization: Bearer TOKEN_A\"\n预期结果：204 No Content，歌单被成功删除",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#vibe-deep-dive授权模式对比",
+    "href": "chapters/10-security/10.4-authorization.html#vibe-deep-dive授权模式对比",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "Vibe Deep Dive：授权模式对比",
+    "text": "Vibe Deep Dive：授权模式对比\n\n1. RBAC（基于角色）\n示例：“管理员可以删除任何歌单，普通用户只能删除自己的”\n@PreAuthorize(\"hasRole('ADMIN') or @securityUtils.isPlaylistOwner(#id, authentication.name)\")\n适用场景：企业应用，明确的角色层级（管理员、编辑、访客）\n\n\n2. ABAC（基于属性）\n示例：“只有VIP用户才能创建超过10个歌单”\n@PreAuthorize(\"@userService.isVip(authentication.name) or @userService.getPlaylistCount(authentication.name) &lt; 10\")\n适用场景：复杂的业务规则，多维度属性组合\n\n\n3. Resource-Based（基于资源所有权）\n示例：我们当前的实现\n适用场景：社交应用、个人数据管理",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.4-authorization.html#vibe-check动手与思考",
+    "href": "chapters/10-security/10.4-authorization.html#vibe-check动手与思考",
+    "title": "10.4 规矩：基于所有权的授权控制",
+    "section": "Vibe Check（动手与思考）",
+    "text": "Vibe Check（动手与思考）\n\n核心练习：\n\n完成上述三个测试，确保授权逻辑正常工作。\n尝试用Postman或其他工具测试边界情况（如使用已过期的Token、不存在的歌单ID）。\n\n编码练习：\n\n为addSongToPlaylist方法也添加@PreAuthorize注解，确保只有主人才能添加歌曲。\n实现”协作歌单”功能：允许歌单主人邀请其他用户共同编辑。（提示：需要添加playlist_collaborators关联表）\n\n安全思考：\n\n如果我们希望实现”歌单可以设为公开或私密”，应该如何修改授权逻辑？\n当前实现中，如果SecurityUtils.isPlaylistOwner方法查询数据库失败（如数据库宕机），会发生什么？\n\nAI协同：\n\n“请解释Spring Security中@PreAuthorize和@PostAuthorize的区别。什么场景下应该使用@PostAuthorize？”\n\n\n“请解释RBAC和ABAC两种授权模型。在VibeVault应用中，如果要实现’只有付费用户才能创建超过5个歌单’，应该用哪种模型？如何实现？”\n\n\n\n完美！ 现在你的应用既知道”谁是谁”（认证），也知道”谁能做什么”（授权）。在下一节，我们将完成全栈的最后一环：将第9章的React前端接入这个安全体系，实现真正的登录界面和Token管理，打通全栈任督二脉。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>43</span>  <span class='chapter-title'>10.4 规矩：基于所有权的授权控制</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#本节危机后端固若金汤前端无从下手",
+    "href": "chapters/10-security/10.5-security-testing.html#本节危机后端固若金汤前端无从下手",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "",
+    "text": "✅ Spring Security守门（10.1）\n✅ 用户认证系统（10.2）\n✅ JWT无状态认证（10.3）\n✅ 基于所有权的授权（10.4）",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第一步创建login组件",
+    "href": "chapters/10-security/10.5-security-testing.html#第一步创建login组件",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第一步：创建Login组件",
+    "text": "第一步：创建Login组件\n回到你第9章创建的React项目（vibevault-frontend）。让我们创建一个登录页面。\n\n使用AI生成Login组件\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我创建一个React登录组件 Login.jsx，要求如下：\n\nUI设计：\n\n深色主题背景（#1a1a2e）\n渐变卡片容器\n用户名和密码输入框\n登录按钮（悬停时有动画效果）\n错误信息展示（红色，明显）\n\n功能要求：\n\n使用useState管理username, password, error状态\n点击登录按钮后，发送POST请求到 http://localhost:8080/api/auth/login\n如果成功（200 OK），将返回的token存入localStorage\n存储Token后，使用window.location.href = '/'跳转到主页\n如果失败，显示错误信息（如”用户名或密码错误”）\n\n代码风格：\n\n使用函数组件和Hooks\n添加详细注释\n使用async/await处理异步\n\n\n请提供完整代码。”\n\n\n\n\n参考实现\nAI应该生成类似以下的代码：\n// Create: vibevault-frontend/src/Login.jsx\nimport { useState } from 'react';\nimport './Login.css';\n\nfunction Login() {\n  const [username, setUsername] = useState('');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n  const [loading, setLoading] = useState(false);\n\n  const handleLogin = async (e) =&gt; {\n    e.preventDefault(); // 防止表单默认提交行为\n    setError(''); // 清空之前的错误\n    setLoading(true);\n\n    try {\n      const response = await fetch('http://localhost:8080/api/auth/login', {\n        method: 'POST',\n        headers: {\n          'Content-Type': 'application/json',\n        },\n        body: JSON.stringify({ username, password }),\n      });\n\n      if (!response.ok) {\n        // HTTP状态码不是2xx，视为失败\n        throw new Error('用户名或密码错误');\n      }\n\n      const data = await response.json();\n      \n      // 将Token存储到localStorage\n      localStorage.setItem('jwtToken', data.token);\n      localStorage.setItem('username', data.username);\n\n      // 跳转到主页\n      window.location.href = '/';\n    } catch (err) {\n      setError(err.message);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  return (\n    &lt;div className=\"login-container\"&gt;\n      &lt;div className=\"login-card\"&gt;\n        &lt;h1&gt;🎵 VibeVault&lt;/h1&gt;\n        &lt;h2&gt;登录&lt;/h2&gt;\n        \n        &lt;form onSubmit={handleLogin}&gt;\n          &lt;div className=\"input-group\"&gt;\n            &lt;label htmlFor=\"username\"&gt;用户名&lt;/label&gt;\n            &lt;input\n              type=\"text\"\n              id=\"username\"\n              value={username}\n              onChange={(e) =&gt; setUsername(e.target.value)}\n              required\n              autoComplete=\"username\"\n            /&gt;\n          &lt;/div&gt;\n\n          &lt;div className=\"input-group\"&gt;\n            &lt;label htmlFor=\"password\"&gt;密码&lt;/label&gt;\n            &lt;input\n              type=\"password\"\n              id=\"password\"\n              value={password}\n              onChange={(e) =&gt; setPassword(e.target.value)}\n              required\n              autoComplete=\"current-password\"\n            /&gt;\n          &lt;/div&gt;\n\n          {error && &lt;div className=\"error-message\"&gt;{error}&lt;/div&gt;}\n\n          &lt;button type=\"submit\" disabled={loading}&gt;\n            {loading ? '登录中...' : '登录'}\n          &lt;/button&gt;\n        &lt;/form&gt;\n\n        &lt;p className=\"hint\"&gt;\n          没有账号？请先使用API注册（curl命令）\n        &lt;/p&gt;\n      &lt;/div&gt;\n    &lt;/div&gt;\n  );\n}\n\nexport default Login;\n\n\n创建样式文件\n/* Create: vibevault-frontend/src/Login.css */\n.login-container {\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\n}\n\n.login-card {\n  background: rgba(255, 255, 255, 0.1);\n  backdrop-filter: blur(10px);\n  border-radius: 20px;\n  padding: 40px;\n  width: 100%;\n  max-width: 400px;\n  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);\n  border: 1px solid rgba(255, 255, 255, 0.18);\n}\n\n.login-card h1 {\n  color: #00d4ff;\n  text-align: center;\n  margin-bottom: 10px;\n  font-size: 2.5rem;\n}\n\n.login-card h2 {\n  color: white;\n  text-align: center;\n  margin-bottom: 30px;\n  font-weight: 300;\n}\n\n.input-group {\n  margin-bottom: 20px;\n}\n\n.input-group label {\n  display: block;\n  color: #b3b3b3;\n  margin-bottom: 8px;\n  font-size: 0.9rem;\n}\n\n.input-group input {\n  width: 100%;\n  padding: 12px 15px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 10px;\n  color: white;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n}\n\n.input-group input:focus {\n  outline: none;\n  border-color: #00d4ff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.error-message {\n  background: rgba(255, 71, 87, 0.2);\n  border: 1px solid #ff4757;\n  color: #ff4757;\n  padding: 12px;\n  border-radius: 10px;\n  margin-bottom: 20px;\n  text-align: center;\n  font-size: 0.9rem;\n}\n\nbutton[type=\"submit\"] {\n  width: 100%;\n  padding: 15px;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  border: none;\n  border-radius: 10px;\n  color: white;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: transform 0.2s ease, box-shadow 0.2s ease;\n}\n\nbutton[type=\"submit\"]:hover:not(:disabled) {\n  transform: translateY(-2px);\n  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);\n}\n\nbutton[type=\"submit\"]:disabled {\n  opacity: 0.6;\n  cursor: not-allowed;\n}\n\n.hint {\n  color: #888;\n  text-align: center;\n  margin-top: 20px;\n  font-size: 0.9rem;\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第二步修改app.jsx添加登录路由",
+    "href": "chapters/10-security/10.5-security-testing.html#第二步修改app.jsx添加登录路由",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第二步：修改App.jsx，添加登录路由",
+    "text": "第二步：修改App.jsx，添加登录路由\n现在我们需要配置路由：未登录时显示登录页，已登录时显示歌单列表。\n// Modify: vibevault-frontend/src/App.jsx\nimport { useEffect, useState } from 'react';\nimport Login from './Login';\nimport PlaylistList from './PlaylistList'; // 假设这是你第9章创建的组件\nimport './App.css';\n\nfunction App() {\n  const [isLoggedIn, setIsLoggedIn] = useState(false);\n\n  useEffect(() =&gt; {\n    // 检查localStorage中是否有Token\n    const token = localStorage.getItem('jwtToken');\n    setIsLoggedIn(!!token); // 双重否定转为布尔值\n  }, []);\n\n  const handleLogout = () =&gt; {\n    localStorage.removeItem('jwtToken');\n    localStorage.removeItem('username');\n    setIsLoggedIn(false);\n  };\n\n  if (!isLoggedIn) {\n    return &lt;Login /&gt;;\n  }\n\n  return (\n    &lt;div className=\"app\"&gt;\n      &lt;header&gt;\n        &lt;h1&gt;🎵 VibeVault&lt;/h1&gt;\n        &lt;div className=\"user-info\"&gt;\n          &lt;span&gt;欢迎, {localStorage.getItem('username')}&lt;/span&gt;\n          &lt;button onClick={handleLogout} className=\"logout-btn\"&gt;\n            退出登录\n          &lt;/button&gt;\n        &lt;/div&gt;\n      &lt;/header&gt;\n      &lt;PlaylistList /&gt;\n    &lt;/div&gt;\n  );\n}\n\nexport default App;",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第三步修改playlistlist携带token",
+    "href": "chapters/10-security/10.5-security-testing.html#第三步修改playlistlist携带token",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第三步：修改PlaylistList，携带Token",
+    "text": "第三步：修改PlaylistList，携带Token\n关键时刻到了！我们需要修改第9章的PlaylistList组件，让它在每个请求中携带JWT Token。\n// Modify: vibevault-frontend/src/PlaylistList.jsx\nimport { useEffect, useState } from 'react';\n\nfunction PlaylistList() {\n  const [playlists, setPlaylists] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState('');\n\n  useEffect(() =&gt; {\n    fetchPlaylists();\n  }, []);\n\n  const fetchPlaylists = async () =&gt; {\n    try {\n      // 从localStorage读取Token\n      const token = localStorage.getItem('jwtToken');\n\n      const response = await fetch('http://localhost:8080/api/playlists', {\n        method: 'GET',\n        headers: {\n          'Content-Type': 'application/json',\n          // 关键：添加Authorization header\n          'Authorization': `Bearer ${token}`,\n        },\n      });\n\n      // 检查响应状态\n      if (response.status === 401 || response.status === 403) {\n        // Token无效或过期，清空并跳转到登录页\n        localStorage.removeItem('jwtToken');\n        localStorage.removeItem('username');\n        window.location.href = '/';\n        return;\n      }\n\n      if (!response.ok) {\n        throw new Error('Failed to fetch playlists');\n      }\n\n      const data = await response.json();\n      setPlaylists(data);\n    } catch (err) {\n      setError(err.message);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  if (loading) return &lt;div&gt;加载中...&lt;/div&gt;;\n  if (error) return &lt;div className=\"error\"&gt;错误: {error}&lt;/div&gt;;\n\n  return (\n    &lt;div className=\"playlist-container\"&gt;\n      &lt;h2&gt;我的歌单&lt;/h2&gt;\n      {playlists.length === 0 ? (\n        &lt;p&gt;还没有歌单，快去创建一个吧！&lt;/p&gt;\n      ) : (\n        &lt;ul className=\"playlist-list\"&gt;\n          {playlists.map((playlist) =&gt; (\n            &lt;li key={playlist.name}&gt;\n              &lt;strong&gt;{playlist.name}&lt;/strong&gt;\n              &lt;span&gt;({playlist.songs.length} 首歌曲)&lt;/span&gt;\n            &lt;/li&gt;\n          ))}\n        &lt;/ul&gt;\n      )}\n    &lt;/div&gt;\n  );\n}\n\nexport default PlaylistList;",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第四步进阶创建api工具函数统一token管理",
+    "href": "chapters/10-security/10.5-security-testing.html#第四步进阶创建api工具函数统一token管理",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第四步（进阶）：创建API工具函数，统一Token管理",
+    "text": "第四步（进阶）：创建API工具函数，统一Token管理\n重复的Authorization: Bearer ${token}代码很快会让你的项目变得混乱。更优雅的做法是创建一个工具函数。\n// Create: vibevault-frontend/src/utils/api.js\n\nconst API_BASE_URL = 'http://localhost:8080/api';\n\n/**\n * 通用的API请求函数\n * 自动添加JWT Token到请求头\n */\nexport async function apiRequest(endpoint, options = {}) {\n  const token = localStorage.getItem('jwtToken');\n\n  const defaultHeaders = {\n    'Content-Type': 'application/json',\n  };\n\n  // 如果有Token，添加到Authorization header\n  if (token) {\n    defaultHeaders['Authorization'] = `Bearer ${token}`;\n  }\n\n  const config = {\n    ...options,\n    headers: {\n      ...defaultHeaders,\n      ...options.headers,\n    },\n  };\n\n  const response = await fetch(`${API_BASE_URL}${endpoint}`, config);\n\n  // 统一处理401/403（未授权）\n  if (response.status === 401 || response.status === 403) {\n    // Token无效，清空并刷新页面（会触发显示登录页）\n    localStorage.removeItem('jwtToken');\n    localStorage.removeItem('username');\n    window.location.reload();\n    throw new Error('未授权，请重新登录');\n  }\n\n  // 检查其他错误\n  if (!response.ok) {\n    const errorData = await response.json().catch(() =&gt; ({}));\n    throw new Error(errorData.message || `请求失败: ${response.status}`);\n  }\n\n  return response.json();\n}\n\n// 便捷的GET请求\nexport const apiGet = (endpoint) =&gt; apiRequest(endpoint, { method: 'GET' });\n\n// 便捷的POST请求\nexport const apiPost = (endpoint, data) =&gt;\n  apiRequest(endpoint, {\n    method: 'POST',\n    body: JSON.stringify(data),\n  });\n\n// 便捷的DELETE请求\nexport const apiDelete = (endpoint) =&gt;\n  apiRequest(endpoint, { method: 'DELETE' });\n\n使用工具函数简化PlaylistList\n// Modify: vibevault-frontend/src/PlaylistList.jsx\nimport { useEffect, useState } from 'react';\nimport { apiGet } from './utils/api';\n\nfunction PlaylistList() {\n  const [playlists, setPlaylists] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState('');\n\n  useEffect(() =&gt; {\n    fetchPlaylists();\n  }, []);\n\n  const fetchPlaylists = async () =&gt; {\n    try {\n      // 使用工具函数，自动处理Token和错误\n      const data = await apiGet('/playlists');\n      setPlaylists(data);\n    } catch (err) {\n      setError(err.message);\n    } finally {\n      setLoading(false);\n    }\n  };\n\n  // ... 其余代码保持不变\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第五步终极验证the-final-vibe-check",
+    "href": "chapters/10-security/10.5-security-testing.html#第五步终极验证the-final-vibe-check",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第五步：终极验证（The Final Vibe Check）",
+    "text": "第五步：终极验证（The Final Vibe Check）\n\n测试一：完整登录流程\n\n确保后端运行：./gradlew bootRun（在chapter-code/ch10目录）\n确保前端运行：npm run dev（在vibevault-frontend目录）\n注册用户（使用curl或Postman）： bash     curl -X POST http://localhost:8080/api/auth/signup \\       -H \"Content-Type: application/json\" \\       -d '{\"username\": \"testuser\", \"password\": \"password123\"}'\n打开浏览器，访问 http://localhost:5173\n应该看到登录页（因为没有Token）\n输入用户名和密码，点击登录\n应该跳转到主页，显示”欢迎, testuser”\n\n\n\n测试二：Token持久化\n\n登录后，刷新页面（F5）\n应该仍然显示主页，不会跳回登录页（因为Token保存在localStorage）\n打开开发者工具（F12） → Application → Local Storage\n应该能看到：jwtToken和username两个键值对\n\n\n\n测试三：退出登录\n\n点击”退出登录”按钮\n应该清空Token并跳转回登录页\n\n\n\n测试四：Token过期处理\n\n修改后端，将JWT有效期改为10秒（在JwtService.java中）\n登录后，等待11秒\n尝试刷新页面或点击其他功能\n应该自动跳转回登录页（因为Token过期，API返回403）",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#vibe-deep-dive前端token存储的安全权衡",
+    "href": "chapters/10-security/10.5-security-testing.html#vibe-deep-dive前端token存储的安全权衡",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "Vibe Deep Dive：前端Token存储的安全权衡",
+    "text": "Vibe Deep Dive：前端Token存储的安全权衡\n\nLocalStorage vs HttpOnly Cookie\n\n\n\n\n\n\n\n\n\n存储方式\n优点\n缺点\n适用场景\n\n\n\n\nlocalStorage\n• 前端完全控制• 易于实现和调试• 支持跨域\n• 易受XSS攻击• 无法设置过期时间\n中小型项目、学习Demo\n\n\nhttpOnly Cookie\n• 防御XSS攻击• 浏览器自动管理\n• 需要重新启用CSRF保护• 跨域配置复杂\n企业级应用、高安全需求\n\n\n\n当前选择：我们使用localStorage，因为： 1. 简单易懂，适合学习 2. 前端能完全控制Token（便于调试） 3. 配合HTTPS和CSP（Content Security Policy），风险可控\n生产环境建议： * 对于高安全要求的应用（如银行应用），使用httpOnly Cookie + CSRF Token * 对于一般Web应用，localStorage + HTTPS + CSP是可接受的方案\n\n\nReact中的Protected Route模式\n更专业的做法是使用React Router创建”受保护路由”：\n// 示例：使用React Router的Protected Route\nimport { Navigate } from 'react-router-dom';\n\nfunction ProtectedRoute({ children }) {\n  const token = localStorage.getItem('jwtToken');\n  \n  if (!token) {\n    return &lt;Navigate to=\"/login\" replace /&gt;;\n  }\n  \n  return children;\n}\n\n// 在路由配置中使用\n&lt;Route path=\"/playlists\" element={\n  &lt;ProtectedRoute&gt;\n    &lt;PlaylistList /&gt;\n  &lt;/ProtectedRoute&gt;\n} /&gt;",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#恭喜你已经完成了全栈安全闭环",
+    "href": "chapters/10-security/10.5-security-testing.html#恭喜你已经完成了全栈安全闭环",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "恭喜！你已经完成了全栈安全闭环",
+    "text": "恭喜！你已经完成了全栈安全闭环\n让我们回顾一下这趟旅程：\n\n后端（Spring Boot）\n\n✅ 10.1 守门人：Spring Security拦截所有未认证请求\n✅ 10.2 身份：User实体 + BCrypt密码加密 + 注册/登录接口\n✅ 10.3 护照：JWT生成和验证 + JwtFilter自动验身份\n✅ 10.4 规矩：基于所有权的授权 + @PreAuthorize注解\n\n\n\n前端（React）\n\n✅ 登录界面：美观的Login组件\n✅ Token管理：存储、携带、自动清理\n✅ 错误处理：401/403自动跳转登录\n✅ 用户体验：持久登录状态 + 退出功能\n\n\n\n系统特性\n\n无状态：服务器不存储Session，天然支持水平扩展\n安全：密码BCrypt加密，Token签名防篡改\n用户友好：一次登录24小时有效，无需频繁输入密码\n权限控制：用户只能操作自己的资源",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#vibe-check动手与思考",
+    "href": "chapters/10-security/10.5-security-testing.html#vibe-check动手与思考",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "Vibe Check（动手与思考）",
+    "text": "Vibe Check（动手与思考）\n\n核心练习：\n\n完成上述四个测试，确保完整的登录流程工作正常。\n使用浏览器开发者工具的Network标签，观察登录请求的Request/Response，验证Token是否正确传递。\n\n编码练习：\n\n添加”注册”功能到前端：创建Signup.jsx组件，让用户可以在界面上注册（而不是用curl）。\n为删除歌单添加确认对话框：“确定要删除吗？此操作不可撤销。”\n实现”记住我”功能：添加一个复选框，勾选时Token有效期延长到7天。\n\n安全思考：\n\n如果攻击者在浏览器控制台执行localStorage.getItem('jwtToken')，他能拿到Token吗？这是XSS攻击的一种形式吗？如何防御？\n如果用户在多个设备登录（手机、电脑），当前的JWT方案能支持”在其他设备强制下线”吗？为什么？如何实现？\n\nAI协同：\n\n“请解释OAuth 2.0和JWT的关系。如果我要实现’使用Google账号登录VibeVault’，应该使用哪种方案？”\n\n\n“请解释CSP (Content Security Policy) 如何帮助防御XSS攻击。给我一个适合VibeVault应用的CSP配置示例。”\n\n\n\n你已经完成了一个真正的、可投入使用的全栈Web应用！ 它有：\n\n完整的前后端分离架构\n安全的用户认证和授权体系\n优雅的无状态Token方案\n专业的错误处理和用户体验\n\n下一章，我们将把这个应用打包、部署到云端，让全世界的人都能访问你的VibeVault。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#本章特色vibe-security理念",
+    "href": "chapters/10-security/index.html#本章特色vibe-security理念",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "本章特色：Vibe Security理念",
+    "text": "本章特色：Vibe Security理念\n在本章中，我们采用“AI托管配置”策略：\n\n我们定义策略：“哪些路径开放”、“谁能操作什么资源”\nAI生成代码: 基于最新文档（Context7 MCP）生成标准配置\n我们审查验证: 检查关键配置，而非逐行理解每个API\n\n\n为什么需要AI辅助？\nSpring Security的版本迭代极快（例如从5.x到6.x的巨大破坏性变更），而LLM的训练数据往往滞后。常见问题：\n\n❌ AI生成已废弃的WebSecurityConfigurerAdapter（5.x）\n❌ 使用String密钥而非SecretKey（旧版jjwt）\n❌ 配置方法签名已变化，代码无法编译\n\n解决方案：\n\n\n\n\n\n\nTip🛠️ 工具链升级：Context7 MCP\n\n\n\n使用Context7 MCP确保AI生成最新代码：\n\n在Prompt中添加use context7\nContext7会自动拉取Spring Security 6.x和jjwt 0.12.x的最新文档\nAI生成的代码符合当前版本规范，避免”幻觉”\n\n示例Prompt:\n\n“请生成Spring Security 6.x的SecurityFilterChain配置，要求使用Lambda DSL，禁用CSRF，设为STATELESS。use context7”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#技术栈",
+    "href": "chapters/10-security/index.html#技术栈",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "技术栈",
+    "text": "技术栈\n本章涉及的核心技术：\n\n\n\n技术\n版本\n作用\n\n\n\n\nSpring Security\n6.x\n安全框架\n\n\nBCrypt\n内置\n密码加密\n\n\njjwt\n0.12.6\nJWT生成和验证\n\n\nReact\n18.x\n前端登录界面\n\n\nPostgreSQL\n15.x\n用户数据存储",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#学习路径",
+    "href": "chapters/10-security/index.html#学习路径",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "学习路径",
+    "text": "学习路径\ngraph LR\n    A[10.1 守门人&lt;br/&gt;SecurityConfig] --&gt; B[10.2 身份&lt;br/&gt;User + BCrypt]\n    B --&gt; C[10.3 护照&lt;br/&gt;JWT Token]\n    C --&gt; D[10.4 规矩&lt;br/&gt;Authorization]\n    D --&gt; E[10.5 握手&lt;br/&gt;React集成]\n    E --&gt; F[完整的安全Web应用]\n    \n    style A fill:#667eea\n    style B fill:#764ba2\n    style C fill:#f093fb\n    style D fill:#4facfe\n    style E fill:#00f2fe\n    style F fill:#43e97b",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#完成本章后你将拥有",
+    "href": "chapters/10-security/index.html#完成本章后你将拥有",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "完成本章后，你将拥有",
+    "text": "完成本章后，你将拥有\n✅ 后端： - Spring Security守门，默认拒绝未认证请求 - User实体 + BCrypt密码加密 - JWT无状态认证（24小时有效期） - 基于所有权的授权控制\n✅ 前端： - 美观的登录界面（深色主题 + 渐变效果） - Token自动管理和携带 - 优雅的错误处理（401/403自动跳转）\n✅ 全栈集成： - 完整的登录 → 获取Token → 访问API → 退出 流程 - 生产级的安全最佳实践\n✅ 安全意识： - 永远不明文存储密码 - JWT的安全边界（能防御什么，不能防御什么） - localStorage vs httpOnly Cookie的权衡 - RBAC vs ABAC授权模式对比\n\n准备好了吗？ 让我们从10.1”守门人”开始，为你的VibeVault应用筑起第一道防线！",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#本章危机",
+    "href": "chapters/10-security/index.html#本章危机",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "",
+    "text": "匿名危机: 谁在敲门？不知道。任何人都可以访问所有API。\n越界危机: 张三可以随意把李四的歌单删得干干净净。\n失忆危机: 即使验证了身份，下一秒就忘了，每次请求都要重新验证。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/index.html#本章顿悟",
+    "href": "chapters/10-security/index.html#本章顿悟",
+    "title": "第十章：构建安全堡垒：全栈安全五部曲",
+    "section": "本章顿悟",
+    "text": "本章顿悟\n要保护我们的应用，我们需要构建一个五层防护体系，从”锁门”到”发护照”，从”定规矩”到”前后端握手”。\n这不是后端的独角戏。真正的安全，是全栈的安全闭环。\n在本章中，我们将采用“AI托管配置”策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：\n\n用业务语言定义安全策略\n指挥AI生成符合最新标准的配置代码（使用Context7 MCP）\n专注于理解核心概念，而非记忆API细节\n\n通过本章，你将完成：\n\n守门人：Spring Security: 配置”默认拒绝”策略，锁住所有未认证请求。理解CSRF和Stateless的本质。\n身份：用户认证: 创建User实体，使用BCrypt加密密码，实现注册和登录。学习真实世界的密码安全事件。\n护照：JWT无状态认证: 引入JWT Token，让用户登录一次后24小时内”免检通行”。理解JWT vs Session的权衡。\n规矩：授权控制: 实现”只有主人能删自己歌单”的业务规则。使用@PreAuthorize注解声明式授权。\n握手：全栈集成: [重磅] 创建React登录组件，实现Token管理，打通前后端安全闭环。\n\n完成本章后，你的VibeVault将拥有一套生产级的安全体系，从后端的Spring Security到前端的Login界面，从密码加密到Token管理，从认证到授权——这是一个真正可以上线的Web应用的安全基础。",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第一步配置cors跨域资源共享",
+    "href": "chapters/10-security/10.5-security-testing.html#第一步配置cors跨域资源共享",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第一步：配置CORS（跨域资源共享）",
+    "text": "第一步：配置CORS（跨域资源共享）\n在连接前端之前，我们必须解决一个浏览器安全机制带来的问题：跨域（CORS）。 前端运行在 http://localhost:5173，后端运行在 http://localhost:8080。默认情况下，浏览器禁止这种跨域请求。\n修改 SecurityConfig.java，允许来自前端的请求：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 SecurityConfig，配置 CORS（跨域资源共享）。 要求： 1. 允许来自 http://localhost:5173 的请求。 2. 允许 GET, POST, PUT, DELETE, OPTIONS 方法。 3. 允许所有 Headers。 4. 允许携带 Credentials。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第二步创建login组件",
+    "href": "chapters/10-security/10.5-security-testing.html#第二步创建login组件",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第二步：创建Login组件",
+    "text": "第二步：创建Login组件\n回到你第9章创建的React项目（vibevault-frontend）。让我们创建一个登录页面。\n\n使用AI生成Login组件\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我创建一个React登录组件 Login.jsx，要求如下：\n\nUI设计：\n\n深色主题背景（#1a1a2e）\n渐变卡片容器\n用户名和密码输入框\n登录按钮（悬停时有动画效果）\n错误信息展示（红色，明显）\n\n功能要求：\n\n使用useState管理username, password, error状态\n点击登录按钮后，发送POST请求到 http://localhost:8080/api/auth/login\n如果成功（200 OK），将返回的token存入localStorage\n存储Token后，使用window.location.href = '/'跳转到主页\n如果失败，显示错误信息（如”用户名或密码错误”）\n\n代码风格：\n\n使用函数组件和Hooks\n添加详细注释\n使用async/await处理异步\n\n\n请提供完整代码。”\n\n\n\n\n参考实现\nAI应该生成类似以下的代码：\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“请帮我创建一个React登录组件 Login.jsx，要求如下： 1. UI设计：深色主题，美观的卡片式设计。 2. 功能： * 包含用户名和密码输入框。 * 提交时 POST 到 /api/auth/login。 * 成功后，将 token 和 username 存入 localStorage。 * 关键：调用父组件传入的 onLoginSuccess(username) 回调函数，而不是直接跳转。”\n\n\n\n\n创建样式文件\n/* Create: vibevault-frontend/src/Login.css */\n.login-container {\n  min-height: 100vh;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);\n}\n\n.login-card {\n  background: rgba(255, 255, 255, 0.1);\n  backdrop-filter: blur(10px);\n  border-radius: 20px;\n  padding: 40px;\n  width: 100%;\n  max-width: 400px;\n  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);\n  border: 1px solid rgba(255, 255, 255, 0.18);\n}\n\n.login-card h1 {\n  color: #00d4ff;\n  text-align: center;\n  margin-bottom: 10px;\n  font-size: 2.5rem;\n}\n\n.login-card h2 {\n  color: white;\n  text-align: center;\n  margin-bottom: 30px;\n  font-weight: 300;\n}\n\n.input-group {\n  margin-bottom: 20px;\n}\n\n.input-group label {\n  display: block;\n  color: #b3b3b3;\n  margin-bottom: 8px;\n  font-size: 0.9rem;\n}\n\n.input-group input {\n  width: 100%;\n  padding: 12px 15px;\n  background: rgba(255, 255, 255, 0.05);\n  border: 1px solid rgba(255, 255, 255, 0.2);\n  border-radius: 10px;\n  color: white;\n  font-size: 1rem;\n  transition: all 0.3s ease;\n}\n\n.input-group input:focus {\n  outline: none;\n  border-color: #00d4ff;\n  background: rgba(255, 255, 255, 0.1);\n}\n\n.error-message {\n  background: rgba(255, 71, 87, 0.2);\n  border: 1px solid #ff4757;\n  color: #ff4757;\n  padding: 12px;\n  border-radius: 10px;\n  margin-bottom: 20px;\n  text-align: center;\n  font-size: 0.9rem;\n}\n\nbutton[type=\"submit\"] {\n  width: 100%;\n  padding: 15px;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  border: none;\n  border-radius: 10px;\n  color: white;\n  font-size: 1.1rem;\n  font-weight: 600;\n  cursor: pointer;\n  transition: transform 0.2s ease, box-shadow 0.2s ease;\n}\n\nbutton[type=\"submit\"]:hover:not(:disabled) {\n  transform: translateY(-2px);\n  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);\n}\n\nbutton[type=\"submit\"]:disabled {\n  opacity: 0.6;\n  cursor: not-allowed;\n}\n\n.hint {\n  color: #888;\n  text-align: center;\n  margin-top: 20px;\n  font-size: 0.9rem;\n}",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第三步修改app.jsx管理登录状态",
+    "href": "chapters/10-security/10.5-security-testing.html#第三步修改app.jsx管理登录状态",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第三步：修改App.jsx，管理登录状态",
+    "text": "第三步：修改App.jsx，管理登录状态\n现在我们需要配置路由：未登录时显示登录页，已登录时显示歌单列表。\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 App.jsx 以支持登录状态管理： 1. 使用 useState 管理 isAuthenticated 和 currentUser。 2. 初始化时检查 localStorage 中是否有 Token。 3. 如果未登录，渲染 &lt;Login /&gt; 组件。 4. 如果已登录，渲染主界面，并显示 ‘欢迎, username’ 和 ‘退出’ 按钮。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第四步修改api工具统一token管理",
+    "href": "chapters/10-security/10.5-security-testing.html#第四步修改api工具统一token管理",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第四步：修改API工具，统一Token管理",
+    "text": "第四步：修改API工具，统一Token管理\n\n\n\n\n\n\nTip🤖 AI Prompt\n\n\n\n“修改 src/utils/api.js，创建一个通用的 handleResponse 函数： 1. 检查 401/403 状态码：如果遇到，清除 Token 并刷新页面（强制登出）。 2. 检查其他错误状态码：抛出错误。 3. 关键：健壮地解析响应体。先读取 text()，如果为空则返回 null，否则 JSON.parse()。 4. 更新 apiGet, apiPost, apiDelete，自动在 Header 中添加 Authorization: Bearer &lt;token&gt;。”",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第五步验证全栈集成",
+    "href": "chapters/10-security/10.5-security-testing.html#第五步验证全栈集成",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第五步：验证全栈集成",
+    "text": "第五步：验证全栈集成",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-security/10.5-security-testing.html#第六步终极验证the-final-vibe-check",
+    "href": "chapters/10-security/10.5-security-testing.html#第六步终极验证the-final-vibe-check",
+    "title": "10.5 握手：全栈安全大一统",
+    "section": "第六步：终极验证（The Final Vibe Check）",
+    "text": "第六步：终极验证（The Final Vibe Check）\n\n测试一：完整登录流程\n\n确保后端运行：./gradlew bootRun（在chapter-code/ch10目录）\n确保前端运行：npm run dev（在vibevault-frontend目录）\n注册用户（使用curl或Postman）： bash     curl -X POST http://localhost:8080/api/auth/signup \\       -H \"Content-Type: application/json\" \\       -d '{\"username\": \"testuser\", \"password\": \"password123\"}'\n打开浏览器，访问 http://localhost:5173\n应该看到登录页（因为没有Token）\n输入用户名和密码，点击登录\n应该跳转到主页，显示”欢迎, testuser”\n\n\n\n测试二：Token持久化\n\n登录后，刷新页面（F5）\n应该仍然显示主页，不会跳回登录页（因为Token保存在localStorage）\n打开开发者工具（F12） → Application → Local Storage\n应该能看到：jwtToken和username两个键值对\n\n\n\n测试三：退出登录\n\n点击”退出登录”按钮\n应该清空Token并跳转回登录页\n\n\n\n测试四：Token过期处理\n\n修改后端，将JWT有效期改为10秒（在JwtService.java中）\n登录后，等待11秒\n尝试刷新页面或点击其他功能\n应该自动跳转回登录页（因为Token过期，API返回403）",
+    "crumbs": [
+      "第十章：构建安全堡垒：全栈安全五部曲",
+      "<span class='chapter-number'>44</span>  <span class='chapter-title'>10.5 握手：全栈安全大一统</span>"
     ]
   }
 ]

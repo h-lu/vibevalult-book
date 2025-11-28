@@ -1,67 +1,272 @@
-# 10.2 身份：建立登录入口
+# 10.2 身份：建立用户体系与登录入口
 
-守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。
-这就需要：**用户 (User)** 和 **登录 (Login)**。
+> "在数字世界里，你就是你的密码。" —— 身份认证的本质
 
-## 第一步：定义用户 (User)
+## 本节危机：守门人说"不"，但谁是"好人"？
 
-我们需要一个地方存用户的账号密码。
+在上一节,我们成功配置了Spring Security，它现在像一个尽职的保安，拦住了所有陌生人。但问题来了：
 
-::: {.callout-tip}
-## 🤖 AI Prompt
-"请在 `com.vibevault.model` 包下创建一个 `User` 实体。
-要求：
-1.  表名 `users`。
-2.  字段：`id` (Long), `username` (String, unique), `password` (String)。
-3.  使用 JPA 注解。"
-:::
+**它只会说"不"，却不知道谁是"好人"。**
 
-以及对应的 `UserRepository`。
+想象你每天上班，公司保安天天拦住你："你谁啊？"你说："我是员工啊！"保安说："你怎么证明？"这时，你拿出工牌，保安看了一眼，放行。
 
-## 第二步：密码加密 (BCrypt)
+在Web应用中，这个"工牌"就是**用户身份（User Identity）**，"给保安看工牌"的过程就是**认证（Authentication）**。
 
-**绝对不要存储明文密码！**
-在 `SecurityConfig` 中添加加密器：
+**我们现在面临的危机是：**
+1.  系统中没有"用户"的概念，无法区分张三和李四。
+2.  没有"登录"机制，守门人Spring Security无从验证身份。
+3.  即使用户提供了用户名和密码，我们也没有地方存储和验证。
+
+## 本节顿悟：构建用户体系=身份的数字化
+
+要让守门人能够识别"好人"，我们需要做三件事：
+
+1.  **定义"用户"**：创建User实体，存储用户的账号密码。
+2.  **加密密码**：绝不能明文存储密码（这是安全的铁律）。
+3.  **提供登录入口**：创建API接口，让用户提交身份credentials，系统验证后"放行"。
+
+---
+
+## 为什么绝对不能明文存储密码？
+
+在开始编码前，必须先建立一个安全意识：**明文存储密码是编程界的原罪。**
+
+### 真实的灾难案例
+
+*   **2012年LinkedIn数据泄露**：650万用户密码被盗，因为使用了不加盐的简单哈希。
+*   **2013年Adobe泄露**：1.5亿用户数据泄露，密码虽然加密但方式过时，被迅速破解。
+*   **2019年Facebook事件**：数亿用户密码以明文形式存储在内部日志中。
+
+**后果**：
+*   用户会在多个网站使用相同密码。一个
+网站泄露，攻击者会用这些密码尝试登录银行、邮箱等其他服务（撞库攻击）。
+*   公司声誉毁灭性打击，面临巨额罚款（GDPR等法规）。
+*   开发者可能承担法律责任。
+
+### 正确的做法：单向加密（哈希）
+
+我们使用**BCrypt**算法，它具有以下特点：
+
+1.  **单向性**：无法从加密后的字符串还原原始密码（即使公司CEO也不知道你的密码）。
+2.  **加盐（Salt）**：即使两个用户密码相同，存储的加密字符串也不同。
+3.  **自适应成本**：可以调整计算复杂度，对抗日益强大的暴力破解。
+
+**验证流程**：
+1.  用户注册时：`原始密码` → BCrypt加密 → `$2a$10$N9qo8...`（存入数据库）
+2.  用户登录时：提交密码 → BCrypt加密 → 与数据库中的字符串比对 → 匹配则通过
+
+---
+
+## 第一步：定义User实体
+
+我们需要一个地方来存储用户信息。在`com.vibevault.model`包下创建`User.java`。
 
 ```java
-@Bean
-public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+// 参考代码：User实体的关键部分
+@Entity
+@Table(name = "users")
+public class User {
+    // ... id, username
+
+    @Column(nullable = false)
+    private String password; // ⚠️ 必须存储加密后的哈希值！
+
+    // ... constructors, getters
 }
 ```
 
-## 第三步：注册接口 (Sign Up)
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请帮我创建一个 JPA 实体 `User`，包含 `id`, `username` (唯一), `password` 字段。
+注意：
+1. 表名设为 `users`。
+2. 添加必要的注解、构造函数和 Getter。"
+:::
 
-我们需要一个接口让用户注册。
+### 代码要点
+
+*   `@Table(name = "users")`：指定表名为`users`，避免与某些数据库的保留关键字`user`冲突。
+*   `@Column(unique = true)`：确保用户名唯一，数据库层面强制约束。
+*   `password`字段：虽然名为password，但实际存储的是加密后的哈希值（例如60个字符的BCrypt字符串）。
+
+### 创建UserRepository
+
+按照第八章学到的Spring Data JPA模式，创建Repository接口：
 
 ::: {.callout-tip}
 ## 🤖 AI Prompt
-"请创建 `AuthController`，实现 `POST /api/auth/signup`。
-逻辑：
-1.  接收 username, password。
-2.  查重：如果 username 存在，抛异常。
-3.  **加密**：使用 `passwordEncoder.encode(password)`。
-4.  保存 User。"
+"创建一个 `UserRepository` 接口，继承自 `JpaRepository`。
+添加两个方法：
+1. `findByUsername`：用于登录查找。
+2. `existsByUsername`：用于注册查重。"
 :::
 
-## 第四步：登录接口 (Login) - 关键一步
+---
 
-这是前端对接的核心。虽然我们还没发 JWT，但我们要先打通登录流程。
+## 第二步：配置密码加密器
+
+在`SecurityConfig`中添加`PasswordEncoder` Bean。Spring Security会在整个应用中自动使用它。
 
 ::: {.callout-tip}
 ## 🤖 AI Prompt
-"请在 `AuthController` 中添加 `login` 方法 (`POST /api/auth/login`)。
-逻辑：
-1.  接收 username, password。
-2.  查用户：不存在则抛异常。
-3.  **验密**：使用 `passwordEncoder.matches(raw, encoded)`。
-4.  如果成功，返回字符串 'Login Success'。"
+"修改 `SecurityConfig` 类，添加一个 `PasswordEncoder` Bean。
+请使用 `BCryptPasswordEncoder` 作为实现。"
 :::
 
-## Vibe Check
+---
 
-1.  **注册**: 用 curl 发送 POST 请求到 `/signup`。
-2.  **登录**: 用 curl 发送 POST 请求到 `/login`。
-3.  **验证**: 确保登录成功返回 200 OK。
+## 第三步：实现注册接口（Sign Up）
 
-现在，后端已经准备好迎接前端的登录请求了。下一步，我们将把 "Login Success" 换成真正的数字护照——JWT。
+创建`AuthController`，提供注册和登录两个核心接口。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"创建一个 `AuthController`，处理 `/api/auth` 路径的请求。
+实现 `/signup` (POST) 接口：
+1. 接收用户名和密码。
+2. 检查用户名是否存在。
+3. **关键**：使用 `passwordEncoder` 加密密码。
+4. 保存新用户到数据库。"
+:::
+
+> [!NOTE]
+> 这里的关键是**加密**。请确保AI生成的代码中调用了 `passwordEncoder.encode()`。
+
+### 安全要点
+
+*   **查重**：`existsByUsername`防止重复注册。
+*   **加密**：`passwordEncoder.encode()`将明文密码转为BCrypt哈希。
+*   **错误处理**：使用`ResponseStatusException`返回409 Conflict（资源冲突）。
+
+---
+
+## 第四步：实现登录接口（Login）
+
+现在添加登录逻辑。虽然我们还没发放JWT（将在10.3实现），但先打通登录流程。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"在 `AuthController` 中添加 `/login` (POST) 接口：
+1. 接收用户名和密码。
+2. 根据用户名查找用户。
+3. **关键**：使用 `passwordEncoder.matches()` 验证密码。
+4. 如果成功，返回欢迎消息；如果失败，抛出401异常。"
+:::
+
+### 关键方法：`passwordEncoder.matches()`
+
+*   `matches(rawPassword, encodedPassword)`会：
+    1.  对`rawPassword`（用户提交的明文密码）执行BCrypt加密
+    2.  将结果与数据库中存储的`encodedPassword`比对
+    3.  返回true/false
+
+**安全设计**：无论是"用户不存在"还是"密码错误"，都返回相同的错误消息"用户名或密码错误"。这防止攻击者通过错误消息猜测哪些用户名是有效的（用户名枚举攻击）。
+
+---
+
+## 第五步：验证注册与登录（Vibe Check）
+
+### 测试一：注册新用户
+
+使用`curl`或Postman发送POST请求：
+
+```bash
+curl -X POST http://localhost:8080/api/auth/signup \
+  -H "Content-Type: application/json" \
+  -d '{"username": "vibecoder", "password": "secret123"}'
+```
+
+**预期结果**：201 Created，返回"注册成功！用户名: vibecoder"
+
+### 测试二：重复注册（应该失败）
+
+再次执行上面的命令。
+
+**预期结果**：409 Conflict，返回"用户名已被注册"
+
+### 测试三：登录成功
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "vibecoder", "password": "secret123"}'
+```
+
+**预期结果**：200 OK，返回"登录成功！欢迎回来，vibecoder"
+
+### 测试四：密码错误（应该失败）
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "vibecoder", "password": "wrongpassword"}'
+```
+
+**预期结果**：401 Unauthorized，返回"用户名或密码错误"
+
+### 数据库验证
+
+打开你的PostgreSQL客户端（参考第八章配置），执行：
+
+```sql
+SELECT * FROM users;
+```
+
+你应该能看到：
+- `id`: 自动生成的主键
+- `username`: "vibecoder"
+- `password`: 类似`$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy`的加密字符串
+
+**关键观察**：密码字段绝不是"secret123"！它是一个60字符的BCrypt哈希。
+
+---
+
+## Vibe Deep Dive：BCrypt的魔力
+
+### BCrypt字符串解析
+
+以`$2a$10$N9qo8uLOickgx2ZMRZoMye...`为例：
+
+*   `$2a$`：BCrypt算法版本标识
+*   `10`：成本因子（Cost Factor），表示2^10=1024次哈希迭代
+*   `N9qo8uLOickgx2ZMRZoMye`：22字符的盐值（Salt），随机生成
+*   后面38字符：实际的哈希值
+
+### 为什么相同密码每次加密结果不同？
+
+因为**盐值是随机的**。即使两个用户密码都是"123456"，存储的哈希字符串也完全不同。这防止了：
+
+*   **彩虹表攻击**：攻击者无法预先计算常见密码的哈希值。
+*   **批量破解**：即使破解了一个用户的密码，其他用户的哈希仍然安全。
+
+### 成本因子的权衡
+
+*   **值越大**：计算越慢，越安全（攻击者暴力破解成本更高），但用户登录也会变慢。
+*   **建议值**：10-12（现代硬件下，每次加密约100-300ms，可接受）。
+*   **未来调整**：随着计算能力提升，可以gradual increase成本因子。
+
+---
+
+## Vibe Check（动手与思考）
+
+1.  **核心练习**：
+    *   完成上述四个测试，确保注册和登录功能正常运行。
+    *   使用数据库客户端查看`users`表，验证密码确实是加密存储的。
+
+2.  **编码练习**：
+    *   添加输入验证：用户名长度应在3-20之间，密码至少8位。（提示：可以使用Jakarta Validation的`@Size`注解，或在Controller中手动检查）
+    *   改进错误信息：如果用户名或密码为空，返回400 Bad Request而非500 Internal Server Error。
+
+3.  **安全思考**：
+    *   为什么我们在登录失败时不应该明确说"用户名不存在"或"密码错误"？
+    *   如果攻击者每秒尝试1000次登录（暴力破解），应该如何防御？（提示：搜索"Rate Limiting"）
+
+4.  **AI协同**：
+    
+    > "请解释BCrypt、Argon2和PBKDF2三种密码哈希算法的优缺点。为什么Spring Security默认选择BCrypt？"
+    
+    > "如果我想实现'找回密码'功能，在不知道原密码的情况下，应该采用什么流程？（提示：不能告诉用户原密码，只能重置密码）"
+
+---
+
+**恭喜！** 你的应用现在有了"记忆"——它知道谁是谁了。但是，每次请求都要输入用户名密码吗？当然不。下一节，我们将引入**JWT（数字护照）**，让用户登录一次后，在一段时间内自动"免检通行"。

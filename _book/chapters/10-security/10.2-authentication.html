@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10.2 身份：建立登录入口 – VibeVault: 一场现代Java全栈之旅</title>
+<title>10.2 身份：建立用户体系与登录入口 – VibeVault: 一场现代Java全栈之旅</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -132,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.2-authentication.html"><span class="chapter-title">10.2 身份：建立登录入口</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.2-authentication.html"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -478,22 +478,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">10.2 身份：建立登录入口</span></a>
+  <a href="../../chapters/10-security/10.2-authentication.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.3 数字护照：JWT无状态认证</span></a>
+  <a href="../../chapters/10-security/10.3-jwt-passport.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.3 护照：JWT无状态认证</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 第二道防线：授权</span></a>
+  <a href="../../chapters/10-security/10.4-authorization.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.4 规矩：基于所有权的授权控制</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 完成闭环：前端对接 (Frontend Integration)</span></a>
+  <a href="../../chapters/10-security/10.5-security-testing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">10.5 握手：全栈安全大一统</span></a>
   </div>
 </li>
       </ul>
@@ -559,9 +559,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.2-authentication.html"><span class="chapter-title">10.2 身份：建立登录入口</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/10-security/index.html">第十章：构建安全堡垒：全栈安全五部曲</a></li><li class="breadcrumb-item"><a href="../../chapters/10-security/10.2-authentication.html"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></a></li></ol></nav>
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">10.2 身份：建立登录入口</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-title">10.2 身份：建立用户体系与登录入口</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -578,75 +578,278 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。 这就需要：<strong>用户 (User)</strong> 和 <strong>登录 (Login)</strong>。</p>
-<section id="第一步定义用户-user" class="level2">
-<h2 class="anchored" data-anchor-id="第一步定义用户-user">第一步：定义用户 (User)</h2>
-<p>我们需要一个地方存用户的账号密码。</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>🤖 AI Prompt
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“请在 <code>com.vibevault.model</code> 包下创建一个 <code>User</code> 实体。 要求： 1. 表名 <code>users</code>。 2. 字段：<code>id</code> (Long), <code>username</code> (String, unique), <code>password</code> (String)。 3. 使用 JPA 注解。”</p>
-</div>
-</div>
-<p>以及对应的 <code>UserRepository</code>。</p>
+<blockquote class="blockquote">
+<p>“在数字世界里，你就是你的密码。” —— 身份认证的本质</p>
+</blockquote>
+<section id="本节危机守门人说不但谁是好人" class="level2">
+<h2 class="anchored" data-anchor-id="本节危机守门人说不但谁是好人">本节危机：守门人说”不”，但谁是”好人”？</h2>
+<p>在上一节,我们成功配置了Spring Security，它现在像一个尽职的保安，拦住了所有陌生人。但问题来了：</p>
+<p><strong>它只会说”不”，却不知道谁是”好人”。</strong></p>
+<p>想象你每天上班，公司保安天天拦住你：“你谁啊？”你说：“我是员工啊！”保安说：“你怎么证明？”这时，你拿出工牌，保安看了一眼，放行。</p>
+<p>在Web应用中，这个”工牌”就是<strong>用户身份（User Identity）</strong>，“给保安看工牌”的过程就是<strong>认证（Authentication）</strong>。</p>
+<p><strong>我们现在面临的危机是：</strong> 1. 系统中没有”用户”的概念，无法区分张三和李四。 2. 没有”登录”机制，守门人Spring Security无从验证身份。 3. 即使用户提供了用户名和密码，我们也没有地方存储和验证。</p>
 </section>
-<section id="第二步密码加密-bcrypt" class="level2">
-<h2 class="anchored" data-anchor-id="第二步密码加密-bcrypt">第二步：密码加密 (BCrypt)</h2>
-<p><strong>绝对不要存储明文密码！</strong> 在 <code>SecurityConfig</code> 中添加加密器：</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">@Bean</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> PasswordEncoder <span class="fu">passwordEncoder</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">BCryptPasswordEncoder</span><span class="op">();</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="第三步注册接口-sign-up" class="level2">
-<h2 class="anchored" data-anchor-id="第三步注册接口-sign-up">第三步：注册接口 (Sign Up)</h2>
-<p>我们需要一个接口让用户注册。</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>🤖 AI Prompt
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“请创建 <code>AuthController</code>，实现 <code>POST /api/auth/signup</code>。 逻辑： 1. 接收 username, password。 2. 查重：如果 username 存在，抛异常。 3. <strong>加密</strong>：使用 <code>passwordEncoder.encode(password)</code>。 4. 保存 User。”</p>
-</div>
-</div>
-</section>
-<section id="第四步登录接口-login---关键一步" class="level2">
-<h2 class="anchored" data-anchor-id="第四步登录接口-login---关键一步">第四步：登录接口 (Login) - 关键一步</h2>
-<p>这是前端对接的核心。虽然我们还没发 JWT，但我们要先打通登录流程。</p>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>🤖 AI Prompt
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>“请在 <code>AuthController</code> 中添加 <code>login</code> 方法 (<code>POST /api/auth/login</code>)。 逻辑： 1. 接收 username, password。 2. 查用户：不存在则抛异常。 3. <strong>验密</strong>：使用 <code>passwordEncoder.matches(raw, encoded)</code>。 4. 如果成功，返回字符串 ‘Login Success’。”</p>
-</div>
-</div>
-</section>
-<section id="vibe-check" class="level2">
-<h2 class="anchored" data-anchor-id="vibe-check">Vibe Check</h2>
+<section id="本节顿悟构建用户体系身份的数字化" class="level2">
+<h2 class="anchored" data-anchor-id="本节顿悟构建用户体系身份的数字化">本节顿悟：构建用户体系=身份的数字化</h2>
+<p>要让守门人能够识别”好人”，我们需要做三件事：</p>
 <ol type="1">
-<li><strong>注册</strong>: 用 curl 发送 POST 请求到 <code>/signup</code>。</li>
-<li><strong>登录</strong>: 用 curl 发送 POST 请求到 <code>/login</code>。</li>
-<li><strong>验证</strong>: 确保登录成功返回 200 OK。</li>
+<li><strong>定义”用户”</strong>：创建User实体，存储用户的账号密码。</li>
+<li><strong>加密密码</strong>：绝不能明文存储密码（这是安全的铁律）。</li>
+<li><strong>提供登录入口</strong>：创建API接口，让用户提交身份credentials，系统验证后”放行”。</li>
 </ol>
-<p>现在，后端已经准备好迎接前端的登录请求了。下一步，我们将把 “Login Success” 换成真正的数字护照——JWT。</p>
+<hr>
+</section>
+<section id="为什么绝对不能明文存储密码" class="level2">
+<h2 class="anchored" data-anchor-id="为什么绝对不能明文存储密码">为什么绝对不能明文存储密码？</h2>
+<p>在开始编码前，必须先建立一个安全意识：<strong>明文存储密码是编程界的原罪。</strong></p>
+<section id="真实的灾难案例" class="level3">
+<h3 class="anchored" data-anchor-id="真实的灾难案例">真实的灾难案例</h3>
+<ul>
+<li><strong>2012年LinkedIn数据泄露</strong>：650万用户密码被盗，因为使用了不加盐的简单哈希。</li>
+<li><strong>2013年Adobe泄露</strong>：1.5亿用户数据泄露，密码虽然加密但方式过时，被迅速破解。</li>
+<li><strong>2019年Facebook事件</strong>：数亿用户密码以明文形式存储在内部日志中。</li>
+</ul>
+<p><strong>后果</strong>： * 用户会在多个网站使用相同密码。一个 网站泄露，攻击者会用这些密码尝试登录银行、邮箱等其他服务（撞库攻击）。 * 公司声誉毁灭性打击，面临巨额罚款（GDPR等法规）。 * 开发者可能承担法律责任。</p>
+</section>
+<section id="正确的做法单向加密哈希" class="level3">
+<h3 class="anchored" data-anchor-id="正确的做法单向加密哈希">正确的做法：单向加密（哈希）</h3>
+<p>我们使用<strong>BCrypt</strong>算法，它具有以下特点：</p>
+<ol type="1">
+<li><strong>单向性</strong>：无法从加密后的字符串还原原始密码（即使公司CEO也不知道你的密码）。</li>
+<li><strong>加盐（Salt）</strong>：即使两个用户密码相同，存储的加密字符串也不同。</li>
+<li><strong>自适应成本</strong>：可以调整计算复杂度，对抗日益强大的暴力破解。</li>
+</ol>
+<p><strong>验证流程</strong>： 1. 用户注册时：<code>原始密码</code> → BCrypt加密 → <code>$2a$10$N9qo8...</code>（存入数据库） 2. 用户登录时：提交密码 → BCrypt加密 → 与数据库中的字符串比对 → 匹配则通过</p>
+<hr>
+</section>
+</section>
+<section id="第一步定义user实体" class="level2">
+<h2 class="anchored" data-anchor-id="第一步定义user实体">第一步：定义User实体</h2>
+<p>我们需要一个地方来存储用户信息。在<code>com.vibevault.model</code>包下创建<code>User.java</code>。</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java code-with-copy"><code class="sourceCode java"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 参考代码：User实体的关键部分</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">@Entity</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">@Table</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"users"</span><span class="op">)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> User <span class="op">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... id, username</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Column</span><span class="op">(</span>nullable <span class="op">=</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> password<span class="op">;</span> <span class="co">// ⚠️ 必须存储加密后的哈希值！</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... constructors, getters</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“请帮我创建一个 JPA 实体 <code>User</code>，包含 <code>id</code>, <code>username</code> (唯一), <code>password</code> 字段。 注意： 1. 表名设为 <code>users</code>。 2. 添加必要的注解、构造函数和 Getter。”</p>
+</div>
+</div>
+<section id="代码要点" class="level3">
+<h3 class="anchored" data-anchor-id="代码要点">代码要点</h3>
+<ul>
+<li><code>@Table(name = "users")</code>：指定表名为<code>users</code>，避免与某些数据库的保留关键字<code>user</code>冲突。</li>
+<li><code>@Column(unique = true)</code>：确保用户名唯一，数据库层面强制约束。</li>
+<li><code>password</code>字段：虽然名为password，但实际存储的是加密后的哈希值（例如60个字符的BCrypt字符串）。</li>
+</ul>
+</section>
+<section id="创建userrepository" class="level3">
+<h3 class="anchored" data-anchor-id="创建userrepository">创建UserRepository</h3>
+<p>按照第八章学到的Spring Data JPA模式，创建Repository接口：</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“创建一个 <code>UserRepository</code> 接口，继承自 <code>JpaRepository</code>。 添加两个方法： 1. <code>findByUsername</code>：用于登录查找。 2. <code>existsByUsername</code>：用于注册查重。”</p>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="第二步配置密码加密器" class="level2">
+<h2 class="anchored" data-anchor-id="第二步配置密码加密器">第二步：配置密码加密器</h2>
+<p>在<code>SecurityConfig</code>中添加<code>PasswordEncoder</code> Bean。Spring Security会在整个应用中自动使用它。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“修改 <code>SecurityConfig</code> 类，添加一个 <code>PasswordEncoder</code> Bean。 请使用 <code>BCryptPasswordEncoder</code> 作为实现。”</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="第三步实现注册接口sign-up" class="level2">
+<h2 class="anchored" data-anchor-id="第三步实现注册接口sign-up">第三步：实现注册接口（Sign Up）</h2>
+<p>创建<code>AuthController</code>，提供注册和登录两个核心接口。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“创建一个 <code>AuthController</code>，处理 <code>/api/auth</code> 路径的请求。 实现 <code>/signup</code> (POST) 接口： 1. 接收用户名和密码。 2. 检查用户名是否存在。 3. <strong>关键</strong>：使用 <code>passwordEncoder</code> 加密密码。 4. 保存新用户到数据库。”</p>
+</div>
+</div>
+<blockquote class="blockquote">
+<p>[!NOTE] 这里的关键是<strong>加密</strong>。请确保AI生成的代码中调用了 <code>passwordEncoder.encode()</code>。</p>
+</blockquote>
+<section id="安全要点" class="level3">
+<h3 class="anchored" data-anchor-id="安全要点">安全要点</h3>
+<ul>
+<li><strong>查重</strong>：<code>existsByUsername</code>防止重复注册。</li>
+<li><strong>加密</strong>：<code>passwordEncoder.encode()</code>将明文密码转为BCrypt哈希。</li>
+<li><strong>错误处理</strong>：使用<code>ResponseStatusException</code>返回409 Conflict（资源冲突）。</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="第四步实现登录接口login" class="level2">
+<h2 class="anchored" data-anchor-id="第四步实现登录接口login">第四步：实现登录接口（Login）</h2>
+<p>现在添加登录逻辑。虽然我们还没发放JWT（将在10.3实现），但先打通登录流程。</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>🤖 AI Prompt
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>“在 <code>AuthController</code> 中添加 <code>/login</code> (POST) 接口： 1. 接收用户名和密码。 2. 根据用户名查找用户。 3. <strong>关键</strong>：使用 <code>passwordEncoder.matches()</code> 验证密码。 4. 如果成功，返回欢迎消息；如果失败，抛出401异常。”</p>
+</div>
+</div>
+<section id="关键方法passwordencoder.matches" class="level3">
+<h3 class="anchored" data-anchor-id="关键方法passwordencoder.matches">关键方法：<code>passwordEncoder.matches()</code></h3>
+<ul>
+<li><code>matches(rawPassword, encodedPassword)</code>会：
+<ol type="1">
+<li>对<code>rawPassword</code>（用户提交的明文密码）执行BCrypt加密</li>
+<li>将结果与数据库中存储的<code>encodedPassword</code>比对</li>
+<li>返回true/false</li>
+</ol></li>
+</ul>
+<p><strong>安全设计</strong>：无论是”用户不存在”还是”密码错误”，都返回相同的错误消息”用户名或密码错误”。这防止攻击者通过错误消息猜测哪些用户名是有效的（用户名枚举攻击）。</p>
+<hr>
+</section>
+</section>
+<section id="第五步验证注册与登录vibe-check" class="level2">
+<h2 class="anchored" data-anchor-id="第五步验证注册与登录vibe-check">第五步：验证注册与登录（Vibe Check）</h2>
+<section id="测试一注册新用户" class="level3">
+<h3 class="anchored" data-anchor-id="测试一注册新用户">测试一：注册新用户</h3>
+<p>使用<code>curl</code>或Postman发送POST请求：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期结果</strong>：201 Created，返回”注册成功！用户名: vibecoder”</p>
+</section>
+<section id="测试二重复注册应该失败" class="level3">
+<h3 class="anchored" data-anchor-id="测试二重复注册应该失败">测试二：重复注册（应该失败）</h3>
+<p>再次执行上面的命令。</p>
+<p><strong>预期结果</strong>：409 Conflict，返回”用户名已被注册”</p>
+</section>
+<section id="测试三登录成功" class="level3">
+<h3 class="anchored" data-anchor-id="测试三登录成功">测试三：登录成功</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期结果</strong>：200 OK，返回”登录成功！欢迎回来，vibecoder”</p>
+</section>
+<section id="测试四密码错误应该失败" class="level3">
+<h3 class="anchored" data-anchor-id="测试四密码错误应该失败">测试四：密码错误（应该失败）</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "wrongpassword"}'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>预期结果</strong>：401 Unauthorized，返回”用户名或密码错误”</p>
+</section>
+<section id="数据库验证" class="level3">
+<h3 class="anchored" data-anchor-id="数据库验证">数据库验证</h3>
+<p>打开你的PostgreSQL客户端（参考第八章配置），执行：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> users;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>你应该能看到： - <code>id</code>: 自动生成的主键 - <code>username</code>: “vibecoder” - <code>password</code>: 类似<code>$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy</code>的加密字符串</p>
+<p><strong>关键观察</strong>：密码字段绝不是”secret123”！它是一个60字符的BCrypt哈希。</p>
+<hr>
+</section>
+</section>
+<section id="vibe-deep-divebcrypt的魔力" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-deep-divebcrypt的魔力">Vibe Deep Dive：BCrypt的魔力</h2>
+<section id="bcrypt字符串解析" class="level3">
+<h3 class="anchored" data-anchor-id="bcrypt字符串解析">BCrypt字符串解析</h3>
+<p>以<code>$2a$10$N9qo8uLOickgx2ZMRZoMye...</code>为例：</p>
+<ul>
+<li><code>$2a$</code>：BCrypt算法版本标识</li>
+<li><code>10</code>：成本因子（Cost Factor），表示2^10=1024次哈希迭代</li>
+<li><code>N9qo8uLOickgx2ZMRZoMye</code>：22字符的盐值（Salt），随机生成</li>
+<li>后面38字符：实际的哈希值</li>
+</ul>
+</section>
+<section id="为什么相同密码每次加密结果不同" class="level3">
+<h3 class="anchored" data-anchor-id="为什么相同密码每次加密结果不同">为什么相同密码每次加密结果不同？</h3>
+<p>因为<strong>盐值是随机的</strong>。即使两个用户密码都是”123456”，存储的哈希字符串也完全不同。这防止了：</p>
+<ul>
+<li><strong>彩虹表攻击</strong>：攻击者无法预先计算常见密码的哈希值。</li>
+<li><strong>批量破解</strong>：即使破解了一个用户的密码，其他用户的哈希仍然安全。</li>
+</ul>
+</section>
+<section id="成本因子的权衡" class="level3">
+<h3 class="anchored" data-anchor-id="成本因子的权衡">成本因子的权衡</h3>
+<ul>
+<li><strong>值越大</strong>：计算越慢，越安全（攻击者暴力破解成本更高），但用户登录也会变慢。</li>
+<li><strong>建议值</strong>：10-12（现代硬件下，每次加密约100-300ms，可接受）。</li>
+<li><strong>未来调整</strong>：随着计算能力提升，可以gradual increase成本因子。</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="vibe-check动手与思考" class="level2">
+<h2 class="anchored" data-anchor-id="vibe-check动手与思考">Vibe Check（动手与思考）</h2>
+<ol type="1">
+<li><p><strong>核心练习</strong>：</p>
+<ul>
+<li>完成上述四个测试，确保注册和登录功能正常运行。</li>
+<li>使用数据库客户端查看<code>users</code>表，验证密码确实是加密存储的。</li>
+</ul></li>
+<li><p><strong>编码练习</strong>：</p>
+<ul>
+<li>添加输入验证：用户名长度应在3-20之间，密码至少8位。（提示：可以使用Jakarta Validation的<code>@Size</code>注解，或在Controller中手动检查）</li>
+<li>改进错误信息：如果用户名或密码为空，返回400 Bad Request而非500 Internal Server Error。</li>
+</ul></li>
+<li><p><strong>安全思考</strong>：</p>
+<ul>
+<li>为什么我们在登录失败时不应该明确说”用户名不存在”或”密码错误”？</li>
+<li>如果攻击者每秒尝试1000次登录（暴力破解），应该如何防御？（提示：搜索”Rate Limiting”）</li>
+</ul></li>
+<li><p><strong>AI协同</strong>：</p>
+<blockquote class="blockquote">
+<p>“请解释BCrypt、Argon2和PBKDF2三种密码哈希算法的优缺点。为什么Spring Security默认选择BCrypt？”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“如果我想实现’找回密码’功能，在不知道原密码的情况下，应该采用什么流程？（提示：不能告诉用户原密码，只能重置密码）”</p>
+</blockquote></li>
+</ol>
+<hr>
+<p><strong>恭喜！</strong> 你的应用现在有了”记忆”——它知道谁是谁了。但是，每次请求都要输入用户名密码吗？当然不。下一节，我们将引入<strong>JWT（数字护照）</strong>，让用户登录一次后，在一段时间内自动”免检通行”。</p>
 
 
 <!-- -->
@@ -1111,78 +1314,283 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../chapters/10-security/10.3-jwt-passport.html" class="pagination-link" aria-label="10.3 数字护照：JWT无状态认证">
-        <span class="nav-page-text"><span class="chapter-title">10.3 数字护照：JWT无状态认证</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../chapters/10-security/10.3-jwt-passport.html" class="pagination-link" aria-label="10.3 护照：JWT无状态认证">
+        <span class="nav-page-text"><span class="chapter-title">10.3 护照：JWT无状态认证</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.2 身份：建立登录入口</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>守门人拦住了所有人。现在，我们需要一种机制来识别“好人”。</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>这就需要：**用户 (User)** 和 **登录 (Login)**。</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：定义用户 (User)</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>我们需要一个地方存用户的账号密码。</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>"请在 <span class="in">`com.vibevault.model`</span> 包下创建一个 <span class="in">`User`</span> 实体。</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>要求：</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>表名 <span class="in">`users`</span>。</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>字段：<span class="in">`id`</span> (Long), <span class="in">`username`</span> (String, unique), <span class="in">`password`</span> (String)。</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>使用 JPA 注解。"</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>以及对应的 <span class="in">`UserRepository`</span>。</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：密码加密 (BCrypt)</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>**绝对不要存储明文密码！**</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>在 <span class="in">`SecurityConfig`</span> 中添加加密器：</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="at">@Bean</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> PasswordEncoder <span class="fu">passwordEncoder</span><span class="op">()</span> <span class="op">{</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">new</span> <span class="fu">BCryptPasswordEncoder</span><span class="op">();</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：注册接口 (Sign Up)</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>我们需要一个接口让用户注册。</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>"请创建 <span class="in">`AuthController`</span>，实现 <span class="in">`POST /api/auth/signup`</span>。</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>逻辑：</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>接收 username, password。</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>查重：如果 username 存在，抛异常。</span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**加密**：使用 <span class="in">`passwordEncoder.encode(password)`</span>。</span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>保存 User。"</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：登录接口 (Login) - 关键一步</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>这是前端对接的核心。虽然我们还没发 JWT，但我们要先打通登录流程。</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>"请在 <span class="in">`AuthController`</span> 中添加 <span class="in">`login`</span> 方法 (<span class="in">`POST /api/auth/login`</span>)。</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>逻辑：</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>接收 username, password。</span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>查用户：不存在则抛异常。</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**验密**：使用 <span class="in">`passwordEncoder.matches(raw, encoded)`</span>。</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>如果成功，返回字符串 'Login Success'。"</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check</span></span>
-<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**注册**: 用 curl 发送 POST 请求到 <span class="in">`/signup`</span>。</span>
-<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**登录**: 用 curl 发送 POST 请求到 <span class="in">`/login`</span>。</span>
-<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**验证**: 确保登录成功返回 200 OK。</span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>现在，后端已经准备好迎接前端的登录请求了。下一步，我们将把 "Login Success" 换成真正的数字护照——JWT。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.2 身份：建立用户体系与登录入口</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "在数字世界里，你就是你的密码。" —— 身份认证的本质</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：守门人说"不"，但谁是"好人"？</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>在上一节,我们成功配置了Spring Security，它现在像一个尽职的保安，拦住了所有陌生人。但问题来了：</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>**它只会说"不"，却不知道谁是"好人"。**</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>想象你每天上班，公司保安天天拦住你："你谁啊？"你说："我是员工啊！"保安说："你怎么证明？"这时，你拿出工牌，保安看了一眼，放行。</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>在Web应用中，这个"工牌"就是**用户身份（User Identity）**，"给保安看工牌"的过程就是**认证（Authentication）**。</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>**我们现在面临的危机是：**</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>系统中没有"用户"的概念，无法区分张三和李四。</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>没有"登录"机制，守门人Spring Security无从验证身份。</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>即使用户提供了用户名和密码，我们也没有地方存储和验证。</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：构建用户体系=身份的数字化</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>要让守门人能够识别"好人"，我们需要做三件事：</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**定义"用户"**：创建User实体，存储用户的账号密码。</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**加密密码**：绝不能明文存储密码（这是安全的铁律）。</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**提供登录入口**：创建API接口，让用户提交身份credentials，系统验证后"放行"。</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## 为什么绝对不能明文存储密码？</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>在开始编码前，必须先建立一个安全意识：**明文存储密码是编程界的原罪。**</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="fu">### 真实的灾难案例</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**2012年LinkedIn数据泄露**：650万用户密码被盗，因为使用了不加盐的简单哈希。</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**2013年Adobe泄露**：1.5亿用户数据泄露，密码虽然加密但方式过时，被迅速破解。</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**2019年Facebook事件**：数亿用户密码以明文形式存储在内部日志中。</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>**后果**：</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用户会在多个网站使用相同密码。一个</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>网站泄露，攻击者会用这些密码尝试登录银行、邮箱等其他服务（撞库攻击）。</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>公司声誉毁灭性打击，面临巨额罚款（GDPR等法规）。</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>开发者可能承担法律责任。</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="fu">### 正确的做法：单向加密（哈希）</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>我们使用**BCrypt**算法，它具有以下特点：</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**单向性**：无法从加密后的字符串还原原始密码（即使公司CEO也不知道你的密码）。</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**加盐（Salt）**：即使两个用户密码相同，存储的加密字符串也不同。</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**自适应成本**：可以调整计算复杂度，对抗日益强大的暴力破解。</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>**验证流程**：</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>用户注册时：<span class="in">`原始密码`</span> → BCrypt加密 → <span class="in">`$2a$10$N9qo8...`</span>（存入数据库）</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>用户登录时：提交密码 → BCrypt加密 → 与数据库中的字符串比对 → 匹配则通过</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：定义User实体</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>我们需要一个地方来存储用户信息。在<span class="in">`com.vibevault.model`</span>包下创建<span class="in">`User.java`</span>。</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="co">// 参考代码：User实体的关键部分</span></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="at">@Entity</span></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="at">@Table</span><span class="op">(</span>name <span class="op">=</span> <span class="st">"users"</span><span class="op">)</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> User <span class="op">{</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... id, username</span></span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Column</span><span class="op">(</span>nullable <span class="op">=</span> <span class="kw">false</span><span class="op">)</span></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">private</span> <span class="bu">String</span> password<span class="op">;</span> <span class="co">// ⚠️ 必须存储加密后的哈希值！</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ... constructors, getters</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>"请帮我创建一个 JPA 实体 <span class="in">`User`</span>，包含 <span class="in">`id`</span>, <span class="in">`username`</span> (唯一), <span class="in">`password`</span> 字段。</span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>注意：</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>表名设为 <span class="in">`users`</span>。</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>添加必要的注解、构造函数和 Getter。"</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码要点</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Table(name = "users")`</span>：指定表名为<span class="in">`users`</span>，避免与某些数据库的保留关键字<span class="in">`user`</span>冲突。</span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@Column(unique = true)`</span>：确保用户名唯一，数据库层面强制约束。</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`password`</span>字段：虽然名为password，但实际存储的是加密后的哈希值（例如60个字符的BCrypt字符串）。</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### 创建UserRepository</span></span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>按照第八章学到的Spring Data JPA模式，创建Repository接口：</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`UserRepository`</span> 接口，继承自 <span class="in">`JpaRepository`</span>。</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>添加两个方法：</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`findByUsername`</span>：用于登录查找。</span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`existsByUsername`</span>：用于注册查重。"</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：配置密码加密器</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>在<span class="in">`SecurityConfig`</span>中添加<span class="in">`PasswordEncoder`</span> Bean。Spring Security会在整个应用中自动使用它。</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span> 类，添加一个 <span class="in">`PasswordEncoder`</span> Bean。</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>请使用 <span class="in">`BCryptPasswordEncoder`</span> 作为实现。"</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：实现注册接口（Sign Up）</span></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>创建<span class="in">`AuthController`</span>，提供注册和登录两个核心接口。</span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`AuthController`</span>，处理 <span class="in">`/api/auth`</span> 路径的请求。</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>实现 <span class="in">`/signup`</span> (POST) 接口：</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>接收用户名和密码。</span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>检查用户名是否存在。</span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**关键**：使用 <span class="in">`passwordEncoder`</span> 加密密码。</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>保存新用户到数据库。"</span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; </span><span class="co">[</span><span class="ot">!NOTE</span><span class="co">]</span></span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; 这里的关键是**加密**。请确保AI生成的代码中调用了 </span><span class="in">`passwordEncoder.encode()`</span><span class="at">。</span></span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="fu">### 安全要点</span></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**查重**：<span class="in">`existsByUsername`</span>防止重复注册。</span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**加密**：<span class="in">`passwordEncoder.encode()`</span>将明文密码转为BCrypt哈希。</span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**错误处理**：使用<span class="in">`ResponseStatusException`</span>返回409 Conflict（资源冲突）。</span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：实现登录接口（Login）</span></span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>现在添加登录逻辑。虽然我们还没发放JWT（将在10.3实现），但先打通登录流程。</span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>"在 <span class="in">`AuthController`</span> 中添加 <span class="in">`/login`</span> (POST) 接口：</span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>接收用户名和密码。</span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>根据用户名查找用户。</span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**关键**：使用 <span class="in">`passwordEncoder.matches()`</span> 验证密码。</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>如果成功，返回欢迎消息；如果失败，抛出401异常。"</span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a><span class="fu">### 关键方法：`passwordEncoder.matches()`</span></span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`matches(rawPassword, encodedPassword)`</span>会：</span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a><span class="ss">    1.  </span>对<span class="in">`rawPassword`</span>（用户提交的明文密码）执行BCrypt加密</span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="ss">    2.  </span>将结果与数据库中存储的<span class="in">`encodedPassword`</span>比对</span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a><span class="ss">    3.  </span>返回true/false</span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>**安全设计**：无论是"用户不存在"还是"密码错误"，都返回相同的错误消息"用户名或密码错误"。这防止攻击者通过错误消息猜测哪些用户名是有效的（用户名枚举攻击）。</span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：验证注册与登录（Vibe Check）</span></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：注册新用户</span></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a>使用<span class="in">`curl`</span>或Postman发送POST请求：</span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a>**预期结果**：201 Created，返回"注册成功！用户名: vibecoder"</span>
+<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：重复注册（应该失败）</span></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a>再次执行上面的命令。</span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a>**预期结果**：409 Conflict，返回"用户名已被注册"</span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：登录成功</span></span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a>**预期结果**：200 OK，返回"登录成功！欢迎回来，vibecoder"</span>
+<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-197"><a href="#cb6-197" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试四：密码错误（应该失败）</span></span>
+<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-199"><a href="#cb6-199" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "wrongpassword"}'</span></span>
+<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a>**预期结果**：401 Unauthorized，返回"用户名或密码错误"</span>
+<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a><span class="fu">### 数据库验证</span></span>
+<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a>打开你的PostgreSQL客户端（参考第八章配置），执行：</span>
+<span id="cb6-210"><a href="#cb6-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-211"><a href="#cb6-211" aria-hidden="true" tabindex="-1"></a><span class="in">```sql</span></span>
+<span id="cb6-212"><a href="#cb6-212" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> users;</span>
+<span id="cb6-213"><a href="#cb6-213" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-214"><a href="#cb6-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-215"><a href="#cb6-215" aria-hidden="true" tabindex="-1"></a>你应该能看到：</span>
+<span id="cb6-216"><a href="#cb6-216" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`id`</span>: 自动生成的主键</span>
+<span id="cb6-217"><a href="#cb6-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`username`</span>: "vibecoder"</span>
+<span id="cb6-218"><a href="#cb6-218" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`password`</span>: 类似<span class="in">`$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy`</span>的加密字符串</span>
+<span id="cb6-219"><a href="#cb6-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-220"><a href="#cb6-220" aria-hidden="true" tabindex="-1"></a>**关键观察**：密码字段绝不是"secret123"！它是一个60字符的BCrypt哈希。</span>
+<span id="cb6-221"><a href="#cb6-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-222"><a href="#cb6-222" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-223"><a href="#cb6-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-224"><a href="#cb6-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：BCrypt的魔力</span></span>
+<span id="cb6-225"><a href="#cb6-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-226"><a href="#cb6-226" aria-hidden="true" tabindex="-1"></a><span class="fu">### BCrypt字符串解析</span></span>
+<span id="cb6-227"><a href="#cb6-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-228"><a href="#cb6-228" aria-hidden="true" tabindex="-1"></a>以<span class="in">`$2a$10$N9qo8uLOickgx2ZMRZoMye...`</span>为例：</span>
+<span id="cb6-229"><a href="#cb6-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-230"><a href="#cb6-230" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`$2a$`</span>：BCrypt算法版本标识</span>
+<span id="cb6-231"><a href="#cb6-231" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`10`</span>：成本因子（Cost Factor），表示2^10=1024次哈希迭代</span>
+<span id="cb6-232"><a href="#cb6-232" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`N9qo8uLOickgx2ZMRZoMye`</span>：22字符的盐值（Salt），随机生成</span>
+<span id="cb6-233"><a href="#cb6-233" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>后面38字符：实际的哈希值</span>
+<span id="cb6-234"><a href="#cb6-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-235"><a href="#cb6-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### 为什么相同密码每次加密结果不同？</span></span>
+<span id="cb6-236"><a href="#cb6-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a>因为**盐值是随机的**。即使两个用户密码都是"123456"，存储的哈希字符串也完全不同。这防止了：</span>
+<span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**彩虹表攻击**：攻击者无法预先计算常见密码的哈希值。</span>
+<span id="cb6-240"><a href="#cb6-240" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**批量破解**：即使破解了一个用户的密码，其他用户的哈希仍然安全。</span>
+<span id="cb6-241"><a href="#cb6-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-242"><a href="#cb6-242" aria-hidden="true" tabindex="-1"></a><span class="fu">### 成本因子的权衡</span></span>
+<span id="cb6-243"><a href="#cb6-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-244"><a href="#cb6-244" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**值越大**：计算越慢，越安全（攻击者暴力破解成本更高），但用户登录也会变慢。</span>
+<span id="cb6-245"><a href="#cb6-245" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**建议值**：10-12（现代硬件下，每次加密约100-300ms，可接受）。</span>
+<span id="cb6-246"><a href="#cb6-246" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**未来调整**：随着计算能力提升，可以gradual increase成本因子。</span>
+<span id="cb6-247"><a href="#cb6-247" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-248"><a href="#cb6-248" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-249"><a href="#cb6-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-250"><a href="#cb6-250" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb6-251"><a href="#cb6-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-252"><a href="#cb6-252" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
+<span id="cb6-253"><a href="#cb6-253" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述四个测试，确保注册和登录功能正常运行。</span>
+<span id="cb6-254"><a href="#cb6-254" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用数据库客户端查看<span class="in">`users`</span>表，验证密码确实是加密存储的。</span>
+<span id="cb6-255"><a href="#cb6-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-256"><a href="#cb6-256" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
+<span id="cb6-257"><a href="#cb6-257" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加输入验证：用户名长度应在3-20之间，密码至少8位。（提示：可以使用Jakarta Validation的<span class="in">`@Size`</span>注解，或在Controller中手动检查）</span>
+<span id="cb6-258"><a href="#cb6-258" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>改进错误信息：如果用户名或密码为空，返回400 Bad Request而非500 Internal Server Error。</span>
+<span id="cb6-259"><a href="#cb6-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-260"><a href="#cb6-260" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
+<span id="cb6-261"><a href="#cb6-261" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为什么我们在登录失败时不应该明确说"用户名不存在"或"密码错误"？</span>
+<span id="cb6-262"><a href="#cb6-262" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果攻击者每秒尝试1000次登录（暴力破解），应该如何防御？（提示：搜索"Rate Limiting"）</span>
+<span id="cb6-263"><a href="#cb6-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-264"><a href="#cb6-264" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
+<span id="cb6-265"><a href="#cb6-265" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-266"><a href="#cb6-266" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释BCrypt、Argon2和PBKDF2三种密码哈希算法的优缺点。为什么Spring Security默认选择BCrypt？"</span></span>
+<span id="cb6-267"><a href="#cb6-267" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-268"><a href="#cb6-268" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "如果我想实现'找回密码'功能，在不知道原密码的情况下，应该采用什么流程？（提示：不能告诉用户原密码，只能重置密码）"</span></span>
+<span id="cb6-269"><a href="#cb6-269" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-270"><a href="#cb6-270" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-271"><a href="#cb6-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-272"><a href="#cb6-272" aria-hidden="true" tabindex="-1"></a>**恭喜！** 你的应用现在有了"记忆"——它知道谁是谁了。但是，每次请求都要输入用户名密码吗？当然不。下一节，我们将引入**JWT（数字护照）**，让用户登录一次后，在一段时间内自动"免检通行"。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

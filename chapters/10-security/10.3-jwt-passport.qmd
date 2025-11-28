@@ -1,20 +1,93 @@
-# 10.3 护照：JWT 黑盒组件
+# 10.3 护照：JWT无状态认证
 
-"Login Success" 这句话虽然好听，但它不能当饭吃。
-我们需要给用户发一张**数字护照 (JWT)**，用户下次来的时候，亮出护照，我们就知道他是谁了。
+> "好的凭证，让你一次登录，处处通行。" —— JWT的承诺
 
-## 什么是 JWT？
+## 本节危机：每次敲门都要重新验证身份？
 
-JSON Web Token (JWT) 就像一张**防伪的身份证**。
-*   **Header**: 证件类型。
-*   **Payload**: 个人信息（我是 vibecoder）。
-*   **Signature**: 防伪印章（只有服务器能盖章）。
+在上一节，我们成功实现了登录功能。用户提交用户名和密码，系统验证后返回"登录成功"。
 
-## 第一步：引入依赖
+但这里有个致命的问题：**这个"成功"只维持了一瞬间。**
 
-为了生成和解析 Token，我们需要引入 JJWT 库。
+想象你去政府办事：
 
-在 `gradle/libs.versions.toml` 中添加：
+1.  你在A窗口办完一件事，工作人员说"好的，您的身份验证通过了"。
+2.  你走到B窗口办下一件事，工作人员说："先生，请出示您的身份证。"
+3.  你去C窗口、D窗口...每次都要重新验证身份。
+
+这就是我们当前的系统状态。每次用户访问`/api/playlists`、`/api/songs`等受保护接口时，都需要重新发送用户名和密码。这显然是荒谬的：
+
+*   **用户体验极差**：没人愿意每个操作都输入密码。
+*   **安全风险**：密码在网络中频繁传输，增加被截获的风险。
+*   **性能低下**：每次请求都要查数据库验证密码，效率低。
+
+**我们需要一种机制：用户登录一次后，获得一个"通行证"，凭这个通行证在一段时间内（如24小时）自动通过所有安检，无需重复验证身份。**
+
+## 本节顿悟：JWT——可验证的数字护照
+
+**JWT (JSON Web Token)** 就是这张"数字护照"。它是一个自包含的、可验证的字符串，包含了：
+
+*   **用户是谁**（例如：username = "vibecoder"）
+*   **护照有效期**（例如：24小时后过期）
+*   **防伪签名**（只有服务器能生成和验证）
+
+### JWT的结构：三段式防伪证件
+
+一个JWT长这样：
+
+```
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...KziYm9haTvVJ0
+```
+
+它由三部分组成（用`.分隔`）：
+
+#### 1. Header（证件类型）
+```json
+{
+  "alg": "HS256",  // 使用的签名算法
+  "typ": "JWT"     // 令牌类型
+}
+```
+Base64编码后：`eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9`
+
+#### 2. Payload（个人信息）
+```json
+{
+  "sub": "vibecoder",           // subject：用户名
+  "iat": 1699900000,            // issued at：签发时间
+  "exp": 1699986400             // expiration：过期时间（24小时后）
+}
+```
+Base64编码后：`eyJzdWIiOiJ2aWJlY29kZXIiLCJleHAiOjE3MDAw...`
+
+#### 3. Signature（防伪印章）
+```
+HMACSHA256(
+  base64(header) + "." + base64(payload),
+  secret_key  // 只有服务器知道的密钥
+)
+```
+
+**关键点**：任何人都可以**读取**JWT的内容（因为只是Base64编码，不是加密）。但只有拥有密钥的服务器才能**生成和验证**签名。
+
+**比喻**：就像护照上的防伪水印。你可以看到护照上的所有信息（姓名、国籍、照片），但你无法伪造那个只有政府才能制作的防伪水印。
+
+### JWT vs Session：为什么选择无状态？
+
+| 特性 | Session（有状态） | JWT（无状态） |
+|------|------------------|--------------|
+| **存储位置** | 服务器内存/Redis | 客户端（浏览器） |
+| **可扩展性** | 需要Session共享机制 | 天然支持多服务器 |
+| **网络传输** | 只传递Session ID（小） | 每次都传递完整Token（略大） |
+| **注销机制** | 直接删除Session | 需要黑名单机制（复杂） |
+| **适用场景** | 传统Web应用 | REST API、微服务 |
+
+对于我们的REST API，JWT是更好的选择。
+
+---
+
+## 第一步：引入JJWT库
+
+在`gradle/libs.versions.toml`中添加：
 
 ```toml
 [versions]
@@ -26,58 +99,199 @@ jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
 ```
 
-在 `build.gradle.kts` 中添加：
+在`build.gradle.kts`中添加：
 
 ```kotlin
-implementation(libs.jjwt.api)
-runtimeOnly(libs.jjwt.impl)
-runtimeOnly(libs.jjwt.jackson)
+dependencies {
+    // ... 其他依赖
+    implementation(libs.jjwt.api)
+    runtimeOnly(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
+}
 ```
 
-## 黑盒组件 (Black Box Components)
+---
 
-实现 JWT 需要写很多加密代码。**不要手写。** 把它当作现成的零件。
+## 第二步：实现JwtService（签发和验证护照）
 
-### 零件 1：JwtService (签发器)
+创建一个专门处理JWT的服务类。
 
 ::: {.callout-tip}
 ## 🤖 AI Prompt
-"请生成 `JwtService` 类 (使用 jjwt 库)。
-包含：
-1. `generateToken(username)`: 生成 24小时有效的 Token。
-2. `extractUsername(token)`: 解析用户名。
-3. `isTokenValid(token, userDetails)`: 验签。"
+"创建一个 `JwtService` 类，使用 `jjwt` 库。
+功能要求：
+1. `generateToken(username)`: 生成Token，有效期24小时。
+2. `extractUsername(token)`: 从Token提取用户名。
+3. `isTokenValid(token, username)`: 验证Token有效性。
+注意：使用 `@Value` 注入密钥，不要硬编码。"
 :::
 
-### 零件 2：JwtFilter (安检员)
+### 代码要点
+
+*   **密钥管理**：使用`@Value`从配置文件读取。生产环境中，应使用环境变量或密钥管理服务（如AWS Secrets Manager）。
+*   **密钥长度**：HS256算法要求密钥至少256位（32字节）。示例密钥长度足够，但真实项目应使用随机生成的强密钥。
+*   **过期机制**：设置24小时有效期，过期后Token自动失效。
+*   **异常处理**：任何解析异常（签名不匹配、格式错误、已过期）都返回`false`。
+
+---
+
+## 第三步：实现JwtAuthenticationFilter（安检员）
+
+现在我们有了签发和验证Token的能力，但Spring Security还不知道如何使用它。我们需要创建一个**过滤器（Filter）**，在每个请求到达Controller之前，先检查JWT。
 
 ::: {.callout-tip}
 ## 🤖 AI Prompt
-"请生成 `JwtAuthenticationFilter` (继承 OncePerRequestFilter)。
-逻辑：
-1. 从 Header 获取 `Authorization: Bearer xxx`。
-2. 验证 Token。
-3. 如果有效，将用户放入 `SecurityContextHolder` (放行)。"
+"创建一个 `JwtAuthenticationFilter`，继承自 `OncePerRequestFilter`。
+逻辑如下：
+1. 从Header获取 `Authorization`。
+2. 如果是 `Bearer ` 开头，提取Token。
+3. 使用 `JwtService` 验证Token。
+4. 如果有效，创建 `UsernamePasswordAuthenticationToken` 并放入 `SecurityContextHolder`。"
 :::
 
-### 零件 3：组装
+### 过滤器执行流程
 
-回到 `SecurityConfig`，让 AI 把 `JwtFilter` 插在 `UsernamePasswordAuthenticationFilter` 之前。
-
-## 升级登录接口
-
-回到 `AuthController`，修改 `login` 方法：
-
-```java
-// 旧代码
-return "Login Success";
-
-// 新代码
-return jwtService.generateToken(user.getUsername());
+```
+HTTP请求 
+  → JwtAuthenticationFilter（检查Token，设置认证）
+  → Spring Security其他过滤器
+  → Controller方法
+  → 返回响应
 ```
 
-## Vibe Check
+**关键逻辑**：
+1.  提取`Authorization: Bearer <token>`
+2.  解析Token，提取用户名
+3.  验证Token（签名、有效期）
+4.  如果有效，创建`Authentication`对象并放入`SecurityContext`
+5.  Spring Security看到SecurityContext中有认证对象，就认为用户已登录，放行请求
 
-再次调用 `/login` 接口。
-这次你应该能看到一串长长的字符：`eyJhbGciOiJIUzI1Ni...`。
-这就是你的**数字护照**。保存好它，下一章我们要用它来行使权力。
+---
+
+## 第四步：将JwtFilter集成到Security配置
+
+修改`SecurityConfig`，让JWT过滤器在Spring Security的过滤器链中生效。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"修改 `SecurityConfig`：
+1. 注入 `JwtAuthenticationFilter`。
+2. 使用 `.addFilterBefore()` 将其添加到 `UsernamePasswordAuthenticationFilter` 之前。"
+:::
+
+---
+
+## 第五步：升级登录接口，返回JWT
+
+修改`AuthController`的`login`方法，返回真正的JWT而非简单字符串。
+
+::: {.callout-tip}
+## 🤖 AI Prompt
+"修改 `AuthController` 的 `/login` 接口：
+1. 注入 `JwtService`。
+2. 认证成功后，调用 `jwtService.generateToken(username)`。
+3. 返回包含 Token 的 JSON 响应。"
+:::
+
+---
+
+## 第六步：验证完整流程（Vibe Check）
+
+### 测试一：登录获取Token
+
+```bash
+curl -X POST http://localhost:8080/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "vibecoder", "password": "secret123"}'
+```
+
+**预期输出**：
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ2aWJlY29kZXIiLCJpYXQiOjE2OTk5MDAwMDAsImV4cCI6MTY5OTk4NjQwMH0.KziYm9haTvVJ0...",
+  "username": "vibecoder"
+}
+```
+
+**复制这个Token**，待用。
+
+### 测试二：不带Token访问受保护资源（应该失败）
+
+```bash
+curl -X DELETE http://localhost:8080/api/playlists/my-favorites
+```
+
+**预期结果**：403 Forbidden
+
+### 测试三：携带Token访问受保护资源（应该成功）
+
+```bash
+curl -X GET http://localhost:8080/api/playlists \
+  -H "Authorization: Bearer YOUR_TOKEN_HERE"
+```
+
+将`YOUR_TOKEN_HERE`替换为测试一中获取的Token。
+
+**预期结果**：200 OK，返回播放列表数据。
+
+**关键**：注意Header格式必须严格为 `Authorization: Bearer <token>`，`Bearer`和Token之间有一个空格。
+
+### 测试四：使用伪造的Token（应该失败）
+
+```bash
+curl -X GET http://localhost:8080/api/playlists \
+  -H "Authorization: Bearer fake.token.here"
+```
+
+**预期结果**：403 Forbidden（因为签名验证失败）
+
+---
+
+## Vibe Deep Dive：JWT的安全边界
+
+### JWT能防御什么？
+
+*   ✅ **CSRF攻击**：Token在Header中，浏览器不会自动携带。
+*   ✅ **Session劫持**：没有Session，无法劫持。
+*   ✅ **篡改攻击**：任何对Payload的修改都会导致签名失效。
+
+### JWT不能防御什么？
+
+*   ❌ **XSS攻击**：如果Token存储在`localStorage`，恶意脚本可窃取。
+    *   缓解：使用`httpOnly` Cookie存储（但需重新启用CSRF保护）。
+*   ❌ **Token泄露**：如果Token在网络传输中被截获（需HTTPS）。
+*   ❌ **Token无法主动失效**：JWT生成后，在过期前无法撤销。
+    *   缓解：实现Token黑名单（需额外存储）或缩短过期时间。
+
+### 生产环境的最佳实践
+
+1.  **密钥管理**：使用强随机密钥，存储在环境变量或密钥管理服务中，绝不提交到Git。
+2.  **HTTPS强制**：Token在HTTP传输（明文）中容易被截获。
+3.  **短期Token + Refresh Token**：主Token有效期设为1小时，配合Refresh Token实现长期登录。
+4.  **添加更多Claims**：如`iss`（签发者）、`aud`（受众）增强验证。
+
+---
+
+## Vibe Check（动手与思考）
+
+1.  **核心练习**：
+    *   完成上述四个测试，确保JWT完整流程正常工作。
+    *   尝试解码你的Token（访问 [jwt.io](https://jwt.io/)，粘贴Token），观察Payload中的内容。
+
+2.  **编码练习**：
+    *   修改`JwtService`，使Token有效期缩短为5分钟。重新登录获取Token，等待6分钟后再次使用该Token，验证是否返回403。
+    *   在`LoginResponse`中添加`expiresIn`字段，告诉前端Token将在多少秒后过期。
+
+3.  **安全思考**：
+    *   为什么JWT不适合存储敏感信息（如信用卡号）？
+    *   如果用户修改了密码，旧的JWT仍然有效（直到过期）。这是否是安全隐患？如何解决？
+
+4.  **AI协同**：
+    
+    > "请解释HS256和RS256两种JWT签名算法的区别。什么场景下应该用RS256？"
+    
+    > "请解释Refresh Token机制。如果主Token有效期1小时，Refresh Token有效期7天，完整的刷新流程是怎样的？"
+
+---
+
+**恭喜！** 你的应用现在拥有了一套完整的无状态认证体系。用户登录一次，就能获得24小时的"免检通行证"。但是，"能进门"不代表"能删别人东西"——下一节，我们将实现细粒度的**授权控制**。
