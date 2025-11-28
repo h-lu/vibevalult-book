@@ -105,6 +105,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -585,7 +589,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="本节危机认证授权">本节危机：认证≠授权</h2>
 <p>在上一节，我们完成了完整的认证（Authentication）体系。现在，任何持有有效JWT Token的用户都能访问受保护的API。</p>
 <p>但这里隐藏着一个严重的安全隐患：</p>
-<p><strong>场景重现</strong>： 1. 用户A（vibecoder）登录，创建了一个歌单”My Precious Playlist”。 2. 用户B（eviluser）也登录了，拿到了自己的JWT Token。 3. 用户B发送请求：<code>DELETE /api/playlists/my-precious-playlist</code>，携带他自己的Token。 4. 因为B的Token是有效的，系统认为他”已认证”，直接执行删除。 5. A的歌单被B删除了。</p>
+<p><strong>场景重现</strong>：</p>
+<ol type="1">
+<li>用户A（vibecoder）登录，创建了一个歌单”My Precious Playlist”。</li>
+<li>用户B（eviluser）也登录了，拿到了自己的JWT Token。</li>
+<li>用户B发送请求：<code>DELETE /api/playlists/my-precious-playlist</code>，携带他自己的Token。</li>
+<li>因为B的Token是有效的，系统认为他”已认证”，直接执行删除。</li>
+<li>A的歌单被B删除了。</li>
+</ol>
 <p><strong>问题的本质</strong>：我们实现了认证但没有授权。</p>
 <ul>
 <li><strong>认证（Authentication）</strong>：证明”你是谁”（Who are you?）</li>
@@ -605,6 +616,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>在Controller层检查</strong>：在删除/修改操作前，验证<code>currentUser == playlist.owner</code>。</li>
 <li><strong>用声明式注解</strong>：使用Spring Security的<code>@PreAuthorize</code>，让授权逻辑清晰可读。</li>
 </ol>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    User["用户B (eviluser)"] --&gt;|DELETE /api/playlists/1| API["API Controller"]
+    API --&gt;|拦截| PreAuth["@PreAuthorize"]
+    PreAuth --&gt;|调用| Util["SecurityUtils.isPlaylistOwner"]
+    Util --&gt;|查询DB| DB[("数据库")]
+    DB --&gt;|返回Owner| Result{"Owner == eviluser?"}
+    Result --&gt;|No| Deny["抛出 403 Forbidden"]
+    Result --&gt;|Yes| Allow["执行删除操作"]
+    
+    style Deny fill:#f96,stroke:#333
+    style Allow fill:#9f6,stroke:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="第一步重构playlist实体添加所有权关联" class="level2">
@@ -1306,241 +1339,257 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>但这里隐藏着一个严重的安全隐患：</span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>**场景重现**：</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>用户A（vibecoder）登录，创建了一个歌单"My Precious Playlist"。</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>用户B（eviluser）也登录了，拿到了自己的JWT Token。</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>用户B发送请求：<span class="in">`DELETE /api/playlists/my-precious-playlist`</span>，携带他自己的Token。</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>因为B的Token是有效的，系统认为他"已认证"，直接执行删除。</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>A的歌单被B删除了。</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>**问题的本质**：我们实现了认证但没有授权。</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**认证（Authentication）**：证明"你是谁"（Who are you?）</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**授权（Authorization）**：证明"你能做什么"（What can you do?）</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>我们的系统目前状态：知道用户是谁，但不检查他是否有权执行操作。这就像公司保安看了你的工牌放你进门，但不检查你是否有权进入财务室。</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：业务规则驱动的授权</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>对于VibeVault应用，核心业务规则很简单：</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **用户只能修改或删除他自己创建的歌单。**</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>这是一种**基于资源所有权**的授权模式。我们需要：</span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**建立关联**：<span class="in">`Playlist`</span>实体需要记录"谁是主人"（owner）。</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**在Controller层检查**：在删除/修改操作前，验证<span class="in">`currentUser == playlist.owner`</span>。</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**用声明式注解**：使用Spring Security的<span class="in">`@PreAuthorize`</span>，让授权逻辑清晰可读。</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：重构Playlist实体，添加所有权关联</span></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`Playlist`</span>实体，添加<span class="in">`@ManyToOne`</span>关联到<span class="in">`User`</span>。</span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`Playlist`</span> 实体：</span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>添加 <span class="in">`@ManyToOne`</span> 关联到 <span class="in">`User`</span>，字段名为 <span class="in">`owner`</span>。</span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>更新构造函数，要求创建歌单时必须传入 <span class="in">`owner`</span>。"</span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码要点</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@ManyToOne`</span>：多个歌单可以属于一个用户。</span>
-<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`FetchType.LAZY`</span>：延迟加载owner信息（只有在实际访问<span class="in">`playlist.getOwner()`</span>时才查询数据库）。</span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@JoinColumn(name = "owner_id")`</span>：数据库中会创建<span class="in">`owner_id`</span>外键列。</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>用户A（vibecoder）登录，创建了一个歌单"My Precious Playlist"。</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>用户B（eviluser）也登录了，拿到了自己的JWT Token。</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>用户B发送请求：<span class="in">`DELETE /api/playlists/my-precious-playlist`</span>，携带他自己的Token。</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>因为B的Token是有效的，系统认为他"已认证"，直接执行删除。</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>A的歌单被B删除了。</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>**问题的本质**：我们实现了认证但没有授权。</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**认证（Authentication）**：证明"你是谁"（Who are you?）</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**授权（Authorization）**：证明"你能做什么"（What can you do?）</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>我们的系统目前状态：知道用户是谁，但不检查他是否有权执行操作。这就像公司保安看了你的工牌放你进门，但不检查你是否有权进入财务室。</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节顿悟：业务规则驱动的授权</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>对于VibeVault应用，核心业务规则很简单：</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; **用户只能修改或删除他自己创建的歌单。**</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>这是一种**基于资源所有权**的授权模式。我们需要：</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**建立关联**：<span class="in">`Playlist`</span>实体需要记录"谁是主人"（owner）。</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**在Controller层检查**：在删除/修改操作前，验证<span class="in">`currentUser == playlist.owner`</span>。</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**用声明式注解**：使用Spring Security的<span class="in">`@PreAuthorize`</span>，让授权逻辑清晰可读。</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>graph TD</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>    User[<span class="ot">"</span><span class="st">用户B (eviluser)</span><span class="ot">"</span>] --&gt;|DELETE /api/playlists/<span class="dv">1</span>| API[<span class="ot">"</span><span class="st">API Controller</span><span class="ot">"</span>]</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    API --&gt;|拦截| PreAuth[<span class="ot">"</span><span class="dt">@PreAuthorize</span><span class="ot">"</span>]</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>    PreAuth --&gt;|调用| Util[<span class="ot">"</span><span class="st">SecurityUtils.isPlaylistOwner</span><span class="ot">"</span>]</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    Util --&gt;|查询DB| DB[(<span class="ot">"</span><span class="st">数据库</span><span class="ot">"</span>)]</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>    DB --&gt;|返回Owner| Result{<span class="ot">"</span><span class="st">Owner == eviluser?</span><span class="ot">"</span>}</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>    Result --&gt;|No| Deny[<span class="ot">"</span><span class="st">抛出 403 Forbidden</span><span class="ot">"</span>]</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    Result --&gt;|Yes| Allow[<span class="ot">"</span><span class="st">执行删除操作</span><span class="ot">"</span>]</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    style Deny fill:<span class="co">#f96,stroke:#333</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    style Allow fill:<span class="co">#9f6,stroke:#333</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu">### 数据库迁移提示</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：重构Playlist实体，添加所有权关联</span></span>
 <span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>这个修改会导致数据库表结构变化。如果你使用Spring Boot的自动DDL（<span class="in">`spring.jpa.hibernate.ddl-auto=update`</span>），重启应用后Hibernate会自动添加<span class="in">`owner_id`</span>列。</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`Playlist`</span>实体，添加<span class="in">`@ManyToOne`</span>关联到<span class="in">`User`</span>。</span>
 <span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>**但注意**：现有的歌单数据（如果有）的<span class="in">`owner_id`</span>会是NULL，导致违反<span class="in">`nullable = false`</span>约束。</span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>**两种处理方式**：</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**清空数据重新开始**（开发阶段推荐）：删除<span class="in">`data`</span>目录下的所有<span class="in">`.csv`</span>文件，或直接<span class="in">`DROP TABLE playlists CASCADE;`</span></span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**手动迁移**：先将列设为nullable，插入数据后再改为not null。</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：修改Service层，传递Owner信息</span></span>
-<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`PlaylistService`</span>，在创建歌单时需要传入所有者。</span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`PlaylistService`</span>：</span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`createPlaylist`</span> 方法增加 <span class="in">`ownerUsername`</span> 参数，根据用户名查找 User 并关联。</span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`deletePlaylist`</span> 和 <span class="in">`addSongToPlaylist`</span> 方法增加 <span class="in">`currentUsername`</span> 参数。</span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>在执行删除或添加歌曲前，检查 <span class="in">`playlist.getOwner().getUsername()`</span> 是否等于 <span class="in">`currentUsername`</span>。如果不等，抛出 403 Forbidden 异常。"</span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：在Controller中获取当前用户</span></span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>我们需要从JWT Token中提取当前用户信息。Spring Security提供了便捷的方式：通过<span class="in">`Authentication`</span>对象。</span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`PlaylistController`</span>：</span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>在方法参数中添加 <span class="in">`Authentication authentication`</span>。</span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>使用 <span class="in">`authentication.getName()`</span> 获取当前登录的用户名。</span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>将用户名传递给 Service 层的方法。"</span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步（进阶）：使用@PreAuthorize注解</span></span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>虽然上面的实现已经工作，但授权逻辑和业务逻辑混在一起。更优雅的方式是使用Spring Security的Method Security。</span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### 启用Method Security</span></span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`SecurityConfig`</span>，添加<span class="in">`@EnableMethodSecurity`</span>注解。</span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span>，添加 <span class="in">`@EnableMethodSecurity`</span> 注解，启用方法级安全控制。"</span>
-<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a><span class="fu">### 创建授权检查工具类</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`Playlist`</span> 实体：</span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>添加 <span class="in">`@ManyToOne`</span> 关联到 <span class="in">`User`</span>，字段名为 <span class="in">`owner`</span>。</span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>更新构造函数，要求创建歌单时必须传入 <span class="in">`owner`</span>。"</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码要点</span></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@ManyToOne`</span>：多个歌单可以属于一个用户。</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`FetchType.LAZY`</span>：延迟加载owner信息（只有在实际访问<span class="in">`playlist.getOwner()`</span>时才查询数据库）。</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@JoinColumn(name = "owner_id")`</span>：数据库中会创建<span class="in">`owner_id`</span>外键列。</span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="fu">### 数据库迁移提示</span></span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>这个修改会导致数据库表结构变化。如果你使用Spring Boot的自动DDL（<span class="in">`spring.jpa.hibernate.ddl-auto=update`</span>），重启应用后Hibernate会自动添加<span class="in">`owner_id`</span>列。</span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>**但注意**：现有的歌单数据（如果有）的<span class="in">`owner_id`</span>会是NULL，导致违反<span class="in">`nullable = false`</span>约束。</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>**两种处理方式**：</span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**清空数据重新开始**（开发阶段推荐）：删除<span class="in">`data`</span>目录下的所有<span class="in">`.csv`</span>文件，或直接<span class="in">`DROP TABLE playlists CASCADE;`</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**手动迁移**：先将列设为nullable，插入数据后再改为not null。</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：修改Service层，传递Owner信息</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`PlaylistService`</span>，在创建歌单时需要传入所有者。</span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`PlaylistService`</span>：</span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span><span class="in">`createPlaylist`</span> 方法增加 <span class="in">`ownerUsername`</span> 参数，根据用户名查找 User 并关联。</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span><span class="in">`deletePlaylist`</span> 和 <span class="in">`addSongToPlaylist`</span> 方法增加 <span class="in">`currentUsername`</span> 参数。</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>在执行删除或添加歌曲前，检查 <span class="in">`playlist.getOwner().getUsername()`</span> 是否等于 <span class="in">`currentUsername`</span>。如果不等，抛出 403 Forbidden 异常。"</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：在Controller中获取当前用户</span></span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>我们需要从JWT Token中提取当前用户信息。Spring Security提供了便捷的方式：通过<span class="in">`Authentication`</span>对象。</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`PlaylistController`</span>：</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>在方法参数中添加 <span class="in">`Authentication authentication`</span>。</span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>使用 <span class="in">`authentication.getName()`</span> 获取当前登录的用户名。</span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>将用户名传递给 Service 层的方法。"</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`SecurityUtils`</span> Bean。</span>
-<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>实现 <span class="in">`isPlaylistOwner(playlistId, username)`</span> 方法：</span>
-<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>查询数据库，检查指定歌单的 owner 是否与 username 匹配。"</span>
-<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用@PreAuthorize注解</span></span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>现在可以在Controller方法上使用注解：</span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>"在 <span class="in">`PlaylistController`</span> 的 <span class="in">`deletePlaylist`</span> 方法上添加注解：</span>
-<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a><span class="in">`@PreAuthorize("@securityUtils.isPlaylistOwner(#id, authentication.name)")`</span></span>
-<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>这样只有歌单主人才能调用此接口。"</span>
-<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>**SpEL表达式解析**：</span>
-<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@securityUtils`</span>：引用Spring容器中的<span class="in">`securityUtils`</span> Bean</span>
-<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`#id`</span>：引用方法参数<span class="in">`id`</span></span>
-<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`authentication.name`</span>：当前认证用户的用户名</span>
-<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a>**优势**：</span>
-<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>授权逻辑与业务逻辑分离</span>
-<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>声明式，易于阅读和维护</span>
-<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>自动返回403 Forbidden，无需手动抛异常</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步（进阶）：使用@PreAuthorize注解</span></span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>虽然上面的实现已经工作，但授权逻辑和业务逻辑混在一起。更优雅的方式是使用Spring Security的Method Security。</span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a><span class="fu">### 启用Method Security</span></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>修改<span class="in">`SecurityConfig`</span>，添加<span class="in">`@EnableMethodSecurity`</span>注解。</span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span>，添加 <span class="in">`@EnableMethodSecurity`</span> 注解，启用方法级安全控制。"</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### 创建授权检查工具类</span></span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>"创建一个 <span class="in">`SecurityUtils`</span> Bean。</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>实现 <span class="in">`isPlaylistOwner(playlistId, username)`</span> 方法：</span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a>查询数据库，检查指定歌单的 owner 是否与 username 匹配。"</span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用@PreAuthorize注解</span></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a>现在可以在Controller方法上使用注解：</span>
 <span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：验证授权逻辑（Vibe Check）</span></span>
-<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：创建用户A的歌单</span></span>
-<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 用户A登录</span></span>
-<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
-<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>"在 <span class="in">`PlaylistController`</span> 的 <span class="in">`deletePlaylist`</span> 方法上添加注解：</span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a><span class="in">`@PreAuthorize("@securityUtils.isPlaylistOwner(#id, authentication.name)")`</span></span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a>这样只有歌单主人才能调用此接口。"</span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>**SpEL表达式解析**：</span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`@securityUtils`</span>：引用Spring容器中的<span class="in">`securityUtils`</span> Bean</span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`#id`</span>：引用方法参数<span class="in">`id`</span></span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span><span class="in">`authentication.name`</span>：当前认证用户的用户名</span>
 <span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a><span class="co"># 复制返回的token，记为TOKEN_A</span></span>
-<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 创建歌单</span></span>
-<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists <span class="dt">\</span></span>
-<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_A"</span> <span class="dt">\</span></span>
-<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"name": "My Private Playlist"}'</span></span>
-<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a><span class="co"># 返回的响应中应该有歌单ID，假设是1</span></span>
-<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a>**优势**：</span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>授权逻辑与业务逻辑分离</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>声明式，易于阅读和维护</span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>自动返回403 Forbidden，无需手动抛异常</span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：验证授权逻辑（Vibe Check）</span></span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：创建用户A的歌单</span></span>
 <span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：用户B尝试删除A的歌单（应该失败）</span></span>
-<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 注册并登录用户B</span></span>
-<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
-<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "eviluser", "password": "password123"}'</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 用户A登录</span></span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "vibecoder", "password": "secret123"}'</span></span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a><span class="co"># 复制返回的token，记为TOKEN_A</span></span>
 <span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
-<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "eviluser", "password": "password123"}'</span></span>
-<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a><span class="co"># 复制返回的token，记为TOKEN_B</span></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 创建歌单</span></span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/playlists <span class="dt">\</span></span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_A"</span> <span class="dt">\</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"name": "My Private Playlist"}'</span></span>
 <span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 尝试删除用户A的歌单</span></span>
-<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/1 <span class="dt">\</span></span>
-<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_B"</span></span>
-<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a><span class="co"># 返回的响应中应该有歌单ID，假设是1</span></span>
+<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：用户B尝试删除A的歌单（应该失败）</span></span>
 <span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden，返回"您无权删除此歌单"</span>
-<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：用户A删除自己的歌单（应该成功）</span></span>
-<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/1 <span class="dt">\</span></span>
-<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_A"</span></span>
-<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a>**预期结果**：204 No Content，歌单被成功删除</span>
-<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：授权模式对比</span></span>
-<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. RBAC（基于角色）</span></span>
+<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 注册并登录用户B</span></span>
+<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
+<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "eviluser", "password": "password123"}'</span></span>
+<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/login <span class="dt">\</span></span>
+<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a>  <span class="at">-d</span> <span class="st">'{"username": "eviluser", "password": "password123"}'</span></span>
+<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a><span class="co"># 复制返回的token，记为TOKEN_B</span></span>
+<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 尝试删除用户A的歌单</span></span>
+<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/1 <span class="dt">\</span></span>
+<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_B"</span></span>
+<span id="cb6-196"><a href="#cb6-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb6-197"><a href="#cb6-197" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a>**示例**："管理员可以删除任何歌单，普通用户只能删除自己的"</span>
+<span id="cb6-198"><a href="#cb6-198" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden，返回"您无权删除此歌单"</span>
 <span id="cb6-199"><a href="#cb6-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a><span class="at">@PreAuthorize</span><span class="op">(</span><span class="st">"hasRole('ADMIN') or @securityUtils.isPlaylistOwner(#id, authentication.name)"</span><span class="op">)</span></span>
-<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a>**适用场景**：企业应用，明确的角色层级（管理员、编辑、访客）</span>
-<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. ABAC（基于属性）</span></span>
-<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a>**示例**："只有VIP用户才能创建超过10个歌单"</span>
-<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-210"><a href="#cb6-210" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb6-211"><a href="#cb6-211" aria-hidden="true" tabindex="-1"></a><span class="at">@PreAuthorize</span><span class="op">(</span><span class="st">"@userService.isVip(authentication.name) or @userService.getPlaylistCount(authentication.name) &lt; 10"</span><span class="op">)</span></span>
-<span id="cb6-212"><a href="#cb6-212" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-213"><a href="#cb6-213" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-214"><a href="#cb6-214" aria-hidden="true" tabindex="-1"></a>**适用场景**：复杂的业务规则，多维度属性组合</span>
-<span id="cb6-215"><a href="#cb6-215" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-216"><a href="#cb6-216" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Resource-Based（基于资源所有权）</span></span>
-<span id="cb6-217"><a href="#cb6-217" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-218"><a href="#cb6-218" aria-hidden="true" tabindex="-1"></a>**示例**：我们当前的实现</span>
-<span id="cb6-219"><a href="#cb6-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-220"><a href="#cb6-220" aria-hidden="true" tabindex="-1"></a>**适用场景**：社交应用、个人数据管理</span>
-<span id="cb6-221"><a href="#cb6-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-222"><a href="#cb6-222" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-223"><a href="#cb6-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-224"><a href="#cb6-224" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
-<span id="cb6-225"><a href="#cb6-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-226"><a href="#cb6-226" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
-<span id="cb6-227"><a href="#cb6-227" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述三个测试，确保授权逻辑正常工作。</span>
-<span id="cb6-228"><a href="#cb6-228" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>尝试用Postman或其他工具测试边界情况（如使用已过期的Token、不存在的歌单ID）。</span>
-<span id="cb6-229"><a href="#cb6-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-230"><a href="#cb6-230" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
-<span id="cb6-231"><a href="#cb6-231" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为<span class="in">`addSongToPlaylist`</span>方法也添加<span class="in">`@PreAuthorize`</span>注解，确保只有主人才能添加歌曲。</span>
-<span id="cb6-232"><a href="#cb6-232" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现"协作歌单"功能：允许歌单主人邀请其他用户共同编辑。（提示：需要添加<span class="in">`playlist_collaborators`</span>关联表）</span>
-<span id="cb6-233"><a href="#cb6-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-234"><a href="#cb6-234" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
-<span id="cb6-235"><a href="#cb6-235" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果我们希望实现"歌单可以设为公开或私密"，应该如何修改授权逻辑？</span>
-<span id="cb6-236"><a href="#cb6-236" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>当前实现中，如果<span class="in">`SecurityUtils.isPlaylistOwner`</span>方法查询数据库失败（如数据库宕机），会发生什么？</span>
-<span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
-<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-240"><a href="#cb6-240" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释Spring Security中</span><span class="in">`@PreAuthorize`</span><span class="at">和</span><span class="in">`@PostAuthorize`</span><span class="at">的区别。什么场景下应该使用</span><span class="in">`@PostAuthorize`</span><span class="at">？"</span></span>
-<span id="cb6-241"><a href="#cb6-241" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-242"><a href="#cb6-242" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释RBAC和ABAC两种授权模型。在VibeVault应用中，如果要实现'只有付费用户才能创建超过5个歌单'，应该用哪种模型？如何实现？"</span></span>
-<span id="cb6-243"><a href="#cb6-243" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-244"><a href="#cb6-244" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb6-245"><a href="#cb6-245" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-246"><a href="#cb6-246" aria-hidden="true" tabindex="-1"></a>**完美！** 现在你的应用既知道"谁是谁"（认证），也知道"谁能做什么"（授权）。在下一节，我们将完成全栈的最后一环：**将第9章的React前端接入这个安全体系**，实现真正的登录界面和Token管理，打通全栈任督二脉。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb6-200"><a href="#cb6-200" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：用户A删除自己的歌单（应该成功）</span></span>
+<span id="cb6-201"><a href="#cb6-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-202"><a href="#cb6-202" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb6-203"><a href="#cb6-203" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/1 <span class="dt">\</span></span>
+<span id="cb6-204"><a href="#cb6-204" aria-hidden="true" tabindex="-1"></a>  <span class="at">-H</span> <span class="st">"Authorization: Bearer TOKEN_A"</span></span>
+<span id="cb6-205"><a href="#cb6-205" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-206"><a href="#cb6-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-207"><a href="#cb6-207" aria-hidden="true" tabindex="-1"></a>**预期结果**：204 No Content，歌单被成功删除</span>
+<span id="cb6-208"><a href="#cb6-208" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-209"><a href="#cb6-209" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-210"><a href="#cb6-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-211"><a href="#cb6-211" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：授权模式对比</span></span>
+<span id="cb6-212"><a href="#cb6-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-213"><a href="#cb6-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### 1. RBAC（基于角色）</span></span>
+<span id="cb6-214"><a href="#cb6-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-215"><a href="#cb6-215" aria-hidden="true" tabindex="-1"></a>**示例**："管理员可以删除任何歌单，普通用户只能删除自己的"</span>
+<span id="cb6-216"><a href="#cb6-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-217"><a href="#cb6-217" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb6-218"><a href="#cb6-218" aria-hidden="true" tabindex="-1"></a><span class="at">@PreAuthorize</span><span class="op">(</span><span class="st">"hasRole('ADMIN') or @securityUtils.isPlaylistOwner(#id, authentication.name)"</span><span class="op">)</span></span>
+<span id="cb6-219"><a href="#cb6-219" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-220"><a href="#cb6-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-221"><a href="#cb6-221" aria-hidden="true" tabindex="-1"></a>**适用场景**：企业应用，明确的角色层级（管理员、编辑、访客）</span>
+<span id="cb6-222"><a href="#cb6-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-223"><a href="#cb6-223" aria-hidden="true" tabindex="-1"></a><span class="fu">### 2. ABAC（基于属性）</span></span>
+<span id="cb6-224"><a href="#cb6-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-225"><a href="#cb6-225" aria-hidden="true" tabindex="-1"></a>**示例**："只有VIP用户才能创建超过10个歌单"</span>
+<span id="cb6-226"><a href="#cb6-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-227"><a href="#cb6-227" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb6-228"><a href="#cb6-228" aria-hidden="true" tabindex="-1"></a><span class="at">@PreAuthorize</span><span class="op">(</span><span class="st">"@userService.isVip(authentication.name) or @userService.getPlaylistCount(authentication.name) &lt; 10"</span><span class="op">)</span></span>
+<span id="cb6-229"><a href="#cb6-229" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb6-230"><a href="#cb6-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-231"><a href="#cb6-231" aria-hidden="true" tabindex="-1"></a>**适用场景**：复杂的业务规则，多维度属性组合</span>
+<span id="cb6-232"><a href="#cb6-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-233"><a href="#cb6-233" aria-hidden="true" tabindex="-1"></a><span class="fu">### 3. Resource-Based（基于资源所有权）</span></span>
+<span id="cb6-234"><a href="#cb6-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-235"><a href="#cb6-235" aria-hidden="true" tabindex="-1"></a>**示例**：我们当前的实现</span>
+<span id="cb6-236"><a href="#cb6-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-237"><a href="#cb6-237" aria-hidden="true" tabindex="-1"></a>**适用场景**：社交应用、个人数据管理</span>
+<span id="cb6-238"><a href="#cb6-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-239"><a href="#cb6-239" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-240"><a href="#cb6-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-241"><a href="#cb6-241" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb6-242"><a href="#cb6-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-243"><a href="#cb6-243" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
+<span id="cb6-244"><a href="#cb6-244" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述三个测试，确保授权逻辑正常工作。</span>
+<span id="cb6-245"><a href="#cb6-245" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>尝试用Postman或其他工具测试边界情况（如使用已过期的Token、不存在的歌单ID）。</span>
+<span id="cb6-246"><a href="#cb6-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-247"><a href="#cb6-247" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
+<span id="cb6-248"><a href="#cb6-248" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为<span class="in">`addSongToPlaylist`</span>方法也添加<span class="in">`@PreAuthorize`</span>注解，确保只有主人才能添加歌曲。</span>
+<span id="cb6-249"><a href="#cb6-249" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现"协作歌单"功能：允许歌单主人邀请其他用户共同编辑。（提示：需要添加<span class="in">`playlist_collaborators`</span>关联表）</span>
+<span id="cb6-250"><a href="#cb6-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-251"><a href="#cb6-251" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
+<span id="cb6-252"><a href="#cb6-252" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果我们希望实现"歌单可以设为公开或私密"，应该如何修改授权逻辑？</span>
+<span id="cb6-253"><a href="#cb6-253" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>当前实现中，如果<span class="in">`SecurityUtils.isPlaylistOwner`</span>方法查询数据库失败（如数据库宕机），会发生什么？</span>
+<span id="cb6-254"><a href="#cb6-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-255"><a href="#cb6-255" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
+<span id="cb6-256"><a href="#cb6-256" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-257"><a href="#cb6-257" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释Spring Security中</span><span class="in">`@PreAuthorize`</span><span class="at">和</span><span class="in">`@PostAuthorize`</span><span class="at">的区别。什么场景下应该使用</span><span class="in">`@PostAuthorize`</span><span class="at">？"</span></span>
+<span id="cb6-258"><a href="#cb6-258" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-259"><a href="#cb6-259" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释RBAC和ABAC两种授权模型。在VibeVault应用中，如果要实现'只有付费用户才能创建超过5个歌单'，应该用哪种模型？如何实现？"</span></span>
+<span id="cb6-260"><a href="#cb6-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-261"><a href="#cb6-261" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb6-262"><a href="#cb6-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-263"><a href="#cb6-263" aria-hidden="true" tabindex="-1"></a>**完美！** 现在你的应用既知道"谁是谁"（认证），也知道"谁能做什么"（授权）。在下一节，我们将完成全栈的最后一环：**将第9章的React前端接入这个安全体系**，实现真正的登录界面和Token管理，打通全栈任督二脉。</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

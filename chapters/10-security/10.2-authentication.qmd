@@ -13,6 +13,7 @@
 在Web应用中，这个"工牌"就是**用户身份（User Identity）**，"给保安看工牌"的过程就是**认证（Authentication）**。
 
 **我们现在面临的危机是：**
+
 1.  系统中没有"用户"的概念，无法区分张三和李四。
 2.  没有"登录"机制，守门人Spring Security无从验证身份。
 3.  即使用户提供了用户名和密码，我们也没有地方存储和验证。
@@ -38,6 +39,7 @@
 *   **2019年Facebook事件**：数亿用户密码以明文形式存储在内部日志中。
 
 **后果**：
+
 *   用户会在多个网站使用相同密码。一个
 网站泄露，攻击者会用这些密码尝试登录银行、邮箱等其他服务（撞库攻击）。
 *   公司声誉毁灭性打击，面临巨额罚款（GDPR等法规）。
@@ -52,12 +54,31 @@
 3.  **自适应成本**：可以调整计算复杂度，对抗日益强大的暴力破解。
 
 **验证流程**：
+
 1.  用户注册时：`原始密码` → BCrypt加密 → `$2a$10$N9qo8...`（存入数据库）
 2.  用户登录时：提交密码 → BCrypt加密 → 与数据库中的字符串比对 → 匹配则通过
 
----
+```{mermaid}
+sequenceDiagram
+    participant User as 用户
+    participant Controller as AuthController
+    participant Repo as UserRepository
+    participant DB as 数据库
+    
+    User->>Controller: POST /login (username, password)
+    Controller->>Repo: findByUsername(username)
+    Repo->>DB: SQL Query
+    DB-->>Repo: Return User (with encrypted password)
+    Repo-->>Controller: Return User Entity
+    Controller->>Controller: BCrypt.check(password, encrypted)
+    alt 密码匹配
+        Controller-->>User: 200 OK (Login Success)
+    else 密码错误
+        Controller-->>User: 401 Unauthorized
+    end
+```
 
-## 第一步：定义User实体
+### 核心组件：User实体与Repository
 
 我们需要一个地方来存储用户信息。在`com.vibevault.model`包下创建`User.java`。
 
@@ -79,6 +100,7 @@ public class User {
 ## 🤖 AI Prompt
 "请帮我创建一个 JPA 实体 `User`，包含 `id`, `username` (唯一), `password` 字段。
 注意：
+
 1. 表名设为 `users`。
 2. 添加必要的注解、构造函数和 Getter。"
 :::
@@ -97,6 +119,7 @@ public class User {
 ## 🤖 AI Prompt
 "创建一个 `UserRepository` 接口，继承自 `JpaRepository`。
 添加两个方法：
+
 1. `findByUsername`：用于登录查找。
 2. `existsByUsername`：用于注册查重。"
 :::
@@ -123,14 +146,42 @@ public class User {
 ## 🤖 AI Prompt
 "创建一个 `AuthController`，处理 `/api/auth` 路径的请求。
 实现 `/signup` (POST) 接口：
+
 1. 接收用户名和密码。
 2. 检查用户名是否存在。
 3. **关键**：使用 `passwordEncoder` 加密密码。
 4. 保存新用户到数据库。"
 :::
 
-> [!NOTE]
-> 这里的关键是**加密**。请确保AI生成的代码中调用了 `passwordEncoder.encode()`。
+### 注册流程图
+
+```{mermaid}
+sequenceDiagram
+    participant User as 用户
+    participant Controller as AuthController
+    participant Encrypt as BCryptPasswordEncoder
+    participant Repo as UserRepository
+    participant DB as 数据库
+    
+    User->>Controller: POST /signup (username, password)
+    Controller->>Repo: existsByUsername?
+    alt 已存在
+        Repo-->>Controller: true
+        Controller-->>User: 400 Bad Request
+    else 不存在
+        Repo-->>Controller: false
+        Controller->>Encrypt: encode(password)
+        Encrypt-->>Controller: "hashed_password"
+        Controller->>Repo: save(User)
+        Repo->>DB: INSERT INTO users ...
+        Controller-->>User: 200 OK
+    end
+```
+
+::: {.callout-note}
+## 💡 注意
+这里的关键是**加密**。请确保AI生成的代码中调用了 `passwordEncoder.encode()`。
+:::
 
 ### 安全要点
 
@@ -147,6 +198,7 @@ public class User {
 ::: {.callout-tip}
 ## 🤖 AI Prompt
 "在 `AuthController` 中添加 `/login` (POST) 接口：
+
 1. 接收用户名和密码。
 2. 根据用户名查找用户。
 3. **关键**：使用 `passwordEncoder.matches()` 验证密码。
@@ -213,6 +265,7 @@ SELECT * FROM users;
 ```
 
 你应该能看到：
+
 - `id`: 自动生成的主键
 - `username`: "vibecoder"
 - `password`: 类似`$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy`的加密字符串

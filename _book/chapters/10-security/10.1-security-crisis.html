@@ -105,6 +105,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -609,6 +613,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>授权检查</strong>：即使身份合法，也要检查是否有权限（Authorization）执行特定操作。</li>
 </ul>
 <p>这种”零信任”的设计，虽然初期配置略显繁琐，但它为我们的应用筑起了一道坚实的防线。</p>
+<section id="核心概念security-filter-chain安全过滤器链" class="level3">
+<h3 class="anchored" data-anchor-id="核心概念security-filter-chain安全过滤器链">核心概念：Security Filter Chain（安全过滤器链）</h3>
+<p>Spring Security 的工作原理就像机场安检。每一个请求（旅客）在到达目的地（Controller）之前，必须经过一系列的检查站（Filters）。</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph LR
+    Request["HTTP请求"] --&gt; Filter1["Filter 1: 身份检查"]
+    Filter1 --&gt; Filter2["Filter 2: 权限检查"]
+    Filter2 --&gt; Filter3["Filter 3: CSRF检查"]
+    Filter3 --&gt; ...
+    ... --&gt; Controller["你的Controller"]
+    
+    style Request fill:#f96,stroke:#333
+    style Controller fill:#9f6,stroke:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>如果任何一个 Filter 觉得请求有问题（比如没带身份证），它会直接拒绝请求（抛出 401/403 异常），请求永远不会到达 Controller。</p>
+</section>
 <section id="vibe-coding策略ai托管配置" class="level3">
 <h3 class="anchored" data-anchor-id="vibe-coding策略ai托管配置">Vibe Coding策略：AI托管配置</h3>
 <p>Spring Security的配置代码充斥着各种过滤器链（Filter Chain）、适配器（Adapter）、认证管理器（Authentication Manager）。这些概念抽象且晦涩，而且<strong>版本迭代极快</strong>。</p>
@@ -813,6 +842,33 @@ Important
 <li>服务器可以随意扩展（Scale Out），任何一台服务器都能处理任何一个请求。</li>
 <li>符合REST架构的无状态约束，天然支持分布式部署。</li>
 </ul>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    subgraph Stateful["有状态 (Session)"]
+        User1["用户"] --&gt;|登录| Server1["服务器A (存Session)"]
+        User1 --&gt;|请求| Server2["服务器B (无Session)"]
+        Server2 -.-&gt;|❌ 失败| User1
+    end
+    
+    subgraph Stateless["无状态 (JWT)"]
+        User2["用户"] --&gt;|登录| ServerA["服务器A"]
+        ServerA --&gt;|返回Token| User2
+        User2 --&gt;|携带Token请求| ServerB["服务器B"]
+        ServerB --&gt;|✅ 成功| User2
+    end
+    
+    style Stateful fill:#fdd,stroke:#333
+    style Stateless fill:#dfd,stroke:#333
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p><strong>代价</strong>：每个请求都要携带Token，网络传输量略微增加（通常几百字节，可以接受）。</p>
 <hr>
 </section>
@@ -1355,240 +1411,278 @@ Important
 <span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>这种"零信任"的设计，虽然初期配置略显繁琐，但它为我们的应用筑起了一道坚实的防线。</span>
 <span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vibe Coding策略：AI托管配置</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="fu">### 核心概念：Security Filter Chain（安全过滤器链）</span></span>
 <span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>Spring Security的配置代码充斥着各种过滤器链（Filter Chain）、适配器（Adapter）、认证管理器（Authentication Manager）。这些概念抽象且晦涩，而且**版本迭代极快**。</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>Spring Security 的工作原理就像机场安检。每一个请求（旅客）在到达目的地（Controller）之前，必须经过一系列的检查站（Filters）。</span>
 <span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>例如，Spring Security 5.x 广泛使用的 <span class="in">`WebSecurityConfigurerAdapter`</span> 在6.x中已被废弃，改用基于Lambda的 <span class="in">`SecurityFilterChain`</span>。如果你的AI助手训练数据过时，它可能会生成大量无法编译的旧代码。</span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>**我们的策略**：</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**我们负责定义策略**：明确说明"哪些路径开放"、"哪些路径需要认证"。</span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI负责生成配置**：让AI基于最新文档（通过Context7 MCP）生成符合Spring Security 6.x规范的标准代码。</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**我们负责审查**：检查关键配置是否符合预期，而不是逐行理解每个API调用。</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：引入Spring Security依赖</span></span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>在<span class="in">`gradle/libs.versions.toml`</span>的<span class="in">`[libraries]`</span>区域添加：</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>graph LR</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    Request[<span class="ot">"</span><span class="st">HTTP请求</span><span class="ot">"</span>] --&gt; Filter1[<span class="ot">"</span><span class="st">Filter 1: 身份检查</span><span class="ot">"</span>]</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    Filter1 --&gt; Filter2[<span class="ot">"</span><span class="st">Filter 2: 权限检查</span><span class="ot">"</span>]</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    Filter2 --&gt; Filter3[<span class="ot">"</span><span class="st">Filter 3: CSRF检查</span><span class="ot">"</span>]</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    Filter3 --&gt; ...</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>    ... --&gt; Controller[<span class="ot">"</span><span class="st">你的Controller</span><span class="ot">"</span>]</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    style Request fill:<span class="co">#f96,stroke:#333</span></span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>    style Controller fill:<span class="co">#9f6,stroke:#333</span></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a><span class="in">```toml</span></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="in">[libraries]</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="in"># ... 其他依赖</span></span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a><span class="in">spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }</span></span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>如果任何一个 Filter 觉得请求有问题（比如没带身份证），它会直接拒绝请求（抛出 401/403 异常），请求永远不会到达 Controller。</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="fu">### Vibe Coding策略：AI托管配置</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>Spring Security的配置代码充斥着各种过滤器链（Filter Chain）、适配器（Adapter）、认证管理器（Authentication Manager）。这些概念抽象且晦涩，而且**版本迭代极快**。</span>
 <span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>然后在<span class="in">`build.gradle.kts`</span>的<span class="in">`dependencies`</span>块中添加：</span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>例如，Spring Security 5.x 广泛使用的 <span class="in">`WebSecurityConfigurerAdapter`</span> 在6.x中已被废弃，改用基于Lambda的 <span class="in">`SecurityFilterChain`</span>。如果你的AI助手训练数据过时，它可能会生成大量无法编译的旧代码。</span>
 <span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="in">```kotlin</span></span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a><span class="in">dependencies {</span></span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="in">    // ... 其他依赖</span></span>
-<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="in">    implementation(libs.spring.boot.starter.security)</span></span>
-<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
-<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="fu">### 重启应用：见证"默认拒绝"</span></span>
-<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a>保存文件，重启你的Spring Boot应用。然后再次访问 <span class="in">`http://localhost:8080/api/playlists`</span>。</span>
-<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>**惊喜来了**：你看到的不再是熟悉的JSON数据，而是一个**401 Unauthorized**错误页面，或者浏览器弹出一个登录对话框。</span>
-<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>这不是Bug，这是**Spring Security的默认行为**。它已经自动为你的应用安装了一套完整的安全机制：</span>
-<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**默认拦截**：所有路径都需要认证。</span>
-<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**自动登录页**：Spring自动生成了一个基本的登录表单。</span>
-<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**默认用户**：控制台日志中会打印一个随机密码（用户名是<span class="in">`user`</span>）。</span>
-<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>虽然这个默认配置不适合我们的REST API场景（我们需要的是JWT，而不是表单登录），但它清晰地展示了Spring Security的理念：**先锁门，再定规矩。**</span>
-<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：AI托管配置——定义我们的安全策略</span></span>
-<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a>现在，我们需要"驯服"这个过于严格的守门人，让它理解我们的业务规则。</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>**我们的策略**：</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**我们负责定义策略**：明确说明"哪些路径开放"、"哪些路径需要认证"。</span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**AI负责生成配置**：让AI基于最新文档（通过Context7 MCP）生成符合Spring Security 6.x规范的标准代码。</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**我们负责审查**：检查关键配置是否符合预期，而不是逐行理解每个API调用。</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：引入Spring Security依赖</span></span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>在<span class="in">`gradle/libs.versions.toml`</span>的<span class="in">`[libraries]`</span>区域添加：</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="in">```toml</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="in">[libraries]</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="in"># ... 其他依赖</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="in">spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>然后在<span class="in">`build.gradle.kts`</span>的<span class="in">`dependencies`</span>块中添加：</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="in">```kotlin</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="in">dependencies {</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="in">    // ... 其他依赖</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="in">    implementation(libs.spring.boot.starter.security)</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### 我们的安全策略</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a><span class="fu">### 重启应用：见证"默认拒绝"</span></span>
 <span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>在开始之前，让我们明确定义我们的需求（这是与AI沟通的关键）：</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>保存文件，重启你的Spring Boot应用。然后再次访问 <span class="in">`http://localhost:8080/api/playlists`</span>。</span>
 <span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**无状态（Stateless）**：我们构建的是REST API，不使用Session，所有认证信息通过Token传递。</span>
-<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**白名单路径**：</span>
-<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`/api/auth/signup`</span> 和 <span class="in">`/api/auth/login`</span>：任何人都可以注册和登录，无需认证。</span>
-<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>暂时允许 <span class="in">`/api/playlists`</span>（GET请求）匿名访问，方便我们测试。</span>
-<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**默认拒绝**：除白名单外的所有请求，都必须提供有效的认证凭证。</span>
-<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**禁用CSRF**：因为我们使用Token（放在Header），而不是Cookie，所以不需要CSRF保护。</span>
-<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用AI生成SecurityConfig</span></span>
-<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a>现在，复制以下Prompt给你的AI助手（如果你使用支持MCP的编辑器，记得添加<span class="in">`use context7`</span>）：</span>
-<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a>**惊喜来了**：你看到的不再是熟悉的JSON数据，而是一个**401 Unauthorized**错误页面，或者浏览器弹出一个登录对话框。</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>这不是Bug，这是**Spring Security的默认行为**。它已经自动为你的应用安装了一套完整的安全机制：</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**默认拦截**：所有路径都需要认证。</span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**自动登录页**：Spring自动生成了一个基本的登录表单。</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**默认用户**：控制台日志中会打印一个随机密码（用户名是<span class="in">`user`</span>）。</span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>虽然这个默认配置不适合我们的REST API场景（我们需要的是JWT，而不是表单登录），但它清晰地展示了Spring Security的理念：**先锁门，再定规矩。**</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：AI托管配置——定义我们的安全策略</span></span>
 <span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>"我正在使用 **Spring Boot 3.2** 和 **Spring Security 6.x**。</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>现在，我们需要"驯服"这个过于严格的守门人，让它理解我们的业务规则。</span>
 <span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>请帮我生成一个完整的 <span class="in">`SecurityConfig`</span> 配置类，要求如下：</span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="fu">### 我们的安全策略</span></span>
 <span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**包路径**：<span class="in">`com.vibevault.config`</span></span>
-<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**无状态（Stateless）**：</span>
-<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>禁用CSRF保护（因为我们使用Token而非Cookie）</span>
-<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>Session策略设为 <span class="in">`STATELESS`</span></span>
-<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**白名单**：</span>
-<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>允许 <span class="in">`/api/auth/**`</span>（所有认证相关接口）匿名访问</span>
-<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>允许 <span class="in">`/api/playlists`</span>（仅GET请求）匿名访问</span>
-<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**默认拒绝**：所有其他请求必须认证（authenticated）</span>
-<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**代码风格**：</span>
-<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用 <span class="in">`SecurityFilterChain`</span> Bean（不要使用已废弃的 <span class="in">`WebSecurityConfigurerAdapter`</span>）</span>
-<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用Lambda DSL配置风格</span>
-<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加详细的中文注释</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a>在开始之前，让我们明确定义我们的需求（这是与AI沟通的关键）：</span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**无状态（Stateless）**：我们构建的是REST API，不使用Session，所有认证信息通过Token传递。</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**白名单路径**：</span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span><span class="in">`/api/auth/signup`</span> 和 <span class="in">`/api/auth/login`</span>：任何人都可以注册和登录，无需认证。</span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>暂时允许 <span class="in">`/api/playlists`</span>（GET请求）匿名访问，方便我们测试。</span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**默认拒绝**：除白名单外的所有请求，都必须提供有效的认证凭证。</span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**禁用CSRF**：因为我们使用Token（放在Header），而不是Cookie，所以不需要CSRF保护。</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用AI生成SecurityConfig</span></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a>现在，复制以下Prompt给你的AI助手（如果你使用支持MCP的编辑器，记得添加<span class="in">`use context7`</span>）：</span>
 <span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>请直接给出完整的Java代码。</span>
-<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>use context7"</span>
-<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>"我正在使用 **Spring Boot 3.2** 和 **Spring Security 6.x**。</span>
 <span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a><span class="fu">### 审查AI的输出</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>请帮我生成一个完整的 <span class="in">`SecurityConfig`</span> 配置类，要求如下：</span>
 <span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a>AI应该生成类似以下的代码。请创建文件 <span class="in">`com/vibevault/config/SecurityConfig.java`</span>，并粘贴AI生成的代码。</span>
-<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
-<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a>**不要直接复制下面的代码**。Spring Security版本更新极快，API经常变动。请务必使用AI生成的、针对你当前版本的代码。下面的代码仅供参考，用于理解核心配置项。</span>
-<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
-<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="co">// 参考代码：SecurityConfig的核心结构</span></span>
-<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a><span class="at">@Configuration</span></span>
-<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a><span class="at">@EnableWebSecurity</span></span>
-<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> SecurityConfig <span class="op">{</span></span>
-<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Bean</span></span>
-<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> SecurityFilterChain <span class="fu">securityFilterChain</span><span class="op">(</span>HttpSecurity http<span class="op">)</span> <span class="kw">throws</span> <span class="bu">Exception</span> <span class="op">{</span></span>
-<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>        http</span>
-<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 1. 禁用CSRF（因为我们使用Token）</span></span>
-<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">csrf</span><span class="op">(</span>csrf <span class="op">-&gt;</span> csrf<span class="op">.</span><span class="fu">disable</span><span class="op">())</span></span>
-<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 2. 设置无状态Session（不保存用户状态）</span></span>
-<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">sessionManagement</span><span class="op">(</span>session <span class="op">-&gt;</span> session</span>
-<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">sessionCreationPolicy</span><span class="op">(</span>SessionCreationPolicy<span class="op">.</span><span class="fu">STATELESS</span><span class="op">)</span></span>
-<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a>            <span class="op">)</span></span>
-<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>            </span>
-<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 3. 定义白名单和拦截规则</span></span>
-<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">authorizeHttpRequests</span><span class="op">(</span>auth <span class="op">-&gt;</span> auth</span>
-<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">requestMatchers</span><span class="op">(</span><span class="st">"/api/auth/**"</span><span class="op">).</span><span class="fu">permitAll</span><span class="op">()</span> <span class="co">// 允许注册/登录</span></span>
-<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">requestMatchers</span><span class="op">(</span>HttpMethod<span class="op">.</span><span class="fu">GET</span><span class="op">,</span> <span class="st">"/api/playlists"</span><span class="op">).</span><span class="fu">permitAll</span><span class="op">()</span> <span class="co">// 临时允许查看歌单</span></span>
-<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">anyRequest</span><span class="op">().</span><span class="fu">authenticated</span><span class="op">()</span> <span class="co">// 其他所有请求都需要认证</span></span>
-<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a>            <span class="op">);</span></span>
-<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> http<span class="op">.</span><span class="fu">build</span><span class="op">();</span></span>
-<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码审查清单</span></span>
-<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>在使用AI生成的代码前，请务必检查以下关键点：</span>
-<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否使用了 <span class="in">`SecurityFilterChain`</span> Bean，而非废弃的 <span class="in">`WebSecurityConfigurerAdapter`</span>？</span>
-<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否使用Lambda DSL（<span class="in">`auth -&gt; auth...`</span>），而非旧式的链式调用？</span>
-<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否包含 <span class="in">`.csrf(csrf -&gt; csrf.disable())`</span>？</span>
-<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否配置了 <span class="in">`SessionCreationPolicy.STATELESS`</span>？</span>
-<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 白名单路径是否正确（<span class="in">`/api/auth/**`</span> 和 GET <span class="in">`/api/playlists`</span>）？</span>
-<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否有 <span class="in">`.anyRequest().authenticated()`</span>作为兜底规则？</span>
-<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>如果以上都通过，恭喜！你已经成功配置了Spring Security的第一道防线。</span>
-<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**包路径**：<span class="in">`com.vibevault.config`</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**无状态（Stateless）**：</span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>禁用CSRF保护（因为我们使用Token而非Cookie）</span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>Session策略设为 <span class="in">`STATELESS`</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**白名单**：</span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>允许 <span class="in">`/api/auth/**`</span>（所有认证相关接口）匿名访问</span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>允许 <span class="in">`/api/playlists`</span>（仅GET请求）匿名访问</span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**默认拒绝**：所有其他请求必须认证（authenticated）</span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**代码风格**：</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用 <span class="in">`SecurityFilterChain`</span> Bean（不要使用已废弃的 <span class="in">`WebSecurityConfigurerAdapter`</span>）</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用Lambda DSL配置风格</span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加详细的中文注释</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>请直接给出完整的Java代码。</span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>use context7"</span>
+<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-154"><a href="#cb7-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-155"><a href="#cb7-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### 审查AI的输出</span></span>
+<span id="cb7-156"><a href="#cb7-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-157"><a href="#cb7-157" aria-hidden="true" tabindex="-1"></a>AI应该生成类似以下的代码。请创建文件 <span class="in">`com/vibevault/config/SecurityConfig.java`</span>，并粘贴AI生成的代码。</span>
+<span id="cb7-158"><a href="#cb7-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-159"><a href="#cb7-159" aria-hidden="true" tabindex="-1"></a>::: {.callout-important}</span>
+<span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>**不要直接复制下面的代码**。Spring Security版本更新极快，API经常变动。请务必使用AI生成的、针对你当前版本的代码。下面的代码仅供参考，用于理解核心配置项。</span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a><span class="in">```java</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a><span class="co">// 参考代码：SecurityConfig的核心结构</span></span>
+<span id="cb7-165"><a href="#cb7-165" aria-hidden="true" tabindex="-1"></a><span class="at">@Configuration</span></span>
+<span id="cb7-166"><a href="#cb7-166" aria-hidden="true" tabindex="-1"></a><span class="at">@EnableWebSecurity</span></span>
+<span id="cb7-167"><a href="#cb7-167" aria-hidden="true" tabindex="-1"></a><span class="kw">public</span> <span class="kw">class</span> SecurityConfig <span class="op">{</span></span>
+<span id="cb7-168"><a href="#cb7-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-169"><a href="#cb7-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">@Bean</span></span>
+<span id="cb7-170"><a href="#cb7-170" aria-hidden="true" tabindex="-1"></a>    <span class="kw">public</span> SecurityFilterChain <span class="fu">securityFilterChain</span><span class="op">(</span>HttpSecurity http<span class="op">)</span> <span class="kw">throws</span> <span class="bu">Exception</span> <span class="op">{</span></span>
+<span id="cb7-171"><a href="#cb7-171" aria-hidden="true" tabindex="-1"></a>        http</span>
+<span id="cb7-172"><a href="#cb7-172" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 1. 禁用CSRF（因为我们使用Token）</span></span>
+<span id="cb7-173"><a href="#cb7-173" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">csrf</span><span class="op">(</span>csrf <span class="op">-&gt;</span> csrf<span class="op">.</span><span class="fu">disable</span><span class="op">())</span></span>
+<span id="cb7-174"><a href="#cb7-174" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-175"><a href="#cb7-175" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 2. 设置无状态Session（不保存用户状态）</span></span>
+<span id="cb7-176"><a href="#cb7-176" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">sessionManagement</span><span class="op">(</span>session <span class="op">-&gt;</span> session</span>
+<span id="cb7-177"><a href="#cb7-177" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">sessionCreationPolicy</span><span class="op">(</span>SessionCreationPolicy<span class="op">.</span><span class="fu">STATELESS</span><span class="op">)</span></span>
+<span id="cb7-178"><a href="#cb7-178" aria-hidden="true" tabindex="-1"></a>            <span class="op">)</span></span>
+<span id="cb7-179"><a href="#cb7-179" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb7-180"><a href="#cb7-180" aria-hidden="true" tabindex="-1"></a>            <span class="co">// 3. 定义白名单和拦截规则</span></span>
+<span id="cb7-181"><a href="#cb7-181" aria-hidden="true" tabindex="-1"></a>            <span class="op">.</span><span class="fu">authorizeHttpRequests</span><span class="op">(</span>auth <span class="op">-&gt;</span> auth</span>
+<span id="cb7-182"><a href="#cb7-182" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">requestMatchers</span><span class="op">(</span><span class="st">"/api/auth/**"</span><span class="op">).</span><span class="fu">permitAll</span><span class="op">()</span> <span class="co">// 允许注册/登录</span></span>
+<span id="cb7-183"><a href="#cb7-183" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">requestMatchers</span><span class="op">(</span>HttpMethod<span class="op">.</span><span class="fu">GET</span><span class="op">,</span> <span class="st">"/api/playlists"</span><span class="op">).</span><span class="fu">permitAll</span><span class="op">()</span> <span class="co">// 临时允许查看歌单</span></span>
+<span id="cb7-184"><a href="#cb7-184" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span><span class="fu">anyRequest</span><span class="op">().</span><span class="fu">authenticated</span><span class="op">()</span> <span class="co">// 其他所有请求都需要认证</span></span>
+<span id="cb7-185"><a href="#cb7-185" aria-hidden="true" tabindex="-1"></a>            <span class="op">);</span></span>
 <span id="cb7-186"><a href="#cb7-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：验证配置（Vibe Check）</span></span>
-<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a>重启应用，让我们验证守门人是否按照我们的规则工作。</span>
-<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：白名单路径（应该通过）</span></span>
-<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a>打开浏览器或使用<span class="in">`curl`</span>，访问：</span>
-<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/api/playlists</span>
-<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a>**预期结果**：200 OK，返回播放列表的JSON数据。（因为我们将GET <span class="in">`/api/playlists`</span>加入了白名单）</span>
-<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：受保护的路径（应该被拦截）</span></span>
+<span id="cb7-187"><a href="#cb7-187" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> http<span class="op">.</span><span class="fu">build</span><span class="op">();</span></span>
+<span id="cb7-188"><a href="#cb7-188" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb7-189"><a href="#cb7-189" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb7-190"><a href="#cb7-190" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-191"><a href="#cb7-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-192"><a href="#cb7-192" aria-hidden="true" tabindex="-1"></a><span class="fu">### 代码审查清单</span></span>
+<span id="cb7-193"><a href="#cb7-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-194"><a href="#cb7-194" aria-hidden="true" tabindex="-1"></a>在使用AI生成的代码前，请务必检查以下关键点：</span>
+<span id="cb7-195"><a href="#cb7-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-196"><a href="#cb7-196" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否使用了 <span class="in">`SecurityFilterChain`</span> Bean，而非废弃的 <span class="in">`WebSecurityConfigurerAdapter`</span>？</span>
+<span id="cb7-197"><a href="#cb7-197" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否使用Lambda DSL（<span class="in">`auth -&gt; auth...`</span>），而非旧式的链式调用？</span>
+<span id="cb7-198"><a href="#cb7-198" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否包含 <span class="in">`.csrf(csrf -&gt; csrf.disable())`</span>？</span>
+<span id="cb7-199"><a href="#cb7-199" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否配置了 <span class="in">`SessionCreationPolicy.STATELESS`</span>？</span>
+<span id="cb7-200"><a href="#cb7-200" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 白名单路径是否正确（<span class="in">`/api/auth/**`</span> 和 GET <span class="in">`/api/playlists`</span>）？</span>
+<span id="cb7-201"><a href="#cb7-201" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 是否有 <span class="in">`.anyRequest().authenticated()`</span>作为兜底规则？</span>
 <span id="cb7-202"><a href="#cb7-202" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a>尝试删除一个播放列表：</span>
+<span id="cb7-203"><a href="#cb7-203" aria-hidden="true" tabindex="-1"></a>如果以上都通过，恭喜！你已经成功配置了Spring Security的第一道防线。</span>
 <span id="cb7-204"><a href="#cb7-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/my-favorites</span>
-<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-205"><a href="#cb7-205" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-206"><a href="#cb7-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-207"><a href="#cb7-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：验证配置（Vibe Check）</span></span>
 <span id="cb7-208"><a href="#cb7-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden（禁止访问）。因为DELETE请求不在白名单中，且我们没有提供认证凭证。</span>
+<span id="cb7-209"><a href="#cb7-209" aria-hidden="true" tabindex="-1"></a>重启应用，让我们验证守门人是否按照我们的规则工作。</span>
 <span id="cb7-210"><a href="#cb7-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：检查Session行为</span></span>
+<span id="cb7-211"><a href="#cb7-211" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：白名单路径（应该通过）</span></span>
 <span id="cb7-212"><a href="#cb7-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>在浏览器的开发者工具中（F12 → Network），访问API，检查响应头中是否**没有** <span class="in">`Set-Cookie`</span> 字段。</span>
+<span id="cb7-213"><a href="#cb7-213" aria-hidden="true" tabindex="-1"></a>打开浏览器或使用<span class="in">`curl`</span>，访问：</span>
 <span id="cb7-214"><a href="#cb7-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a>**预期结果**：没有Cookie被设置，证明我们的STATELESS配置生效了。</span>
-<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-215"><a href="#cb7-215" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb7-216"><a href="#cb7-216" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> http://localhost:8080/api/playlists</span>
+<span id="cb7-217"><a href="#cb7-217" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb7-218"><a href="#cb7-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：深入理解核心概念</span></span>
+<span id="cb7-219"><a href="#cb7-219" aria-hidden="true" tabindex="-1"></a>**预期结果**：200 OK，返回播放列表的JSON数据。（因为我们将GET <span class="in">`/api/playlists`</span>加入了白名单）</span>
 <span id="cb7-220"><a href="#cb7-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a><span class="fu">### CSRF（跨站请求伪造）：为什么我们可以禁用？</span></span>
+<span id="cb7-221"><a href="#cb7-221" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：受保护的路径（应该被拦截）</span></span>
 <span id="cb7-222"><a href="#cb7-222" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a>**攻击场景**（传统Session方式）：</span>
+<span id="cb7-223"><a href="#cb7-223" aria-hidden="true" tabindex="-1"></a>尝试删除一个播放列表：</span>
 <span id="cb7-224"><a href="#cb7-224" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>你登录了银行网站A，浏览器存储了Session Cookie。</span>
-<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>你访问了恶意网站B。</span>
-<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>网站B的页面中隐藏了一个表单，自动向银行网站A发送转账请求。</span>
-<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>因为浏览器会**自动携带**银行网站A的Cookie，请求看起来像是你发出的，攻击成功。</span>
-<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a>**为什么我们不需要CSRF保护？**  </span>
-<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a>我们使用的是Token认证（后续章节会实现），Token存储在<span class="in">`localStorage`</span>或前端变量中，放在HTTP Header的<span class="in">`Authorization`</span>字段里发送。浏览器**不会自动携带**Header，恶意网站无法伪造这个Token。</span>
+<span id="cb7-225"><a href="#cb7-225" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb7-226"><a href="#cb7-226" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> DELETE http://localhost:8080/api/playlists/my-favorites</span>
+<span id="cb7-227"><a href="#cb7-227" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-228"><a href="#cb7-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-229"><a href="#cb7-229" aria-hidden="true" tabindex="-1"></a>**预期结果**：403 Forbidden（禁止访问）。因为DELETE请求不在白名单中，且我们没有提供认证凭证。</span>
+<span id="cb7-230"><a href="#cb7-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-231"><a href="#cb7-231" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：检查Session行为</span></span>
 <span id="cb7-232"><a href="#cb7-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a>**例外情况**：如果你未来改用Cookie存储Token（不推荐），那么**必须**重新启用CSRF保护。</span>
+<span id="cb7-233"><a href="#cb7-233" aria-hidden="true" tabindex="-1"></a>在浏览器的开发者工具中（F12 → Network），访问API，检查响应头中是否**没有** <span class="in">`Set-Cookie`</span> 字段。</span>
 <span id="cb7-234"><a href="#cb7-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a><span class="fu">### Stateless（无状态）：为什么它是REST API的标配？</span></span>
+<span id="cb7-235"><a href="#cb7-235" aria-hidden="true" tabindex="-1"></a>**预期结果**：没有Cookie被设置，证明我们的STATELESS配置生效了。</span>
 <span id="cb7-236"><a href="#cb7-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>**有状态（Stateful）方式的问题**：</span>
+<span id="cb7-237"><a href="#cb7-237" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb7-238"><a href="#cb7-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器需要在内存中存储每个用户的登录状态（Session）。</span>
-<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用户量大时，Session占用大量内存。</span>
-<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如果你有多台服务器（负载均衡），Session需要在服务器间共享（Session复制或Redis存储），增加复杂度。</span>
+<span id="cb7-239"><a href="#cb7-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：深入理解核心概念</span></span>
+<span id="cb7-240"><a href="#cb7-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-241"><a href="#cb7-241" aria-hidden="true" tabindex="-1"></a><span class="fu">### CSRF（跨站请求伪造）：为什么我们可以禁用？</span></span>
 <span id="cb7-242"><a href="#cb7-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a>**无状态（Stateless）的优势**：</span>
+<span id="cb7-243"><a href="#cb7-243" aria-hidden="true" tabindex="-1"></a>**攻击场景**（传统Session方式）：</span>
 <span id="cb7-244"><a href="#cb7-244" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器不存储任何用户状态，每个请求都携带完整的认证信息（JWT Token）。</span>
-<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器可以随意扩展（Scale Out），任何一台服务器都能处理任何一个请求。</span>
-<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>符合REST架构的无状态约束，天然支持分布式部署。</span>
-<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a>**代价**：每个请求都要携带Token，网络传输量略微增加（通常几百字节，可以接受）。</span>
-<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-245"><a href="#cb7-245" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>你登录了银行网站A，浏览器存储了Session Cookie。</span>
+<span id="cb7-246"><a href="#cb7-246" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>你访问了恶意网站B。</span>
+<span id="cb7-247"><a href="#cb7-247" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>网站B的页面中隐藏了一个表单，自动向银行网站A发送转账请求。</span>
+<span id="cb7-248"><a href="#cb7-248" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>因为浏览器会**自动携带**银行网站A的Cookie，请求看起来像是你发出的，攻击成功。</span>
+<span id="cb7-249"><a href="#cb7-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-250"><a href="#cb7-250" aria-hidden="true" tabindex="-1"></a>**为什么我们不需要CSRF保护？**  </span>
+<span id="cb7-251"><a href="#cb7-251" aria-hidden="true" tabindex="-1"></a>我们使用的是Token认证（后续章节会实现），Token存储在<span class="in">`localStorage`</span>或前端变量中，放在HTTP Header的<span class="in">`Authorization`</span>字段里发送。浏览器**不会自动携带**Header，恶意网站无法伪造这个Token。</span>
 <span id="cb7-252"><a href="#cb7-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb7-253"><a href="#cb7-253" aria-hidden="true" tabindex="-1"></a>**例外情况**：如果你未来改用Cookie存储Token（不推荐），那么**必须**重新启用CSRF保护。</span>
 <span id="cb7-254"><a href="#cb7-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
-<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述三个测试，确保白名单和默认拒绝都按预期工作。</span>
-<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>尝试访问一个不存在的路径（如<span class="in">`/api/unknown`</span>），观察返回的状态码。</span>
+<span id="cb7-255"><a href="#cb7-255" aria-hidden="true" tabindex="-1"></a><span class="fu">### Stateless（无状态）：为什么它是REST API的标配？</span></span>
+<span id="cb7-256"><a href="#cb7-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-257"><a href="#cb7-257" aria-hidden="true" tabindex="-1"></a>**有状态（Stateful）方式的问题**：</span>
 <span id="cb7-258"><a href="#cb7-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
-<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果你希望暂时开放所有<span class="in">`/api/playlists/**`</span>路径（包括POST、DELETE）用于测试，应该如何修改<span class="in">`SecurityConfig`</span>？（提示：调整<span class="in">`requestMatchers`</span>的参数）</span>
-<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成后记得改回来，保持安全意识。</span>
+<span id="cb7-259"><a href="#cb7-259" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器需要在内存中存储每个用户的登录状态（Session）。</span>
+<span id="cb7-260"><a href="#cb7-260" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用户量大时，Session占用大量内存。</span>
+<span id="cb7-261"><a href="#cb7-261" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>如果你有多台服务器（负载均衡），Session需要在服务器间共享（Session复制或Redis存储），增加复杂度。</span>
 <span id="cb7-262"><a href="#cb7-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**思考练习**：</span>
-<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果不禁用CSRF，但又想使用Token认证，Spring Security提供了什么机制？（提示：查阅<span class="in">`CookieCsrfTokenRepository`</span>）</span>
-<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为什么生产环境中，白名单路径应该尽可能少？</span>
-<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
-<span id="cb7-268"><a href="#cb7-268" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-269"><a href="#cb7-269" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释Spring Security中</span><span class="in">`@EnableWebSecurity`</span><span class="at">注解的作用。如果不加这个注解，会发生什么？"</span></span>
-<span id="cb7-270"><a href="#cb7-270" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb7-271"><a href="#cb7-271" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "Spring Security 6.x相比5.x，在配置方式上有哪些重大变化？请列举至少3个废弃的API和它们的替代方案。"</span></span>
-<span id="cb7-272"><a href="#cb7-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-273"><a href="#cb7-273" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb7-274"><a href="#cb7-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-275"><a href="#cb7-275" aria-hidden="true" tabindex="-1"></a>**守门人已就位。** 但他现在只能说"不"，还不能识别"好人"。在下一节，我们将教会他识别身份——建立用户系统和登录机制。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb7-263"><a href="#cb7-263" aria-hidden="true" tabindex="-1"></a>**无状态（Stateless）的优势**：</span>
+<span id="cb7-264"><a href="#cb7-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-265"><a href="#cb7-265" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器不存储任何用户状态，每个请求都携带完整的认证信息（JWT Token）。</span>
+<span id="cb7-266"><a href="#cb7-266" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>服务器可以随意扩展（Scale Out），任何一台服务器都能处理任何一个请求。</span>
+<span id="cb7-267"><a href="#cb7-267" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>符合REST架构的无状态约束，天然支持分布式部署。</span>
+<span id="cb7-268"><a href="#cb7-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-271"><a href="#cb7-271" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb7-272"><a href="#cb7-272" aria-hidden="true" tabindex="-1"></a>graph TD</span>
+<span id="cb7-273"><a href="#cb7-273" aria-hidden="true" tabindex="-1"></a>    subgraph Stateful[<span class="ot">"</span><span class="st">有状态 (Session)</span><span class="ot">"</span>]</span>
+<span id="cb7-274"><a href="#cb7-274" aria-hidden="true" tabindex="-1"></a>        User1[<span class="ot">"</span><span class="st">用户</span><span class="ot">"</span>] --&gt;|登录| Server1[<span class="ot">"</span><span class="st">服务器A (存Session)</span><span class="ot">"</span>]</span>
+<span id="cb7-275"><a href="#cb7-275" aria-hidden="true" tabindex="-1"></a>        User1 --&gt;|请求| Server2[<span class="ot">"</span><span class="st">服务器B (无Session)</span><span class="ot">"</span>]</span>
+<span id="cb7-276"><a href="#cb7-276" aria-hidden="true" tabindex="-1"></a>        Server2 -.-&gt;|❌ 失败| User1</span>
+<span id="cb7-277"><a href="#cb7-277" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb7-278"><a href="#cb7-278" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-279"><a href="#cb7-279" aria-hidden="true" tabindex="-1"></a>    subgraph Stateless[<span class="ot">"</span><span class="st">无状态 (JWT)</span><span class="ot">"</span>]</span>
+<span id="cb7-280"><a href="#cb7-280" aria-hidden="true" tabindex="-1"></a>        User2[<span class="ot">"</span><span class="st">用户</span><span class="ot">"</span>] --&gt;|登录| ServerA[<span class="ot">"</span><span class="st">服务器A</span><span class="ot">"</span>]</span>
+<span id="cb7-281"><a href="#cb7-281" aria-hidden="true" tabindex="-1"></a>        ServerA --&gt;|返回Token| User2</span>
+<span id="cb7-282"><a href="#cb7-282" aria-hidden="true" tabindex="-1"></a>        User2 --&gt;|携带Token请求| ServerB[<span class="ot">"</span><span class="st">服务器B</span><span class="ot">"</span>]</span>
+<span id="cb7-283"><a href="#cb7-283" aria-hidden="true" tabindex="-1"></a>        ServerB --&gt;|✅ 成功| User2</span>
+<span id="cb7-284"><a href="#cb7-284" aria-hidden="true" tabindex="-1"></a>    end</span>
+<span id="cb7-285"><a href="#cb7-285" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-286"><a href="#cb7-286" aria-hidden="true" tabindex="-1"></a>    style Stateful fill:<span class="co">#fdd,stroke:#333</span></span>
+<span id="cb7-287"><a href="#cb7-287" aria-hidden="true" tabindex="-1"></a>    style Stateless fill:<span class="co">#dfd,stroke:#333</span></span>
+<span id="cb7-288"><a href="#cb7-288" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb7-289"><a href="#cb7-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-290"><a href="#cb7-290" aria-hidden="true" tabindex="-1"></a>**代价**：每个请求都要携带Token，网络传输量略微增加（通常几百字节，可以接受）。</span>
+<span id="cb7-291"><a href="#cb7-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-292"><a href="#cb7-292" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-293"><a href="#cb7-293" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-294"><a href="#cb7-294" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb7-295"><a href="#cb7-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-296"><a href="#cb7-296" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
+<span id="cb7-297"><a href="#cb7-297" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述三个测试，确保白名单和默认拒绝都按预期工作。</span>
+<span id="cb7-298"><a href="#cb7-298" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>尝试访问一个不存在的路径（如<span class="in">`/api/unknown`</span>），观察返回的状态码。</span>
+<span id="cb7-299"><a href="#cb7-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-300"><a href="#cb7-300" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
+<span id="cb7-301"><a href="#cb7-301" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果你希望暂时开放所有<span class="in">`/api/playlists/**`</span>路径（包括POST、DELETE）用于测试，应该如何修改<span class="in">`SecurityConfig`</span>？（提示：调整<span class="in">`requestMatchers`</span>的参数）</span>
+<span id="cb7-302"><a href="#cb7-302" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成后记得改回来，保持安全意识。</span>
+<span id="cb7-303"><a href="#cb7-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-304"><a href="#cb7-304" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**思考练习**：</span>
+<span id="cb7-305"><a href="#cb7-305" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果不禁用CSRF，但又想使用Token认证，Spring Security提供了什么机制？（提示：查阅<span class="in">`CookieCsrfTokenRepository`</span>）</span>
+<span id="cb7-306"><a href="#cb7-306" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为什么生产环境中，白名单路径应该尽可能少？</span>
+<span id="cb7-307"><a href="#cb7-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-308"><a href="#cb7-308" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
+<span id="cb7-309"><a href="#cb7-309" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-310"><a href="#cb7-310" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释Spring Security中</span><span class="in">`@EnableWebSecurity`</span><span class="at">注解的作用。如果不加这个注解，会发生什么？"</span></span>
+<span id="cb7-311"><a href="#cb7-311" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-312"><a href="#cb7-312" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "Spring Security 6.x相比5.x，在配置方式上有哪些重大变化？请列举至少3个废弃的API和它们的替代方案。"</span></span>
+<span id="cb7-313"><a href="#cb7-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-314"><a href="#cb7-314" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb7-315"><a href="#cb7-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-316"><a href="#cb7-316" aria-hidden="true" tabindex="-1"></a>**守门人已就位。** 但他现在只能说"不"，还不能识别"好人"。在下一节，我们将教会他识别身份——建立用户系统和登录机制。</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -14,17 +14,43 @@
 但现在有个问题：**你的第9章React前端完全不知道这一切的存在**。
 
 **当前状态**：
+
 *   前端尝试访问`GET /api/playlists`（需要Token） → 403 Forbidden
 *   前端想添加歌曲 → 403 Forbidden
 *   前端甚至不知道如何让用户"登录"
 
 **我们面临的挑战**：
+
 1.  前端需要一个**登录页面**，让用户输入用户名和密码。
 2.  登录成功后，前端需要**保存JWT Token**。
 3.  所有后续API请求，前端都要在HTTP Header中**携带Token**。
 4.  如果Token过期或无效，前端要能**优雅地处理**（如跳转回登录页）。
 
 **这一节，我们将完成全栈应用的最后一环：让React前端和Spring Boot后端，通过JWT实现安全握手。**
+
+```{mermaid}
+sequenceDiagram
+    participant React as React前端
+    participant API as Spring Boot后端
+    participant DB as 数据库
+    
+    Note over React, API: 阶段一：握手（登录）
+    React->>API: POST /api/auth/login (user, pass)
+    API->>DB: 验证账号密码
+    API-->>React: 返回 JWT Token
+    React->>React: localStorage.setItem('token', jwt)
+    
+    Note over React, API: 阶段二：通信（携带信物）
+    React->>React: 从localStorage取出Token
+    React->>API: GET /api/playlists <br/> Header: Authorization: Bearer <token>
+    API->>API: 验证Token签名 & 有效期
+    API-->>React: 返回数据 (200 OK)
+    
+    Note over React, API: 阶段三：分手（Token过期）
+    React->>API: GET /api/playlists (Token已过期)
+    API-->>React: 403 Forbidden
+    React->>React: 清除Token，跳转回登录页
+```
 
 ---
 
@@ -39,6 +65,7 @@
 ## 🤖 AI Prompt
 "修改 `SecurityConfig`，配置 CORS（跨域资源共享）。
 要求：
+
 1. 允许来自 `http://localhost:5173` 的请求。
 2. 允许 GET, POST, PUT, DELETE, OPTIONS 方法。
 3. 允许所有 Headers。
@@ -69,7 +96,7 @@
     *   使用`useState`管理username, password, error状态
     *   点击登录按钮后，发送POST请求到 `http://localhost:8080/api/auth/login`
     *   如果成功（200 OK），将返回的`token`存入`localStorage`
-    *   存储Token后，使用`window.location.href = '/'`跳转到主页
+    *   **关键**：调用父组件传入的 `onLoginSuccess(username)` 回调函数
     *   如果失败，显示错误信息（如"用户名或密码错误"）
 
 3.  **代码风格**：
@@ -77,130 +104,21 @@
     *   添加详细注释
     *   使用async/await处理异步
 
-请提供完整代码。"
-:::
-
-### 参考实现
-
-AI应该生成类似以下的代码：
-
-::: {.callout-tip}
-## 🤖 AI Prompt
-"请帮我创建一个React登录组件 `Login.jsx`，要求如下：
-1.  **UI设计**：深色主题，美观的卡片式设计。
-2.  **功能**：
-    *   包含用户名和密码输入框。
-    *   提交时 POST 到 `/api/auth/login`。
-    *   成功后，将 `token` 和 `username` 存入 `localStorage`。
-    *   **关键**：调用父组件传入的 `onLoginSuccess(username)` 回调函数，而不是直接跳转。"
+请提供完整代码，并同时生成对应的 `Login.css` 样式文件（使用现代CSS特性）。"
 :::
 
 ### 创建样式文件
 
-```css
-/* Create: vibevault-frontend/src/Login.css */
-.login-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-}
+让AI为你生成漂亮的CSS样式。
 
-.login-card {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 40px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.login-card h1 {
-  color: #00d4ff;
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 2.5rem;
-}
-
-.login-card h2 {
-  color: white;
-  text-align: center;
-  margin-bottom: 30px;
-  font-weight: 300;
-}
-
-.input-group {
-  margin-bottom: 20px;
-}
-
-.input-group label {
-  display: block;
-  color: #b3b3b3;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 12px 15px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  color: white;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.input-group input:focus {
-  outline: none;
-  border-color: #00d4ff;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.error-message {
-  background: rgba(255, 71, 87, 0.2);
-  border: 1px solid #ff4757;
-  color: #ff4757;
-  padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-button[type="submit"] {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-button[type="submit"]:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-}
-
-button[type="submit"]:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.hint {
-  color: #888;
-  text-align: center;
-  margin-top: 20px;
-  font-size: 0.9rem;
-}
-```
+::: {.callout-tip}
+## 🤖 AI Prompt
+"请为上面的 `Login.jsx` 生成配套的 `Login.css`。
+设计风格：
+1.  **Cyberpunk/Modern Vibe**：使用深色背景、霓虹蓝/紫色点缀。
+2.  **玻璃拟态**：登录卡片使用半透明磨砂效果（backdrop-filter）。
+3.  **交互反馈**：输入框聚焦时发光，按钮悬停时上浮。"
+:::
 
 ---
 
@@ -232,11 +150,7 @@ button[type="submit"]:disabled {
 
 ---
 
-## 第五步：验证全栈集成
-
----
-
-## 第六步：终极验证（The Final Vibe Check）
+## 第五步：终极验证（The Final Vibe Check）
 
 ### 测试一：完整登录流程
 

@@ -71,6 +71,33 @@ HMACSHA256(
 
 **比喻**：就像护照上的防伪水印。你可以看到护照上的所有信息（姓名、国籍、照片），但你无法伪造那个只有政府才能制作的防伪水印。
 
+### JWT 构造流程图
+
+```{mermaid}
+graph LR
+    subgraph Inputs["输入部分"]
+        H["Header (算法)"]
+        P["Payload (数据)"]
+        S["Secret Key (密钥)"]
+    end
+    
+    H -->|Base64| B1["Encoded Header"]
+    P -->|Base64| B2["Encoded Payload"]
+    
+    B1 --> C{"拼接 (.)"}
+    B2 --> C
+    C -->|Header.Payload| M["待签名字符串"]
+    
+    M -->|HMACSHA256| Sig["Signature (签名)"]
+    S -->|参与运算| Sig
+    
+    B1 --> Final["JWT Token"]
+    B2 --> Final
+    Sig --> Final
+    
+    style Final fill:#f9f,stroke:#333,stroke-width:2px
+```
+
 ### JWT vs Session：为什么选择无状态？
 
 | 特性 | Session（有状态） | JWT（无状态） |
@@ -120,6 +147,7 @@ dependencies {
 ## 🤖 AI Prompt
 "创建一个 `JwtService` 类，使用 `jjwt` 库。
 功能要求：
+
 1. `generateToken(username)`: 生成Token，有效期24小时。
 2. `extractUsername(token)`: 从Token提取用户名。
 3. `isTokenValid(token, username)`: 验证Token有效性。
@@ -143,6 +171,7 @@ dependencies {
 ## 🤖 AI Prompt
 "创建一个 `JwtAuthenticationFilter`，继承自 `OncePerRequestFilter`。
 逻辑如下：
+
 1. 从Header获取 `Authorization`。
 2. 如果是 `Bearer ` 开头，提取Token。
 3. 使用 `JwtService` 验证Token。
@@ -151,15 +180,33 @@ dependencies {
 
 ### 过滤器执行流程
 
-```
-HTTP请求 
-  → JwtAuthenticationFilter（检查Token，设置认证）
-  → Spring Security其他过滤器
-  → Controller方法
-  → 返回响应
+```{mermaid}
+sequenceDiagram
+    participant Client as "客户端(React)"
+    participant Filter as JwtAuthenticationFilter
+    participant Service as JwtService
+    participant Context as SecurityContext
+    participant Controller as API Controller
+    
+    Client->>Filter: Request + Header "Authorization: Bearer <token>"
+    Filter->>Service: extractUsername(token)
+    Service-->>Filter: username
+    Filter->>Service: isTokenValid(token)
+    
+    alt Token有效
+        Service-->>Filter: true
+        Filter->>Context: setAuthentication(User)
+        Filter->>Controller: doFilter() (放行)
+        Controller-->>Client: 200 OK (Data)
+    else Token无效/过期
+        Service-->>Filter: false
+        Filter->>Controller: doFilter() (未认证状态)
+        Controller-->>Client: 403 Forbidden
+    end
 ```
 
 **关键逻辑**：
+
 1.  提取`Authorization: Bearer <token>`
 2.  解析Token，提取用户名
 3.  验证Token（签名、有效期）
@@ -175,6 +222,7 @@ HTTP请求
 ::: {.callout-tip}
 ## 🤖 AI Prompt
 "修改 `SecurityConfig`：
+
 1. 注入 `JwtAuthenticationFilter`。
 2. 使用 `.addFilterBefore()` 将其添加到 `UsernamePasswordAuthenticationFilter` 之前。"
 :::
@@ -188,6 +236,7 @@ HTTP请求
 ::: {.callout-tip}
 ## 🤖 AI Prompt
 "修改 `AuthController` 的 `/login` 接口：
+
 1. 注入 `JwtService`。
 2. 认证成功后，调用 `jwtService.generateToken(username)`。
 3. 返回包含 Token 的 JSON 响应。"

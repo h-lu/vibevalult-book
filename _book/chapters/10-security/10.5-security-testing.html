@@ -105,6 +105,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -591,9 +595,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>✅ 基于所有权的授权（10.4）</li>
 </ul>
 <p>但现在有个问题：<strong>你的第9章React前端完全不知道这一切的存在</strong>。</p>
-<p><strong>当前状态</strong>： * 前端尝试访问<code>GET /api/playlists</code>（需要Token） → 403 Forbidden * 前端想添加歌曲 → 403 Forbidden * 前端甚至不知道如何让用户”登录”</p>
-<p><strong>我们面临的挑战</strong>： 1. 前端需要一个<strong>登录页面</strong>，让用户输入用户名和密码。 2. 登录成功后，前端需要<strong>保存JWT Token</strong>。 3. 所有后续API请求，前端都要在HTTP Header中<strong>携带Token</strong>。 4. 如果Token过期或无效，前端要能<strong>优雅地处理</strong>（如跳转回登录页）。</p>
+<p><strong>当前状态</strong>：</p>
+<ul>
+<li>前端尝试访问<code>GET /api/playlists</code>（需要Token） → 403 Forbidden</li>
+<li>前端想添加歌曲 → 403 Forbidden</li>
+<li>前端甚至不知道如何让用户”登录”</li>
+</ul>
+<p><strong>我们面临的挑战</strong>：</p>
+<ol type="1">
+<li>前端需要一个<strong>登录页面</strong>，让用户输入用户名和密码。</li>
+<li>登录成功后，前端需要<strong>保存JWT Token</strong>。</li>
+<li>所有后续API请求，前端都要在HTTP Header中<strong>携带Token</strong>。</li>
+<li>如果Token过期或无效，前端要能<strong>优雅地处理</strong>（如跳转回登录页）。</li>
+</ol>
 <p><strong>这一节，我们将完成全栈应用的最后一环：让React前端和Spring Boot后端，通过JWT实现安全握手。</strong></p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant React as React前端
+    participant API as Spring Boot后端
+    participant DB as 数据库
+    
+    Note over React, API: 阶段一：握手（登录）
+    React-&gt;&gt;API: POST /api/auth/login (user, pass)
+    API-&gt;&gt;DB: 验证账号密码
+    API--&gt;&gt;React: 返回 JWT Token
+    React-&gt;&gt;React: localStorage.setItem('token', jwt)
+    
+    Note over React, API: 阶段二：通信（携带信物）
+    React-&gt;&gt;React: 从localStorage取出Token
+    React-&gt;&gt;API: GET /api/playlists &lt;br/&gt; Header: Authorization: Bearer &lt;token&gt;
+    API-&gt;&gt;API: 验证Token签名 &amp; 有效期
+    API--&gt;&gt;React: 返回数据 (200 OK)
+    
+    Note over React, API: 阶段三：分手（Token过期）
+    React-&gt;&gt;API: GET /api/playlists (Token已过期)
+    API--&gt;&gt;React: 403 Forbidden
+    React-&gt;&gt;React: 清除Token，跳转回登录页
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="第一步配置cors跨域资源共享" class="level2">
@@ -610,7 +657,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“修改 <code>SecurityConfig</code>，配置 CORS（跨域资源共享）。 要求： 1. 允许来自 <code>http://localhost:5173</code> 的请求。 2. 允许 GET, POST, PUT, DELETE, OPTIONS 方法。 3. 允许所有 Headers。 4. 允许携带 Credentials。”</p>
+<p>“修改 <code>SecurityConfig</code>，配置 CORS（跨域资源共享）。 要求：</p>
+<ol type="1">
+<li>允许来自 <code>http://localhost:5173</code> 的请求。</li>
+<li>允许 GET, POST, PUT, DELETE, OPTIONS 方法。</li>
+<li>允许所有 Headers。</li>
+<li>允许携带 Credentials。”</li>
+</ol>
 </div>
 </div>
 <hr>
@@ -645,7 +698,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>使用<code>useState</code>管理username, password, error状态</li>
 <li>点击登录按钮后，发送POST请求到 <code>http://localhost:8080/api/auth/login</code></li>
 <li>如果成功（200 OK），将返回的<code>token</code>存入<code>localStorage</code></li>
-<li>存储Token后，使用<code>window.location.href = '/'</code>跳转到主页</li>
+<li><strong>关键</strong>：调用父组件传入的 <code>onLoginSuccess(username)</code> 回调函数</li>
 <li>如果失败，显示错误信息（如”用户名或密码错误”）</li>
 </ul></li>
 <li><strong>代码风格</strong>：
@@ -655,13 +708,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>使用async/await处理异步</li>
 </ul></li>
 </ol>
-<p>请提供完整代码。”</p>
+<p>请提供完整代码，并同时生成对应的 <code>Login.css</code> 样式文件（使用现代CSS特性）。”</p>
 </div>
 </div>
 </section>
-<section id="参考实现" class="level3">
-<h3 class="anchored" data-anchor-id="参考实现">参考实现</h3>
-<p>AI应该生成类似以下的代码：</p>
+<section id="创建样式文件" class="level3">
+<h3 class="anchored" data-anchor-id="创建样式文件">创建样式文件</h3>
+<p>让AI为你生成漂亮的CSS样式。</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -672,114 +725,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>“请帮我创建一个React登录组件 <code>Login.jsx</code>，要求如下： 1. <strong>UI设计</strong>：深色主题，美观的卡片式设计。 2. <strong>功能</strong>： * 包含用户名和密码输入框。 * 提交时 POST 到 <code>/api/auth/login</code>。 * 成功后，将 <code>token</code> 和 <code>username</code> 存入 <code>localStorage</code>。 * <strong>关键</strong>：调用父组件传入的 <code>onLoginSuccess(username)</code> 回调函数，而不是直接跳转。”</p>
+<p>“请为上面的 <code>Login.jsx</code> 生成配套的 <code>Login.css</code>。 设计风格： 1. <strong>Cyberpunk/Modern Vibe</strong>：使用深色背景、霓虹蓝/紫色点缀。 2. <strong>玻璃拟态</strong>：登录卡片使用半透明磨砂效果（backdrop-filter）。 3. <strong>交互反馈</strong>：输入框聚焦时发光，按钮悬停时上浮。”</p>
 </div>
 </div>
-</section>
-<section id="创建样式文件" class="level3">
-<h3 class="anchored" data-anchor-id="创建样式文件">创建样式文件</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* Create: vibevault-frontend/src/Login.css */</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">.login-container</span> {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">min-height</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">vh</span><span class="op">;</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span><span class="ch">:</span> <span class="dv">flex</span><span class="op">;</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">justify-content</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">align-items</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">linear-gradient(</span><span class="dv">135</span><span class="dt">deg</span><span class="op">,</span> <span class="cn">#1a1a2e</span> <span class="dv">0</span><span class="dt">%</span><span class="op">,</span> <span class="cn">#16213e</span> <span class="dv">100</span><span class="dt">%</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">.login-card</span> {</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">0.1</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="kw">backdrop-filter</span><span class="ch">:</span> <span class="fu">blur(</span><span class="dv">10</span><span class="dt">px</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">40</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">max-width</span><span class="ch">:</span> <span class="dv">400</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">box-shadow</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">8</span><span class="dt">px</span> <span class="dv">32</span><span class="dt">px</span> <span class="dv">0</span> <span class="fu">rgba(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">38</span><span class="op">,</span> <span class="dv">135</span><span class="op">,</span> <span class="dv">0.37</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">0.18</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">.login-card</span> h1 {</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#00d4ff</span><span class="op">;</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">2.5</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">.login-card</span> h2 {</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">white</span><span class="op">;</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">30</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">300</span><span class="op">;</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">.input-group</span> {</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">.input-group</span> label {</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="kw">display</span><span class="ch">:</span> <span class="dv">block</span><span class="op">;</span></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#b3b3b3</span><span class="op">;</span></span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">8</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">0.9</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="fu">.input-group</span> input {</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span> <span class="dv">15</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">0.05</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">0.2</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">white</span><span class="op">;</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transition</span><span class="ch">:</span> <span class="dv">all</span> <span class="dv">0.3</span><span class="dt">s</span> <span class="dv">ease</span><span class="op">;</span></span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="fu">.input-group</span> input<span class="in">:focus</span> {</span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="kw">outline</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-color</span><span class="ch">:</span> <span class="cn">#00d4ff</span><span class="op">;</span></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">0.1</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="fu">.error-message</span> {</span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">rgba(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">71</span><span class="op">,</span> <span class="dv">87</span><span class="op">,</span> <span class="dv">0.2</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">1</span><span class="dt">px</span> <span class="dv">solid</span> <span class="cn">#ff4757</span><span class="op">;</span></span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#ff4757</span><span class="op">;</span></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">12</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-bottom</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">0.9</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>button<span class="ex">[</span><span class="ss">type</span><span class="op">=</span><span class="st">"submit"</span><span class="ex">]</span> {</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>  <span class="kw">width</span><span class="ch">:</span> <span class="dv">100</span><span class="dt">%</span><span class="op">;</span></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>  <span class="kw">padding</span><span class="ch">:</span> <span class="dv">15</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>  <span class="kw">background</span><span class="ch">:</span> <span class="fu">linear-gradient(</span><span class="dv">135</span><span class="dt">deg</span><span class="op">,</span> <span class="cn">#667eea</span> <span class="dv">0</span><span class="dt">%</span><span class="op">,</span> <span class="cn">#764ba2</span> <span class="dv">100</span><span class="dt">%</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border</span><span class="ch">:</span> <span class="dv">none</span><span class="op">;</span></span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>  <span class="kw">border-radius</span><span class="ch">:</span> <span class="dv">10</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">white</span><span class="op">;</span></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">1.1</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-weight</span><span class="ch">:</span> <span class="dv">600</span><span class="op">;</span></span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>  <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">pointer</span><span class="op">;</span></span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transition</span><span class="ch">:</span> <span class="dv">transform 0.2</span><span class="dt">s</span> <span class="dv">ease</span><span class="op">,</span> <span class="dv">box-shadow 0.2</span><span class="dt">s</span> <span class="dv">ease</span><span class="op">;</span></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>button<span class="ex">[</span><span class="ss">type</span><span class="op">=</span><span class="st">"submit"</span><span class="ex">]</span><span class="in">:hover:not(:disabled)</span> {</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>  <span class="kw">transform</span><span class="ch">:</span> <span class="fu">translateY(</span><span class="dv">-2</span><span class="dt">px</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>  <span class="kw">box-shadow</span><span class="ch">:</span> <span class="dv">0</span> <span class="dv">5</span><span class="dt">px</span> <span class="dv">20</span><span class="dt">px</span> <span class="fu">rgba(</span><span class="dv">102</span><span class="op">,</span> <span class="dv">126</span><span class="op">,</span> <span class="dv">234</span><span class="op">,</span> <span class="dv">0.4</span><span class="fu">)</span><span class="op">;</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>button<span class="ex">[</span><span class="ss">type</span><span class="op">=</span><span class="st">"submit"</span><span class="ex">]</span><span class="in">:disabled</span> {</span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>  <span class="kw">opacity</span><span class="ch">:</span> <span class="dv">0.6</span><span class="op">;</span></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>  <span class="kw">cursor</span><span class="ch">:</span> <span class="dv">not-allowed</span><span class="op">;</span></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="fu">.hint</span> {</span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>  <span class="kw">color</span><span class="ch">:</span> <span class="cn">#888</span><span class="op">;</span></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>  <span class="kw">text-align</span><span class="ch">:</span> <span class="dv">center</span><span class="op">;</span></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>  <span class="kw">margin-top</span><span class="ch">:</span> <span class="dv">20</span><span class="dt">px</span><span class="op">;</span></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>  <span class="kw">font-size</span><span class="ch">:</span> <span class="dv">0.9</span><span class="dt">rem</span><span class="op">;</span></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
@@ -818,12 +766,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <hr>
 </section>
-<section id="第五步验证全栈集成" class="level2">
-<h2 class="anchored" data-anchor-id="第五步验证全栈集成">第五步：验证全栈集成</h2>
-<hr>
-</section>
-<section id="第六步终极验证the-final-vibe-check" class="level2">
-<h2 class="anchored" data-anchor-id="第六步终极验证the-final-vibe-check">第六步：终极验证（The Final Vibe Check）</h2>
+<section id="第五步终极验证the-final-vibe-check" class="level2">
+<h2 class="anchored" data-anchor-id="第五步终极验证the-final-vibe-check">第五步：终极验证（The Final Vibe Check）</h2>
 <section id="测试一完整登录流程" class="level3">
 <h3 class="anchored" data-anchor-id="测试一完整登录流程">测试一：完整登录流程</h3>
 <ol type="1">
@@ -903,25 +847,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="react中的protected-route模式" class="level3">
 <h3 class="anchored" data-anchor-id="react中的protected-route模式">React中的Protected Route模式</h3>
 <p>更专业的做法是使用React Router创建”受保护路由”：</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode jsx code-with-copy"><code class="sourceCode javascriptreact"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 示例：使用React Router的Protected Route</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Navigate } <span class="im">from</span> <span class="st">'react-router-dom'</span><span class="op">;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ProtectedRoute</span>({ children }) {</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> localStorage<span class="op">.</span><span class="fu">getItem</span>(<span class="st">'jwtToken'</span>)<span class="op">;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>token) {</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return </span><span class="fu">&lt;Navigate</span> <span class="ot">to</span><span class="op">=</span><span class="st">"/login"</span> <span class="ot">replace</span> <span class="fu">/&gt;</span><span class="op">;</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> children<span class="op">;</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">// 在路由配置中使用</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;Route</span> <span class="ot">path</span><span class="op">=</span><span class="st">"/playlists"</span> <span class="ot">element</span><span class="op">=</span><span class="va">{</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">&lt;ProtectedRoute&gt;</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">&lt;PlaylistList</span> <span class="fu">/&gt;</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">&lt;/ProtectedRoute&gt;</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="va">}</span> <span class="fu">/&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode jsx code-with-copy"><code class="sourceCode javascriptreact"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// 示例：使用React Router的Protected Route</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Navigate } <span class="im">from</span> <span class="st">'react-router-dom'</span><span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ProtectedRoute</span>({ children }) {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> localStorage<span class="op">.</span><span class="fu">getItem</span>(<span class="st">'jwtToken'</span>)<span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>token) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return </span><span class="fu">&lt;Navigate</span> <span class="ot">to</span><span class="op">=</span><span class="st">"/login"</span> <span class="ot">replace</span> <span class="fu">/&gt;</span><span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> children<span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">// 在路由配置中使用</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">&lt;Route</span> <span class="ot">path</span><span class="op">=</span><span class="st">"/playlists"</span> <span class="ot">element</span><span class="op">=</span><span class="va">{</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">&lt;ProtectedRoute&gt;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">&lt;PlaylistList</span> <span class="fu">/&gt;</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">&lt;/ProtectedRoute&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="va">}</span> <span class="fu">/&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <hr>
 </section>
 </section>
@@ -1462,386 +1406,301 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.5 握手：全栈安全大一统</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "前端和后端，终于在安全的拥抱中相遇。" —— 全栈开发的高光时刻</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：后端固若金汤，前端无从下手</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>恭喜！经过前四节的努力，你的后端已经建立了一套完整的安全体系：</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ Spring Security守门（10.1）</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 用户认证系统（10.2）</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ JWT无状态认证（10.3）</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 基于所有权的授权（10.4）</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>但现在有个问题：**你的第9章React前端完全不知道这一切的存在**。</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>**当前状态**：</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端尝试访问<span class="in">`GET /api/playlists`</span>（需要Token） → 403 Forbidden</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端想添加歌曲 → 403 Forbidden</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端甚至不知道如何让用户"登录"</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>**我们面临的挑战**：</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>前端需要一个**登录页面**，让用户输入用户名和密码。</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>登录成功后，前端需要**保存JWT Token**。</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>所有后续API请求，前端都要在HTTP Header中**携带Token**。</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>如果Token过期或无效，前端要能**优雅地处理**（如跳转回登录页）。</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>**这一节，我们将完成全栈应用的最后一环：让React前端和Spring Boot后端，通过JWT实现安全握手。**</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：配置CORS（跨域资源共享）</span></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>在连接前端之前，我们必须解决一个浏览器安全机制带来的问题：**跨域（CORS）**。</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>前端运行在 <span class="in">`http://localhost:5173`</span>，后端运行在 <span class="in">`http://localhost:8080`</span>。默认情况下，浏览器禁止这种跨域请求。</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>修改 <span class="in">`SecurityConfig.java`</span>，允许来自前端的请求：</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span>，配置 CORS（跨域资源共享）。</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>要求：</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>允许来自 <span class="in">`http://localhost:5173`</span> 的请求。</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>允许 GET, POST, PUT, DELETE, OPTIONS 方法。</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>允许所有 Headers。</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>允许携带 Credentials。"</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：创建Login组件</span></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>回到你第9章创建的React项目（<span class="in">`vibevault-frontend`</span>）。让我们创建一个登录页面。</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用AI生成Login组件</span></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>"请帮我创建一个React登录组件 <span class="in">`Login.jsx`</span>，要求如下：</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**UI设计**：</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>深色主题背景（#1a1a2e）</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>渐变卡片容器</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>用户名和密码输入框</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>登录按钮（悬停时有动画效果）</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>错误信息展示（红色，明显）</span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**功能要求**：</span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用<span class="in">`useState`</span>管理username, password, error状态</span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>点击登录按钮后，发送POST请求到 <span class="in">`http://localhost:8080/api/auth/login`</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果成功（200 OK），将返回的<span class="in">`token`</span>存入<span class="in">`localStorage`</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>存储Token后，使用<span class="in">`window.location.href = '/'`</span>跳转到主页</span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果失败，显示错误信息（如"用户名或密码错误"）</span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**代码风格**：</span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用函数组件和Hooks</span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加详细注释</span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用async/await处理异步</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>请提供完整代码。"</span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### 参考实现</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>AI应该生成类似以下的代码：</span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>"请帮我创建一个React登录组件 <span class="in">`Login.jsx`</span>，要求如下：</span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**UI设计**：深色主题，美观的卡片式设计。</span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**功能**：</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>包含用户名和密码输入框。</span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>提交时 POST 到 <span class="in">`/api/auth/login`</span>。</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>成功后，将 <span class="in">`token`</span> 和 <span class="in">`username`</span> 存入 <span class="in">`localStorage`</span>。</span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**关键**：调用父组件传入的 <span class="in">`onLoginSuccess(username)`</span> 回调函数，而不是直接跳转。"</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="fu">### 创建样式文件</span></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="in">```css</span></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="co">/* Create: vibevault-frontend/src/Login.css */</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">login</span><span class="op">-</span>container <span class="op">{</span></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>  min<span class="op">-</span>height<span class="op">:</span> <span class="dv">100</span>vh<span class="op">;</span></span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>  display<span class="op">:</span> flex<span class="op">;</span></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a>  justify<span class="op">-</span>content<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>  align<span class="op">-</span>items<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> linear<span class="op">-</span><span class="fu">gradient</span><span class="op">(</span><span class="dv">135</span>deg<span class="op">,</span> #<span class="dv">1</span>a1a2e <span class="dv">0</span><span class="op">%,</span> #<span class="dv">16213</span>e <span class="dv">100</span><span class="op">%);</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">login</span><span class="op">-</span>card <span class="op">{</span></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">);</span></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>  backdrop<span class="op">-</span>filter<span class="op">:</span> <span class="fu">blur</span><span class="op">(</span><span class="dv">10</span>px<span class="op">);</span></span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a>  border<span class="op">-</span>radius<span class="op">:</span> <span class="dv">20</span>px<span class="op">;</span></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>  padding<span class="op">:</span> <span class="dv">40</span>px<span class="op">;</span></span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>  width<span class="op">:</span> <span class="dv">100</span><span class="op">%;</span></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>  max<span class="op">-</span>width<span class="op">:</span> <span class="dv">400</span>px<span class="op">;</span></span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>  box<span class="op">-</span>shadow<span class="op">:</span> <span class="dv">0</span> <span class="dv">8</span>px <span class="dv">32</span>px <span class="dv">0</span> <span class="fu">rgba</span><span class="op">(</span><span class="dv">31</span><span class="op">,</span> <span class="dv">38</span><span class="op">,</span> <span class="dv">135</span><span class="op">,</span> <span class="fl">0.37</span><span class="op">);</span></span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a>  border<span class="op">:</span> <span class="dv">1</span>px solid <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="fl">0.18</span><span class="op">);</span></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">login</span><span class="op">-</span>card h1 <span class="op">{</span></span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> #<span class="dv">00</span>d4ff<span class="op">;</span></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a>  text<span class="op">-</span>align<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>bottom<span class="op">:</span> <span class="dv">10</span>px<span class="op">;</span></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="fl">2.5</span>rem<span class="op">;</span></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">login</span><span class="op">-</span>card h2 <span class="op">{</span></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> white<span class="op">;</span></span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>  text<span class="op">-</span>align<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>bottom<span class="op">:</span> <span class="dv">30</span>px<span class="op">;</span></span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>weight<span class="op">:</span> <span class="dv">300</span><span class="op">;</span></span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">input</span><span class="op">-</span>group <span class="op">{</span></span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>bottom<span class="op">:</span> <span class="dv">20</span>px<span class="op">;</span></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">input</span><span class="op">-</span>group label <span class="op">{</span></span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a>  display<span class="op">:</span> block<span class="op">;</span></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> #b3b3b3<span class="op">;</span></span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>bottom<span class="op">:</span> <span class="dv">8</span>px<span class="op">;</span></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="fl">0.9</span>rem<span class="op">;</span></span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">input</span><span class="op">-</span>group input <span class="op">{</span></span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a>  width<span class="op">:</span> <span class="dv">100</span><span class="op">%;</span></span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a>  padding<span class="op">:</span> <span class="dv">12</span>px <span class="dv">15</span>px<span class="op">;</span></span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="fl">0.05</span><span class="op">);</span></span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>  border<span class="op">:</span> <span class="dv">1</span>px solid <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="fl">0.2</span><span class="op">);</span></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>  border<span class="op">-</span>radius<span class="op">:</span> <span class="dv">10</span>px<span class="op">;</span></span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> white<span class="op">;</span></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="dv">1</span>rem<span class="op">;</span></span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a>  transition<span class="op">:</span> all <span class="fl">0.3</span>s ease<span class="op">;</span></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">input</span><span class="op">-</span>group input<span class="op">:</span>focus <span class="op">{</span></span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>  outline<span class="op">:</span> none<span class="op">;</span></span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>  border<span class="op">-</span>color<span class="op">:</span> #<span class="dv">00</span>d4ff<span class="op">;</span></span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="dv">255</span><span class="op">,</span> <span class="fl">0.1</span><span class="op">);</span></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">error</span><span class="op">-</span>message <span class="op">{</span></span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> <span class="fu">rgba</span><span class="op">(</span><span class="dv">255</span><span class="op">,</span> <span class="dv">71</span><span class="op">,</span> <span class="dv">87</span><span class="op">,</span> <span class="fl">0.2</span><span class="op">);</span></span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>  border<span class="op">:</span> <span class="dv">1</span>px solid #ff4757<span class="op">;</span></span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> #ff4757<span class="op">;</span></span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>  padding<span class="op">:</span> <span class="dv">12</span>px<span class="op">;</span></span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a>  border<span class="op">-</span>radius<span class="op">:</span> <span class="dv">10</span>px<span class="op">;</span></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>bottom<span class="op">:</span> <span class="dv">20</span>px<span class="op">;</span></span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a>  text<span class="op">-</span>align<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="fl">0.9</span>rem<span class="op">;</span></span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>button<span class="op">[</span>type<span class="op">=</span><span class="st">"submit"</span><span class="op">]</span> <span class="op">{</span></span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>  width<span class="op">:</span> <span class="dv">100</span><span class="op">%;</span></span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>  padding<span class="op">:</span> <span class="dv">15</span>px<span class="op">;</span></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>  background<span class="op">:</span> linear<span class="op">-</span><span class="fu">gradient</span><span class="op">(</span><span class="dv">135</span>deg<span class="op">,</span> #<span class="dv">667</span>eea <span class="dv">0</span><span class="op">%,</span> #<span class="dv">764</span>ba2 <span class="dv">100</span><span class="op">%);</span></span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>  border<span class="op">:</span> none<span class="op">;</span></span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a>  border<span class="op">-</span>radius<span class="op">:</span> <span class="dv">10</span>px<span class="op">;</span></span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> white<span class="op">;</span></span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="fl">1.1</span>rem<span class="op">;</span></span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>weight<span class="op">:</span> <span class="dv">600</span><span class="op">;</span></span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a>  cursor<span class="op">:</span> pointer<span class="op">;</span></span>
-<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a>  transition<span class="op">:</span> transform <span class="fl">0.2</span>s ease<span class="op">,</span> box<span class="op">-</span>shadow <span class="fl">0.2</span>s ease<span class="op">;</span></span>
-<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>button<span class="op">[</span>type<span class="op">=</span><span class="st">"submit"</span><span class="op">]:</span>hover<span class="op">:</span><span class="fu">not</span><span class="op">(:</span>disabled<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a>  transform<span class="op">:</span> <span class="fu">translateY</span><span class="op">(-</span><span class="dv">2</span>px<span class="op">);</span></span>
-<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>  box<span class="op">-</span>shadow<span class="op">:</span> <span class="dv">0</span> <span class="dv">5</span>px <span class="dv">20</span>px <span class="fu">rgba</span><span class="op">(</span><span class="dv">102</span><span class="op">,</span> <span class="dv">126</span><span class="op">,</span> <span class="dv">234</span><span class="op">,</span> <span class="fl">0.4</span><span class="op">);</span></span>
-<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>button<span class="op">[</span>type<span class="op">=</span><span class="st">"submit"</span><span class="op">]:</span>disabled <span class="op">{</span></span>
-<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>  opacity<span class="op">:</span> <span class="fl">0.6</span><span class="op">;</span></span>
-<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>  cursor<span class="op">:</span> not<span class="op">-</span>allowed<span class="op">;</span></span>
-<span id="cb3-195"><a href="#cb3-195" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-196"><a href="#cb3-196" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-197"><a href="#cb3-197" aria-hidden="true" tabindex="-1"></a><span class="op">.</span><span class="fu">hint</span> <span class="op">{</span></span>
-<span id="cb3-198"><a href="#cb3-198" aria-hidden="true" tabindex="-1"></a>  color<span class="op">:</span> #<span class="dv">888</span><span class="op">;</span></span>
-<span id="cb3-199"><a href="#cb3-199" aria-hidden="true" tabindex="-1"></a>  text<span class="op">-</span>align<span class="op">:</span> center<span class="op">;</span></span>
-<span id="cb3-200"><a href="#cb3-200" aria-hidden="true" tabindex="-1"></a>  margin<span class="op">-</span>top<span class="op">:</span> <span class="dv">20</span>px<span class="op">;</span></span>
-<span id="cb3-201"><a href="#cb3-201" aria-hidden="true" tabindex="-1"></a>  font<span class="op">-</span>size<span class="op">:</span> <span class="fl">0.9</span>rem<span class="op">;</span></span>
-<span id="cb3-202"><a href="#cb3-202" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="cb3-203"><a href="#cb3-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-204"><a href="#cb3-204" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-205"><a href="#cb3-205" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-206"><a href="#cb3-206" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-207"><a href="#cb3-207" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：修改App.jsx，管理登录状态</span></span>
-<span id="cb3-208"><a href="#cb3-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-209"><a href="#cb3-209" aria-hidden="true" tabindex="-1"></a>现在我们需要配置路由：未登录时显示登录页，已登录时显示歌单列表。</span>
-<span id="cb3-210"><a href="#cb3-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-211"><a href="#cb3-211" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb3-212"><a href="#cb3-212" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb3-213"><a href="#cb3-213" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`App.jsx`</span> 以支持登录状态管理：</span>
-<span id="cb3-214"><a href="#cb3-214" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>使用 <span class="in">`useState`</span> 管理 <span class="in">`isAuthenticated`</span> 和 <span class="in">`currentUser`</span>。</span>
-<span id="cb3-215"><a href="#cb3-215" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>初始化时检查 <span class="in">`localStorage`</span> 中是否有 Token。</span>
-<span id="cb3-216"><a href="#cb3-216" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>如果未登录，渲染 <span class="in">`&lt;Login /&gt;`</span> 组件。</span>
-<span id="cb3-217"><a href="#cb3-217" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>如果已登录，渲染主界面，并显示 '欢迎, username' 和 '退出' 按钮。"</span>
-<span id="cb3-218"><a href="#cb3-218" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-219"><a href="#cb3-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-220"><a href="#cb3-220" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-221"><a href="#cb3-221" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-222"><a href="#cb3-222" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：修改API工具，统一Token管理</span></span>
-<span id="cb3-223"><a href="#cb3-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-224"><a href="#cb3-224" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb3-225"><a href="#cb3-225" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
-<span id="cb3-226"><a href="#cb3-226" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`src/utils/api.js`</span>，创建一个通用的 <span class="in">`handleResponse`</span> 函数：</span>
-<span id="cb3-227"><a href="#cb3-227" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>检查 401/403 状态码：如果遇到，清除 Token 并刷新页面（强制登出）。</span>
-<span id="cb3-228"><a href="#cb3-228" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>检查其他错误状态码：抛出错误。</span>
-<span id="cb3-229"><a href="#cb3-229" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**关键**：健壮地解析响应体。先读取 <span class="in">`text()`</span>，如果为空则返回 <span class="in">`null`</span>，否则 <span class="in">`JSON.parse()`</span>。</span>
-<span id="cb3-230"><a href="#cb3-230" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>更新 <span class="in">`apiGet`</span>, <span class="in">`apiPost`</span>, <span class="in">`apiDelete`</span>，自动在 Header 中添加 <span class="in">`Authorization: Bearer &lt;token&gt;`</span>。"</span>
-<span id="cb3-231"><a href="#cb3-231" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-232"><a href="#cb3-232" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-233"><a href="#cb3-233" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-234"><a href="#cb3-234" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-235"><a href="#cb3-235" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：验证全栈集成</span></span>
-<span id="cb3-236"><a href="#cb3-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-237"><a href="#cb3-237" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-238"><a href="#cb3-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-239"><a href="#cb3-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第六步：终极验证（The Final Vibe Check）</span></span>
-<span id="cb3-240"><a href="#cb3-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-241"><a href="#cb3-241" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：完整登录流程</span></span>
-<span id="cb3-242"><a href="#cb3-242" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-243"><a href="#cb3-243" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**确保后端运行**：<span class="in">`./gradlew bootRun`</span>（在<span class="in">`chapter-code/ch10`</span>目录）</span>
-<span id="cb3-244"><a href="#cb3-244" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**确保前端运行**：<span class="in">`npm run dev`</span>（在<span class="in">`vibevault-frontend`</span>目录）</span>
-<span id="cb3-245"><a href="#cb3-245" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**注册用户**（使用curl或Postman）：</span>
-<span id="cb3-246"><a href="#cb3-246" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
-<span id="cb3-247"><a href="#cb3-247" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
-<span id="cb3-248"><a href="#cb3-248" aria-hidden="true" tabindex="-1"></a>      <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
-<span id="cb3-249"><a href="#cb3-249" aria-hidden="true" tabindex="-1"></a>      <span class="at">-d</span> <span class="st">'{"username": "testuser", "password": "password123"}'</span></span>
-<span id="cb3-250"><a href="#cb3-250" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
-<span id="cb3-251"><a href="#cb3-251" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**打开浏览器**，访问 <span class="in">`http://localhost:5173`</span></span>
-<span id="cb3-252"><a href="#cb3-252" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**应该看到登录页**（因为没有Token）</span>
-<span id="cb3-253"><a href="#cb3-253" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**输入用户名和密码**，点击登录</span>
-<span id="cb3-254"><a href="#cb3-254" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>**应该跳转到主页**，显示"欢迎, testuser"</span>
-<span id="cb3-255"><a href="#cb3-255" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-256"><a href="#cb3-256" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：Token持久化</span></span>
-<span id="cb3-257"><a href="#cb3-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-258"><a href="#cb3-258" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>登录后，**刷新页面**（F5）</span>
-<span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**应该仍然显示主页**，不会跳回登录页（因为Token保存在localStorage）</span>
-<span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**打开开发者工具**（F12） → Application → Local Storage</span>
-<span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**应该能看到**：<span class="in">`jwtToken`</span>和<span class="in">`username`</span>两个键值对</span>
-<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：退出登录</span></span>
-<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>点击"退出登录"按钮</span>
-<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**应该清空Token并跳转回登录页**</span>
-<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试四：Token过期处理</span></span>
-<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**修改后端**，将JWT有效期改为10秒（在<span class="in">`JwtService.java`</span>中）</span>
-<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>登录后，**等待11秒**</span>
-<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>尝试刷新页面或点击其他功能</span>
-<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**应该自动跳转回登录页**（因为Token过期，API返回403）</span>
-<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：前端Token存储的安全权衡</span></span>
-<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a><span class="fu">### LocalStorage vs HttpOnly Cookie</span></span>
-<span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 存储方式 <span class="pp">|</span> 优点 <span class="pp">|</span> 缺点 <span class="pp">|</span> 适用场景 <span class="pp">|</span></span>
-<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|------|------|---------|</span></span>
-<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **localStorage** <span class="pp">|</span> • 前端完全控制<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 易于实现和调试<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 支持跨域 <span class="pp">|</span> • 易受XSS攻击<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 无法设置过期时间 <span class="pp">|</span> 中小型项目、学习Demo <span class="pp">|</span></span>
-<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **httpOnly Cookie** <span class="pp">|</span> • 防御XSS攻击<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 浏览器自动管理 <span class="pp">|</span> • 需要重新启用CSRF保护<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 跨域配置复杂 <span class="pp">|</span> 企业级应用、高安全需求 <span class="pp">|</span></span>
-<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a>**当前选择**：我们使用<span class="in">`localStorage`</span>，因为：</span>
-<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>简单易懂，适合学习</span>
-<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>前端能完全控制Token（便于调试）</span>
-<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>配合HTTPS和CSP（Content Security Policy），风险可控</span>
-<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a>**生产环境建议**：</span>
-<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>对于高安全要求的应用（如银行应用），使用httpOnly Cookie + CSRF Token</span>
-<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>对于一般Web应用，localStorage + HTTPS + CSP是可接受的方案</span>
-<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a><span class="fu">### React中的Protected Route模式</span></span>
-<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>更专业的做法是使用React Router创建"受保护路由"：</span>
-<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a><span class="in">```jsx</span></span>
-<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a><span class="co">// 示例：使用React Router的Protected Route</span></span>
-<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Navigate } <span class="im">from</span> <span class="st">'react-router-dom'</span><span class="op">;</span></span>
-<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ProtectedRoute</span>({ children }) {</span>
-<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> localStorage<span class="op">.</span><span class="fu">getItem</span>(<span class="st">'jwtToken'</span>)<span class="op">;</span></span>
-<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>token) {</span>
-<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&lt;</span>Navigate to<span class="op">=</span><span class="st">"/login"</span> replace <span class="op">/&gt;;</span></span>
-<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> children<span class="op">;</span></span>
-<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-313"><a href="#cb3-313" aria-hidden="true" tabindex="-1"></a><span class="co">// 在路由配置中使用</span></span>
-<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>Route path<span class="op">=</span><span class="st">"/playlists"</span> element<span class="op">=</span>{</span>
-<span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>ProtectedRoute<span class="op">&gt;</span></span>
-<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>PlaylistList <span class="op">/&gt;</span></span>
-<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;/</span>ProtectedRoute<span class="op">&gt;</span></span>
-<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a>} <span class="op">/&gt;</span></span>
-<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a><span class="fu">## 恭喜！你已经完成了全栈安全闭环</span></span>
-<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a>让我们回顾一下这趟旅程：</span>
-<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a><span class="fu">### 后端（Spring Boot）</span></span>
-<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.1 守门人**：Spring Security拦截所有未认证请求</span>
-<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.2 身份**：User实体 + BCrypt密码加密 + 注册/登录接口</span>
-<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.3 护照**：JWT生成和验证 + JwtFilter自动验身份</span>
-<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.4 规矩**：基于所有权的授权 + @PreAuthorize注解</span>
-<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a><span class="fu">### 前端（React）</span></span>
-<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **登录界面**：美观的Login组件</span>
-<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **Token管理**：存储、携带、自动清理</span>
-<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **错误处理**：401/403自动跳转登录</span>
-<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **用户体验**：持久登录状态 + 退出功能</span>
-<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a><span class="fu">### 系统特性</span></span>
-<span id="cb3-342"><a href="#cb3-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-343"><a href="#cb3-343" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**无状态**：服务器不存储Session，天然支持水平扩展</span>
-<span id="cb3-344"><a href="#cb3-344" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**安全**：密码BCrypt加密，Token签名防篡改</span>
-<span id="cb3-345"><a href="#cb3-345" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**用户友好**：一次登录24小时有效，无需频繁输入密码</span>
-<span id="cb3-346"><a href="#cb3-346" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**权限控制**：用户只能操作自己的资源</span>
-<span id="cb3-347"><a href="#cb3-347" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-348"><a href="#cb3-348" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-349"><a href="#cb3-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-350"><a href="#cb3-350" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
-<span id="cb3-351"><a href="#cb3-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-352"><a href="#cb3-352" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
-<span id="cb3-353"><a href="#cb3-353" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述四个测试，确保完整的登录流程工作正常。</span>
-<span id="cb3-354"><a href="#cb3-354" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用浏览器开发者工具的Network标签，观察登录请求的Request/Response，验证Token是否正确传递。</span>
-<span id="cb3-355"><a href="#cb3-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-356"><a href="#cb3-356" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
-<span id="cb3-357"><a href="#cb3-357" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加"注册"功能到前端：创建<span class="in">`Signup.jsx`</span>组件，让用户可以在界面上注册（而不是用curl）。</span>
-<span id="cb3-358"><a href="#cb3-358" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为删除歌单添加确认对话框："确定要删除吗？此操作不可撤销。"</span>
-<span id="cb3-359"><a href="#cb3-359" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现"记住我"功能：添加一个复选框，勾选时Token有效期延长到7天。</span>
-<span id="cb3-360"><a href="#cb3-360" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-361"><a href="#cb3-361" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
-<span id="cb3-362"><a href="#cb3-362" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果攻击者在浏览器控制台执行<span class="in">`localStorage.getItem('jwtToken')`</span>，他能拿到Token吗？这是XSS攻击的一种形式吗？如何防御？</span>
-<span id="cb3-363"><a href="#cb3-363" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果用户在多个设备登录（手机、电脑），当前的JWT方案能支持"在其他设备强制下线"吗？为什么？如何实现？</span>
-<span id="cb3-364"><a href="#cb3-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-365"><a href="#cb3-365" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
-<span id="cb3-366"><a href="#cb3-366" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-367"><a href="#cb3-367" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释OAuth 2.0和JWT的关系。如果我要实现'使用Google账号登录VibeVault'，应该使用哪种方案？"</span></span>
-<span id="cb3-368"><a href="#cb3-368" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-369"><a href="#cb3-369" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释CSP (Content Security Policy) 如何帮助防御XSS攻击。给我一个适合VibeVault应用的CSP配置示例。"</span></span>
-<span id="cb3-370"><a href="#cb3-370" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-371"><a href="#cb3-371" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb3-372"><a href="#cb3-372" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-373"><a href="#cb3-373" aria-hidden="true" tabindex="-1"></a>**你已经完成了一个真正的、可投入使用的全栈Web应用！** 它有：</span>
-<span id="cb3-374"><a href="#cb3-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-375"><a href="#cb3-375" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>完整的前后端分离架构</span>
-<span id="cb3-376"><a href="#cb3-376" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>安全的用户认证和授权体系</span>
-<span id="cb3-377"><a href="#cb3-377" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>优雅的无状态Token方案</span>
-<span id="cb3-378"><a href="#cb3-378" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>专业的错误处理和用户体验</span>
-<span id="cb3-379"><a href="#cb3-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-380"><a href="#cb3-380" aria-hidden="true" tabindex="-1"></a>下一章，我们将把这个应用打包、部署到云端，让全世界的人都能访问你的VibeVault。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># 10.5 握手：全栈安全大一统</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; "前端和后端，终于在安全的拥抱中相遇。" —— 全栈开发的高光时刻</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">## 本节危机：后端固若金汤，前端无从下手</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>恭喜！经过前四节的努力，你的后端已经建立了一套完整的安全体系：</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ Spring Security守门（10.1）</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 用户认证系统（10.2）</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ JWT无状态认证（10.3）</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ 基于所有权的授权（10.4）</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>但现在有个问题：**你的第9章React前端完全不知道这一切的存在**。</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>**当前状态**：</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端尝试访问<span class="in">`GET /api/playlists`</span>（需要Token） → 403 Forbidden</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端想添加歌曲 → 403 Forbidden</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>前端甚至不知道如何让用户"登录"</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>**我们面临的挑战**：</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>前端需要一个**登录页面**，让用户输入用户名和密码。</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>登录成功后，前端需要**保存JWT Token**。</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>所有后续API请求，前端都要在HTTP Header中**携带Token**。</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>如果Token过期或无效，前端要能**优雅地处理**（如跳转回登录页）。</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>**这一节，我们将完成全栈应用的最后一环：让React前端和Spring Boot后端，通过JWT实现安全握手。**</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>sequenceDiagram</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    participant React as React前端</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    participant API as Spring Boot后端</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    participant DB as 数据库</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    Note over React, API: 阶段一：握手（登录）</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;API: POST /api/auth/login (user, pass)</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    API-&gt;&gt;DB: 验证账号密码</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    API--&gt;&gt;React: 返回 JWT Token</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;React: localStorage.setItem(<span class="ot">'</span><span class="ss">token</span><span class="ot">'</span>, jwt)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    Note over React, API: 阶段二：通信（携带信物）</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;React: 从localStorage取出Token</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;API: GET /api/playlists &lt;br/&gt; Header: Authorization: Bearer &lt;token&gt;</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    API-&gt;&gt;API: 验证Token签名 &amp; 有效期</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    API--&gt;&gt;React: 返回数据 (<span class="dv">200</span> OK)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    Note over React, API: 阶段三：分手（Token过期）</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;API: GET /api/playlists (Token已过期)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    API--&gt;&gt;React: <span class="dv">403</span> Forbidden</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    React-&gt;&gt;React: 清除Token，跳转回登录页</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第一步：配置CORS（跨域资源共享）</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>在连接前端之前，我们必须解决一个浏览器安全机制带来的问题：**跨域（CORS）**。</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>前端运行在 <span class="in">`http://localhost:5173`</span>，后端运行在 <span class="in">`http://localhost:8080`</span>。默认情况下，浏览器禁止这种跨域请求。</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>修改 <span class="in">`SecurityConfig.java`</span>，允许来自前端的请求：</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`SecurityConfig`</span>，配置 CORS（跨域资源共享）。</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>要求：</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>允许来自 <span class="in">`http://localhost:5173`</span> 的请求。</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>允许 GET, POST, PUT, DELETE, OPTIONS 方法。</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>允许所有 Headers。</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>允许携带 Credentials。"</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第二步：创建Login组件</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>回到你第9章创建的React项目（<span class="in">`vibevault-frontend`</span>）。让我们创建一个登录页面。</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="fu">### 使用AI生成Login组件</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>"请帮我创建一个React登录组件 <span class="in">`Login.jsx`</span>，要求如下：</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**UI设计**：</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>深色主题背景（#1a1a2e）</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>渐变卡片容器</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>用户名和密码输入框</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>登录按钮（悬停时有动画效果）</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>错误信息展示（红色，明显）</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**功能要求**：</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用<span class="in">`useState`</span>管理username, password, error状态</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>点击登录按钮后，发送POST请求到 <span class="in">`http://localhost:8080/api/auth/login`</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果成功（200 OK），将返回的<span class="in">`token`</span>存入<span class="in">`localStorage`</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>**关键**：调用父组件传入的 <span class="in">`onLoginSuccess(username)`</span> 回调函数</span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果失败，显示错误信息（如"用户名或密码错误"）</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**代码风格**：</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用函数组件和Hooks</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加详细注释</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用async/await处理异步</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>请提供完整代码，并同时生成对应的 <span class="in">`Login.css`</span> 样式文件（使用现代CSS特性）。"</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a><span class="fu">### 创建样式文件</span></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>让AI为你生成漂亮的CSS样式。</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>"请为上面的 <span class="in">`Login.jsx`</span> 生成配套的 <span class="in">`Login.css`</span>。</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>设计风格：</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Cyberpunk/Modern Vibe**：使用深色背景、霓虹蓝/紫色点缀。</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**玻璃拟态**：登录卡片使用半透明磨砂效果（backdrop-filter）。</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**交互反馈**：输入框聚焦时发光，按钮悬停时上浮。"</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第三步：修改App.jsx，管理登录状态</span></span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>现在我们需要配置路由：未登录时显示登录页，已登录时显示歌单列表。</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`App.jsx`</span> 以支持登录状态管理：</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>使用 <span class="in">`useState`</span> 管理 <span class="in">`isAuthenticated`</span> 和 <span class="in">`currentUser`</span>。</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>初始化时检查 <span class="in">`localStorage`</span> 中是否有 Token。</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>如果未登录，渲染 <span class="in">`&lt;Login /&gt;`</span> 组件。</span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>如果已登录，渲染主界面，并显示 '欢迎, username' 和 '退出' 按钮。"</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第四步：修改API工具，统一Token管理</span></span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="fu">## 🤖 AI Prompt</span></span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>"修改 <span class="in">`src/utils/api.js`</span>，创建一个通用的 <span class="in">`handleResponse`</span> 函数：</span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>检查 401/403 状态码：如果遇到，清除 Token 并刷新页面（强制登出）。</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>检查其他错误状态码：抛出错误。</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**关键**：健壮地解析响应体。先读取 <span class="in">`text()`</span>，如果为空则返回 <span class="in">`null`</span>，否则 <span class="in">`JSON.parse()`</span>。</span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>更新 <span class="in">`apiGet`</span>, <span class="in">`apiPost`</span>, <span class="in">`apiDelete`</span>，自动在 Header 中添加 <span class="in">`Authorization: Bearer &lt;token&gt;`</span>。"</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a><span class="fu">## 第五步：终极验证（The Final Vibe Check）</span></span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试一：完整登录流程</span></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**确保后端运行**：<span class="in">`./gradlew bootRun`</span>（在<span class="in">`chapter-code/ch10`</span>目录）</span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**确保前端运行**：<span class="in">`npm run dev`</span>（在<span class="in">`vibevault-frontend`</span>目录）</span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**注册用户**（使用curl或Postman）：</span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a>    <span class="in">```bash</span></span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a>    <span class="ex">curl</span> <span class="at">-X</span> POST http://localhost:8080/api/auth/signup <span class="dt">\</span></span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a>      <span class="at">-H</span> <span class="st">"Content-Type: application/json"</span> <span class="dt">\</span></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>      <span class="at">-d</span> <span class="st">'{"username": "testuser", "password": "password123"}'</span></span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a>    <span class="in">```</span></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**打开浏览器**，访问 <span class="in">`http://localhost:5173`</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**应该看到登录页**（因为没有Token）</span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>**输入用户名和密码**，点击登录</span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>**应该跳转到主页**，显示"欢迎, testuser"</span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试二：Token持久化</span></span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>登录后，**刷新页面**（F5）</span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**应该仍然显示主页**，不会跳回登录页（因为Token保存在localStorage）</span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**打开开发者工具**（F12） → Application → Local Storage</span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**应该能看到**：<span class="in">`jwtToken`</span>和<span class="in">`username`</span>两个键值对</span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试三：退出登录</span></span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>点击"退出登录"按钮</span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**应该清空Token并跳转回登录页**</span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a><span class="fu">### 测试四：Token过期处理</span></span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-186"><a href="#cb2-186" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**修改后端**，将JWT有效期改为10秒（在<span class="in">`JwtService.java`</span>中）</span>
+<span id="cb2-187"><a href="#cb2-187" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>登录后，**等待11秒**</span>
+<span id="cb2-188"><a href="#cb2-188" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>尝试刷新页面或点击其他功能</span>
+<span id="cb2-189"><a href="#cb2-189" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**应该自动跳转回登录页**（因为Token过期，API返回403）</span>
+<span id="cb2-190"><a href="#cb2-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-191"><a href="#cb2-191" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-192"><a href="#cb2-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-193"><a href="#cb2-193" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Deep Dive：前端Token存储的安全权衡</span></span>
+<span id="cb2-194"><a href="#cb2-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-195"><a href="#cb2-195" aria-hidden="true" tabindex="-1"></a><span class="fu">### LocalStorage vs HttpOnly Cookie</span></span>
+<span id="cb2-196"><a href="#cb2-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-197"><a href="#cb2-197" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 存储方式 <span class="pp">|</span> 优点 <span class="pp">|</span> 缺点 <span class="pp">|</span> 适用场景 <span class="pp">|</span></span>
+<span id="cb2-198"><a href="#cb2-198" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|------|------|---------|</span></span>
+<span id="cb2-199"><a href="#cb2-199" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **localStorage** <span class="pp">|</span> • 前端完全控制<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 易于实现和调试<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 支持跨域 <span class="pp">|</span> • 易受XSS攻击<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 无法设置过期时间 <span class="pp">|</span> 中小型项目、学习Demo <span class="pp">|</span></span>
+<span id="cb2-200"><a href="#cb2-200" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> **httpOnly Cookie** <span class="pp">|</span> • 防御XSS攻击<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 浏览器自动管理 <span class="pp">|</span> • 需要重新启用CSRF保护<span class="dt">&lt;</span><span class="kw">br</span><span class="dt">&gt;</span>• 跨域配置复杂 <span class="pp">|</span> 企业级应用、高安全需求 <span class="pp">|</span></span>
+<span id="cb2-201"><a href="#cb2-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-202"><a href="#cb2-202" aria-hidden="true" tabindex="-1"></a>**当前选择**：我们使用<span class="in">`localStorage`</span>，因为：</span>
+<span id="cb2-203"><a href="#cb2-203" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>简单易懂，适合学习</span>
+<span id="cb2-204"><a href="#cb2-204" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>前端能完全控制Token（便于调试）</span>
+<span id="cb2-205"><a href="#cb2-205" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>配合HTTPS和CSP（Content Security Policy），风险可控</span>
+<span id="cb2-206"><a href="#cb2-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-207"><a href="#cb2-207" aria-hidden="true" tabindex="-1"></a>**生产环境建议**：</span>
+<span id="cb2-208"><a href="#cb2-208" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>对于高安全要求的应用（如银行应用），使用httpOnly Cookie + CSRF Token</span>
+<span id="cb2-209"><a href="#cb2-209" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>对于一般Web应用，localStorage + HTTPS + CSP是可接受的方案</span>
+<span id="cb2-210"><a href="#cb2-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-211"><a href="#cb2-211" aria-hidden="true" tabindex="-1"></a><span class="fu">### React中的Protected Route模式</span></span>
+<span id="cb2-212"><a href="#cb2-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-213"><a href="#cb2-213" aria-hidden="true" tabindex="-1"></a>更专业的做法是使用React Router创建"受保护路由"：</span>
+<span id="cb2-214"><a href="#cb2-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-215"><a href="#cb2-215" aria-hidden="true" tabindex="-1"></a><span class="in">```jsx</span></span>
+<span id="cb2-216"><a href="#cb2-216" aria-hidden="true" tabindex="-1"></a><span class="co">// 示例：使用React Router的Protected Route</span></span>
+<span id="cb2-217"><a href="#cb2-217" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { Navigate } <span class="im">from</span> <span class="st">'react-router-dom'</span><span class="op">;</span></span>
+<span id="cb2-218"><a href="#cb2-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-219"><a href="#cb2-219" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ProtectedRoute</span>({ children }) {</span>
+<span id="cb2-220"><a href="#cb2-220" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> token <span class="op">=</span> localStorage<span class="op">.</span><span class="fu">getItem</span>(<span class="st">'jwtToken'</span>)<span class="op">;</span></span>
+<span id="cb2-221"><a href="#cb2-221" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-222"><a href="#cb2-222" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>token) {</span>
+<span id="cb2-223"><a href="#cb2-223" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">&lt;</span>Navigate to<span class="op">=</span><span class="st">"/login"</span> replace <span class="op">/&gt;;</span></span>
+<span id="cb2-224"><a href="#cb2-224" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-225"><a href="#cb2-225" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-226"><a href="#cb2-226" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> children<span class="op">;</span></span>
+<span id="cb2-227"><a href="#cb2-227" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-228"><a href="#cb2-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-229"><a href="#cb2-229" aria-hidden="true" tabindex="-1"></a><span class="co">// 在路由配置中使用</span></span>
+<span id="cb2-230"><a href="#cb2-230" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;</span>Route path<span class="op">=</span><span class="st">"/playlists"</span> element<span class="op">=</span>{</span>
+<span id="cb2-231"><a href="#cb2-231" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;</span>ProtectedRoute<span class="op">&gt;</span></span>
+<span id="cb2-232"><a href="#cb2-232" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;</span>PlaylistList <span class="op">/&gt;</span></span>
+<span id="cb2-233"><a href="#cb2-233" aria-hidden="true" tabindex="-1"></a>  <span class="op">&lt;/</span>ProtectedRoute<span class="op">&gt;</span></span>
+<span id="cb2-234"><a href="#cb2-234" aria-hidden="true" tabindex="-1"></a>} <span class="op">/&gt;</span></span>
+<span id="cb2-235"><a href="#cb2-235" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-236"><a href="#cb2-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-237"><a href="#cb2-237" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-238"><a href="#cb2-238" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-239"><a href="#cb2-239" aria-hidden="true" tabindex="-1"></a><span class="fu">## 恭喜！你已经完成了全栈安全闭环</span></span>
+<span id="cb2-240"><a href="#cb2-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-241"><a href="#cb2-241" aria-hidden="true" tabindex="-1"></a>让我们回顾一下这趟旅程：</span>
+<span id="cb2-242"><a href="#cb2-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-243"><a href="#cb2-243" aria-hidden="true" tabindex="-1"></a><span class="fu">### 后端（Spring Boot）</span></span>
+<span id="cb2-244"><a href="#cb2-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-245"><a href="#cb2-245" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.1 守门人**：Spring Security拦截所有未认证请求</span>
+<span id="cb2-246"><a href="#cb2-246" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.2 身份**：User实体 + BCrypt密码加密 + 注册/登录接口</span>
+<span id="cb2-247"><a href="#cb2-247" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.3 护照**：JWT生成和验证 + JwtFilter自动验身份</span>
+<span id="cb2-248"><a href="#cb2-248" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **10.4 规矩**：基于所有权的授权 + @PreAuthorize注解</span>
+<span id="cb2-249"><a href="#cb2-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-250"><a href="#cb2-250" aria-hidden="true" tabindex="-1"></a><span class="fu">### 前端（React）</span></span>
+<span id="cb2-251"><a href="#cb2-251" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-252"><a href="#cb2-252" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **登录界面**：美观的Login组件</span>
+<span id="cb2-253"><a href="#cb2-253" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **Token管理**：存储、携带、自动清理</span>
+<span id="cb2-254"><a href="#cb2-254" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **错误处理**：401/403自动跳转登录</span>
+<span id="cb2-255"><a href="#cb2-255" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>✅ **用户体验**：持久登录状态 + 退出功能</span>
+<span id="cb2-256"><a href="#cb2-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-257"><a href="#cb2-257" aria-hidden="true" tabindex="-1"></a><span class="fu">### 系统特性</span></span>
+<span id="cb2-258"><a href="#cb2-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-259"><a href="#cb2-259" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**无状态**：服务器不存储Session，天然支持水平扩展</span>
+<span id="cb2-260"><a href="#cb2-260" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**安全**：密码BCrypt加密，Token签名防篡改</span>
+<span id="cb2-261"><a href="#cb2-261" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**用户友好**：一次登录24小时有效，无需频繁输入密码</span>
+<span id="cb2-262"><a href="#cb2-262" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**权限控制**：用户只能操作自己的资源</span>
+<span id="cb2-263"><a href="#cb2-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-264"><a href="#cb2-264" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-265"><a href="#cb2-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-266"><a href="#cb2-266" aria-hidden="true" tabindex="-1"></a><span class="fu">## Vibe Check（动手与思考）</span></span>
+<span id="cb2-267"><a href="#cb2-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-268"><a href="#cb2-268" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**核心练习**：</span>
+<span id="cb2-269"><a href="#cb2-269" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>完成上述四个测试，确保完整的登录流程工作正常。</span>
+<span id="cb2-270"><a href="#cb2-270" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>使用浏览器开发者工具的Network标签，观察登录请求的Request/Response，验证Token是否正确传递。</span>
+<span id="cb2-271"><a href="#cb2-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-272"><a href="#cb2-272" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**编码练习**：</span>
+<span id="cb2-273"><a href="#cb2-273" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>添加"注册"功能到前端：创建<span class="in">`Signup.jsx`</span>组件，让用户可以在界面上注册（而不是用curl）。</span>
+<span id="cb2-274"><a href="#cb2-274" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>为删除歌单添加确认对话框："确定要删除吗？此操作不可撤销。"</span>
+<span id="cb2-275"><a href="#cb2-275" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>实现"记住我"功能：添加一个复选框，勾选时Token有效期延长到7天。</span>
+<span id="cb2-276"><a href="#cb2-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-277"><a href="#cb2-277" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**安全思考**：</span>
+<span id="cb2-278"><a href="#cb2-278" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果攻击者在浏览器控制台执行<span class="in">`localStorage.getItem('jwtToken')`</span>，他能拿到Token吗？这是XSS攻击的一种形式吗？如何防御？</span>
+<span id="cb2-279"><a href="#cb2-279" aria-hidden="true" tabindex="-1"></a><span class="ss">    *   </span>如果用户在多个设备登录（手机、电脑），当前的JWT方案能支持"在其他设备强制下线"吗？为什么？如何实现？</span>
+<span id="cb2-280"><a href="#cb2-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-281"><a href="#cb2-281" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**AI协同**：</span>
+<span id="cb2-282"><a href="#cb2-282" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-283"><a href="#cb2-283" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释OAuth 2.0和JWT的关系。如果我要实现'使用Google账号登录VibeVault'，应该使用哪种方案？"</span></span>
+<span id="cb2-284"><a href="#cb2-284" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-285"><a href="#cb2-285" aria-hidden="true" tabindex="-1"></a><span class="at">    &gt; "请解释CSP (Content Security Policy) 如何帮助防御XSS攻击。给我一个适合VibeVault应用的CSP配置示例。"</span></span>
+<span id="cb2-286"><a href="#cb2-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-287"><a href="#cb2-287" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb2-288"><a href="#cb2-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-289"><a href="#cb2-289" aria-hidden="true" tabindex="-1"></a>**你已经完成了一个真正的、可投入使用的全栈Web应用！** 它有：</span>
+<span id="cb2-290"><a href="#cb2-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-291"><a href="#cb2-291" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>完整的前后端分离架构</span>
+<span id="cb2-292"><a href="#cb2-292" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>安全的用户认证和授权体系</span>
+<span id="cb2-293"><a href="#cb2-293" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>优雅的无状态Token方案</span>
+<span id="cb2-294"><a href="#cb2-294" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>专业的错误处理和用户体验</span>
+<span id="cb2-295"><a href="#cb2-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-296"><a href="#cb2-296" aria-hidden="true" tabindex="-1"></a>下一章，我们将把这个应用打包、部署到云端，让全世界的人都能访问你的VibeVault。</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

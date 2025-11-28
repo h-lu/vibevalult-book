@@ -105,6 +105,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -596,6 +600,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="本章顿悟">本章顿悟</h2>
 <p>要保护我们的应用，我们需要构建一个<strong>五层防护体系</strong>，从”锁门”到”发护照”，从”定规矩”到”前后端握手”。</p>
 <p>这不是后端的独角戏。真正的安全，是<strong>全栈的安全闭环</strong>。</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">graph TD
+    User["用户/前端"] --&gt;|HTTPS Request| Firewall["Spring Security 守门人"]
+    Firewall --&gt;|身份认证| Auth["认证中心 (Auth)"]
+    Auth --&gt;|颁发护照| JWT["JWT Token"]
+    User --&gt;|携带护照访问| Filter["JWT 过滤器"]
+    Filter --&gt;|验签通过| Guard["授权守卫 (@PreAuthorize)"]
+    Guard --&gt;|检查权限| Logic["业务逻辑 (Controller)"]
+    
+    style Firewall fill:#f9f,stroke:#333,stroke-width:2px
+    style JWT fill:#bbf,stroke:#333,stroke-width:2px
+    style Guard fill:#bfb,stroke:#333,stroke-width:2px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>在本章中，我们将采用<strong>“AI托管配置”</strong>策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：</p>
 <ul>
 <li>用业务语言定义安全策略</li>
@@ -1102,21 +1128,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>这不是后端的独角戏。真正的安全，是**全栈的安全闭环**。</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>在本章中，我们将采用**"AI托管配置"**策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用业务语言定义安全策略</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>指挥AI生成符合最新标准的配置代码（使用Context7 MCP）</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>专注于理解核心概念，而非记忆API细节</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>通过本章，你将完成：</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[守门人：Spring Security](./10.1-security-crisis.qmd)**: 配置"默认拒绝"策略，锁住所有未认证请求。理解CSRF和Stateless的本质。</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[身份：用户认证](./10.2-authentication.qmd)**: 创建User实体，使用BCrypt加密密码，实现注册和登录。学习真实世界的密码安全事件。</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[护照：JWT无状态认证](./10.3-jwt-passport.qmd)**: 引入JWT Token，让用户登录一次后24小时内"免检通行"。理解JWT vs Session的权衡。</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[规矩：授权控制](./10.4-authorization.qmd)**: 实现"只有主人能删自己歌单"的业务规则。使用@PreAuthorize注解声明式授权。</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**[握手：全栈集成](./10.5-security-testing.qmd)**: **[重磅]** 创建React登录组件，实现Token管理，打通前后端安全闭环。</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>完成本章后，你的VibeVault将拥有一套生产级的安全体系，从后端的Spring Security到前端的Login界面，从密码加密到Token管理，从认证到授权——这是一个真正可以上线的Web应用的安全基础。</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="in">```{mermaid}</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>graph TD</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    User[<span class="ot">"</span><span class="st">用户/前端</span><span class="ot">"</span>] --&gt;|HTTPS Request| Firewall[<span class="ot">"</span><span class="st">Spring Security 守门人</span><span class="ot">"</span>]</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    Firewall --&gt;|身份认证| Auth[<span class="ot">"</span><span class="st">认证中心 (Auth)</span><span class="ot">"</span>]</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    Auth --&gt;|颁发护照| JWT[<span class="ot">"</span><span class="st">JWT Token</span><span class="ot">"</span>]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    User --&gt;|携带护照访问| Filter[<span class="ot">"</span><span class="st">JWT 过滤器</span><span class="ot">"</span>]</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    Filter --&gt;|验签通过| Guard[<span class="ot">"</span><span class="st">授权守卫 (</span><span class="dt">@PreAuthorize</span><span class="st">)</span><span class="ot">"</span>]</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    Guard --&gt;|检查权限| Logic[<span class="ot">"</span><span class="st">业务逻辑 (Controller)</span><span class="ot">"</span>]</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    style Firewall fill:<span class="co">#f9f,stroke:#333,stroke-width:2px</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    style JWT fill:<span class="co">#bbf,stroke:#333,stroke-width:2px</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>    style Guard fill:<span class="co">#bfb,stroke:#333,stroke-width:2px</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>在本章中，我们将采用**"AI托管配置"**策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>用业务语言定义安全策略</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>指挥AI生成符合最新标准的配置代码（使用Context7 MCP）</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>专注于理解核心概念，而非记忆API细节</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>通过本章，你将完成：</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**[守门人：Spring Security](./10.1-security-crisis.qmd)**: 配置"默认拒绝"策略，锁住所有未认证请求。理解CSRF和Stateless的本质。</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**[身份：用户认证](./10.2-authentication.qmd)**: 创建User实体，使用BCrypt加密密码，实现注册和登录。学习真实世界的密码安全事件。</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**[护照：JWT无状态认证](./10.3-jwt-passport.qmd)**: 引入JWT Token，让用户登录一次后24小时内"免检通行"。理解JWT vs Session的权衡。</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**[规矩：授权控制](./10.4-authorization.qmd)**: 实现"只有主人能删自己歌单"的业务规则。使用@PreAuthorize注解声明式授权。</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>**[握手：全栈集成](./10.5-security-testing.qmd)**: **[重磅]** 创建React登录组件，实现Token管理，打通前后端安全闭环。</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>完成本章后，你的VibeVault将拥有一套生产级的安全体系，从后端的Spring Security到前端的Login界面，从密码加密到Token管理，从认证到授权——这是一个真正可以上线的Web应用的安全基础。</span>
+</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

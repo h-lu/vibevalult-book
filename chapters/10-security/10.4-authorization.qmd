@@ -9,6 +9,7 @@
 但这里隐藏着一个严重的安全隐患：
 
 **场景重现**：
+
 1.  用户A（vibecoder）登录，创建了一个歌单"My Precious Playlist"。
 2.  用户B（eviluser）也登录了，拿到了自己的JWT Token。
 3.  用户B发送请求：`DELETE /api/playlists/my-precious-playlist`，携带他自己的Token。
@@ -33,6 +34,20 @@
 1.  **建立关联**：`Playlist`实体需要记录"谁是主人"（owner）。
 2.  **在Controller层检查**：在删除/修改操作前，验证`currentUser == playlist.owner`。
 3.  **用声明式注解**：使用Spring Security的`@PreAuthorize`，让授权逻辑清晰可读。
+
+```{mermaid}
+graph TD
+    User["用户B (eviluser)"] -->|DELETE /api/playlists/1| API["API Controller"]
+    API -->|拦截| PreAuth["@PreAuthorize"]
+    PreAuth -->|调用| Util["SecurityUtils.isPlaylistOwner"]
+    Util -->|查询DB| DB[("数据库")]
+    DB -->|返回Owner| Result{"Owner == eviluser?"}
+    Result -->|No| Deny["抛出 403 Forbidden"]
+    Result -->|Yes| Allow["执行删除操作"]
+    
+    style Deny fill:#f96,stroke:#333
+    style Allow fill:#9f6,stroke:#333
+```
 
 ---
 

@@ -20,6 +20,20 @@
 
 这不是后端的独角戏。真正的安全，是**全栈的安全闭环**。
 
+```{mermaid}
+graph TD
+    User["用户/前端"] -->|HTTPS Request| Firewall["Spring Security 守门人"]
+    Firewall -->|身份认证| Auth["认证中心 (Auth)"]
+    Auth -->|颁发护照| JWT["JWT Token"]
+    User -->|携带护照访问| Filter["JWT 过滤器"]
+    Filter -->|验签通过| Guard["授权守卫 (@PreAuthorize)"]
+    Guard -->|检查权限| Logic["业务逻辑 (Controller)"]
+    
+    style Firewall fill:#f9f,stroke:#333,stroke-width:2px
+    style JWT fill:#bbf,stroke:#333,stroke-width:2px
+    style Guard fill:#bfb,stroke:#333,stroke-width:2px
+```
+
 在本章中，我们将采用**"AI托管配置"**策略。Spring Security的配置复杂且版本迭代快（5.x到6.x有巨大破坏性变更），我们将学会：
 
 *   用业务语言定义安全策略
